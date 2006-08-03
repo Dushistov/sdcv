@@ -47,6 +47,8 @@ else
   DEP_MODULES="libgnomeui-2.0 >= 2.2.0"
 fi
 
+DEP_MODULES="$DEP_MODULES sigc++-2.0 >= 2.0.0"
+
 dnl
 dnl Start of pkg-config checks
 dnl
