@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<omf>
+  <resource>
+    <creator>
+      huzheng_001@163.com (Hu Zheng)
+    </creator>
+    <maintainer>
+      huzheng_001@163.com (Hu Zheng)
+    </maintainer>
+    <title>
+      StarDict Manual V2.4.2
+    </title>
+    <date>
+      2003-11-15
+    </date>
+    <version identifier="2.4.2" date="2003-11-15" description="Updated for GNOME 2.4.0, program version 2.4.2"/>
+    <subject category="GNOME|Applications"/>
+    <description>
+      User manual for the StarDict dictionary. 
+    </description>
+    <type>
+      user's guide
+    </type>
+    <format mime="text/xml" dtd="-//OASIS//DTD DocBook XML V4.1.2//EN"/>
+    <identifier url="stardict.xml"/>
+    <language code="zh_TW"/>
+    <relation seriesid="b8082230-5987-4b7f-b26e-f7a219ed8a1e"/>
+    <rights type="GNU FDL" license.version="1.1" holder="Hu Zheng"/>
+  </resource>        
+</omf>

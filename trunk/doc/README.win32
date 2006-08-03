@@ -1,0 +1,73 @@
+StarDict can be compiled and run in windows.
+
+Please install Dev-C++,they can be found in http://www.bloodshed.net/dev/
+
+Then install developer packages, they can be found in http://www.gimp.org/~tml/gimp/win32/downloads.html
+
+Here is a stardict.dev
+use Dev-C++ to open it, then compile it. Becase the compile command is too long,it can't be compile in win98,please use win2000 or XP.
+
+my environment: Windows XP, Dev-Cpp 4.9.9.2
+
+After compiled, you will find stardict.exe at src/.
+
+You can find the hook dll projects as src/win32/TextOutSpy.dev and src/win32/TextOutHook.dev.
+
+========
+To build the installer.
+
+Grab and install NSIS: http://www.nullsoft.com/free/nsis
+I was using the 2.08 version.
+
+i use linux commmand to illustrate the steps, but you cann't do it in this way :)
+
+===============
+cd stardict-2.4.6
+mkdir win32-install-dir
+
+cp src/stardict.exe win32-install-dir
+cp src/win32/TextOutSpy.dll win32-install-dir
+cp src/win32/TextOutHook.dll win32-install-dir
+
+mkdir -p win32-install-dir/locale/zh_CN/LC_MESSAGES/
+cp po/zh_CN.gmo win32-install-dir/locale/zh_CN/LC_MESSAGES/stardict.mo
+mkdir -p win32-install-dir/locale/ru/LC_MESSAGES/
+cp po/ru.gmo win32-install-dir/locale/ru/LC_MESSAGES/stardict.mo
+mkdir -p win32-install-dir/locale/cs/LC_MESSAGES/
+cp po/cs.gmo win32-install-dir/locale/cs/LC_MESSAGES/stardict.mo
+
+mkdir -p win32-install-dir/pixmaps
+cp pixmaps/stardict.png win32-install-dir/pixmaps
+cp src/pixmaps/* win32-install-dir/pixmaps //Notice: docklet_*.png needn't copy!!!
+mkdir -p win32-install-dir/sounds
+cp src/pixmaps/*.wav win32-install-dir/sounds
+mkdir -p win32-install-dir/dic
+mkdir -p win32-install-dir/treedict
+
+mkdir -p win32-install-dir/help
+
+You can create stardict.html file by "yelp-pregenerate stardict.xml", yelp-pregenerate is included in yelp-2.4.2, the newer version don't have this tool anymore. Then do some string replacing:
+replace "file:///usr/share/sgml/docbook/yelp/docbook/images/" to "../"
+replace "ghelp:stardict.xml?" to "./stardict.html#"
+replace "ghelp:stardict.xml" to "./stardict.html#id2772190"  //id2772190 is "<b>Table of Contents</b>" 's previous name.
+replace "file://./figures/" to "./figures/"
+And build the chm file by Visual CHM.
+
+Double click the stardict-installer.nsi :) NSIS will build the installer.
+
+This installer don't contains the gtk2-runtime, download it at: http://gaim.sourceforge.net/win32/index.php
+
+For debug, use these codes:
+=====
+FILE *file;
+file=fopen("C:\\a.txt", "a+");
+fprintf(file, "a\n");
+fclose(file);
+=====
+
+StarDict's win32 port got many experience from ReciteWord(my another project, http://reciteword.cosoft.org.cn) and Gaim: http://gaim.sourceforge.net/win32/index.php
+
+Note: when use fopen(), use "rb", never "r".
+
+Hu Zheng <huzheng_001@163.com> http://forlinux.yeah.net
+2006.1.18

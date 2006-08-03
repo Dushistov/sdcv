@@ -1,0 +1,1214 @@
+# French translation of StarDict // Traduction française de StarDict
+# Copyright (C) 2003 Hu Zheng <huzheng_001@163.com>
+# This file is distributed under the same license as the StarDict package.
+# Hu Zheng <huzheng_001@163.com>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: StarDict 2.4.7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-07-05 22:57+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: P&C Durville <cdurpp@ifrance.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/GNOME_Stardict.server.in.h:1
+msgid "stardict application"
+msgstr "Application StarDict"
+
+#: ../data/GNOME_Stardict.server.in.h:2
+msgid "stardict automation factory"
+msgstr "Génération automatique de StarDict"
+
+#: ../data/stardict.desktop.in.h:1
+msgid "Lookup words"
+msgstr "Recherche de mots"
+
+#. gtk_widget_set_app_paintable(window, TRUE);
+#: ../data/stardict.desktop.in.h:2 ../src/docklet.cpp:31 ../src/docklet.cpp:71
+#: ../src/mainwin.cpp:483 ../src/splash.cpp:78 ../src/stardict.cpp:173
+#: ../src/stardict.cpp:1691 ../src/win32/systray.cpp:196
+#: ../src/win32/systray.cpp:218
+msgid "StarDict"
+msgstr "StarDict"
+
+#: ../data/stardict.schemas.in.h:1
+msgid ""
+"A custom font that will be used in StarDict. This will only take effect if "
+"the \"Use Custom Font\" option is turned on."
+msgstr ""
+"Une police personnalisée qui sera utilisée dans StarDict. Elle ne sera "
+"utilisée que si l'option  \"Utiliser la police personnalisée\" est cochée."
+
+#: ../data/stardict.schemas.in.h:2
+msgid "Custom Font"
+msgstr "Police personnalisée"
+
+#: ../data/stardict.schemas.in.h:3
+msgid "Dictionary order"
+msgstr "Ordre des dictionnaires"
+
+#: ../data/stardict.schemas.in.h:4
+msgid "Disabled dictionary list"
+msgstr "Liste des dictionnaires désactivés"
+
+#: ../data/stardict.schemas.in.h:5
+msgid "Disabled tree dictionary list"
+msgstr "Liste des dictionnaires-arbres désactivés"
+
+#: ../data/stardict.schemas.in.h:6
+msgid "Enable sound event"
+msgstr "Activer le son pour les évènements"
+
+#: ../data/stardict.schemas.in.h:7
+msgid "Hide floating window when modifier key is released"
+msgstr "Cacher le phylactère lorsque la touche active est relâchée"
+
+#: ../data/stardict.schemas.in.h:8
+msgid ""
+"Hide floating window when modifier key is released. It only take effect when "
+"only_scan_while_modifier_key is turned on."
+msgstr ""
+"Cacher le phylactère lorsque la touche active est relâchée. Cette option "
+"n'est effective que si \"only_scan_while_modifier_key\" est activée."
+
+#: ../data/stardict.schemas.in.h:9
+msgid "Hide the list"
+msgstr "Cacher la liste"
+
+#: ../data/stardict.schemas.in.h:10
+msgid "Hide the window on startup"
+msgstr "Cacher la fenêtre au démarrage"
+
+#: ../data/stardict.schemas.in.h:11
+msgid "Hpaned 's position"
+msgstr "Position du délimiteur"
+
+#: ../data/stardict.schemas.in.h:12
+msgid "List the dictionaries in order."
+msgstr "Lister les dictionnaires dans l'ordre."
+
+#: ../data/stardict.schemas.in.h:13
+msgid "List the dictionaries which are disabled."
+msgstr "Lister les dictionnaires qui sont désactivés."
+
+#: ../data/stardict.schemas.in.h:14
+msgid "List the search websites."
+msgstr "Lister les sites Web de recherche."
+
+#: ../data/stardict.schemas.in.h:15
+msgid "List the tree dictionaries in order."
+msgstr "Lister les dictionnaires arbres dans l'ordre."
+
+#: ../data/stardict.schemas.in.h:16
+msgid "List the tree dictionaries which are disabled."
+msgstr "Lister les dictionnaires-arbre désactivés."
+
+#: ../data/stardict.schemas.in.h:17
+msgid "Maximum window-height"
+msgstr "Hauteur de la fenêtre maximale"
+
+#: ../data/stardict.schemas.in.h:18
+msgid "Maximum window-width"
+msgstr "Largeur de la fenêtre maximale"
+
+#: ../data/stardict.schemas.in.h:19
+msgid "Only scan while modifier key is being pressed"
+msgstr "Scanner uniquement lorsque la touche d'activation est enfoncée"
+
+#: ../data/stardict.schemas.in.h:20
+msgid ""
+"Only scan while the modifier key is being pressed. The modifier key is set "
+"by \"scan_modifier_key\"."
+msgstr ""
+"Scanner uniquement lorsque la touche d'activation est enfoncée. La touche "
+"d'activation est définie par \"scan_modifier_key\"."
+
+#: ../data/stardict.schemas.in.h:21
+msgid ""
+"Only scan while this modifier key is being pressed. It can be Win(0), Shift"
+"(1), Alt(2) or Ctrl(3)."
+msgstr ""
+"Scanner uniquement lorsque la touche d'activation est enfoncée. Cette touche "
+"peut être Win(0), Maj(1), Alt(2) ou Ctrl(3)."
+
+#: ../data/stardict.schemas.in.h:22
+msgid "Pronounce the word when it pops up."
+msgstr "Prononciation du mot quand il apparaît."
+
+#: ../data/stardict.schemas.in.h:23
+msgid "Pronounce the word when the floating window pops up."
+msgstr "Prononciation du mot quand le phylactère apparaît."
+
+#: ../data/stardict.schemas.in.h:24
+msgid "Query in the floating window when middle mouse button is clicked"
+msgstr ""
+"Résultat de la recherche dans le phylactère lorsqu'on clique sur le bouton "
+"du milieu de la souris."
+
+#: ../data/stardict.schemas.in.h:25
+msgid "Scan modifier key"
+msgstr "Touche d'activation du scan"
+
+#: ../data/stardict.schemas.in.h:26
+msgid "Scan the Selection"
+msgstr "Scanner la sélection"
+
+#: ../data/stardict.schemas.in.h:27
+msgid "Search website list"
+msgstr "Rechercher un site Web"
+
+#: ../data/stardict.schemas.in.h:28
+msgid "The height of the main stardict window."
+msgstr "Hauteur de la fenêtre principale"
+
+#: ../data/stardict.schemas.in.h:29
+msgid "The hpaned's position, between the listview and the textview."
+msgstr ""
+"Position du délimiteur entre la liste de termes et le cadre définition."
+
+#: ../data/stardict.schemas.in.h:30
+msgid "The maximum height of the floating stardict window."
+msgstr "Hauteur maximale du phylactère."
+
+#: ../data/stardict.schemas.in.h:31
+msgid "The maximum width of the floating stardict window."
+msgstr "Largeur maximale du phylactère."
+
+#: ../data/stardict.schemas.in.h:32
+msgid "The width of the main stardict window."
+msgstr "Largeur de la fenêtre principale de StarDict."
+
+#: ../data/stardict.schemas.in.h:33
+msgid "Tree Dictionary order"
+msgstr "Ordre des dictionnaires-arbre"
+
+#: ../data/stardict.schemas.in.h:34
+msgid "Use Custom Font"
+msgstr "Utiliser la police personnalisée"
+
+#: ../data/stardict.schemas.in.h:35
+msgid "Whether the main window is maximized or not."
+msgstr "Choix entre maximiser la fenêtre principale, ou pas."
+
+#: ../data/stardict.schemas.in.h:36
+msgid "Whether the window is maximized or not"
+msgstr "Choix entre maximiser la fenêtre ou pas."
+
+#: ../data/stardict.schemas.in.h:37
+msgid ""
+"Whether to enable sound events or not. StarDict will play a sound event when "
+"a button is active or released, and when a menu pops up."
+msgstr ""
+"Choix entre l'activation des sons pour les évènements clavier ou pas. "
+"StarDict émettra un son lorsque un bouton sera enfoncé ou relâché, et quand "
+"un menu apparaîtra."
+
+#: ../data/stardict.schemas.in.h:38
+msgid "Whether to hide the main window on startup, or not."
+msgstr "Choix entre cacher la fenêtre principale au démarrage, ou pas."
+
+#: ../data/stardict.schemas.in.h:39
+msgid "Whether to hide the word-list view or not."
+msgstr "Choix entre cacher le cadre contenant la liste des mots, ou pas. "
+
+#: ../data/stardict.schemas.in.h:40
+msgid ""
+"Whether to lock the floating window or not. While locked, the window will "
+"not disappear."
+msgstr ""
+"Choix entre bloquer le phylactère, ou pas. Si il est bloqué, il ne  "
+"disparaîtra pas."
+
+#: ../data/stardict.schemas.in.h:41
+msgid ""
+"Whether to query in the floating window, or in the main window. Query is "
+"activated by the user clicking the middle mouse button on the notification "
+"area icon."
+msgstr ""
+"Choix entre montrer le fruit de la recherche dans le phylactère, ou dans la "
+"fenêtre principale. La recherche est activée par l'utilisateur en cliquant "
+"avec le bouton du milieu de la souris sur l'icône StarDict de la barre des "
+"tâches."
+
+#: ../data/stardict.schemas.in.h:42
+msgid ""
+"Whether to scan the selection or not. When the user selects text, stardict "
+"will popup a flat window showing the meaning of that text."
+msgstr ""
+"Choix entre scanner la sélection, ou pas. Lorsque l'utilisateur sélectionne "
+"un mot, StarDict affichera un phylactère montrant la signification de ce mot."
+
+#: ../data/stardict.schemas.in.h:43
+msgid ""
+"Whether to use a user-defined font in StarDict, instead of the default "
+"system font. If this option is turned on, then the font named in the "
+"\"Custom Font\" option will be used instead of the system font."
+msgstr ""
+"Choix de l'utilisation d'une police personnalisée -au lieu de la  police par "
+"défaut du système-, ou pas. Si cette option est cochée, alors la police "
+"définie dans  l'option \"Police particulière\" sera utilisée en lieu et "
+"place de la police du système."
+
+#: ../data/stardict.schemas.in.h:44
+msgid "Window-height"
+msgstr "Hauteur de la fenêtre"
+
+#: ../data/stardict.schemas.in.h:45
+msgid "Window-width"
+msgstr "Largeur de la fenêtre"
+
+#: ../data/stardict.schemas.in.h:46
+msgid "lock position (x)"
+msgstr "bloquer la position (x)"
+
+#: ../data/stardict.schemas.in.h:47
+msgid "lock position (y)"
+msgstr "bloquer la position (y)"
+
+#: ../data/stardict.schemas.in.h:48
+msgid "the window's x position while locked."
+msgstr "La position en largeur (x) de la fenêtre lorsqu'elle est bloquée."
+
+#: ../data/stardict.schemas.in.h:49
+msgid "the window's y position while locked."
+msgstr "La position en hauteur (y) de la fenêtre lorsqu'elle est bloquée."
+
+#: ../data/stardict.schemas.in.h:50
+msgid "whether to lock the window or not"
+msgstr "Choix entre bloquer la fenêtre ou pas."
+
+#: ../src/conf.cpp:233
+#, c-format
+msgid ""
+"Dictionary.com\thttp://dictionary.reference.com\thttp://dictionary.reference."
+"com/search?q=%s\n"
+"dict.leo.org\thttp://dict.leo.org\thttp://dict.leo.org/?search=%s&lang=en\n"
+"H2G2\thttp://www.h2g2.com\thttp://www.h2g2.com/Search?searchstring=%"
+"s&searchtype=ARTICLE&skip=0&show=20&showapproved=1&shownormal=1&showsubmitted=1\n"
+"WhatIs\thttp://whatis.techtarget.com\thttp://whatis.techtarget.com/"
+"wsearchResults/1,290214,sid9,00.html?query=%s\n"
+"Altavista\thttp://www.altavista.com\thttp://www.altavista.com/cgi-bin/query?"
+"q=%s\n"
+"WEB.DE\thttp://suche.web.de\thttp://suche.web.de/search/?su=%s\n"
+"WebCrawler\thttp://www.webcrawler.com\thttp://www.webcrawler.com/cgi-bin/"
+"WebQuery?searchText=%s\n"
+"Google\thttp://www.google.com\thttp://www.google.com/search?q=%s\n"
+"Yahoo\thttp://search.yahoo.com\thttp://search.yahoo.com/bin/search?p=%s\n"
+"CMU\thttp://www.speech.cs.cmu.edu\thttp://www.speech.cs.cmu.edu/cgi-bin/"
+"cmudict?in=%s\n"
+msgstr ""
+
+#: ../src/conf.cpp:257
+msgid "win32_use_custom_font=0"
+msgstr "win32_use_custom_font=0"
+
+#: ../src/conf.cpp:268
+msgid "win32_custom_font="
+msgstr "win32_custom_font="
+
+#: ../src/dictmanagedlg.cpp:251 ../src/dictmanagedlg.cpp:321
+msgid "Dictionary Name"
+msgstr "Nom des dictionnaires"
+
+#: ../src/dictmanagedlg.cpp:252 ../src/dictmanagedlg.cpp:327
+msgid "Word count"
+msgstr "Décompte des mots"
+
+#: ../src/dictmanagedlg.cpp:253
+msgid "Author"
+msgstr "Auteur"
+
+#: ../src/dictmanagedlg.cpp:254
+msgid "Email"
+msgstr "Courriel"
+
+#: ../src/dictmanagedlg.cpp:255
+msgid "Website"
+msgstr "Site Web"
+
+#: ../src/dictmanagedlg.cpp:256
+msgid "Description"
+msgstr "Description"
+
+#: ../src/dictmanagedlg.cpp:257
+msgid "Date"
+msgstr "Date"
+
+#: ../src/dictmanagedlg.cpp:258
+msgid "File name"
+msgstr "Nom du fichier"
+
+#: ../src/dictmanagedlg.cpp:315
+msgid "Enable"
+msgstr "Activer"
+
+#: ../src/dictmanagedlg.cpp:584
+msgid "D_ictionaries"
+msgstr "D_ictionnaires"
+
+#: ../src/dictmanagedlg.cpp:599
+msgid "T_ree dictionaries"
+msgstr "Dictionnai_res-arbre"
+
+#: ../src/dictmanagedlg.cpp:623
+msgid "These settings will take effect the next time you run StarDict."
+msgstr ""
+"Ces modifications seront prises en compte lors du prochain démarrage de "
+"StarDict."
+
+#: ../src/dictmanagedlg.cpp:634
+msgid "Manage Dictionaries"
+msgstr "Gestion des dictionnaires"
+
+#: ../src/docklet.cpp:34 ../src/docklet.cpp:63 ../src/win32/systray.cpp:221
+msgid "StarDict - Scanning"
+msgstr "StarDict - scan"
+
+#: ../src/docklet.cpp:37 ../src/docklet.cpp:67 ../src/win32/systray.cpp:224
+msgid "StarDict - Stopped"
+msgstr "StarDict - Arrêté"
+
+#: ../src/docklet.cpp:122 ../src/mainwin.cpp:1712
+msgid "_Scan"
+msgstr "_Scanner"
+
+#: ../src/docklet.cpp:130 ../src/mainwin.cpp:551
+msgid "_Quit"
+msgstr "_Quitter"
+
+#: ../src/floatwin.cpp:121
+msgid "Query in the main window"
+msgstr "Replacer le fruit de la recherche dans la fenêtre principale"
+
+#: ../src/floatwin.cpp:130
+msgid "Save to file"
+msgstr "Enregistrer"
+
+#: ../src/floatwin.cpp:138 ../src/mainwin.cpp:1259
+msgid "Pronounce the word"
+msgstr "Prononciation des mots"
+
+#: ../src/floatwin.cpp:148
+msgid "Stop selection-scanning"
+msgstr "Cesser le scan automatique"
+
+#: ../src/floatwin.cpp:160
+msgid "Help"
+msgstr "Aide"
+
+#: ../src/floatwin.cpp:168 ../src/mainwin.cpp:1745 ../src/win32/systray.cpp:79
+msgid "Quit"
+msgstr "Quitter"
+
+#: ../src/floatwin.cpp:182
+msgid "Lock floating window"
+msgstr "Bloquer le phylactère"
+
+#: ../src/floatwin.cpp:267
+msgid "Fuzzy query"
+msgstr "Recherche approchée"
+
+#: ../src/floatwin.cpp:273
+msgid "has succeeded.\n"
+msgstr "a réussi.\n"
+
+#: ../src/floatwin.cpp:274
+msgid "Found "
+msgstr "Trouvé "
+
+#: ../src/floatwin.cpp:276
+msgid "1 word:\n"
+msgstr "1 mot:\n"
+
+#: ../src/floatwin.cpp:281
+msgid " words:\n"
+msgstr " mots:\n"
+
+#: ../src/floatwin.cpp:730
+msgid "_Copy"
+msgstr "_Copier"
+
+#: ../src/floatwin.cpp:736
+msgid "_Save"
+msgstr "_Enregistrer"
+
+#: ../src/floatwin.cpp:741
+msgid "_Query"
+msgstr "_Recherche"
+
+#: ../src/floatwin.cpp:748
+msgid "_Play"
+msgstr "_Lecture"
+
+#: ../src/floatwin.cpp:756
+msgid "_Fuzzy Query"
+msgstr "_Recherche approchée"
+
+#: ../src/inifile.cpp:135
+#, c-format
+msgid "Can not open: %s - %s\n"
+msgstr "Ne peut pas ouvrir: %s - %s\n"
+
+#: ../src/mainwin.cpp:85
+msgid "Clear the search box"
+msgstr "Effacer le champ de saisie"
+
+#: ../src/mainwin.cpp:111
+msgid "Fuzzy Query"
+msgstr "Recherche approchée"
+
+#: ../src/mainwin.cpp:123
+msgid "Go Back - Right button: history (Alt+Left)"
+msgstr "Requête précédente"
+
+#: ../src/mainwin.cpp:133
+msgid "Previous word (Alt+Up)"
+msgstr "Mot précédent (Alt+Haut)"
+
+#: ../src/mainwin.cpp:143
+msgid "Next word (Alt+Down)"
+msgstr "Mot suivant (Alt+Bas)"
+
+#: ../src/mainwin.cpp:153
+msgid "Show the main menu (Alt+M)"
+msgstr "Montrer le menu principal (Alt+M)"
+
+#: ../src/mainwin.cpp:480
+msgid "translator_credits"
+msgstr "_Crédits traducteurs"
+
+#: ../src/mainwin.cpp:486
+msgid "StarDict is an international dictionary for GNOME."
+msgstr "StarDict est un dictionnaire international pour GNOME."
+
+#: ../src/mainwin.cpp:514
+msgid "Pr_eferences"
+msgstr "Préfér_ences"
+
+#: ../src/mainwin.cpp:521
+msgid "Manage _Dict"
+msgstr "Gestion des _Dictionnaires"
+
+#: ../src/mainwin.cpp:529
+msgid "_New Version"
+msgstr "_Nouvelle Version"
+
+#: ../src/mainwin.cpp:537
+msgid "_Help"
+msgstr "_Aide"
+
+#: ../src/mainwin.cpp:543
+msgid "_About"
+msgstr "_À propos"
+
+#: ../src/mainwin.cpp:1117
+msgid "_List"
+msgstr "_Liste"
+
+#: ../src/mainwin.cpp:1137
+msgid "_Result"
+msgstr "_Résultat"
+
+#: ../src/mainwin.cpp:1157
+msgid "_Tree"
+msgstr "Arbre"
+
+#: ../src/mainwin.cpp:1212
+msgid "Show the word list"
+msgstr "Montrer la liste des mots"
+
+#: ../src/mainwin.cpp:1227
+msgid "Hide the word list"
+msgstr "Cacher la liste des mots"
+
+#: ../src/mainwin.cpp:1245
+msgid "Copy"
+msgstr "Copier"
+
+#: ../src/mainwin.cpp:1273
+msgid "Save to file(Alt+E)"
+msgstr "Enregister sous (Alt+E)"
+
+#: ../src/mainwin.cpp:1283
+msgid "Print"
+msgstr "Imprimer"
+
+#: ../src/mainwin.cpp:1298
+msgid "Search in the definition (Ctrl+F)"
+msgstr "Recherche dans la définition (Ctrl+F)"
+
+#: ../src/mainwin.cpp:1481
+msgid ""
+"Warning! No dictionary is loaded.\n"
+"Please go to StarDict's website and download some dictionaries:\n"
+"http://stardict.sourceforge.net"
+msgstr ""
+"Attention! Aucun dictionnaire n'est chargé.\n"
+"Veuillez aller sur le site web de StarDict et en télécharger au moins un:\n"
+"http://stardict.sourceforge.net"
+
+#: ../src/mainwin.cpp:1489
+msgid ""
+"        Welcome to StarDict!\n"
+"\n"
+"   Press Ctrl+Q to quit. Press Alt+Z to iconify the window or Alt+X to hide "
+"the window.\n"
+"   Press Alt+C or ESC to clear the input entry's text.\n"
+"   Press Space key to move focus to the input entry.\n"
+"   If the query word was not found, you can press Tab key to select the "
+"first word in the word list.\n"
+"   After selected some text, clicking the middle mouse button on the main "
+"window's Definition area or on the notification area icon will look up that "
+"word.\n"
+"   StarDict can match strings against patterns containing '*' (wildcard) and "
+"'?' (joker).\n"
+"   Input a word beginning with '/' to do a Fuzzy query.\n"
+"   When the floating window reports that a word was not found, double "
+"clicking will perform a fuzzy query.\n"
+msgstr ""
+"        Bienvenue dans StarDict!\n"
+"\n"
+"   Utilisez le raccourci Ctrl+Q pour quitter l'application, Alt+Z pour "
+"minimiser la fenêtre,   ou  Alt+X pour la cacher.\n"
+"   Utilisez Alt+C ou Echap pour effacer la requête.\n"
+"   Utilisez la touche Espace pour rendre le champ de saisie éditable.\n"
+"   Lorsque le mot recherché n'est pas trouvé, vous pouvez utiliser  la "
+"touche Tab pour lire la définition du premier mot de la liste.\n"
+"   Après avoir sélectionné un mot dans un texte, vous pouvez cliquer avec le "
+"bouton du milieu de la  souris dans la fenêtre StarDict ou sur l'icône de "
+"l'aire de notification pour voir la définitiondu mot recherché.\n"
+"   Vous pouvez rentrer des mots composés d'expressions régulières telles "
+"que  '*' et '?'.\n"
+"   Vous pouvez aussi précéder votre mot d'un '/' pour obtenir une recherche "
+"approchée.\n"
+"   Si StarDict signale qu'il n'a pas trouvé de définition correspondant au "
+"mot recherché, un double-clic lancera  une recherche approchée .\n"
+
+#: ../src/mainwin.cpp:1508
+msgid ""
+"       Welcome to StarDict\n"
+"StarDict is a Cross-Platform and international dictionary written in Gtk2. "
+"It has powerful features such as \"Glob-style pattern matching,\" \"Scan "
+"selected word,\" \"Fuzzy query,\" etc.\n"
+"\n"
+"       Here is an introduction to using StarDict:\n"
+"\n"
+"       1. Glob-style pattern matching\n"
+"       You can input strings containing '*' (wildcard) and '?' (joker) as "
+"the pattern. '*' matches an arbitrary, possibly empty, string, and '?' "
+"matches an arbitrary character. After pressing Enter, the words that match "
+"this pattern will be shown in the list.\n"
+"       2. Fuzzy query\n"
+"       When you can't remember how to spell a word exactly, you can try "
+"StarDict's Fuzzy query. It uses \"Levenshtein Edit Distance\" to compute the "
+"similarity between two words, and gives the match results which are most "
+"similar to the word that you input. To create a fuzzy query, just input the "
+"word with a beginning \"/\", and then press Enter.\n"
+"       3. Full-text search\n"
+"       Full-text search searchs a word in the data. To create a Full-text "
+"search, just input the word with a beginning \"|\", and then press Enter. "
+"For example, \"|ab cd\" searchs data which contain both \"ab\" and \"cd\". "
+"If the words contain Space character, you can use \"\\ \", such as \"|apple"
+"\\ pie\", other escaping characters are \"\\\\\" for '\\', \"\\t\" for Tab "
+"and \"\\n\" for new line.\n"
+"       4. Special character search\n"
+"       If your words contain special characters, you can use '\\' to escape "
+"it, for example, \"a\\*b\\?\" searchs \"a*b?\", \"\\/abc\" searchs \"/abc"
+"\".\n"
+"       5. Scan selected word\n"
+"       Turn on the check button at the bottom-left corner of the StarDict "
+"window to activate this feature. When this feature is on, StarDict will "
+"automatically look up words, phrases, and Chinese characters in other "
+"applications. Just highlight a word or phrase with your mouse, and a "
+"floating window will pop up showing the definition of the selected word.\n"
+"       6. Dictionary management\n"
+"       Click the \"Manage dictionaries\" button at the bottom-right corner "
+"of the window to access the dictionary management dialog. From here, you can "
+"disable some dictionaries that you don't need, and set the dictionaries' "
+"querying order.\n"
+"\n"
+"\n"
+"       Statement: This program is distributed in the hope that it will be "
+"useful, but WITHOUT ANY WARRANTY; without the warranty that the word "
+"spelling, definition, and phonetic information are correct.\n"
+msgstr ""
+"       Bienvenue dans StarDict\n"
+"StarDict est un dictionnaire international et multi-plateforme écrit en Gtk2."
+"Il comporte des outils performants qui permettent notamment \"le scan du mot "
+"sélectionné\", \"la recherche approchée\" ou encore \"l' utilisation "
+"d'expressions régulières\".\n"
+"\n"
+"       Voici un mode d'emploi succinct de StarDict:\n"
+"       1. Utilisation de caractères spéciaux\n"
+"       Vous pouvez formuler des requêtes contenant de '*' (wildcard) et des "
+"'?' (joker) dans la champ de saisie. '*' correspond  à une chaîne de "
+"caractères arbitraire, éventuellement vide, et '?' correpond à un caractère "
+"arbitraire. En validant la requête par la touche entrée, les mots "
+"correspondants seront montrés dans la liste.\n"
+"       2. Recherche approchée\n"
+"       Lorsque vous ignorez l'orthographe exacte d'un mot, vous pouvez "
+"essayer la recherche approchée de StarDict. Celle-ci utilise la \"Distance "
+"de Levenshtein \"pour calculer la similarité de 2 mots, et vous donnent les "
+"résultats les plus proches de votre requête. Pour lancer une recherche "
+"approchée, entrez simplement votre requête en la précédant d'un   \"/\", et "
+"validez par la touche entrée.\n"
+"       3. Recherche en texte intégral\n"
+"       La recherche en texte intégral recherche les mots contenant la  ou "
+"les chaînes de caractères rentrées. Pour effectuer une recherche en texte "
+"intégral, entrez le mot en le précédant d'un  \"|\", et validez par la "
+"touche entrée. Par exemple, la requête \"|ab cd\" recherche les mots "
+"contenant et  \"ab\" et \"cd\". Si la requête contient un caractère espace, "
+"utilisez  les  \"\\ \", en suivant cet exemple:   \"|tarte\\ tatin\"; les "
+"autres caractères d'échappement sont  \"\\\\\" pour '\\', \"\\t\" pour la "
+"tabulation Tab et \"\\n\"pour le retour à la ligne.\n"
+"       4. Non interprétation des caractères spéciaux\n"
+"      Si votre requête contient des caractères spéciaux, vous pouvez "
+"utiliser les carctères d'échappement  '\\' pour qu'ils ne soient pas "
+"interprétés; par exemple, la requête \"a\\*b\\?\" recherchera la chaîne de "
+"caractères  \"a*b?\", \"\\/abc\" recherchera la chaîne de caractères  \"/abc"
+"\".\n"
+"       5. Scan automatique d'un mot sélectionné\n"
+"       Pour activer cette option, cocher le bouton \"Scanner\" en bas à "
+"gauche de la fenêtre principale de  StarDict. Alors , StarDict recherchera "
+"automatiquement les mots, phrases ou caractères chinois dans les autres "
+"applications. Il suffira de sélectionner votre requête avec votre souris, et "
+"un phylactère apparaîtra montrant la définition du mot sélectionné.\n"
+"       6. Gestion des dictionnaires\n"
+"       Cliquez sur  le bouton \"Gestion des dictionnaires\" en bas à droite  "
+"de la fenêtre principale pour accéder à la fenêtre de gestion des "
+"dictionnaires. Dans cette fenêtre, vous pouvez activer ou désactiver  en "
+"fonction de vos besoins les dictionnaires que vous souhaitez, et les "
+"ordonner selon vos choix.\n"
+"\n"
+"\n"
+"       Déclaration: Ce programme est distribué dans l'espoir d'être utile, "
+"mais SANS AUCUNE GARANTIE; notamment sans garantie que l'orthographe, la "
+"définition, et la prononciation des mots soient correctes.\n"
+
+#: ../src/mainwin.cpp:1628
+#, c-format
+msgid "The text \"%s\" was not found."
+msgstr "Le texte \"%s\" n'a pas été trouvé."
+
+#: ../src/mainwin.cpp:1721
+msgid "Scan the selection"
+msgstr "Scanner la sélection"
+
+#: ../src/mainwin.cpp:1735
+msgid "Show info"
+msgstr "Afficher le mode d'emploi"
+
+#: ../src/mainwin.cpp:1758 ../src/prefsdlg.cpp:1671
+msgid "Preferences"
+msgstr "Préférences"
+
+#: ../src/mainwin.cpp:1768
+msgid "Manage dictionaries"
+msgstr "Gestion des dictionnaires"
+
+#: ../src/mainwin.cpp:1778
+msgid "Go to the StarDict website"
+msgstr "Aller sur le site Web de StarDict"
+
+#: ../src/mainwin.cpp:1790
+msgid "Search an Internet dictionary - Right button: website list"
+msgstr ""
+"Chercher dans un dictionnaire internet  - Bouton droit: liste des sites Web"
+
+#: ../src/prefsdlg.cpp:70 ../src/prefsdlg.cpp:328
+msgid "Scan Selection"
+msgstr "Scanner la sélection"
+
+#: ../src/prefsdlg.cpp:71 ../src/prefsdlg.cpp:473
+msgid "Font"
+msgstr "Police"
+
+#: ../src/prefsdlg.cpp:72 ../src/prefsdlg.cpp:579
+msgid "Cache"
+msgstr "Cache"
+
+#: ../src/prefsdlg.cpp:73 ../src/prefsdlg.cpp:718
+msgid "Export"
+msgstr "Exporter"
+
+#: ../src/prefsdlg.cpp:74 ../src/prefsdlg.cpp:779
+msgid "Sound"
+msgstr "Son"
+
+#: ../src/prefsdlg.cpp:81 ../src/prefsdlg.cpp:862
+msgid "Input"
+msgstr "Champ d'entrée"
+
+#: ../src/prefsdlg.cpp:82 ../src/prefsdlg.cpp:90 ../src/prefsdlg.cpp:97
+msgid "Options"
+msgstr "Options"
+
+#: ../src/prefsdlg.cpp:83 ../src/prefsdlg.cpp:1258
+msgid "Search website"
+msgstr "Rechercher un site Web"
+
+#: ../src/prefsdlg.cpp:98
+msgid "Size"
+msgstr "Taille"
+
+#: ../src/prefsdlg.cpp:105 ../src/stardict.cpp:1751
+msgid "Dictionary"
+msgstr "Dictionnaire"
+
+#: ../src/prefsdlg.cpp:107 ../src/prefsdlg.cpp:944
+msgid "Main window"
+msgstr "Fenêtre principale"
+
+#: ../src/prefsdlg.cpp:109 ../src/prefsdlg.cpp:1410
+msgid "Notification area icon"
+msgstr "Icône de la barre des tâches"
+
+#: ../src/prefsdlg.cpp:111 ../src/prefsdlg.cpp:1466
+msgid "Floating window"
+msgstr "Phylactère"
+
+#: ../src/prefsdlg.cpp:248
+msgid "Categories"
+msgstr "Catégories"
+
+#: ../src/prefsdlg.cpp:344
+msgid "<span weight=\"bold\" size=\"x-large\">Scan Selection</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Paramètrage du scan</span>"
+
+#: ../src/prefsdlg.cpp:352
+msgid "_Only scan while the modifier key is being pressed."
+msgstr "Scanner uniquement lorsque la touche d'activation est enfoncée."
+
+#: ../src/prefsdlg.cpp:368
+msgid "H_ide floating window when modifier key released."
+msgstr "Cacher le phylactère lorsque la touche d'activation est relâchée."
+
+#: ../src/prefsdlg.cpp:378
+msgid "Scan modifier _key:"
+msgstr "Touche d'activation du scan:"
+
+#: ../src/prefsdlg.cpp:402
+msgid "_Scan clipboard."
+msgstr "_Scanner le presse-papiers."
+
+#: ../src/prefsdlg.cpp:408
+msgid "_Use scan hotkey: Ctrl+Alt+F1."
+msgstr "_Utiliser le raccourci clavier: Ctrl+Alt+F1."
+
+#: ../src/prefsdlg.cpp:446
+msgid "Choose dictionary font"
+msgstr "Choisir la police des dictionnaires"
+
+#: ../src/prefsdlg.cpp:449 ../src/prefsdlg.cpp:519
+msgid "Choose"
+msgstr "Choisir"
+
+#: ../src/prefsdlg.cpp:451
+msgid "Dictionary font"
+msgstr "Police des dictionnaires"
+
+#: ../src/prefsdlg.cpp:489
+msgid "<span weight=\"bold\" size=\"x-large\">Font</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Police</span>"
+
+#: ../src/prefsdlg.cpp:497
+msgid "_Use custom font."
+msgstr "_Utiliser une police personnalisée."
+
+#: ../src/prefsdlg.cpp:509
+msgid "Dictionary _font:"
+msgstr "Police des dictionnaires:"
+
+#: ../src/prefsdlg.cpp:595
+msgid "<span weight=\"bold\" size=\"x-large\">Cache</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Cache</span>"
+
+#: ../src/prefsdlg.cpp:604
+msgid "Create c_ache files to speed up loading."
+msgstr "Créer des fichiers en c_ache pour accélérer le chargement."
+
+#: ../src/prefsdlg.cpp:609
+msgid "_Sort word list by collate function."
+msgstr "Classer la liste de mots avec la fonction de collation."
+
+#: ../src/prefsdlg.cpp:618
+msgid "\tCollate _function:"
+msgstr "\tfonction de collation:"
+
+#: ../src/prefsdlg.cpp:673
+msgid ""
+"After enabled collation, when load the dictionaries for the first time, it "
+"will take some time for sorting, please wait for a moment."
+msgstr ""
+"Après avoir activé la collation, lorsque les dictionnaires seront chargés "
+"pour la première fois, le temps dû au classement sera un peu long, merci de "
+"patienter."
+
+#: ../src/prefsdlg.cpp:679
+msgid "C_lean all cache files"
+msgstr "Effacer tous les fichiers en cache"
+
+#: ../src/prefsdlg.cpp:696
+msgid "Open file..."
+msgstr "Ouvrir le fichier ..."
+
+#: ../src/prefsdlg.cpp:734
+msgid "<span weight=\"bold\" size=\"x-large\">Export</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Exporter</span>"
+
+#: ../src/prefsdlg.cpp:744
+msgid "_Only export word."
+msgstr "Exp_orter seulement le mot."
+
+#: ../src/prefsdlg.cpp:751
+msgid "File name:"
+msgstr "Nom du fichier:"
+
+#: ../src/prefsdlg.cpp:760
+msgid "_Browse..."
+msgstr "Parcourir..."
+
+#: ../src/prefsdlg.cpp:795
+msgid "<span weight=\"bold\" size=\"x-large\">Sound</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Son</span>"
+
+#: ../src/prefsdlg.cpp:805
+msgid "_Enable sound event."
+msgstr "Activ_er le son pour les évènements."
+
+#: ../src/prefsdlg.cpp:813
+msgid "Command for playing wav files:"
+msgstr "Commande pour la lecture des fichiers wav:"
+
+#: ../src/prefsdlg.cpp:826
+msgid "RealPeopleTTS search path:"
+msgstr ""
+
+#: ../src/prefsdlg.cpp:878
+msgid "<span weight=\"bold\" size=\"x-large\">Input</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Champ d'entrée</span>"
+
+#: ../src/prefsdlg.cpp:887
+msgid "_Search while typing."
+msgstr "Recherche lorsque la frappe du mot sur le clavier est en cours."
+
+#: ../src/prefsdlg.cpp:892
+msgid "Show the _first word when not found."
+msgstr "Néanmoins montrer le premier mot lorsque la requête a échoué."
+
+#: ../src/prefsdlg.cpp:960 ../src/prefsdlg.cpp:1426 ../src/prefsdlg.cpp:1482
+msgid "<span weight=\"bold\" size=\"x-large\">Options</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Options</span>"
+
+#: ../src/prefsdlg.cpp:971
+msgid "_Auto run StarDict after boot."
+msgstr "L_ancement automatique de StarDict au démarrage."
+
+#: ../src/prefsdlg.cpp:1001
+msgid "Hide main window when _starting StarDict."
+msgstr "Cacher la fenêtre principale au démarrage de _StarDict."
+
+#: ../src/prefsdlg.cpp:1011
+msgid "_Use open main window hotkey: Ctrl+Alt+Z."
+msgstr ""
+"_Utiliser le raccourci clavier Ctrl+Alt+Z pour ouvrir la fenêtre principale."
+
+#: ../src/prefsdlg.cpp:1089
+msgid "Add"
+msgstr "Ajouter"
+
+#: ../src/prefsdlg.cpp:1102 ../src/prefsdlg.cpp:1331
+msgid "Website Name"
+msgstr "Nom du site"
+
+#: ../src/prefsdlg.cpp:1114 ../src/prefsdlg.cpp:1339
+msgid "Website link"
+msgstr "Adresse du site"
+
+#: ../src/prefsdlg.cpp:1125 ../src/prefsdlg.cpp:1347
+msgid "Website search link"
+msgstr "Adresse de la page de recherche du site"
+
+#: ../src/prefsdlg.cpp:1146
+msgid "Please input the website name."
+msgstr "Merci de rentrer le nom du site."
+
+#: ../src/prefsdlg.cpp:1148
+msgid "Please input the website link."
+msgstr "Veuillez entrer l'adresse du site."
+
+#: ../src/prefsdlg.cpp:1150
+msgid "Please input the website search link."
+msgstr "Veuillez entrer l'adresse de la page de recherche du site ."
+
+#: ../src/prefsdlg.cpp:1152
+#, c-format
+msgid ""
+"The website search link should contains a \"%%s\" string for querying a word."
+msgstr ""
+"L'adresse de la page de recherche du site devrait contenir un \"%%s\" pour "
+"la recherche d'un mot."
+
+#: ../src/prefsdlg.cpp:1231
+#, c-format
+msgid ""
+"The website search link should contains a \"%%s\" string for quering word."
+msgstr ""
+"L'adresse de la page de recherche du site devrait contenir un \"%%s\" pour "
+"le mot recherché."
+
+#: ../src/prefsdlg.cpp:1275
+msgid "<span weight=\"bold\" size=\"x-large\">Search Website</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Sites Web de recherche</span>"
+
+#: ../src/prefsdlg.cpp:1437
+msgid ""
+"_Query in the floating window when middle mouse\n"
+"button is clicked."
+msgstr ""
+"Apparition du résultat de la recherche dans un phylactère lorsqu'on clique "
+"sur le bouton du milieu de la souris."
+
+#: ../src/prefsdlg.cpp:1490
+msgid "_Pronouce the word when it pops up."
+msgstr "Prononcer oralement le mot lorsque le phylactère apparait."
+
+#: ../src/prefsdlg.cpp:1499
+msgid "_Show floating window if word not found."
+msgstr "Néanmoins montrer le phylactère lorsque la requête a échoué."
+
+#: ../src/prefsdlg.cpp:1534
+msgid "<span weight=\"bold\" size=\"x-large\">Max window size</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"x-large\">Taille maximale de la fenêtre</span>"
+
+#: ../src/prefsdlg.cpp:1556
+msgid "Max window _width:"
+msgstr "Largeur maximale de la fenêtre:"
+
+#: ../src/prefsdlg.cpp:1566
+msgid "(default:320)"
+msgstr "(défaut:320)"
+
+#: ../src/prefsdlg.cpp:1570
+msgid "Max window hei_ght:"
+msgstr "Hauteur max de la fenêtre:"
+
+#: ../src/prefsdlg.cpp:1578
+msgid "(default:240)"
+msgstr "(défaut:240)"
+
+#: ../src/prefsdlg.cpp:1649
+msgid "Cat_egories:"
+msgstr "Catégori_es:"
+
+#: ../src/selection.cpp:194 ../src/stardict.cpp:505 ../src/stardict.cpp:634
+#: ../src/stardict.cpp:794 ../src/stardict.cpp:806 ../src/stardict.cpp:811
+#: ../src/stardict.cpp:816 ../src/stardict.cpp:1209
+#: ../src/win32/clipboard.cpp:117
+msgid "<Not Found!>"
+msgstr "<Non trouvé!>"
+
+#: ../src/splash.cpp:64
+msgid "Loading"
+msgstr "Chargement"
+
+#: ../src/stardict.cpp:82
+msgid "Turn on all debugging messages"
+msgstr "Montrer tous les messages d'erreurs"
+
+#: ../src/stardict.cpp:85
+msgid "Hide the main window"
+msgstr "Cacher la fenêtre principale"
+
+#: ../src/stardict.cpp:88
+msgid "Quit an existing instance of stardict"
+msgstr "Quitter une instance existante de StarDict"
+
+#: ../src/stardict.cpp:862 ../src/stardict.cpp:1173
+msgid "Full-text search..."
+msgstr "Recherche en texte intégral..."
+
+#: ../src/stardict.cpp:889
+msgid "There are no dictionary's article with such word :-("
+msgstr "Aucune définition des dictionnaires ne contient ce mot :-("
+
+#: ../src/stardict.cpp:925
+msgid "There are too many spelling errors :-("
+msgstr "Il y a trop de fautes de frappe :-("
+
+#: ../src/stardict.cpp:980
+msgid "Fuzzy query failed, too :-("
+msgstr "La recherche approchée a elle aussi échoué :-("
+
+#: ../src/stardict.cpp:1006
+msgid "Found no words matching this pattern!"
+msgstr "Aucun mot ne correspond à cette requête!"
+
+#: ../src/stardict.cpp:1165
+msgid "Press Enter to list the words that match the pattern."
+msgstr ""
+"Appuyez sur la touche Entrée pour lister les mots qui correspondent à la "
+"requête."
+
+#: ../src/stardict.cpp:1169
+msgid "Fuzzy query..."
+msgstr "Recherche approchée..."
+
+#: ../src/stardict.cpp:1584
+msgid "StarDict is already running. Using the running process."
+msgstr "StarDict est déjà ouvert. Utilisation du processus actuel."
+
+#: ../src/utils.cpp:66
+#, c-format
+msgid "%s\\help\\stardict.chm"
+msgstr ""
+
+#: ../src/utils.cpp:171
+#, c-format
+msgid "Can not load image. %s"
+msgstr "Impossible de charger une image. %s"
+
+#: ../src/lib/stddict.cpp:843
+msgid "Sorting, please wait..."
+msgstr "En cours de classement, merci de patienter"
+
+#: ../src/lib/stddict.cpp:999
+msgid "Loading..."
+msgstr "Chargement..."
+
+#: ../src/win32/systray.cpp:75
+msgid "Scan"
+msgstr "Scanner"
+
+#, fuzzy
+#~ msgid "The stardict 's float window 's max height."
+#~ msgstr "Hauteur maximale du phylactère:"
+
+#, fuzzy
+#~ msgid "The stardict 's float window 's max width."
+#~ msgstr "Largeur maximale du phylactère:"
+
+#, fuzzy
+#~ msgid "The stardict 's main window 's height."
+#~ msgstr "Hauteur de la fenêtre principale:"
+
+#, fuzzy
+#~ msgid "The stardict 's main window 's width."
+#~ msgstr "Largeur de la fenêtre principale:"
+
+#, fuzzy
+#~ msgid "Window 's max height"
+#~ msgstr "Hauteur maximale de la fenêtre:"
+
+#, fuzzy
+#~ msgid "Window 's max width"
+#~ msgstr "Largeur maximale de la fenêtre:"
+
+#~ msgid "_Dict Manage"
+#~ msgstr "Gestion des _Dictionnaires"
+
+#~ msgid "Credits"
+#~ msgstr "Crédits"
+
+#~ msgid "Written by"
+#~ msgstr "Écrit par"
+
+#~ msgid "Documented by"
+#~ msgstr "Documenté par"
+
+#~ msgid "Translated by"
+#~ msgstr "Traduit par"
+
+#~ msgid "C_redits"
+#~ msgstr "C_rédits"
+
+#~ msgid "Program name"
+#~ msgstr "Nom du programme"
+
+#~ msgid "The name of the program"
+#~ msgstr "Le nom du programme"
+
+#~ msgid "Program version"
+#~ msgstr "Version du programme"
+
+#~ msgid "The version of the program"
+#~ msgstr "La version du programme"
+
+#~ msgid "Copyright string"
+#~ msgstr "Chaîne de caractères pour copyright"
+
+#~ msgid "Copyright information for the program"
+#~ msgstr "Informations copyright au sujet du programme"
+
+#~ msgid "Comments string"
+#~ msgstr "Chaîne de commentaires"
+
+#~ msgid "Comments about the program"
+#~ msgstr "Commentaires sur le programme"
+
+#~ msgid "Authors"
+#~ msgstr "Auteurs"
+
+#~ msgid "List of authors of the programs"
+#~ msgstr "Liste des auteurs du programme"
+
+#~ msgid "Author entry"
+#~ msgstr "Entrée d'auteur"
+
+#~ msgid "A single author entry"
+#~ msgstr "Ein einzelner Autoreneintrage"
+
+#~ msgid "List of people documenting the program"
+#~ msgstr "Liste qui ont documenté le programme"
+
+#~ msgid "Documenter entry"
+#~ msgstr "Entrée de document"
+
+#~ msgid "Translator credits"
+#~ msgstr "Crédits traducteurs"
+
+#~ msgid ""
+#~ "Credits to the translators. This string should be marked as translatable"
+#~ msgstr ""
+#~ "Crédits aux traduteurs. Cette chaîne de caractères devrait être "
+#~ "traduisible"
+
+#~ msgid "Logo"
+#~ msgstr "Logo"
+
+#~ msgid "A logo for the about box"
+#~ msgstr "Un logo pour la boîte"
+
+#~ msgid "About %s"
+#~ msgstr "À propos %s"
+
+#, fuzzy
+#~ msgid "Cannot connect to gconf.\n"
+#~ msgstr "n'a pas pu se connecté à gconf."
+
+#, fuzzy
+#~ msgid "Cannot create directory %s."
+#~ msgstr "Ne peut pas créer de répertoire %s."
+
+#~ msgid "Find"
+#~ msgstr "Chercher"
+
+#~ msgid "_Search for:"
+#~ msgstr "_Recherche pour:"
+
+#~ msgid "_Win"
+#~ msgstr "_Win"
+
+#~ msgid "_Shift"
+#~ msgstr "_Maj"
+
+#~ msgid "_Alt"
+#~ msgstr "_Alt"
+
+#~ msgid "_Ctrl"
+#~ msgstr "_Ctrl"

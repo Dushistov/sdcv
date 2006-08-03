@@ -1,0 +1,711 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+  <!ENTITY legal SYSTEM "legal.xml">
+  <!ENTITY appversion "2.4.2">
+  <!ENTITY manrevision "2.4.2">
+  <!ENTITY date "Nov 2003">
+  <!ENTITY app "StarDict">
+]>
+<!-- 
+      (Do not remove this comment block.)
+  Maintained by the GNOME Documentation Project
+  http://developer.GNOME.org/projects/gdp
+  Template version: 2.0 beta
+  Template last modified Jan 30, 2002
+  
+-->
+<!-- =============Document Header ============================= -->
+<article id="index" lang="mk">
+<!-- please do not change the id; for translations, change lang to -->
+<!-- appropriate code -->
+  <articleinfo>
+	 <title>&app; Прирачник V&manrevision;</title>
+	 <copyright>
+		<year>2003</year>
+		<holder>Hu Zheng</holder> </copyright>
+
+	<!-- translators: uncomment this: -->
+
+  <copyright>
+   <year>2003</year>
+   <holder>Новица Наков (Македонски превод)</holder>
+  </copyright>
+
+  <!--   -->
+	 <publisher> 
+		<publishername> GNOME Documentation Project </publishername>
+	 </publisher>
+	 &legal; 
+	 <authorgroup> 
+		<author>
+		  <firstname>Hu</firstname>
+		  <surname>Zheng</surname> 
+		  <affiliation> 
+			 <orgname>GNOME документационен проект</orgname>
+			 <address> <email>huzheng_001@163.com</email> </address>
+		  </affiliation>
+		</author> 
+
+<!-- This is appropriate place for other contributors: translators,
+      maintainers,  etc. Commented out by default.-->
+
+       <othercredit role="translator">
+	<firstname>Will</firstname> 
+	<surname>Robinson</surname>
+	<affiliation> 
+	  <orgname>Stanford University</orgname> 
+	  <address> <email>wsr23@stanford.edu</email> </address> 
+	</affiliation>
+	<contrib>Cleaning up English</contrib>
+      </othercredit>
+
+      <othercredit role="translator">
+	<firstname>Новица</firstname> 
+	<surname>Наков</surname> 
+	<affiliation> 
+	  <orgname>Слободен софтвер Македонија</orgname> 
+	  <address> <email>acivon@mail.com.mk</email> </address>
+	</affiliation>
+	<contrib>Македонски превод</contrib>
+      </othercredit>
+
+<!-- -->
+
+	 </authorgroup>
+
+
+<!-- According to GNU FDL, revision history is mandatory if you are -->
+<!-- modifying/reusing someone else's document.  If not, you can omit it. -->
+	 <revhistory>
+<!-- Remember to remove the &manrevision; entity from the revision entries other
+   than the current revision. -->
+   		<revision> 
+		  <revnumber>&app; Прирачник V&manrevision;</revnumber>
+		  <date>&date;</date> 
+		  <revdescription> 
+			 <para role="author">Hu Zheng</para>
+			 <para role="publisher">GNOME документационен проект</para>
+		  </revdescription>
+		</revision>
+	 </revhistory>
+	 <releaseinfo> Овој прирачник ја опишува верзијата &appversion; на &app;.
+		</releaseinfo>
+	 <legalnotice>
+		<title>Контакт</title>
+		<para>За да известиш за бубачка или да дадеш предлог за оваа<application>&app;</application> апликација или
+			прирачник, следи ги упатствата на 
+		<ulink url="ghelp:gnome-feedback" type="help">GNOME Feedback Page</ulink>. 
+      </para>
+<!-- Translators may also add here feedback address for translations -->
+	 </legalnotice>
+  </articleinfo>
+  <indexterm><primary>StarDict</primary></indexterm>
+  <indexterm><primary>Dictionary</primary></indexterm>
+
+<!-- ============= Document Body ============================= -->
+<!-- ============= Introduction ============================== -->
+
+  <sect1 id="stardict-introduction">
+    <title>Вовед</title>
+    <para>
+	  <application>StarDict</application>е повеќе платформски и интернационален речник напишан во Gtk2.
+      Има моќни можности како „Глобално пребарување“, „Скенирање на избран збор“, „Слободно пребарување“, итн.
+	</para>
+  </sect1>
+
+  <sect1 id="stardict-getting-started">
+    <title>Започнување со работа</title>
+
+    <sect2 id="stardict-to-start">
+    <title>Стартување на &app;</title>
+
+    <para><application>&app;</application> може да се стартува на следниве начини:
+    </para>
+    <variablelist>
+    	<varlistentry>
+    		<term>Од менито <guimenu>Applications</guimenu></term>
+    		<listitem>
+    		<para>избери <menuchoice><guisubmenu>Accessories</guisubmenu><guimenuitem>StarDict</guimenuitem></menuchoice>.</para>
+    		</listitem>
+    	</varlistentry>
+    	<varlistentry>
+    		<term>Командна линија</term>
+    		<listitem>
+    		<para>Искуцај <command>stardict</command> и стисни <keycap>Enter</keycap>.</para>
+            <para>
+            Можеш да наведеш и збор за кој сакаш да пребаруваш:
+	        </para>
+	        <para>
+            <command>stardict <replaceable>збор</replaceable></command>
+            </para>
+            <para>
+            или стринг за глобално пребарување:
+            </para>
+            <para>
+            <command>stardict <replaceable>зб?р*</replaceable></command>
+            </para>
+            <para>
+            или да направиш слободно пребарување:
+            </para>
+            <para>
+            <command>stardict <replaceable>/збор</replaceable></command>
+            </para>
+    		</listitem>
+    	</varlistentry>
+    </variablelist>
+    <note>
+      <para>
+      Ако <application>&app;</application> е веќе вклучен, пребарувањето ќе се изврши во постоечкиот StarDict прозорец.
+      </para>
+    </note>
+
+    </sect2>
+
+    <sect2 id="stardict-when-you-start">
+    <title>Кога ќе го стартуваш &app;</title>
+
+    <para>Кога ќе го стартуваш <application>&app;</application>, ќе се појави следниов прозорец.</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="stardict-main-window-fig">
+	<title>&app; Главен прозорец</title>
+	<screenshot>
+	  <mediaobject>
+	    <imageobject><imagedata
+		fileref="figures/stardict_main_window.png" format="PNG"/>
+	    </imageobject>
+	    <textobject>
+	      <phrase>Го покажува главниот прозорец на &app;. Содржи лента за пребарување, копчиња со алатки, листа на зборови, област за дефиниции и копчиња за подесување. </phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+    <para>Главниот прозорец на <guilabel>&app;</guilabel> се состои од следниве елементи:</para>
+    <variablelist>
+		<varlistentry>
+		<term>Лента за <guilabel>пребарување</guilabel></term>
+		<listitem>
+		<para>Користи го ова поле за да внесеш збор за кој сакаш да пребаруваш.
+		Исто така, со клик на стрелката десно можеш да пристапиш до зборови за кои скоро си пребарувал(а). </para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Копчиња со алатки</term>
+		<listitem>
+		<para>Можеш да кликнеш на овие копчиња за да направиш слободно пребарување, да пронајдеш претходно баран збор,
+		да ги видиш претходниот и следниот збор од листата лево и да го видиш главното мени.</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Листа со зборови</term>
+		<listitem>
+		<para>Ги покажува зборовите најдени во ова пребарување.</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Област за дефиниции</term>
+		<listitem>
+		<para>Во овој дел од прозорецот <application>&app;</application> прикажува дефиниција за збор.</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Копчиња за подесување</term>
+		<listitem>
+		<para>Во долниот лев ќош на прозорецот се наоѓа копчето <guibutton>Скенирај за избор</guibutton>,
+        копчето <guibutton>Информации</guibutton> и копчето
+		 <guibutton>Излези</guibutton>.
+        Со избирање на опцијата <guibutton>Скенирај за избор</guibutton> <application>&app;</application>
+        автоматски ќе бара зборови кои ги избираш во било која апликација.
+		Десниот долен ќош на прозорецот ги содржи копчињата за <guibutton>Интернет пребарување</guibutton>,
+		<guibutton>Веб странта на StarDict проектот</guibutton>,
+		<guibutton>Уредување на речниците</guibutton> и <guibutton>Преференции</guibutton>. </para>
+		</listitem>
+		</varlistentry>
+	</variablelist>
+
+    </sect2>
+
+    <sect2 id="stardict-notification-area">
+    <title>Икона за областа за известување</title>
+	<para>
+	<application>&app;</application> ќе додаде икона во областа за известување. Кога ќе го иконифицираш главниот прозорец,
+	прозорецот ќе биде скриен.  По кликањето на иконата прозорецот повторно ќе се појави.  Со десен клик на оваа икона, ќе
+	се појави мени од кое што можеш да избереш <guimenuitem>Скенирање за избор</guimenuitem>, или <guimenuitem>Излез</guimenuitem>.
+	Опцијата <guimenuitem>Скенирај за избор</guimenuitem> можеш да ја вклучиш директно со ctrl-клик на иконата. Со кликање со средното копче од
+	глушецот на иконата, ќе извршиш пребарување за избраниот збор.
+	</para>
+	<figure id="stardict-notification-area-fig">
+	<title>Икона за областа за известување на <application>&app;</application>.</title>
+	<screenshot>
+		<mediaobject>
+			<imageobject><imagedata fileref="figures/stardict_notification_area.png" format="PNG"/>
+			</imageobject>
+			<textobject>
+				<phrase>Икона за областа за известување на <application>&app;</application>.</phrase>
+			</textobject>
+		</mediaobject>
+	</screenshot>
+	</figure>
+	</sect2>
+
+    <sect2 id="stardict-scan-selection">
+    <title>Скенирај за избор</title>
+
+     <para><application>&app;</application> може автоматски да скенира за избрани зборови. Ова значи дека кога ќе избереш збор или фраза
+     во <application>&app;</application> или во било која друга апликација,
+ 	<application>&app;</application> ќе го земе избраниот текст, ќе пребара за него и потоа ќе прикаже прозорец со
+     резултатите од пребарувањето.</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="stardict-float-window-fig">
+ 	<title>&app; прозорец</title>
+	<screenshot>
+	  <mediaobject>
+	    <imageobject><imagedata
+		fileref="figures/stardict_float_window.png" format="PNG"/>
+	    </imageobject>
+	    <textobject>
+ 	      <phrase>Го покажува прозорецот на &app;. Содржи копчиња со алатки и област за дефиниција. </phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+ 	<para>Можеш да го влечеш прозорецот за да го поместиш. Тој ќе исчезне кога ќе го поместиш глушецот на одредена оддалеченост.</para>
+    <para>Прозорецот на <guilabel>&app;</guilabel> се состои од следниве елементи:</para>
+    <variablelist>
+		<varlistentry>
+		<term>Копчиња со алатки</term>
+		<listitem>
+ 		<para>За да се зачува место на екранот овие копчиња се скриени. Кога глушецот ќе дојде во прозорецот,
+ 		копчињата веднаш ќе се појават, и ќе исчезнат штом ќе замине глушецот. </para>
+ 		<para>Можеш да кликнеш на овие копчиња за да <guibutton>побараш</guibutton> збор во главниот прозорец,
+        за да го <guibutton>копираш</guibutton> добиениот резултат на клипбордот,
+ 		за чуеш како се <guibutton>изговара</guibutton> тој збор, за да <guibutton>стопираш</guibutton> скенирање за избор итн.
+ 		На десно е копчето <guibutton>Заклучи го постоечкиот прозорец</guibutton>.  Ако тој е
+ 		заклучен, постојано ќе стои на исто место. </para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+ 		<term>Област за дефиниција </term>
+		<listitem>
+		<para>Овде се прикажува резултатот од пребарувањето. </para>
+		</listitem>
+		</varlistentry>
+    </variablelist>
+    </sect2>
+
+  </sect1>
+
+<!-- ================ Usage ================================ -->
+
+  <sect1 id="stardict-usage">
+    <title>Употреба</title>
+
+    <sect2 id="stardict-lookup">
+    	<title>Барање збор</title>
+    	<para>За да побараш дефиниција на некој збор, направи го следново:</para>
+    	<orderedlist>
+    		<listitem><para>Внеси го саканиот збор во лентата за <guilabel>пребарување</guilabel>
+    		. </para></listitem>
+			<listitem><para><application>&app;</application> веднаш ќе ја покаже дефиницијата. Ако нема резултати, со стискање на
+			<keycap>Enter</keycap> можеш да направиш слободно пребарување, или пак можеш едноставно да кликнеш на копчето <guibutton>Слободно пребарување</guibutton>. </para></listitem>
+    		<listitem><para>Користи го лизгачот за да ја видиш целата дефиниција. Избирај зборови од листата со зборови за да ги видиш
+			сличните зборови. </para></listitem>
+    	</orderedlist>
+    </sect2>
+
+    <sect2 id="stardict-clear">
+    	<title>Чистење на областа за приказ</title>
+    	<para>За да го исчистиш текстот од лентата за <guilabel>пребарување</guilabel>, кликни на копчето<guibutton>Исчисти</guibutton>
+		на лево, или стисни <keycap>Alt-C</keycap> или <keycap>ESC</keycap>.</para>
+    </sect2>
+
+    <sect2 id="stardict-select">
+    	<title>За да копираш текст во друга апликација</title>
+    	<para>Има два начини за прикажаниот текст да се копира во друга апликација:</para>
+    	<itemizedlist>
+    		<listitem><para>За да го копираш целиот текст, кликни на копчето <guibutton>Копирај</guibutton> до врвот на <guilabel>Областа за дефиниција</guilabel>.</para></listitem>
+    		<listitem><para>За да копираш само дел од текстот, избери го посакуваниот текст, потоа кликни со десното копче на твојот глушец и
+			избери <guimenuitem>Копирај</guimenuitem>.</para></listitem>
+    	</itemizedlist>
+    </sect2>
+
+    <sect2 id="stardict-find">
+    	<title>За да најдеш текст во областа за приказ</title>
+    	<para>За да најдеш текст во об	ласта за приказ, направи го следново:</para>
+    	<orderedlist>
+    		<listitem><para>Кликни на копчето <guibutton>Пронајди</guibutton> на врвот на <guilabel>Областа за дефиниција</guilabel>. </para> </listitem>
+    		<listitem><para>Во дијалогот за <guilabel>пребарување</guilabel> внеси го саканиот стринг
+    		и потоа стисни <keycap>Enter</keycap>. Не можеш да користиш џокери.</para></listitem>
+    		<listitem><para>За да го најдеш следното појавување на зборот, повторно стисни <keycap>Enter</keycap>.</para></listitem>
+    	</orderedlist>
+    </sect2>
+
+  </sect1>
+
+
+<!-- ============= Preferences  ================================ -->
+  <sect1 id="stardict-prefs">
+	<title>Преференции</title>
+	<para>За да го конфигурираш <application>&app;</application>, кликни на копчето <guibutton>Преференции</guibutton>
+	во десниот долен ќош на главниот прозорец или кликни на копчето за <guibutton>Главното мени</guibutton> и избери
+	<guimenuitem>Преференции</guimenuitem>. </para>
+
+	<sect2 id="stardict-prefs-dictionary">
+	<title>Речник</title>
+		<sect3 id="stardict-prefs-dictionary-startup">
+		<title>Стартување</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel> При стартување на StarDict скриј го главниот прозорец .</guilabel> </term>
+				<listitem>
+				<para>Контролира дали главниот прозорец се појавува при прво стартување на програмата.
+                Ако ја избереш оваа опција, по стартување на <application>&app;</application>, ќе видиш само икона
+				во областа за известување.  Можеш да дојдеш до главниот прозорец
+                со кликање на оваа икона.</para>
+				<para>Преддефинирано: ОНЕВОЗМОЖЕНО.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+		<sect3 id="stardict-prefs-dictionary-scan">
+		<title>Скенирај за избор</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Скенирај само додека е стиснато копчето за скенирање.</guilabel> </term>
+				<listitem>
+				<para>Скенирај само додека е стиснато копчето за скенирање. Тоа копче се подесува со
+				„Копче за пребарување„.</para>
+				<para>Преддефинирано: ОНЕВОЗМОЖЕНО.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+		<sect3 id="stardict-prefs-dictionary-font">
+		<title>Фонт</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Користи сопствен фонт.</guilabel> </term>
+				<listitem>
+				<para>Ти овозможува да не го користиш основниот фонт на системот
+				кога работиш со <application>&app;</application>.
+				Ако оваа опција е вклучена, наместо системскиот фонт, ќе се користи фонтот именуван во
+				опцијата „Сопствен фонт“,.</para>
+				<para>Преддефинирано: Оневозможено.</para>
+				<para>Подесувањата за фонтот ќе се примената при следното стартување на <application>&app;</application>.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+		<sect3 id="stardict-prefs-dictionary-sound">
+		<title>Звук</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Овозможи звучни настани.</guilabel> </term>
+				<listitem>
+				<para>Дали да се овозможат звучни настани. <application>&app;</application> ќе испушта звук
+	кога има активно копче, кога копчето се пушта и на поп-ап мени.</para>
+				<para>Преддефинирано: ОВОЗМОЖЕНО.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+
+
+	<sect2 id="stardict-prefs-main-window">
+	<title>Главен прозорец</title>
+		<sect3 id="stardict-prefs-main-window-searchwebsite">
+		<title>Пребарај на веб страна</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Област за пребарување на веб страни</guilabel> </term>
+				<listitem>
+				<para>Можеш да ги пребаруваш веб страните од овој список со
+				десен клик на копчето <guibutton>Интернет пребарување</guibutton>во главниот прозорец.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+
+	<sect2 id="stardict-prefs-notification-area-icon">
+ 	<title>Икона за областа за известување</title>
+		<sect3 id="stardict-prefs-notification-area-icon-options">
+ 		<title>Опции</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Пребарувај во постоечкиот прозорец при кликање на средното копче на глушецот.</guilabel> </term>
+				<listitem>
+ 				<para>Дали да се пребарува во постоечкиот или главниот прозорец. Ова се случува кога корисникот ќе кликне со
+				среднот копче од глушецот на иконата за областа за известување. </para>
+				<para>Преддефинирано: ОВОЗМОЖЕНО.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+
+	<sect2 id="stardict-prefs-floating-window">
+ 	<title>Постоечки прозорец</title>
+		<sect3 id="stardict-prefs-floating-window-size">
+		<title>Големина</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Максимална ширина на прозорецот.</guilabel> </term>
+				<listitem>
+				<para>Ја поставува неговата максимална ширина.</para>
+				<para>Преддефинирано: 320.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Максимална висиина на прозорецот.</guilabel> </term>
+				<listitem>
+				<para>Ја поставува неговата максимална висина.</para>
+				<para>Преддефинирано: 240.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+  </sect1>
+
+  <sect1 id="stardict-dictmanage">
+	<title>Уредување на речниците</title>
+	<para>За да ги уредуваш речниците, кликни на копчето <guibutton>Уреди ги речниците</guibutton> кое се наоѓа во десниот долен ќош на главниот прозорец, или
+	кликни на копчето <guibutton>Главно мени</guibutton> и избери <guimenuitem>Уреди ги речниците</guimenuitem>.
+	</para>
+	<para>Во дијалогот за уредување на речниците, можеш да ги оневозможиш речниците кои не ти требаат,
+	и можеш да го подесиш редоследот по кој се пребарува во речниците.
+	</para>
+	<para><application>&app;</application> ќе бара датотеки со речници во "~/.stardict/dic" и "/usr/share/stardict/dic", и
+	датотеки со дрво речници во "~/.stardict/treedict" и "/usr/share/stardict/treedict"</para>
+  </sect1>
+
+ <sect1 id="stardict-projects">
+   <title>Проекти кои се поврзани со овој</title>
+   <para>
+     <application>&app;</application> немаше да биде возможен без придонесе од многу други проекти. Еве кратка листа
+     на проекти кои му помогнаа на <application>&app;</application>.
+   </para>
+
+	<sect2 id="stardict-projects-stardict1.3">
+    	<title>StarDict 1.31</title>
+    	<para>Оригиналниот Motif/LessTif-базиран StarDict 1.31 напишан во 1999. <application>&app;</application> 2 зема многу
+		добри идеи од StarDict1.31 како на пример „Скенирање на избран збор“. Многу од можностите на <application>&app;</application> 2', како
+        „Слободно пребарување“ доаѓаат од StarDict1.31.</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Ma</firstname>
+           	  <surname>Su'an</surname>
+           	  <affiliation>
+                <address><email>msa@wri.com.cn</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-stardict1.33+">
+    	<title>StarDict 1.33+</title>
+    	<para>StarDict1.33+ е големо подобрување на StarDict1.31. Додаде многу речници, и ме натера да сватам дека
+		податоците за речници не се бариера за нова, GTK2-базирана програма за речници.  Ако не беше StarDict1.33+, јас немаше
+        да го започнам <application>&app;</application> 2 проектот. Авторот исто така ми помогна да ги портувам речницте од StarDict 1.3
+		во формат за <application>&app;</application> 2.</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Opera</firstname>
+           	  <surname>Wang</surname>
+           	  <affiliation>
+                <address><email>Opera.Wang@motorola.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-dictd">
+     	<title>DICT проект</title>
+     	<para>Многу dictd се портирани за <application>&app;</application>.
+		dictzip, кој дојде од dictd, исто така се користи од <application>&app;</application>.</para>
+	    <para>
+     	За да најдеш повеќе информации за DICT проектот, посети ja
+		<ulink url="http://www.dict.org" type="http">веб страната www.dict.org</ulink>.
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-quick">
+     	<title>*Quick</title>
+     	<para>Многу wquick речници се портирани за <application>&app;</application>.</para>
+	    <para>
+     	За да најдеш повеќе информации за *Quick, посети го
+		<ulink url="http://www.futureware.at/quick.htm" type="http">*Quick</ulink>.
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-blowfish">
+     	<title>Blowfish проект</title>
+     	<para>Blowfish проектот го овозможи оксфордскиот англиско-кинески речник.</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Terrence</firstname>
+           	  <surname>Miao</surname>
+           	  <affiliation>
+                <address><email>terence_miao@email.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	За да најдеш повеќе информации за проектот Blowfish, посети ја
+		<ulink url="http://igloo.its.unimelb.edu.au/Blowfish/" type="http">веб страната на Blowfish проектот</ulink>.
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-xdict">
+    	<title>XDICT</title>
+    	<para>Речниците на XDICT се портирани за <application>&app;</application>.</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Fu</firstname>
+           	  <surname>Jianjun</surname>
+           	  <affiliation>
+                <address><email>fujianjun@163.net</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-cdict">
+    	<title>cdict5</title>
+    	<para>Речниците на cdict5 се портирани за <application>&app;</application>.</para>
+
+		<sect3 id="stardict-projects-cdict-xcdict-tcltk">
+    	<title>xcdict-tcltk</title>
+		<sect3info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Leon</firstname>
+           	  <surname>Liang</surname>
+           	  <affiliation>
+                <address><email>Liang.Lu@CERN.CH</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect3info>
+		<para><ulink url="http://luliang.dhs.org/" type="http">Веб страна на xcdict-tcltk</ulink></para>
+		</sect3>
+
+		<sect3 id="stardict-projects-cdict-cdict5-v1.3">
+    	<title>cdict5 v1.3</title>
+		<sect3info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Borg</firstname>
+           	  <surname>LU</surname>
+           	  <affiliation>
+                <address><email>dystopia@iname.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect3info>
+	    <para>
+     	За да најдеш повеќе информации за проектот cdict5, посети го
+		<ulink url="http://www.freshports.org/chinese/cdict5/" type="http">cdict5 на freshports</ulink>.
+   		</para>
+		</sect3>
+    </sect2>
+
+	<sect2 id="stardict-projects-cedict">
+    	<title>CEDICT</title>
+    	<para>Речниците на CEDICT се портирани за <application>&app;</application>.</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Paul</firstname>
+           	  <surname>Denisowski</surname>
+           	  <affiliation>
+                <address><email>cedict@chinesetools.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	За да најдеш повеќе информации за проектот CEDICT, посети ја
+		<ulink url="http://www.mandarintools.com/cedict.html" type="http">веб страната на CEDICT проектот</ulink>.
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-cffd">
+    	<title>CFFD</title>
+    	<para>Иконата на <application>&app;</application> е креирана со овој софтвер.  Исто така CFFD ме снабди со некои
+		корисни информации. </para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Kong</firstname>
+           	  <surname>Hui</surname>
+           	  <affiliation>
+                <address><email>konghui@xinhuanet.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	За да најдеш повеќе информации за проектот CFFD, посети ја
+		<ulink url="http://cffd.cosoft.org.cn" type="http">веб страната на CFFD проектот</ulink>.
+   		</para>
+    </sect2>
+
+
+ </sect1>
+
+<!-- ============= Authors ================================ -->
+ <sect1 id="authors">
+   <title>Developers</title>
+   <sect1info>
+     <authorgroup>
+       <author>
+         <firstname>Hu</firstname>
+           <surname>Zheng</surname>
+           <affiliation>
+             <address><email>huzheng_001@163.com</email></address>
+           </affiliation>
+       </author>
+     </authorgroup>
+   </sect1info>
+   <para>
+     За да најдеш повеќе информации за
+     <application>&app;</application>, посети ја <ulink
+     url="http://stardict.sourceforge.net/" type="http">веб страната на StarDict </ulink>.
+   </para>
+   <para>
+     Сите коментари, предлози, и извештаи за бубачки испраќајте ги до
+     Hu Zheng (<email>huzheng_001@163.com</email>).
+   </para>
+
+   <!-- For translations: uncomment this: -->
+
+   <para>
+     Македонскиот превод е направен од Новица Наков
+     (<email>acivon@mail.com.mk</email>). Сите коментари
+     и предлози околу овој превод праќајте ги на горната адреса.
+   </para>
+
+   <!-- -->
+
+ </sect1>
+
+</article>

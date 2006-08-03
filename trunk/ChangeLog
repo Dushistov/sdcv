@@ -1,0 +1,196 @@
+2006.7.7
+StarDict-2.4.8 (capacity) released.
+StarDict's total download count reached one million in 5.15, this is a very good news :)
+KingSoft PowerWord support. This added 158 dictionaries. The data is cracked by Dwing(http://free5.ys168.com/?dwing).
+Synonym support.
+Sort word list by collate function support.
+XDXF project(http://xdxf.sourceforge.net) has port its dictionaries to StarDict format, some dictionries are come from Sdictionary. This added 615 dictionries.
+French translation, thanks Christophe Durville <cdurpp@ifrance.com>.
+Brazilian Portuguese translation, thanks Ernesto <ernesto_mor@yahoo.com.ar>.
+Add cfdict dictionary, thanks Gilles Vigner <xiaogil@yahoo.fr>.
+Add English-Thai Lexitron Dictionary and Thai-English Lexitron Dictionary, thanks Suphanut Thanyaboon <suphanut@tcllab.org>.
+Add many Japanese dictionaries.
+Add some Chinese dictionaries, data comes from KDic.
+Add two Germany dictionries: ldaf, xindehan.
+Add duden Germany dictionary, thanks Liu Guizhu <zhuzi813@gmail.com> for providing data file.
+Add fundset dictionary, thanks Lin Fanshun <fundset@hotmail.com> for providing data file.
+Add DrEye4in1 dictionary, thanks Lilian <fairyland@gmail.com> for providing data file.
+Add yidiantong_ehan dictionary, thanks Kingleo <kingleo@vip.163.com> for providing data file.
+Update oxford dictionary, thanks Anthony Fok <foka@debian.org>.
+
+2006.4.18
+StarDict-2.4.7 (complete) released.
+Port to GPE(http://gpe.handhelds.org).
+Full-text search.
+Acrobat plug-in in Win32, thanks Dewolf Xue <dewolf_matri_x@msn.com>.
+Evgeniy's patches for special character search and other changes.
+Export word or text to file, thanks Mao-Yuan Kao <daniel.kao@gmail.com> for this patch.
+Add four Uyghur dictionaries, thanks Abdisalam Anatilim <anatilim@gmail.com>.
+Add some Polish dictionaries, thanks Aivar Annamaa <aivar.annamaa@jkkeskus.ee> for the information.
+Add ncce-ec and ncce-ce dictionaries, thanks Wang Xiaozhe <chaoslawful@gmail.com>.
+Update cedict-gb and cedict-big5 dictionaries.
+Add handedict-gb and handedict-big5 dictionaries.
+Add xmlittre dictionary, thanks Francois Gannaz <Francois.Gannaz@free.fr>.
+Greek translation, thanks Christos Vas <christosvas@in.gr>.
+Translation update: hr, tt, uk, ru, zh_CN, zh_TW.
+
+2006.1.18
+StarDict-2.4.6 (powerful) released.
+Patch cleanup code and fix bug, Pango text markup language support, and other changes, thanks Evgeniy <dushistov@mail.ru>.
+Sparse wordoffset index, I get this idea, Evgeniy implemented it. This make StarDict's memory usage become very low.
+Mouse over get word in Win32. Remove scan clipboard feature at the same time.
+Croatian translation, thanks Miroslav Rajcic <rajcic@sokrates.hr>.
+German and Kurdish translation, thanks Erdal Ronahi <erdal.ronahi@gmail.com>.
+Tatar translation, thanks Albert Fazli <albert.fazli@gmail.com>.
+Vietnamese translation, thanks Phan Manh Dan <phanmanhdan@yahoo.com>.
+Add new tools: stardict_verify, treedict2dir, tabfile.
+Add some Chinese dictionaries: quick_eng-zh_CN, gaojihanyudacidian, guojibiaozhunhanzidacidian, hanyuchengyucidian, xiandaihanyucidian, 21shijishuangxiangcidian.
+Add 21shijishuangyukejicidian dictionary, thanks Zhenwei Huang <zwhuang88@gmail.com> for providing data file.
+Add quick_eng-persian dictionary, thanks Mehdi H. <h.mehdi@gmail.com> for providing data file.
+Add xiangya-medical dictionary, thanks kevin <kevinos@163.com> for providing data file.
+Add some Chinese Buddhism dictionary: foguangdacidian, faxiangcidian, foxuedacidian, foguangdacidian-big5, faxiangcidian-big5, foxuedacidian-big5, thanks Yu Xiaohua <yuxh619@yahoo.com.cn> for providing data file.
+Add soothill-buddhist, eng-ch-eng-buddhist, chenyixiaofoxuechangjiancihui, sanzunfasu and quick_kor-eng dictionaries, thanks uuii <uuiioo@gmail.com>.
+Add some vietnamese dictionaries, thanks Larry Nguyen <larry@vnlinux.org>.
+Add quick_de-zh_CN dictionary, thanks Qian Xu <xu_qian@web.de>.
+Add longman and oald dictionaries, thanks Luodean <luodean12@yahoo.com> for providing data files.
+Add cced and merrianwebster dictionaries.
+Add dictd_www.dict.org_foldoc dictionary and update dictd_www.dict.org_wn dictionary.
+Add DoubleClickToClipboard.rar, it work perfectly with StarDict Win32 version's scan clipboard function, thanks Luodean.
+Add AutoCopy.rar, it is more powerful than DoubleClickToClipboard, thanks Andreas Zollmann <pauker2@gmx.de> for this information.
+
+2005.7.20
+StarDict-2.4.5 (final) released.
+Source code optimize and many changes, thanks Evgeney <dushistov@mail.ru>.
+Dutch translation and help document translation, thanks Ruud Slaats <ruudslaats@eurotechgroup.nl>.
+
+2004.11.28
+StarDict-2.4.4 (fine) released.
+sdcv-0.1(StarDict command line version) is out, developed by Evgeney <dushistov@mail.ru>.
+Try to create .idx.oft file to speed up the interpretation of the .idx file. This feature is especially useful to sdcv.
+Mueller7 optimized, thanks Evgeney.
+quick_eng-gre, quick_gre-eng dictionary encoding fix, thanks Christophe Combelles <ccomb@free.fr> for bug reporting.
+Add Hanzi Master dictionary, thanks Michael Robinson <robinson@netrinsics.com>.
+zh_TW help document translation and a small bug fix, thanks Roy Chan <roy.chan@debian.org.hk>.
+Fix bug: Move border of MeaningWin to the right end of stardict main window,
+stardict go to infinite cycle and hang up. Thanks Ugin <mr_coder@ssl-mail.com>.
+
+2004.2.19
+StarDict-2.4.3 (laugh) released.
+Ukrainian translation, thanks Volodymyr M. Lisivka <lvm@mystery.lviv.net>.
+New dictionaries: en-ru-bars, en-uk-auszi, provided by Volodymyr M. Lisivka.
+zh_TW translation, thanks Tetralet <tetralet@pchome.com.tw> and Semigod Ju <shinesemigod@pchome.com.tw>.
+Slovak translation, thanks Zdenko Podobny <zdpo@mailbox.sk>.
+Hungarian translation, thanks Laszlo Dvornik <dvornikl@mailbox.hu>.
+
+2003.11.15
+StarDict-2.4.2 (classical) released.
+=============
+Dictionary File format changed, but you can download the "stardict_dict_update" program to convert your old dictionaries to the new format.
+Separate the .idx file to .ifo and .idx files, this will make the loading of the .idx.gz file be faster.
+Don't load the .idx file into memory, this will save much of the memory cost.
+Macedonian translation, with the help document, thanks Novica Nakov <novica@bagra.org> for the translation, thanks Ivan Stojmirov <stojmir@linux.net.mk> for his help on this work.
+Scan clipboard in win32, thanks Ivan Stojmirov <stojmir@linux.net.mk> for this good idea.
+
+2003.09.28
+StarDict-2.4.1 (silence) released.
+=============
+There haven't much things left StarDict to improve, so i ported it to win32, it only take 3 days as i have experience from ReciteWord :)
+Thanks Timur M. Mustakimov <timur@dezcom.mephi.ru> for the "Win button as scan modifier key" patch.
+Floating window size control clean up.
+Try to pronounce word's by its original word when failed. i.e. apples->apple.
+Change Alt+x to hide main window.
+Remove "Whether hide window when iconify" option.
+
+2003.08.28
+StarDict-2.4.0 (will) released.
+=============
+LangDao5.0 zh_CN-en and en-zh_CN dictionary. It has 0.8 million headwords. Thanks Jiaying Xu <jx206@cam.ac.uk> for telling me this dictionary's information, tipy <tipyluo@hotmail.com> cracked its file format(very HARD work!) and i wrote the converter.
+Czech translation, thanks Jarda <jiricka@mujbox.cz>.
+Floating window's line warp problem solved. Thanks Owen Taylor <otaylor@redhat.com> for his patient technique support.
+Press modifier key again will show the floating window. Fix KDE system tray make main window pop up problem. Fix KDE session compatibility bug. Thanks andrew <a@etver.com> for these suggestions and bug reporting.
+Optimize word index's memory allocation, this speed up starting much.
+make .idx file's loading use mmap.
+When uniconify the window or show the window form hide state, move the focus to text view so you can input new word directly.
+Press ESC when the input combo is empty will iconify the window.
+Click Back button will restore the definition text area's adjustment.
+New option: pronounce word when pop up floating window.
+
+2003.06.28
+StarDict-2.2.1 (savanna) released.
+=============
+Make dictzip to use the mmap feature, this saved much memory, thanks Kuang-che Wu <kcwu@kcwu.homeip.net>.
+New StarDict website, http://stardict.sourceforge.net. thanks AITOC, Inc. www.aitoc.com.
+infoBrowse-zh_CN tree dictionary updated.
+Save main window's maximized state.
+New option: Hide floating window when modifier key released.
+Thanks Marek <spec@webtech.pl> for StarDict Slackware 9.0 package.
+oxford-big5 dictionary, thanks chiao <chiao@kpc.adsldns.org> for tell me the zh-autoconvert tool to build this dictionary.
+jmdict-en-ja,jmdict-en-ja dictionaries, thanks Alastair Tse <liquidx@gentoo.org>.
+
+2003.06.01
+StarDict-2.2.0 (icelotus) released.
+=============
+Make selection compatible with KDE3.
+Tree dictionary support. Thanks gengjunjun <geng82@163.com> for providing infoBrowse-zh_CN tree dictionary.
+sub dictionary directory support for /usr/share/stardict/dic, ~/.stardict/dic.
+splash screen.
+sound event.
+New option: Query in floating window when middle mouse button click on notification area icon.
+New option: Only do scanning while modifier key being pressed.
+Easier to input while focus is not in the input entry.
+Thanks Alex Murygin <murygin@aitoc.com> for building the stardict.sourceforge.net website and many helps.
+Thanks Alex Murygin <murygin@aitoc.com> for quick's Russian dictionaries(dan-rus, eng-rus, rus-dan, rus-eng, rus-swe, swe-rus) fix.
+
+2003.05.18
+StarDict-2.1.0 released.
+=============
+dictd dictionary converter, this added about 100 dictionaries.
+wquick dictionary converter, this added about 150 dictionaries.
+dictzip support, so StarDict can use .dict.dz compressed file now.
+WyabdcRealPeopleTTS support, now StarDict can pronouce English words.
+Don't hide window when iconify as there is no Notification area.
+Custom font settings in preferences dialog.
+Search website settings in preferences dialog.
+Russia language translation, Russia help document, thanks Alex Murygin <murygin@aitoc.com> very much.
+Thanks Will Robinson <wsr23@stanford.edu> for cleaning up all of StarDict's English, including source files and help document, DICTFILE_FORMAT, etc.
+zh_CN help document translation, thanks gengjunjun <geng82@163.com>.
+oxford-gb dictionary fix, thanks Luo Chong <happyluo79@yahoo.com.cn>.
+Thanks statue <statue@freebsd.netlab.cse.yzu.edu.tw> for FreeBSD port patch.
+Thanks Opera Wang <Opera.Wang@motorola.com> for Solaris patch and some bug fix.
+
+2003.5.2
+StarDict-2.0.0 released.
+=============
+Many bug fixes.
+Dictionary data file format optimize.
+Add Oxford dictionary.
+GNOME Help document.
+Notification area icon.
+Preferences dialog.
+Dictionary manage dialog.
+Most functions work now.
+Thanks Anthony Fok <foka@debian.org> for the Debian package and many document typo fix.
+
+
+2003.4.8
+Release the preview-2 version.
+=============
+Change to complete GNOME2 application.
+Use GConf2 to save setttings. 
+Use popt to do command line parse. 
+Use bonobo-activate to make StarDict only run once.
+Scan selection work now.
+RPM package.
+
+
+2003.3.30
+Release the preview-1 version.
+=============
+The GTK2 interface, new dictionary data file format. Word quering work now, 
+Glob-style pattern matching, Fuzzy query have been done. The English phonetic display is OK.
+
+
+2003.3.10
+Start this project. 
+=============
+StarDict2 is a complete rewritten of StarDict1.33+.

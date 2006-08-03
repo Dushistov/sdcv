@@ -1,0 +1,169 @@
+dnl Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.52)
+
+AC_INIT(stardict, 2.4.8, http://stardict.sourceforge.net)
+AC_CONFIG_SRCDIR(src/stardict.cpp)
+AM_INIT_AUTOMAKE([dist-bzip2])
+
+AM_MAINTAINER_MODE
+AM_CONFIG_HEADER(config.h)
+AM_DISABLE_STATIC
+
+AC_PATH_PROG(GCONFTOOL, gconftool-2)
+AC_PROG_INTLTOOL([0.22])
+
+AM_PROG_LIBTOOL
+
+AC_ISC_POSIX
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+
+
+AC_FUNC_MMAP
+
+
+dnl ================================================================
+dnl Gettext stuff.
+dnl ================================================================
+GETTEXT_PACKAGE=stardict
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
+ALL_LINGUAS="cs de el fr hu hr ku mk nl pt_BR ru sk tt uk vi zh_CN zh_TW"
+AM_GLIB_GNU_GETTEXT
+
+AC_ARG_ENABLE(gnome-support, AC_HELP_STRING([--disable-gnome-support], [Disable gnome support]))
+AC_ARG_ENABLE(gpe-support, AC_HELP_STRING([--enable-gpe-support], [Enable gpe support]))
+AM_CONDITIONAL(GNOME_SUPPORT, test "x${enable_gpe_support}" != "xyes" && test "x${enable_gnome_support}" != "xno")
+AM_CONDITIONAL(GPE_SUPPORT, test "x${enable_gpe_support}" = "xyes")
+
+if test "x${enable_gpe_support}" = "xyes" ; then
+  DEP_MODULES="gtk+-2.0 >= 2.4 glib-2.0 >= 2.2 libgpewidget >= 0.109"
+elif test "x${enable_gnome_support}" = "xno" ; then
+  DEP_MODULES="gtk+-2.0 >= 2.6"
+else
+  DEP_MODULES="libgnomeui-2.0 >= 2.2.0"
+fi
+
+dnl
+dnl Start of pkg-config checks
+dnl
+PKG_CHECK_MODULES(STARDICT, $DEP_MODULES)
+
+if test "x${enable_gpe_support}" = "xyes" ; then
+        echo "Enable gpe suppport";
+	AC_DEFINE([CONFIG_GPE],[], [Compile with gpe support])
+	AM_CONDITIONAL(SCHEMAS_INSTALL, test "x${enable_gpe_support}" != "xyes")
+	AM_CONDITIONAL(GCONF_SCHEMAS_INSTALL, test "x${enable_gpe_support}" != "xyes")
+elif test "x${enable_gnome_support}" = "xno" ; then
+	echo "Disable gnome support";
+	AC_DEFINE([CONFIG_GTK],[], [Compile without gnome support])
+	AM_CONDITIONAL(SCHEMAS_INSTALL, test "x${enable_gnome_support}" != "xno")
+	AM_CONDITIONAL(GCONF_SCHEMAS_INSTALL, test "x${enable_gnome_support}" != "xno")
+else
+	echo "Enable gnome suppport";
+	AC_DEFINE([CONFIG_GNOME],[], [Compile with gnome support])
+
+dnl *********************************************
+dnl for anything which calls gconftool-2 correctly
+dnl *********************************************
+
+	AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+	if test x"$GCONFTOOL" = xno; then
+        	AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
+	fi
+	AM_GCONF_SOURCE_2
+
+	AM_CONDITIONAL(SCHEMAS_INSTALL, test x$schemas_install = xtrue)
+dnl ==========================================================================
+dnl stuff for the CORBA interface
+
+	ORBIT_IDL="`$PKG_CONFIG --variable=orbit_idl ORBit-2.0`"
+	AC_SUBST(ORBIT_IDL)
+
+	LIBBONOBO_IDL="`$PKG_CONFIG --variable=idldir libbonobo-2.0`"
+	AC_SUBST(LIBBONOBO_IDL)
+
+	BONOBO_ACTIVATION_IDL="`$PKG_CONFIG --variable=idldir bonobo-activation-2.0`"
+	AC_SUBST(BONOBO_ACTIVATION_IDL)
+
+dnl
+dnl Check popt
+dnl
+
+	AC_CHECK_LIB(popt, poptStrippedArgv,, AC_MSG_ERROR([popt 1.5 or newer is required to build
+stardict. You can download the latest version from ftp://people.redhat.com/sopwith/popt/]))
+
+fi
+
+
+STARDICT_CFLAGS="-Wall $STARDICT_CFLAGS"
+
+
+dnl
+dnl Start of zlib checks
+dnl
+AC_CHECK_LIB(z,zlibVersion,STARDICT_LIBS="$STARDICT_LIBS -lz",[AC_MSG_ERROR([zlib not found])])
+
+
+dnl ==========================================================================
+
+# Checks for header files. need by Solaris.
+AC_PATH_XTRA
+if test -n "$X_CFLAGS"; then
+CPPFLAGS="$CPPFLAGS $X_CFLAGS"
+fi
+if test -n "$X_LIBS"; then
+LDFLAGS="$LDFLAGS $X_LIBS"
+fi
+if test -n "$X_PRE_LIBS"; then
+LDFLAGS="$LDFLAGS $X_PRE_LIBS"
+fi
+if test -n "$X_EXTRA_LIBS"; then
+LDFLAGS="$LDFLAGS $X_EXTRA_LIBS"
+fi
+
+# Checks for libraries.
+AC_CHECK_LIB([X11], [main], , [AC_MSG_ERROR([X11 lib not found])])
+
+AC_SUBST(STARDICT_LIBS)
+AC_SUBST(STARDICT_CFLAGS)
+
+dnl ==========================================================================
+
+AC_OUTPUT([
+Makefile
+stardict.spec
+stardict-withoutgnome.spec
+data/Makefile
+doc/Makefile
+po/Makefile.in
+src/Makefile
+src/lib/Makefile
+src/pixmaps/Makefile
+src/sounds/Makefile
+src/win32/Makefile
+src/win32/acrobat/Makefile
+src/win32/acrobat/sources/Makefile
+src/win32/acrobat/win32/Makefile
+src/win32/nsis/Makefile
+tests/Makefile
+pixmaps/Makefile
+help/Makefile
+help/C/Makefile
+help/zh_CN/Makefile
+help/zh_TW/Makefile
+help/ru/Makefile
+help/mk/Makefile
+help/nl/Makefile
+help/uk/Makefile
+])
+
+
+echo "
+
+Type \"make\" to compile StarDict.
+
+"

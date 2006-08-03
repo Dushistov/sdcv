@@ -1,0 +1,693 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+  <!ENTITY legal SYSTEM "legal.xml">
+  <!ENTITY appversion "2.4.2">
+  <!ENTITY manrevision "2.4.2">
+  <!ENTITY date "Nov 2003">
+  <!ENTITY app "StarDict">
+]>
+<!--
+      (Do not remove this comment block.)
+  Maintained by the GNOME Documentation Project
+  http://developer.GNOME.org/projects/gdp
+  Template version: 2.0 beta
+  Template last modified Jan 30, 2002
+
+-->
+<!-- =============Document Header ============================= -->
+<article id="index" lang="uk">
+<!-- please do not change the id; for translations, change lang to -->
+<!-- appropriate code -->
+  <articleinfo>
+	 <title>&app; Керівництво В&manrevision;</title>
+	 <copyright>
+		<year>2003</year>
+		<holder>Hu Zheng</holder> </copyright>
+
+<!-- translators: uncomment this: -->
+
+  <copyright>
+   <year>2003</year>
+   <holder>Сергій Дубик (український переклад)</holder>
+  </copyright>
+
+<!-- -->
+	 <publisher>
+		<publishername> GNOME Documentation Project </publishername>
+	 </publisher>
+	 &legal;
+	 <authorgroup>
+		<author>
+		  <firstname>Hu</firstname>
+		  <surname>Zheng</surname>
+		  <affiliation>
+			 <orgname>Проект документації GNOME</orgname>
+			 <address> <email>huzheng_001@163.com</email> </address>
+		  </affiliation>
+		</author>
+
+<!-- This is appropriate place for other contributors: translators,
+      maintainers,  etc. Commented out by default.-->
+       <othercredit role="translator">
+	<firstname>Сергій</firstname>
+	<surname>Дубик</surname>
+	<affiliation>
+	  <orgname>ЛНБ</orgname>
+	  <address> <email>dubyk@library.lviv.ua</email> </address>
+	</affiliation>
+	<contrib>український переклад</contrib>
+      </othercredit>
+<!-- -->
+	 </authorgroup>
+
+
+<!-- According to GNU FDL, revision history is mandatory if you are -->
+<!-- modifying/reusing someone else's document.  If not, you can omit it. -->
+	 <revhistory>
+<!-- Remember to remove the &manrevision; entity from the revision entries other
+   than the current revision. -->
+   		<revision>
+		  <revnumber>&app; Керівництво В&manrevision;</revnumber>
+		  <date>&date;</date>
+		  <revdescription>
+			 <para role="author">Hu Zheng</para>
+			 <para role="publisher">Проект документації GNOME</para>
+		  </revdescription>
+		</revision>
+	 </revhistory>
+	 <releaseinfo> У даному керівництві описується версія &appversion; програми &app;.
+		</releaseinfo>
+	 <legalnotice>
+		<title>Зворотний зв'язок</title>
+		<para>Для повідомлення про помилку або пропозиції що відноситься до <application>&app;</application> додатку або
+         даного керівництва, слідуйте вказівкам у
+		<ulink url="ghelp:gnome-feedback" type="help">GNOME Feedback Page</ulink>.
+      </para>
+<!-- Translators may also add here feedback address for translations -->
+	 </legalnotice>
+  </articleinfo>
+  <indexterm><primary>StarDict</primary></indexterm>
+  <indexterm><primary>Dictionary</primary></indexterm>
+
+<!-- ============= Document Body ============================= -->
+<!-- ============= Introduction ============================== -->
+
+  <sect1 id="stardict-introduction">
+    <title>Вступ</title>
+    <para>
+          <application>StarDict</application> це кросс-платформенний міжнародний словник написаний на Gtk2.
+      Він володіє рядом могутніх особливостей, таких як "пошук за шаблоном", "слідкування за виділеними словами", "нечіткий запит", і т.д.
+	</para>
+  </sect1>
+
+  <sect1 id="stardict-getting-started">
+    <title>Початок</title>
+
+    <sect2 id="stardict-to-start">
+    <title>Запуск &app;</title>
+
+    <para><application>&app;</application> можна запустити таким чином:
+    </para>
+    <variablelist>
+    	<varlistentry>
+    		<term><guimenu>Applications</guimenu> menu</term>
+    		<listitem>
+    		<para>Вибрати <menuchoice><guisubmenu>Accessories</guisubmenu><guimenuitem>StarDict</guimenuitem></menuchoice>.</para>
+    		</listitem>
+    	</varlistentry>
+    	<varlistentry>
+    		<term>Командний рядок</term>
+    		<listitem>
+    		<para>Надрукуйте <command>stardict</command>, потім натисніть <keycap>Return</keycap>.</para>
+            <para>
+            Можна вказати також слово для пошуку :
+	        </para>
+	        <para>
+            <command>stardict <replaceable>word</replaceable></command>
+            </para>
+            <para>
+            або шаблон для пошуку :
+            </para>
+            <para>
+            <command>stardict <replaceable>wo?d*</replaceable></command>
+            </para>
+            <para>
+            або зробити нечіткий запит :
+            </para>
+            <para>
+            <command>stardict <replaceable>/word</replaceable></command>
+            </para>
+    		</listitem>
+    	</varlistentry>
+    </variablelist>
+    <note>
+      <para>
+      Якщо <application>&app;</application> вже запущений, запит буде виконаний у запущеному вікні <application>&app;</application>.
+      </para>
+    </note>
+
+    </sect2>
+
+    <sect2 id="stardict-when-you-start">
+    <title>Коли запустите &app;</title>
+
+    <para>Коли запустите <application>&app;</application>, з'явиться наступне вікно.</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="stardict-main-window-fig">
+	<title>&app; Головне вікно</title>
+	<screenshot>
+	  <mediaobject>
+	    <imageobject><imagedata
+		fileref="figures/stardict_main_window.png" format="PNG"/>
+	    </imageobject>
+	    <textobject>
+	      <phrase>Показує &app; головне вікно. Містить рядок запиту, кнопки інструментів, список слів, область перекладу та кнопки налаштування. </phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+    <para>Головне вікно <guilabel>&app;</guilabel> складається з наступних елементів:</para>
+    <variablelist>
+		<varlistentry>
+		<term><guilabel>Пошук</guilabel> рядок запиту </term>
+		<listitem>
+		<para>Використовуйте дане поле для вводу слів, які хочете шукати.
+		Також, у випадному списку відображені останні запитувані слова. </para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Кнопки інструментів </term>
+		<listitem>
+		<para>Можете використовувати ці кнопки для нечіткого запиту, пошуку раніше запитуваних слів,
+        пошуку наступного і попереднього слова із списку зліва, та відображення головного меню.</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Список слів</term>
+		<listitem>
+		<para>Відображає слова, знайдені при пошуку.</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Область перекладу</term>
+		<listitem>
+		<para><application>&app;</application> відображає переклад слів у цій області вікна.</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Кнопки налаштувань </term>
+		<listitem>
+		<para>У лівому нижньому кутку вікна знаходяться кнопки <guibutton>Слідкувати за виділеним</guibutton>,
+        <guibutton>Показати підказку</guibutton> та
+		<guibutton>Вихід</guibutton>.
+        Включення кнопки <guibutton>Слідкувати за виділеним</guibutton> примушує <application>&app;</application>
+        автоматично шукати слова які віділяєте у якому-небудь додаток.
+		У лівому нижньому кутку вікна знаходяться <guibutton>Пошук в Інтернеті</guibutton>,
+		<guibutton>Відвідати сайт <application>&app;</application></guibutton>,
+		<guibutton>Керування словниками</guibutton> та <guibutton>Налаштування</guibutton> вікна. </para>
+		</listitem>
+		</varlistentry>
+	</variablelist>
+
+    </sect2>
+
+    <sect2 id="stardict-notification-area">
+    <title>Іконка області сповіщень</title>
+	<para>
+	<application>&app;</application> також додає іконку в область сповіщень.  Коли Ви згортаєте головне вікно, воно ховається.  Після клацання на іконку, 
+    вікно з'являється.  При натисненні правою кнопкою на іконку, з'являється спливаюче вікно в якому можна змінити стан <guimenuitem>Слідкувати за 
+    виділеним</guimenuitem>, або <guimenuitem>Вихід</guimenuitem>. При натисненні лівої кнопки миші + ctrl, відбувається перемикання 
+    режиму
+    <guimenuitem>Слідкувати за виділеним</guimenuitem>. При натисненні середньої кнопки запрошується виділене слово.
+	</para>
+	<figure id="stardict-notification-area-fig">
+	<title>Іконка області сповіщень <application>&app;</application></title>
+	<screenshot>
+		<mediaobject>
+			<imageobject><imagedata fileref="figures/stardict_notification_area.png" format="PNG"/>
+			</imageobject>
+			<textobject>
+				<phrase>Іконка області сповіщень <application>&app;</application>.</phrase>
+			</textobject>
+		</mediaobject>
+	</screenshot>
+	</figure>
+	</sect2>
+
+    <sect2 id="stardict-scan-selection">
+    <title>Слідкувати за виділеним</title>
+
+     <para><application>&app;</application> може автоматично слідкувати за виділеним текстом. Це значить, якщо Ви виділили слово або фразу
+     у <application>&app;</application> або в будь-якому іншому додатку,
+ 	<application>&app;</application> одержує виділений текст і шукає його, потім відображає спливаюче вікно з
+     результатом пошуку. </para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="stardict-float-window-fig">
+ 	<title>&app; Спливаюче вікно</title>
+	<screenshot>
+	  <mediaobject>
+	    <imageobject><imagedata
+		fileref="figures/stardict_float_window.png" format="PNG"/>
+	    </imageobject>
+	    <textobject>
+ 	      <phrase>Показує спливаюче вікно &app;. Містить кнопки інструментів та область перекладу. </phrase>
+	    </textobject>
+	  </mediaobject>
+	</screenshot>
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+ 	<para>Можна переміщати вікно правою кнопкою миші. Спливаюче вікно зникає після переміщення покажчика миші на деяку дистанцію від вікна.</para>
+    <para>Спливаюче вікно <guilabel>&app;</guilabel> містить наступні елементи:</para>
+    <variablelist>
+		<varlistentry>
+		<term>Кнопки інструментів </term>
+		<listitem>
+ 		<para>Кнопки автоматично ховаються для заощадження вільного місця. Коли покажчик миші знаходиться над спливаючим вікном,
+        кнопки негайно з'являються, і ховаються знову коли покажчик йде з вікна. </para>
+ 		<para>Ці кнопки можуть використовуватися для <guibutton>пошуку</guibutton> слова у головному вікні,
+        <guibutton>копіювання</guibutton> результату пошуку в буфер обміну,
+ 		<guibutton>вимови</guibutton> слова, <guibutton>виключення</guibutton> сканування виділеного, і т.д.
+ 		Найправіша кнопка <guibutton>Замкнути спливаюче вікно</guibutton>. Якщо
+ 		спливаюче вікно замкнуте, воно завжди відображатиметься в цьому місці. </para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+ 		<term>Область перекладу </term>
+		<listitem>
+		<para>Результати пошуку відображаються у цій області. </para>
+		</listitem>
+		</varlistentry>
+    </variablelist>
+    </sect2>
+
+  </sect1>
+
+<!-- ================ Usage ================================ -->
+
+  <sect1 id="stardict-usage">
+    <title>Використовування</title>
+
+    <sect2 id="stardict-lookup">
+    	<title>Пошук слова</title>
+    	<para>Для пошуку перекладу слова, виконайте наступні кроки:</para>
+    	<orderedlist>
+    		<listitem><para>Надрукуйте слово, яке хочете знайти у рядку вводу
+    		<guilabel>Пошук</guilabel>. </para></listitem>
+			<listitem><para><application>&app;</application> негайно відобразить переклад. Якщо переклад не знайдений,
+			можете натиснути <keycap>Return</keycap> для виконання нечіткого пошуку або натиснути на кнопку <guibutton>Нечіткий пошук</guibutton>. </para></listitem>
+    		<listitem><para>Використовуйте смугу прокрутки для проглядання перекладу. Вибирайте слова із списку слів для відображення
+            відповідних слів. </para></listitem>
+    	</orderedlist>
+    </sect2>
+
+    <sect2 id="stardict-clear">
+    	<title>Очищення області відображення</title>
+    	<para>Для очищення поля вводу <guilabel>Пошук</guilabel>, натисніть кнопку <guibutton>Очистити</guibutton> розташовану
+        зліва, або просто натисніть <keycap>Alt-C</keycap> або ж  <keycap>ESC</keycap>.</para>
+    </sect2>
+
+    <sect2 id="stardict-select">
+    	<title>Для копіювання тексту до буфера обміну</title>
+    	<para>Є два способи скопіювати текст з області відображення:</para>
+    	<itemizedlist>
+    		<listitem><para>Для копіювання усього тексту, натисніть кнопку <guibutton>Копіювати</guibutton> розташовану над <guilabel>Областю повідомлення</guilabel>.</para></listitem>
+    		<listitem><para>Для копіювання частини тексту, виділіть текст котрий хочете скопіювати і натисніть праву кнопку миші
+ і виберіть <guimenuitem>Копіювати</guimenuitem>.</para></listitem>
+    	</itemizedlist>
+    </sect2>
+
+    <sect2 id="stardict-find">
+    	<title>Пошук тексту у області відображення</title>
+    	<para>Для пошуку тексту у області відображення, виконайте наступні кроки:</para>
+    	<orderedlist>
+    		<listitem><para>Натисніть кнопку <guibutton>Пошук</guibutton> розташовану над <guilabel>Областю відображення</guilabel>. </para> </listitem>
+    		<listitem><para>Надрукуйте слово яке хочете шукати в рядку запиту <guilabel>Пошук</guilabel>,
+    		та натисніть <keycap>Return</keycap>. Тут Ви не можете використовувати шаблони.</para></listitem>
+    		<listitem><para>Для пошуку наступного збігу, натисніть <keycap>Return</keycap> знову.</para></listitem>
+    	</orderedlist>
+    </sect2>
+
+  </sect1>
+
+
+<!-- ============= Preferences  ================================ -->
+  <sect1 id="stardict-prefs">
+	<title>Налаштування</title>
+	<para>Для налаштування <application>&app;</application>, натисніть кнопку <guibutton>Налаштування</guibutton>
+	розташовану у правому нижньому кутку або натисніть на кнопку <guibutton>Головне меню</guibutton> і виберіть
+	<guimenuitem>Налаштування</guimenuitem>. </para>
+
+	<sect2 id="stardict-prefs-dictionary">
+	<title>Словник</title>
+		<sect3 id="stardict-prefs-dictionary-startup">
+		<title>Завантаження</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Ховати головне вікно при запуску StarDict.</guilabel> </term>
+				<listitem>
+				<para>Контролює, чи повинне головне вікно з'являтися при запуску.                 
+				Якщо дана опція включена, побачите тільки іконку у області сповіщень
+                після запуску  <application>&app;</application>.  При натисненні на іконку
+                з'явиться головне вікно.</para>
+				<para>За умовчанням: вимкнено.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+ 		<sect3 id="stardict-prefs-dictionary-scan">
+ 		<title>Слідкувати за виділеним текстом</title>	
+ 			<variablelist>
+ 				<varlistentry>
+ 				<term><guilabel>Слідкувати, тільки якщо спеціальна клавіша натиснута.</guilabel> </term>
+ 				<listitem>
+ 				<para>Слідкувати, тільки якщо спеціальна клавіша натиснута. Спеціальна клавіша встановлюється у
+                "Слідкувати зі спеціальною клавішею".</para>
+ 				<para>За умовчанням: вимкнено.</para>
+ 				</listitem>
+ 				</varlistentry>
+ 			</variablelist>
+ 		</sect3>
+		<sect3 id="stardict-prefs-dictionary-font">
+		<title>Шрифт</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Використовувати користувацький шрифт.</guilabel> </term>
+				<listitem>
+				<para>Використовувати користувацький шрифт замість системного шрифту за умовчанням для <application>&app;</application>.
+				Якщо дана опція включена, тоді використовуватиметься шрифт, вказаний у "Користувацький шрифт".</para>
+				<para>За умовчанням: вимкнено.</para>
+				<para>Налаштування шрифту увійдуть до сили тільки після перезапуску <application>&app;</application>.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+ 		<sect3 id="stardict-prefs-dictionary-sound">
+ 		<title>Звук</title>	
+ 			<variablelist>
+ 				<varlistentry>
+ 				<term><guilabel>Використовувати звуки для подій.</guilabel> </term>
+ 				<listitem>
+ 				<para>Якщо звуки включені, <application>&app;</application> програватиме системні звуки при 
+ 	натисненні кнопок та при появі спливаючого вікна.</para>
+				<para>За умовчанням: включено.</para>
+ 				</listitem>
+ 				</varlistentry>
+ 			</variablelist>
+ 		</sect3>
+	</sect2>
+
+	<sect2 id="stardict-prefs-main-window">
+	<title>Головне вікно</title>
+		<sect3 id="stardict-prefs-main-window-searchwebsite">
+		<title>Пошук в Інтернеті</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Список адрес для пошуку</guilabel> </term>
+				<listitem>
+				<para>Відображає пошукові сайти. Ці сайти відображаються при натисненні
+                  правої кнопки миші на кнопці <guibutton>Пошукати у словниках в Інтернеті</guibutton> у головному вікні.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+ 	<sect2 id="stardict-prefs-notification-area-icon">
+  	<title>Іконка у області сповіщень</title>	
+ 		<sect3 id="stardict-prefs-notification-area-icon-options">
+  		<title>Опції</title>
+ 			<variablelist>
+ 				<varlistentry>
+ 				<term><guilabel>Шукати у спливаючому вікні при натиснутій середній кнопці мишки.</guilabel> </term>
+ 				<listitem>
+  				<para>Шукати у спливаючому або головному вікні. Відбувається коли користувач 
+                 натискає середню кнопку миші на іконці у області сповіщень. </para>
+				<para>За умовчанням: включено.</para>
+ 				</listitem>
+ 				</varlistentry>
+ 			</variablelist>
+ 		</sect3>
+ 	</sect2>
+	<sect2 id="stardict-prefs-floating-window">
+ 	<title>Спливаюче вікно</title>
+		<sect3 id="stardict-prefs-floating-window-size">
+		<title>Розмір</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Максимальна ширина вікна.</guilabel> </term>
+				<listitem>
+				<para>Встановлює максимальну ширину вікна.</para>
+				<para>За умовчанням: 320.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Максимальна висота вікна.</guilabel> </term>
+				<listitem>
+				<para>Встановлює максимальну висоту вікна.</para>
+				<para>За умовчанням: 240.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+  </sect1>
+
+  <sect1 id="stardict-dictmanage">
+	<title>Керування словниками</title>
+	<para>Для управління словниками, натисніть кнопку <guibutton>Керування словниками</guibutton> розташовану у правому нижньому кутку головного вікна або натисніть
+	кнопку <guibutton>Показати головне меню</guibutton> та виберіть <guimenuitem>Керування словниками</guimenuitem>.
+	</para>
+	<para>У діалозі "Керування словниками", можете вимкнути не потрібні словники та встановити порядок, в якому словники опитуватимуться при пошуці.
+	</para>
+	<para><application>&app;</application> шукає словники у "~/.stardict/dic" та "/usr/share/stardict/dic",  
+ 	ієрархічні словники у "~/.stardict/treedict" та "/usr/share/stardict/treedict"</para>
+  </sect1>
+
+ <sect1 id="stardict-projects">
+   <title>Зв'язані проекти</title>
+   <para>
+     <application>&app;</application> не був би можливий, без внеску багатьох проектів. Тут перерахований короткий список
+     проектів котрі допомогли <application>&app;</application>.
+   </para>
+
+	<sect2 id="stardict-projects-stardict1.3">
+    	<title>StarDict 1.31</title>
+    	<para>StarDict 1.31, заснований на Motif/LessTif, був написаний у 1999. <application>&app;</application> 2 узяв багато
+		хороших ідей від StarDict1.31 таких як, "нечіткий пошук".</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Ma</firstname>
+           	  <surname>Su'an</surname>
+           	  <affiliation>
+                <address><email>msa@wri.com.cn</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-stardict1.33+">
+    	<title>StarDict 1.33+</title>
+    	<para>StarDict1.33+ це сильно поліпшений StarDict1.31. Було додано багато словників і це примусило мене зрозуміти що словники
+		не перешкода до нової, побудованої на GTK2, словниковій оболонці.  Якби не було StarDict1.33+, я б не почав
+   проект      <application>&app;</application> 2. Автор також допомагав мені портувати словники зі StarDict 1.3
+		у <application>&app;</application> 2.</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Opera</firstname>
+           	  <surname>Wang</surname>
+           	  <affiliation>
+                <address><email>Opera.Wang@motorola.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-dictd">
+     	<title>Проект DICT</title>
+     	<para>Велика кількість dictd-словників була зконвертована до
+<application>&app;</application>. dictzip, розроблений для
+		dictd, використовується і у <application>&app;</application> також.</para> 
+	    <para>
+     	Для отримання додаткової інформації про проект DICT будь-ласка відвідайте
+		<ulink url="http://www.dict.org" type="http">www.dict.org</ulink>.  
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-quick">
+     	<title>*Quick</title>
+     	<para>>Велика кількість wquick-словників була зконвертована у 
+<application>&app;</application>.</para> 
+	    <para>
+     	Для отримання додаткової інформації про проект *Quick будь-ласка відвідайте
+		<ulink url="http://www.futureware.at/quick.htm"
+type="http">*Quick</ulink>.  
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-blowfish">
+     	<title>Проект Blowfish</title>
+     	<para>Проект Blowfish надав оксфордський англійсько-китайський словник.</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Terrence</firstname>
+           	  <surname>Miao</surname>
+           	  <affiliation>
+                <address><email>terence_miao@email.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	Для отримання додаткової інформації про проект Blowfish будь-ласка відвідайте
+		<ulink url="http://igloo.its.unimelb.edu.au/Blowfish/" type="http">Сайт проекту Blowfish</ulink>.
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-xdict">
+    	<title>XDICT</title>
+    	<para>Словники XDICT були також портовані у <application>&app;</application>.</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Fu</firstname>
+           	  <surname>Jianjun</surname>
+           	  <affiliation>
+                <address><email>fujianjun@163.net</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-cdict">
+    	<title>cdict5</title>
+    	<para>Словники cdict5 були портовані у <application>&app;</application>.</para>
+
+		<sect3 id="stardict-projects-cdict-xcdict-tcltk">
+    	<title>xcdict-tcltk</title>
+		<sect3info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Leon</firstname>
+           	  <surname>Liang</surname>
+           	  <affiliation>
+                <address><email>Liang.Lu@CERN.CH</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect3info>
+		<para><ulink url="http://luliang.dhs.org/" type="http">Сайт проекту xcdict-tcltk</ulink></para>
+		</sect3>
+
+		<sect3 id="stardict-projects-cdict-cdict5-v1.3">
+    	<title>cdict5 v1.3</title>
+		<sect3info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Borg</firstname>
+           	  <surname>LU</surname>
+           	  <affiliation>
+                <address><email>dystopia@iname.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect3info>
+	    <para>
+     	Для отримання додаткової інформації про проект cdict5 будь-ласка відвідайте
+		<ulink url="http://www.freshports.org/chinese/cdict5/" type="http">Сайт проекту cdict5</ulink>.
+   		</para>
+		</sect3>
+    </sect2>
+
+	<sect2 id="stardict-projects-cedict">
+    	<title>CEDICT</title>
+    	<para>Словники CEDICT були портовані у <application>&app;</application>.</para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Paul</firstname>
+           	  <surname>Denisowski</surname>
+           	  <affiliation>
+                <address><email>cedict@chinesetools.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	Для отримання додаткової інформації про проект CEDICT будь-ласка відвідайте
+		<ulink url="http://www.mandarintools.com/cedict.html" type="http">Сайт проекту CEDICT</ulink>.
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-cffd">
+    	<title>CFFD</title>
+    	<para>Іконка <application>&app;</application> створена за допомогою цієї програми.  CFFD також надала
+		інформацію для мене. </para>
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Kong</firstname>
+           	  <surname>Hui</surname>
+           	  <affiliation>
+                <address><email>konghui@xinhuanet.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	Для отримання додаткової інформації про проект CFFD будь-ласка відвідайте
+		<ulink url="http://cffd.cosoft.org.cn" type="http">Сайт проекту CFFD</ulink>.
+   		</para>
+    </sect2>
+
+ </sect1>
+
+<!-- ============= Authors ================================ -->
+ <sect1 id="authors">
+   <title>Розробники</title>
+   <sect1info>
+     <authorgroup>
+       <author>
+         <firstname>Hu</firstname>
+           <surname>Zheng</surname>
+           <affiliation>
+             <address><email>huzheng_001@163.com</email></address>
+           </affiliation>
+       </author>
+     </authorgroup>
+   </sect1info>
+   <para>
+     Для отримання додаткової інформації про
+     <application>&app;</application>, будь-ласка відвідаєте <ulink
+     url="http://stardict.sourceforge.net/" type="http">сайт StarDict</ulink>.
+   </para>
+   <para>
+     Присилайте всі коментарі, пропозиції, та повідомлення про помилки
+     Hu Zheng (<email>huzheng_001@163.com</email>).
+   </para>
+
+   <!-- For translations: uncomment this: -->
+
+   <para>
+     На українську мову перекладено Сергієм Дубиком
+     (<email>dubyk@library.lviv.ua</email>). Будь ласка присилайте всі коментарі та
+     пропозиції, що відносяться до цього перекладу, на цю адресу.
+   </para>
+
+   <!-- -->
+
+ </sect1>
+
+</article>

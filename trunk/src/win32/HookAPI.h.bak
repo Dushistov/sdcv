@@ -1,0 +1,24 @@
+#ifndef _HookAPI_H_
+#define _HookAPI_H_
+
+#include <windows.h>
+
+typedef void (*tagAPIAddr)();
+typedef void (WINAPI *tagMyFunc)();
+
+typedef struct tagAPIInfo
+{
+	BYTE Opcodes[5];
+	tagAPIAddr APIAddress;
+	DWORD dwOldProtectionFlags;
+	CRITICAL_SECTION CriticalSection;
+	tagMyFunc MyFunc;
+	BYTE ParamCount;
+	struct tagAPIInfo *Next;
+} tagAPIInfo;
+
+BOOL HookAPI(PSTR pszModuleName, PSTR pszAPIName, tagMyFunc MyFunc, int ParamCount);
+void UnhookAllAPIFunctions();
+
+
+#endif

@@ -1,0 +1,701 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+  <!ENTITY legal SYSTEM "legal.xml">
+  <!ENTITY appversion "2.4.2">
+  <!ENTITY manrevision "2.4.2">
+  <!ENTITY date "Nov 2003">
+  <!ENTITY app "StarDict">
+]>
+<!-- 
+      (Do not remove this comment block.)
+  Maintained by the GNOME Documentation Project
+  http://developer.GNOME.org/projects/gdp
+  Template version: 2.0 beta
+  Template last modified Jan 30, 2002
+  
+-->
+<!-- =============Document Header ============================= -->
+<article id="index" lang="en">
+<!-- please do not change the id; for translations, change lang to -->
+<!-- appropriate code -->
+  <articleinfo> 
+	 <title>&app; Manual V&manrevision;</title>
+	 <copyright> 
+		<year>2003</year>
+		<holder>Hu Zheng</holder> </copyright>
+
+<!-- translators: uncomment this:
+
+  <copyright>
+   <year>2002</year>
+   <holder>ME-THE-TRANSLATOR (Latin translation)</holder>
+  </copyright>
+
+   -->
+	 <publisher> 
+		<publishername> GNOME Documentation Project </publishername>
+	 </publisher>
+	 &legal; 
+	 <authorgroup> 
+		<author> 
+		  <firstname>Hu</firstname>
+		  <surname>Zheng</surname> 
+		  <affiliation> 
+			 <orgname>GNOME Documentation Project</orgname>
+			 <address> <email>huzheng_001@163.com</email> </address>
+		  </affiliation>
+		</author> 
+
+<!-- This is appropriate place for other contributors: translators,
+      maintainers,  etc. Commented out by default.-->
+
+       <othercredit role="translator">
+	<firstname>Will</firstname> 
+	<surname>Robinson</surname> 
+	<affiliation> 
+	  <orgname>Stanford University</orgname> 
+	  <address> <email>wsr23@stanford.edu</email> </address> 
+	</affiliation>
+	<contrib>Cleaning up English</contrib>
+      </othercredit>
+<!-- -->
+
+	 </authorgroup>
+
+
+<!-- According to GNU FDL, revision history is mandatory if you are -->
+<!-- modifying/reusing someone else's document.  If not, you can omit it. -->
+	 <revhistory>
+<!-- Remember to remove the &manrevision; entity from the revision entries other
+   than the current revision. -->
+   		<revision> 
+		  <revnumber>&app; Manual V&manrevision;</revnumber>
+		  <date>&date;</date> 
+		  <revdescription> 
+			 <para role="author">Hu Zheng</para>
+			 <para role="publisher">GNOME Documentation Project</para>
+		  </revdescription>
+		</revision>
+	 </revhistory>
+	 <releaseinfo> This manual describes version &appversion; of &app;.
+		</releaseinfo>
+	 <legalnotice> 
+		<title>Feedback</title>
+		<para>To report a bug or make a suggestion regarding the <application>&app;</application> application or
+		this manual, follow the directions in the 
+		<ulink url="ghelp:gnome-feedback" type="help">GNOME Feedback Page</ulink>. 
+      </para>
+<!-- Translators may also add here feedback address for translations -->
+	 </legalnotice>
+  </articleinfo>
+  <indexterm><primary>StarDict</primary></indexterm>
+  <indexterm><primary>Dictionary</primary></indexterm>
+
+<!-- ============= Document Body ============================= -->
+<!-- ============= Introduction ============================== -->
+
+  <sect1 id="stardict-introduction"> 
+    <title>Introduction</title> 
+    <para>
+	  <application>StarDict</application> is a Cross-Platform and international dictionary written in Gtk2.
+      It has powerful features such as "Glob-style pattern matching," "Scan selected word," "Fuzzy query," etc.
+	</para> 
+  </sect1>
+
+  <sect1 id="stardict-getting-started">
+    <title>Getting Started</title> 
+    
+    <sect2 id="stardict-to-start">
+    <title>Starting &app;</title>	
+
+    <para>You can start <application>&app;</application> in the following ways:
+    </para> 
+    <variablelist>
+    	<varlistentry>
+    		<term><guimenu>Applications</guimenu> menu</term>
+    		<listitem>
+    		<para>Choose <menuchoice><guisubmenu>Accessories</guisubmenu><guimenuitem>StarDict</guimenuitem></menuchoice>.</para>
+    		</listitem>
+    	</varlistentry>
+    	<varlistentry>
+    		<term>Command line</term>
+    		<listitem>
+    		<para>Type <command>stardict</command>, then press <keycap>Return</keycap>.</para>
+            <para>
+            You can specify a word to query too : 
+	        </para>
+	        <para>
+            <command>stardict <replaceable>word</replaceable></command>
+            </para>
+            <para>  
+            or a Glob-style pattern matching string : 
+            </para>  
+            <para>
+            <command>stardict <replaceable>wo?d*</replaceable></command>
+            </para>
+            <para>  
+            or do a fuzzy query : 
+            </para>  
+            <para>
+            <command>stardict <replaceable>/word</replaceable></command>
+            </para>
+    		</listitem>
+    	</varlistentry>
+    </variablelist>
+    <note>
+      <para>
+      If <application>&app;</application> is already running, it will perform the query in the existing StarDict window. 
+      </para>
+    </note>
+
+    </sect2>
+    
+    <sect2 id="stardict-when-you-start">
+    <title>When You Start &app;</title>
+	
+    <para>When you start <application>&app;</application>, the following window is displayed.</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="stardict-main-window-fig"> 
+	<title>&app; Main Window</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/stardict_main_window.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Shows &app; main window. Contains Search input combo, Tool buttons, Word list, Definition area and Setting buttons. </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+    
+    <para>The <guilabel>&app;</guilabel> main window consists of the following elements:</para>
+    <variablelist>
+		<varlistentry>
+		<term><guilabel>Search</guilabel> input combo </term>
+		<listitem>
+		<para>Use this field to enter the word that you want to look up.
+		You can also access recently-queried words through the dropdown box. </para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Tool buttons </term>
+		<listitem>
+		<para>You can click these buttons to do fuzzy quering, look up the previously queried word, 
+		look up the next and previous words from the list on the left, and pop up the main menu.</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Word list</term>
+		<listitem>
+		<para>Shows the words that have been found in this search.</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Definition area</term>
+		<listitem>
+		<para><application>&app;</application> displays the definition of a word in this area of the window.</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>Setting buttons </term>
+		<listitem>
+		<para>The bottom-left of the window contains the <guibutton>Scan selection</guibutton> check button,
+        the <guibutton>Info</guibutton> button and 
+		the <guibutton>Quit</guibutton> button.
+        Checking the <guibutton>Scan selection</guibutton> check button will cause <application>&app;</application>
+        to automatically look up words that you highlight in any application.
+		The bottom-right of the window contains the <guibutton>Internet search</guibutton> button, 
+		the <guibutton>StarDict project website</guibutton> button, 
+		the <guibutton>Dictionary management</guibutton> button and the <guibutton>Preferences</guibutton> button. </para>
+		</listitem>
+		</varlistentry>
+	</variablelist>
+	
+    </sect2>
+
+    <sect2 id="stardict-notification-area">
+    <title>Notification area icon</title>
+	<para>
+	<application>&app;</application> will also add an icon to the notification area.  When you iconify the main window, the 
+	window will be hiden.  After you click the icon, the window will be shown again.  If you right click this icon, it 
+	will popup a menu where you can choose to toggle <guimenuitem>Scan selection</guimenuitem>, or to <guimenuitem>Quit</guimenuitem>.
+	You can toggle <guimenuitem>Scan selection</guimenuitem> directly by ctrl-clicking the icon. Clicking the middle mouse button on 
+	the icon will query the selected word.
+	</para>
+	<figure id="stardict-notification-area-fig"> 
+	<title><application>&app;</application>'s notification area icon</title> 
+	<screenshot> 
+		<mediaobject> 
+			<imageobject><imagedata fileref="figures/stardict_notification_area.png" format="PNG"/> 
+			</imageobject>
+			<textobject> 
+				<phrase><application>&app;</application>'s notification area icon.</phrase> 
+			</textobject> 
+		</mediaobject> 
+	</screenshot> 
+	</figure> 
+	</sect2>
+
+    <sect2 id="stardict-scan-selection">
+    <title>Scan selection</title>
+
+     <para><application>&app;</application> can automatically scan selections. This means that when you select a word or phrase
+     in <application>&app;</application> or in any other application, 
+ 	<application>&app;</application> will get the text that you selected and search for it, then display a floating window containing
+     the result of the search. </para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="stardict-float-window-fig"> 
+ 	<title>&app; Floating Window</title>
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/stardict_float_window.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+ 	      <phrase>Shows &app; floating window. Contains Tool buttons and Definition area. </phrase>
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+ 	<para>You can drag the window to move it. The floating window will disappear when you move your pointer some distance away.</para>
+    <para>The <guilabel>&app;</guilabel> floating window consists of the following elements:</para>
+    <variablelist>
+		<varlistentry>
+		<term>Tool buttons </term>
+		<listitem>
+ 		<para>The buttons will be hidden automatically to save display space. When your mouse pointer enters the floating window, 
+ 		the buttons will appear immediately, and disappear again as the mouse pointer leaves. </para>
+ 		<para>You can click these buttons to <guibutton>query</guibutton> a word in the main window,
+        <guibutton>copy</guibutton> the query result to clipboard, 
+ 		<guibutton>pronounce</guibutton> the word, <guibutton>stop</guibutton> selection scanning, etc. 
+ 		To the far right is the <guibutton>Lock floating window</guibutton> button.  If the 
+ 		floating window is locked, it will always be shown there. </para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+ 		<term>Definition area </term>
+		<listitem>
+		<para>The query result is displayed in this area. </para>
+		</listitem>
+		</varlistentry>
+    </variablelist>
+    </sect2>
+
+  </sect1>
+
+<!-- ================ Usage ================================ -->
+
+  <sect1 id="stardict-usage"> 
+    <title>Usage</title>
+
+    <sect2 id="stardict-lookup">
+    	<title>Looking Up a Word</title>
+    	<para>To look up the definition of a word, perform the following steps:</para>
+    	<orderedlist>
+    		<listitem><para>Type the word that you want to look up in the <guilabel>Search</guilabel>
+    		combo box. </para></listitem>
+			<listitem><para><application>&app;</application> will show the definition immediately. If not found, you can 
+			press <keycap>Return</keycap> to do a fuzzy query or just click the <guibutton>Fuzzy query</guibutton> button. </para></listitem>
+    		<listitem><para>Use the scrollbar to scroll through the definition. Select the words in the word list to view the 
+			related words. </para></listitem>
+    	</orderedlist>    
+    </sect2>
+        
+    <sect2 id="stardict-clear">
+    	<title>Clearing the Display Area</title>
+    	<para>To clear the text of the <guilabel>Search</guilabel> input combo, click the <guibutton>Clear</guibutton> button on the 
+		left, or just press <keycap>Alt-C</keycap> or <keycap>ESC</keycap>.</para> 
+    </sect2>
+    
+    <sect2 id="stardict-select">
+    	<title>To Copy Text to Another Application</title>
+    	<para>There are two ways to copy the text in the display area to another application:</para>
+    	<itemizedlist>
+    		<listitem><para>To copy all of the text, click the <guibutton>Copy</guibutton> button by the top of the <guilabel>Defintion area</guilabel>.</para></listitem>
+    		<listitem><para>To copy some of the text, select the text that you want to copy, then click your mouse's right 
+			button and choose <guimenuitem>Copy</guimenuitem>.</para></listitem>
+    	</itemizedlist> 
+    </sect2>
+    
+    <sect2 id="stardict-find">
+    	<title>To Find Text in the Display Area</title>
+    	<para>To find text in the display area, perform the following steps:</para>
+    	<orderedlist>
+    		<listitem><para>click the <guibutton>Find</guibutton> button by the top of the <guilabel>Definition area</guilabel>. </para> </listitem>
+    		<listitem><para>Type the string that you want to find in the <guilabel>Find</guilabel> text box,
+    		then press <keycap>Return</keycap>. You cannot use wildcards.</para></listitem>
+    		<listitem><para>To find the next occurrence of the word, press <keycap>Return</keycap> again.</para></listitem>
+    	</orderedlist>	
+    </sect2>
+
+  </sect1>
+  
+  
+<!-- ============= Preferences  ================================ -->
+  <sect1 id="stardict-prefs">
+	<title>Preferences</title>
+	<para>To configure <application>&app;</application>, click the <guibutton>Preferences</guibutton> button at the 
+	right-bottom corner of the main window or click the <guibutton>Main menu</guibutton> button and choose 
+	<guimenuitem>Preferences</guimenuitem>. </para>
+
+	<sect2 id="stardict-prefs-dictionary">
+	<title>Dictionary</title>	
+		<sect3 id="stardict-prefs-dictionary-startup">
+		<title>Startup</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Hide main window when starting StarDict.</guilabel> </term>
+				<listitem>
+				<para>Controls whether the main window appears when you first start the program.
+                If you select this option, you will only see an icon in the notification area 
+				after starting <application>&app;</application>.  You may still get to the main
+                window by clicking on this icon.</para>
+				<para>Default: FALSE.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+		<sect3 id="stardict-prefs-dictionary-scan">
+		<title>Scan Selection</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Only do scanning while modifier key being pressed.</guilabel> </term>
+				<listitem>
+				<para>Only do scanning while the modifier key being pressed. The modifier key is set 
+				by "Scan modifier key".</para>
+				<para>Default: FALSE.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+		<sect3 id="stardict-prefs-dictionary-font">
+		<title>Font</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Use custom font.</guilabel> </term>
+				<listitem>
+				<para>Allows you to override the system's default font
+				when running <application>&app;</application>.
+				If this option is turned on, then the font named in the "Custom Font" option will be
+				used instead of the system font.</para>
+				<para>Default: FALSE.</para>
+				<para>Font settings will take effect the next time you run <application>&app;</application>.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+		<sect3 id="stardict-prefs-dictionary-sound">
+		<title>Sound</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Enable sound event.</guilabel> </term>
+				<listitem>
+				<para>Whether enable sound event. <application>&app;</application> will play sound event when button is 
+	active, released, and when pop up menu.</para>
+				<para>Default: TRUE.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+
+
+	<sect2 id="stardict-prefs-main-window">
+	<title>Main Window</title>	
+		<sect3 id="stardict-prefs-main-window-searchwebsite">
+		<title>Search Website</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Search website list area</guilabel> </term>
+				<listitem>
+				<para>You can search the websites in this list when you 
+				right-click the <guibutton>Internet search</guibutton> button in the main window.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+
+	<sect2 id="stardict-prefs-notification-area-icon">
+ 	<title>Notification area icon</title>	
+		<sect3 id="stardict-prefs-notification-area-icon-options">
+ 		<title>Options</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Query in the floating window when middle mouse button clicked.</guilabel> </term>
+				<listitem>
+ 				<para>Whether query in the floating window, or the main window. This happens when user clicks the middle 
+				mouse button on the notification area icon. </para>
+				<para>Default: TRUE.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+
+	<sect2 id="stardict-prefs-floating-window">
+ 	<title>Floating Window</title>	
+		<sect3 id="stardict-prefs-floating-window-size">
+		<title>Size</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Max window width.</guilabel> </term>
+				<listitem>
+				<para>Sets the floating window's max width.</para>
+				<para>Default: 320.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>Max window height.</guilabel> </term>
+				<listitem>
+				<para>Sets the floating window's max height.</para>
+				<para>Default: 240.</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+  </sect1>
+
+  <sect1 id="stardict-dictmanage">
+	<title>Dictionary Management</title>
+	<para>To manage the dictionaries, click the <guibutton>Manage dictionaries</guibutton> button at the bottom-right corner of the main window, or click 
+	the <guibutton>Main menu</guibutton> button and choose <guimenuitem>Dict manage</guimenuitem>. 
+	</para>
+	<para>In the dictionary management dialog, you can disable dictionaries that you don't need, 
+	and you can set the order in which the dictonaries are queried. 
+	</para>
+	<para><application>&app;</application> will search the dictionary files at "~/.stardict/dic" and "/usr/share/stardict/dic", and 
+	search tree dictionary files at "~/.stardict/treedict" and "/usr/share/stardict/treedict"</para>
+  </sect1>
+
+ <sect1 id="stardict-projects">
+   <title>Related Projects</title>
+   <para>
+     <application>&app;</application> would not be possible without many other projects' contributions. Here is a short list of
+     projects that helped <application>&app;</application>.
+   </para>
+
+	<sect2 id="stardict-projects-stardict1.3">
+    	<title>StarDict 1.31</title>
+    	<para>The original Motif/LessTif-based StarDict 1.31 written in 1999. <application>&app;</application> 2 got many 
+		good ideas from StarDict1.31 such as "Scan selection." Many of <application>&app;</application> 2's features, like
+        "Fuzzy query," come from StarDict1.31.</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Ma</firstname>
+           	  <surname>Su'an</surname>
+           	  <affiliation>
+                <address><email>msa@wri.com.cn</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-stardict1.33+">
+    	<title>StarDict 1.33+</title>
+    	<para>StarDict1.33+ is a big enhancement of StarDict1.31. It added many dictionaries, and so it made me realize that dictionary
+		data was not a barrier to a new, GTK2-based dictionary program.  If there had been no StarDict1.33+, I would not have
+        started the <application>&app;</application> 2 project. The author also helped me to port the StarDict 1.3 dictionary
+		data files to <application>&app;</application> 2.</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Opera</firstname>
+           	  <surname>Wang</surname>
+           	  <affiliation>
+                <address><email>Opera.Wang@motorola.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-dictd">
+     	<title>The DICT Project</title>
+     	<para>Many dictd dictionaries have been ported to <application>&app;</application>. 
+		dictzip, which came from dictd, is also used by <application>&app;</application>.</para> 
+	    <para>
+     	To find more information about the DICT Project, please visit 
+		<ulink url="http://www.dict.org" type="http">www.dict.org</ulink>.  
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-quick">
+     	<title>*Quick</title>
+     	<para>Many wquick dictionaries have been ported to <application>&app;</application>.</para> 
+	    <para>
+     	To find more information about *Quick, please visit 
+		<ulink url="http://www.futureware.at/quick.htm" type="http">*Quick</ulink>.  
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-blowfish">
+     	<title>The Blowfish Project</title>
+     	<para>The Blowfish Project provided the Oxford English-Chinese dictionary.</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Terrence</firstname>
+           	  <surname>Miao</surname>
+           	  <affiliation>
+                <address><email>terence_miao@email.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	To find more information about the Blowfish Project, please visit the
+		<ulink url="http://igloo.its.unimelb.edu.au/Blowfish/" type="http">Blowfish Project Web site</ulink>.  
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-xdict">
+    	<title>XDICT</title>
+    	<para>XDICT's dictionary has been ported to <application>&app;</application>.</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Fu</firstname>
+           	  <surname>Jianjun</surname>
+           	  <affiliation>
+                <address><email>fujianjun@163.net</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-cdict">
+    	<title>cdict5</title>
+    	<para>cdict5's dictionary has been ported to <application>&app;</application>.</para> 
+
+		<sect3 id="stardict-projects-cdict-xcdict-tcltk">
+    	<title>xcdict-tcltk</title>
+		<sect3info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Leon</firstname>
+           	  <surname>Liang</surname>
+           	  <affiliation>
+                <address><email>Liang.Lu@CERN.CH</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect3info>
+		<para><ulink url="http://luliang.dhs.org/" type="http">xcdict-tcltk Web site</ulink></para>
+		</sect3>
+
+		<sect3 id="stardict-projects-cdict-cdict5-v1.3">
+    	<title>cdict5 v1.3</title>
+		<sect3info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Borg</firstname>
+           	  <surname>LU</surname>
+           	  <affiliation>
+                <address><email>dystopia@iname.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect3info>
+	    <para>
+     	To find more information about the cdict5 Project, please visit the
+		<ulink url="http://www.freshports.org/chinese/cdict5/" type="http">cdict5 on freshports</ulink>.  
+   		</para>
+		</sect3>
+    </sect2>
+
+	<sect2 id="stardict-projects-cedict">
+    	<title>CEDICT</title>
+    	<para>CEDICT's dictionary has been ported to <application>&app;</application>.</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Paul</firstname>
+           	  <surname>Denisowski</surname>
+           	  <affiliation>
+                <address><email>cedict@chinesetools.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	To find more information about the CEDICT Project, please visit the
+		<ulink url="http://www.mandarintools.com/cedict.html" type="http">CEDICT Project Web site</ulink>.  
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-cffd">
+    	<title>CFFD</title>
+    	<para><application>&app;</application>'s icon was created with this software.  CFFD also provided some useful 
+		information to me. </para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Kong</firstname>
+           	  <surname>Hui</surname>
+           	  <affiliation>
+                <address><email>konghui@xinhuanet.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	To find more information about the CFFD Project, please visit the
+		<ulink url="http://cffd.cosoft.org.cn" type="http">CFFD Project Web site</ulink>.  
+   		</para>
+    </sect2>
+
+
+ </sect1>
+
+<!-- ============= Authors ================================ -->
+ <sect1 id="authors">
+   <title>Developers</title>
+   <sect1info>
+     <authorgroup>
+       <author>
+         <firstname>Hu</firstname>
+           <surname>Zheng</surname>
+           <affiliation>
+             <address><email>huzheng_001@163.com</email></address>
+           </affiliation>
+       </author>
+     </authorgroup>
+   </sect1info>
+   <para>
+     To find more information about
+     <application>&app;</application>, please visit the <ulink
+     url="http://stardict.sourceforge.net/" type="http">StarDict Web
+     site</ulink>.  
+   </para>
+   <para>
+     Send all comments, suggestions, and bug reports to 
+     Hu Zheng (<email>huzheng_001@163.com</email>).
+   </para>
+
+   <!-- For translations: uncomment this:
+
+   <para>
+     Latin translation was done by ME
+     (<email>MYNAME@MYADDRESS</email>). Please send all  comments  and
+     suggestions regarding this translation to SOMEWHERE.
+   </para>
+
+   -->
+
+ </sect1>
+
+</article>

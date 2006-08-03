@@ -1,0 +1,19 @@
+/*
+ * Interface for stardict
+ */
+
+#include <Bonobo.idl>
+
+module GNOME {
+
+	module Stardict {
+
+		interface Application : Bonobo::Unknown {
+			oneway void queryWord (in string str);
+			oneway void grabFocus ();
+			oneway void hide ();
+			oneway void quit ();
+		};
+
+	};
+};

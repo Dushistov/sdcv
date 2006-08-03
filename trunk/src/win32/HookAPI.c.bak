@@ -1,0 +1,268 @@
+#include "HookAPI.h"
+
+#pragma check_stack(off)
+
+// These code come from HOOKAPI which developed by Paladin <NetCom@163.com>, http://www.ProgramSalon.com
+// I modified the asm code to compile with gcc.
+
+// After hook ExtTextOutW, it will cause ExtTextOutW be called endlessly, 
+// and I don't know how to fix this bug :( It should because of the wrong asm code.
+
+tagAPIInfo *Head = NULL;
+tagAPIInfo *Tail = NULL;
+
+tagAPIInfo *AddItem()
+{
+	tagAPIInfo *Item;
+	Item = malloc(sizeof(tagAPIInfo));
+	if (Head == NULL) {
+		Head = Item;
+		Tail = Item;
+	} else {
+		Tail->Next = Item;
+		Tail = Tail->Next;
+	}
+	Tail->Next = NULL;
+	return Item;
+}
+
+void RemoveItem(tagAPIInfo *Item)
+{
+	tagAPIInfo *CurrentItem = Head;	
+	if (Head == NULL) return;
+	if (Item == Head) {
+		if (Head == Tail)
+			Tail = NULL;
+		Head = Head->Next;
+		free(Item);
+		return;
+	}
+	while (CurrentItem->Next != Item)
+		CurrentItem = CurrentItem->Next;
+	CurrentItem->Next = Item->Next;
+	if (Item == Tail)
+		Tail = CurrentItem;
+	free(Item);
+}
+
+void APIHandler()
+{
+	PBYTE pbAfterCall;
+	void *pvReturnAddr;
+	PDWORD pdwParam;
+/*
+	_asm
+	{
+		Mov EAX, [EBP + 4] //Before is the replaced call xxxxxxxx command
+		Mov [pbAfterCall], EAX
+		Mov EAX, [EBP + 8]
+		Mov [pvReturnAddr], EAX // Save the previous call address
+		Lea EAX, [EBP + 12]
+		Mov [pdwParam], EAX //Get parameter
+	}
+*/
+	__asm__ __volatile__(
+		"mov 4(%%ebp), %%eax\n\t"
+		"mov %%eax, %0\n\t"
+		"mov 8(%%ebp), %%eax\n\t"
+		"mov %%eax, %1\n\t"
+		"lea 12(%%ebp), %%eax\n\t"
+		"mov %%eax, %2\n\t"
+		:"=m" (pbAfterCall), "=m" (pvReturnAddr), "=m" (pdwParam)
+		:
+	);
+FILE *file;
+file=fopen("C:\\a.txt", "a");
+fprintf(file, "APIHandler 1\n");
+fclose(file);
+	DWORD errcode =0;
+	tagAPIInfo *pAPIInfo;
+	pAPIInfo = Head;
+	while (pAPIInfo != NULL) {
+		if ((pbAfterCall - 5) == (PBYTE)pAPIInfo->APIAddress) {
+			EnterCriticalSection(&pAPIInfo->CriticalSection);
+			DWORD dwScratch;
+			if (!VirtualProtect(pAPIInfo->APIAddress, 20, PAGE_READWRITE, &dwScratch))
+				goto call_ret;
+			memcpy(pAPIInfo->APIAddress, pAPIInfo->Opcodes, 5); //restore the old api call
+			break;
+		}
+		pAPIInfo = pAPIInfo->Next;
+	}
+	if (pAPIInfo == NULL)
+		goto call_ret;
+
+	DWORD dwParamSize;
+	dwParamSize = pAPIInfo->ParamCount * 4;  // 32Bit address use 4 bytes
+	PDWORD pdwESP;
+/*
+	_asm
+	{
+		Sub ESP, [dwParamSize]
+		Mov [pdwESP], ESP
+	}
+*/
+	__asm__ __volatile__(
+		"sub %1, %%esp\n\t"
+		"mov %%esp, %0\n\t"
+		:"=m" (pdwESP)
+		:"m" (dwParamSize)
+	);
+	memcpy(pdwESP, pdwParam, dwParamSize);
+
+file=fopen("C:\\a.txt", "a");
+fprintf(file, "APIHandler 2\n");
+fclose(file);
+	pAPIInfo->MyFunc();
+file=fopen("C:\\a.txt", "a");
+fprintf(file, "APIHandler 3\n");
+fclose(file);
+	DWORD dwReturnValue;
+/*
+	_asm
+	{
+		Push EAX
+		Mov [dwReturnValue], EAX  //
+	}
+*/
+	__asm__ __volatile__(
+		"push %%eax\n\t"
+		"mov %%eax, %0\n\t"  // Build the return value
+		:"=m" (dwReturnValue)
+		:
+	);
+	errcode =GetLastError();
+	//Insert into the 'call' command before th function,restore the 'myxxxx' function
+	PBYTE pbAPI;
+	pbAPI = (PBYTE)pAPIInfo->APIAddress;
+	pbAPI[0] = 0xE8;
+	*(DWORD *)&pbAPI[1]= (DWORD)APIHandler - (DWORD)pbAPI - 5;
+
+	LeaveCriticalSection(&pAPIInfo->CriticalSection);
+
+call_ret:
+file=fopen("C:\\a.txt", "a");
+fprintf(file, "APIHandler 4\n");
+fclose(file);
+	SetLastError(errcode);
+/*
+	_asm
+	{
+		Pop EAX
+		Mov ECX, [dwParamSize]
+		Mov EDX, [pvReturnAddr]
+		Pop EDI
+		Pop ESI
+		Pop EBX
+		Mov ESP, EBP
+		Pop EBP
+		Add ESP, 8
+		Add ESP, ECX  //
+		Push EDX
+		Ret
+	}
+*/
+	__asm__ __volatile__(
+		"pop %%eax\n\t"
+		"mov %0, %%ecx\n\t"
+		"mov %1, %%edx\n\t"
+		"pop %%edi\n\t"
+		"pop %%esi\n\t"
+		"pop %%ebx\n\t"
+		"mov %%ebp, %%esp\n\t"
+		"pop %%ebp\n\t"
+		"add $8, %%esp\n\t"
+		"add %%ecx, %%esp\n\t"
+		"push %%edx\n\t"
+		"ret\n\t"
+		:
+		:"m" (dwParamSize), "m" (pvReturnAddr)
+	);
+}
+
+tagAPIInfo *HookAPIFunction(PSTR pszModuleName,  // Module Name
+                            PSTR pszAPIName,     // api Name
+                            tagMyFunc MyFunc)    // my func's address
+{
+	HMODULE hModule;
+	hModule = GetModuleHandle(pszModuleName);	
+	if (hModule == NULL)
+		return NULL;
+	PBYTE pbAPI;	
+	pbAPI = (PBYTE)GetProcAddress(hModule, pszAPIName);
+	if (pbAPI == NULL)
+		return NULL;
+	// Is it already hooked ?	
+	tagAPIInfo *pTempAPIInfo;
+	pTempAPIInfo = Head;
+	while (pTempAPIInfo != NULL) {
+		if (pTempAPIInfo->APIAddress == (tagAPIAddr)pbAPI)
+			return NULL;
+		pTempAPIInfo = pTempAPIInfo->Next;
+	}
+	// No, so add a new item
+	tagAPIInfo *pAPIInfo;
+	pAPIInfo = AddItem();
+	if (!VirtualProtect(pbAPI, 20, PAGE_READWRITE, &(pAPIInfo->dwOldProtectionFlags))) {
+		RemoveItem(pAPIInfo);
+		return NULL;
+	}
+	memcpy(pAPIInfo->Opcodes, pbAPI, 5);
+	pAPIInfo->APIAddress = (tagAPIAddr)pbAPI;
+	pAPIInfo->MyFunc = MyFunc;
+
+	pbAPI[0] = 0xE8;
+	*(DWORD *)&pbAPI[1]= (DWORD)APIHandler - (DWORD)pbAPI - 5;
+
+	return pAPIInfo;
+}
+
+BOOL HookAPI(PSTR pszModuleName, PSTR pszAPIName, tagMyFunc MyFunc, int ParamCount)
+{
+	tagAPIInfo *pAPIInfo = HookAPIFunction(pszModuleName, pszAPIName, MyFunc);
+	if (pAPIInfo) {
+		InitializeCriticalSection(&pAPIInfo->CriticalSection);
+		pAPIInfo->ParamCount = ParamCount;
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
+void UnhookAPIFunction(tagAPIInfo *pAPIInfo)
+{
+	DWORD dwScratch;
+	if (VirtualProtect(pAPIInfo->APIAddress, 20, PAGE_READWRITE, &dwScratch))
+		memcpy(pAPIInfo->APIAddress, pAPIInfo->Opcodes, 5);
+	DeleteCriticalSection(&(pAPIInfo->CriticalSection));
+	VirtualProtect(pAPIInfo->APIAddress, 20, pAPIInfo->dwOldProtectionFlags, &dwScratch);
+	RemoveItem(pAPIInfo);
+}
+
+void UnhookAllAPIFunctions()
+{
+	tagAPIInfo *pAPIInfo;
+	tagAPIInfo *pTempAPIInfo;
+	pAPIInfo = Head;
+	while (pAPIInfo != NULL)
+	{
+		pTempAPIInfo = pAPIInfo->Next;
+		UnhookAPIFunction(pAPIInfo);
+		pAPIInfo = pTempAPIInfo;
+	}
+}
+
+/*
+void InstallTextOutHooks()
+{
+	HookAPI("gdi32.dll", "TextOutA", (tagMyFunc)TextOutACallbackProc, 5);
+	HookAPI("gdi32.dll", "TextOutW", (tagMyFunc)TextOutWCallbackProc, 5);
+	HookAPI("gdi32.dll", "ExtTextOutA", (tagMyFunc)ExtTextOutACallbackProc, 8);
+	HookAPI("gdi32.dll", "ExtTextOutW", (tagMyFunc)ExtTextOutWCallbackProc, 8);
+}
+
+void UninstallTextOutHooks()
+{
+	UnhookAllAPIFunctions();
+}
+*/

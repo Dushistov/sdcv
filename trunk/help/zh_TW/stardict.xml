@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+  <!ENTITY legal SYSTEM "legal.xml">
+  <!ENTITY appversion "2.4.2">
+  <!ENTITY manrevision "2.4.2">
+  <!ENTITY date "Nov 2003">
+  <!ENTITY app "星際譯王">
+]>
+<!-- 
+      (Do not remove this comment block.)
+  Maintained by the GNOME Documentation Project
+  http://developer.GNOME.org/projects/gdp
+  Template version: 2.0 beta
+  Template last modified Jan 30, 2002
+  
+-->
+<!-- =============Document Header ============================= -->
+<article id="index" lang="zh_TW">
+<!-- please do not change the id; for translations, change lang to -->
+<!-- appropriate code -->
+  <articleinfo> 
+	 <title>&app; 使用手冊 V&manrevision;</title>
+	 <copyright> 
+		<year>2003</year>
+		<holder>胡正</holder> </copyright>
+  <copyright>
+   <year>2004</year>
+   <holder>陳曉陽(繁體中文翻譯)</holder>
+   <address> <email>roy.chan@debian.org.hk</email> </address>
+  </copyright>
+<!--  -->
+	 <publisher> 
+		<publishername> GNOME Documentation Project </publishername>
+	 </publisher>
+	 &legal; 
+	 <authorgroup> 
+		<author> 
+		  <firstname>胡</firstname>
+		  <surname>正</surname> 
+		  <affiliation> 
+			 <orgname>GNOME Documentation Project</orgname>
+			 <address> <email>huzheng_001@163.com</email> </address>
+		  </affiliation>
+		</author> 
+
+<!-- This is appropriate place for other contributors: translators,
+      maintainers,  etc. Commented out by default.
+
+       <othercredit role="translator">
+	<firstname>Will</firstname> 
+	<surname>Robinson</surname> 
+	<affiliation> 
+	  <orgname>Stanford University</orgname> 
+	  <address> <email>wsr23@stanford.edu</email> </address> 
+	</affiliation>
+	<contrib>整理英文文件</contrib>
+      </othercredit>
+-->
+
+	 </authorgroup>
+
+
+<!-- According to GNU FDL, revision history is mandatory if you are -->
+<!-- modifying/reusing someone else's document.  If not, you can omit it. -->
+	 <revhistory>
+<!-- Remember to remove the &manrevision; entity from the revision entries other
+   than the current revision. -->
+   		<revision> 
+		  <revnumber>&app; 手冊 V&manrevision;</revnumber>
+		  <date>&date;</date> 
+		  <revdescription> 
+			 <para role="author">胡正</para>
+			 <para role="publisher">GNOME Documentation Project</para>
+		  </revdescription>
+		</revision>
+	 </revhistory>
+	 <releaseinfo> 這本手冊描述了&appversion;版本的&app;。
+		</releaseinfo>
+	 <legalnotice> 
+		<title>提出意見</title>
+		<para>提出關於<application>&app;</application>或本文件的建議或者報告臭蟲請與下面地址聯絡： 
+		<ulink url="ghelp:gnome-feedback" type="help"> GNOME 意見頁</ulink>。
+      </para>
+<!-- Translators may also add here feedback address for translations -->
+	 </legalnotice>
+  </articleinfo>
+  <indexterm><primary>星際譯王</primary></indexterm>
+  <indexterm><primary>辭典</primary></indexterm>
+
+<!-- ============= Document Body ============================= -->
+<!-- ============= Introduction ============================== -->
+
+  <sect1 id="stardict-introduction"> 
+    <title>簡介</title> 
+    <para>
+	  <application>星際譯王</application>是一個用Gtk2開發的跨平台的國際化的辭典軟體。她具有強大的功能，如“萬用字元匹配”，“掃描選擇”，“模糊查詢”，等等。
+	</para> 
+  </sect1>
+
+  <sect1 id="stardict-getting-started">
+    <title>啟動</title> 
+    
+    <sect2 id="stardict-to-start">
+    <title>啟動&app;</title>	
+
+    <para>你可以從以下幾種方式啟動<application>&app;</application> :
+    </para> 
+    <variablelist>
+    	<varlistentry>
+    		<term><guimenu>應用程式</guimenu>選單</term>
+    		<listitem>
+    		<para>選擇<menuchoice><guisubmenu>附屬應用程式</guisubmenu><guimenuitem>星際譯王</guimenuitem></menuchoice>。</para>
+    		</listitem>
+    	</varlistentry>
+    	<varlistentry>
+    		<term>指令行</term>
+    		<listitem>
+    		<para>輸入<command>stardict</command>，然後按<keycap>回車鍵</keycap>。</para>
+            <para>
+            你也可以指定一個單詞來查詢： 
+	        </para>
+	        <para>
+            <command>stardict <replaceable>word</replaceable></command>
+            </para>
+            <para>  
+            或者使用萬用字元查詢：
+            </para>  
+            <para>
+            <command>stardict <replaceable>wo?d*</replaceable></command>
+            </para>
+            <para>  
+            或者進行模糊查詢： 
+            </para>  
+            <para>
+            <command>stardict <replaceable>/word</replaceable></command>
+            </para>
+    		</listitem>
+    	</varlistentry>
+    </variablelist>
+    <note>
+      <para>
+      如果<application>&app;</application>已經運行，她將會在已有的星際譯王視窗中進行查詢。 
+      </para>
+    </note>
+
+    </sect2>
+    
+    <sect2 id="stardict-when-you-start">
+    <title>當你啟動了&app; </title>
+	
+    <para>當你啟動了<application>&app;</application>，就會出現下面的視窗。</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="stardict-main-window-fig"> 
+	<title> &app; 主視窗</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/stardict_main_window.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>顯示 &app; 的主視窗，包含了查詢輸入框，工具按鈕，單詞列表，釋義區和設定按鈕。</phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+    
+    <para> <guilabel>&app;</guilabel>主視窗包含了下面的元素：</para>
+    <variablelist>
+		<varlistentry>
+		<term><guilabel>查詢</guilabel>輸入框</term>
+		<listitem>
+		<para>在這裡輸入你想查詢的單詞。你也可以通過用下拉選單來選取最近查過的單詞。</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>工具按鈕</term>
+		<listitem>
+		<para>你可以通過按一下這些按鈕來進行模糊查詢、查詢先前查過的單詞、查詢位於左邊的列表中的前後單詞和彈出主視窗選單。</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>單詞列表</term>
+		<listitem>
+		<para>顯示了所有這次查到的單詞。</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>釋義區</term>
+		<listitem>
+		<para><application>&app;</application>在視窗的這塊區域列出了本單詞的所有釋義。</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+		<term>設定按鈕</term>
+		<listitem>
+		<para>位於視窗左下角的按鈕包含了<guibutton>取詞</guibutton>核取方塊，<guibutton>顯示訊息</guibutton>按鈕和<guibutton>離開</guibutton>按鈕。選上<guibutton>取詞</guibutton>後會讓 <application>&app;</application>自動查詢你在任何應用程式中的選中選擇了的單詞。視窗的右下部包含了<guibutton>搜尋網絡辭典</guibutton>按鈕，<guibutton>瀏覽“星際譯王”網站</guibutton>按鈕，<guibutton>辭典管理</guibutton>按鈕和<guibutton>偏好設定</guibutton>按鈕。</para>
+		</listitem>
+		</varlistentry>
+	</variablelist>
+	
+    </sect2>
+
+    <sect2 id="stardict-notification-area">
+    <title>狀態通知區圖示</title>
+	<para>
+	<application>&app;</application>也會在狀態通知區中加入一個圖示。當你最小化視窗後，視窗就會被隱藏。當你按一下圖示後，視窗就會出現。如果右擊鼠標，會彈出一個選單讓你選擇切換<guimenuitem>取詞</guimenuitem>狀態，或者<guimenuitem>離開</guimenuitem>。你可以按下Ctrl鍵後按一下圖示來直接切換取詞狀態。在圖示上點鼠標中鍵可以查詢選擇中的文字。
+	</para>
+	<figure id="stardict-notification-area-fig"> 
+	<title><application>&app;</application>的狀態通知區圖示</title> 
+	<screenshot> 
+		<mediaobject> 
+			<imageobject><imagedata fileref="figures/stardict_notification_area.png" format="PNG"/> 
+			</imageobject>
+			<textobject> 
+				<phrase><application>&app;</application>的狀態通知區圖示。</phrase> 
+			</textobject> 
+		</mediaobject> 
+	</screenshot> 
+	</figure> 
+	</sect2>
+
+    <sect2 id="stardict-scan-selection">
+    <title>選擇取詞</title>
+
+     <para><application>&app;</application>能夠自動掃描選擇區。這意味著當你在<application>&app;</application>中或其它應用程式中選擇了一個單詞或詞組時，<application>&app;</application> 就會取得你要選中的單詞或詞組，然後彈出一個浮動視窗顯示查詢結果。</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="stardict-float-window-fig"> 
+ 	<title>&app; 浮動視窗</title>
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/stardict_float_window.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+ 	      <phrase>顯示 &app; 浮動視窗。包含了工具按鈕和釋義區。</phrase>
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+ 	<para>你能夠拖動視窗。當把鼠標指針移出浮動視窗一定距離後，它就會消失。</para>
+    <para><guilabel>&app;</guilabel>浮動視窗包含下列元素：</para>
+    <variablelist>
+		<varlistentry>
+		<term>工具按鈕</term>
+		<listitem>
+ 		<para>這些按鈕會自動隱藏以節省顯示空間。當把鼠標移入浮動視窗時，這些按鈕會立即出現，當鼠標離開後又會再度隱藏。</para>
+ 		<para>你可以通過按一下這些按鈕來在主視窗<guibutton>查詢</guibutton>單詞，把查詢結果<guibutton>複製</guibutton>到剪貼板，<guibutton>朗讀</guibutton>單詞，<guibutton>停止</guibutton>選中區掃描等等。在最右邊是<guibutton>鎖定浮動視窗</guibutton>按鈕。如果浮動視窗被鎖定，她就會一直在那裡顯示。</para>
+		</listitem>
+		</varlistentry>
+		<varlistentry>
+ 		<term>釋義區</term>
+		<listitem>
+		<para>查詢的結果會顯示在這個區域。</para>
+		</listitem>
+		</varlistentry>
+    </variablelist>
+    </sect2>
+
+  </sect1>
+
+<!-- ================ Usage ================================ -->
+
+  <sect1 id="stardict-usage"> 
+    <title>使用方法</title>
+
+    <sect2 id="stardict-lookup">
+    	<title>查詢單詞</title>
+    	<para>要查詢一個單詞的釋義，可以按照下列步驟進行：</para>
+    	<orderedlist>
+    		<listitem><para>在<guilabel>搜索</guilabel>框中輸入你想要查找的單詞。</para></listitem>
+			<listitem><para><application>&app;</application>會立即顯示所有的釋義。如果沒有找到，你可以按<keycap>回車鍵</keycap>來進行模糊查詢或者按一下<guibutton>模糊查詢</guibutton>按鈕。</para></listitem><listitem><para>你可以利用捲動列來查看釋義區的內容，在單詞列表中選擇相關的單詞。</para></listitem>
+    	</orderedlist>    
+    </sect2>
+        
+    <sect2 id="stardict-clear">
+    	<title>清除單字輸入框內容</title>
+    	<para>要清除<guilabel>查找</guilabel>輸入框中的內容，按一下位於左邊的<guibutton>清除</guibutton>按鈕或直接按<keycap>Alt-C</keycap> 或 <keycap>ESC</keycap>。</para> 
+    </sect2>
+    
+    <sect2 id="stardict-select">
+    	<title>複製文本</title>
+    	<para>複製釋義區的內容到另一個應用程式有兩種方式：</para>
+    	<itemizedlist>
+    		<listitem><para>複製所有的內容：按一下位於<guilabel>釋義區</guilabel>頂部的<guibutton>複製</guibutton>按鈕。</para></listitem>
+    		<listitem><para>選擇你想複製的文本，然後按一下鼠標的右鍵並選擇<guimenuitem>複製</guimenuitem>。</para></listitem>
+    	</itemizedlist> 
+    </sect2>
+    
+    <sect2 id="stardict-find">
+    	<title>查找釋義區文本</title>
+    	<para>要查找位於釋義區的文本，可以按照下面的步驟進行：</para>
+    	<orderedlist>
+    		<listitem><para>按一下位於<guilabel>釋義區</guilabel>頂部的<guibutton>查找</guibutton>按鈕。</para> </listitem>
+    		<listitem><para>在<guilabel>查找</guilabel>文本框中輸入你想要查找的單詞或詞組，然後按<keycap>回車鍵</keycap>。但不可以使用萬用字元。</para></listitem>
+    		<listitem><para>要查找下一個單詞，再按<keycap>回車鍵</keycap>即可。</para></listitem>
+    	</orderedlist>	
+    </sect2>
+
+  </sect1>
+  
+  
+<!-- ============= Preferences  ================================ -->
+  <sect1 id="stardict-prefs">
+	<title>偏好設定</title>
+	<para>要設定<application>&app;</application>，按一下位於主視窗右下部的<guibutton>偏好設定</guibutton>按鈕或者按一下<guibutton>主選單</guibutton>按鈕並選擇<guimenuitem>偏好設定</guimenuitem>。</para>
+
+	<sect2 id="stardict-prefs-dictionary">
+	<title>辭典</title>	
+		<sect3 id="stardict-prefs-dictionary-startup">
+		<title>啟動</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>啟動星際譯王時隱藏主視窗。</guilabel> </term>
+				<listitem>
+				<para>控制啟動本軟體時是否顯示主視窗。如果你選擇了這一項，啟動<application>&app;</application>後你只會看到位於狀態通知區的圖示。但你可以通過按一下圖示來顯示主視窗。</para>
+				<para>預設：否。</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+		<sect3 id="stardict-prefs-dictionary-scan">
+		<title>選擇區取詞</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>在修飾鍵被按下時才進行取詞。</guilabel> </term>
+				<listitem>
+				<para>是否在作用鍵被按下時才進行取詞。作用鍵由“取詞作用鍵”選項來設定。</para>
+				<para>預設：否。</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+		<sect3 id="stardict-prefs-dictionary-font">
+		<title>字型</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>使用自訂的字型。</guilabel> </term>
+				<listitem>
+				<para>當運行<application>&app;</application>時允許你覆蓋掉系統的預設字型設定。如果這個選項是打開的，那麼在“辭典字型”中的字型就會取代系統預設的設定。</para>
+				<para>預設：否。</para>
+				<para>下次運行<application>&app;</application>時字型設定就生效了。</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+		<sect3 id="stardict-prefs-dictionary-sound">
+		<title>音效</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>開啟事件音效。</guilabel> </term>
+				<listitem>
+				<para>是否開啟事件音效。在選取了，按下按扭，彈起，選單彈出時<application>&app;</application>將播放音效。</para>
+				<para>預設：是。</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+
+	<sect2 id="stardict-prefs-main-window">
+	<title>主視窗</title>	
+		<sect3 id="stardict-prefs-main-window-searchwebsite">
+		<title>搜尋網站</title>	
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>搜尋網站的列表</guilabel> </term>
+				<listitem>
+				<para>通過右鍵按一下位於主視窗的<guibutton>搜尋網路辭典</guibutton>按鈕就出現這些搜尋網站的列表選單。</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+
+	<sect2 id="stardict-prefs-notification-area-icon">
+ 	<title>狀態通知區圖示</title>	
+		<sect3 id="stardict-prefs-notification-area-icon-options">
+ 		<title>選項</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>當點擊鼠標中鍵時在浮動視窗進行查詢。</guilabel> </term>
+				<listitem>
+ 				<para>是否在浮動視窗中進行查詢，否則為在主視窗查詢。這在當用戶在通知區圖示上點鼠標中鍵時發生。</para>
+				<para>預設：是。</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+	
+	<sect2 id="stardict-prefs-floating-window">
+ 	<title>浮動視窗</title>	
+		<sect3 id="stardict-prefs-floating-window-size">
+		<title>大小</title>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>最大視窗寬度。</guilabel> </term>
+				<listitem>
+				<para>設定浮動視窗寬度的最大值。</para>
+				<para>預設：320。</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+			<variablelist>
+				<varlistentry>
+				<term><guilabel>最大視窗高度。</guilabel> </term>
+				<listitem>
+				<para>設定浮動視窗高度的最大值。</para>
+				<para>預設：240。</para>
+				</listitem>
+				</varlistentry>
+			</variablelist>
+		</sect3>
+	</sect2>
+  </sect1>
+
+  <sect1 id="stardict-dictmanage">
+	<title>辭典管理</title>
+	<para>要管理辭典，按一下位於主視窗右下角的<guibutton>辭典管理</guibutton>按鈕，或者按一下<guibutton>主選單</guibutton>按鈕並選擇<guimenuitem>辭典管理</guimenuitem>。
+	</para>
+	<para>在辭典管理對話框中，你可以關掉不需要的辭典，你也可以設定辭典查詢的順序。
+	</para>
+	<para><application>&app;</application>將在 "/usr/share/stardict/dic" 和 "~/.stardict/dic" 目錄查找辭典檔案，在 "/usr/share/stardict/treedict" 和 "~/.stardict/treedict" 目錄查找樹型辭典檔案。</para>
+  </sect1>
+
+ <sect1 id="stardict-projects">
+   <title>相關專案</title>
+   <para>
+     沒有其它專案的支持和幫助<application>&app;</application>不會出現。下面是幫助了<application>&app;</application>的專案的簡短列表。
+   </para>
+
+	<sect2 id="stardict-projects-stardict1.3">
+    	<title>星際譯王 1.31</title>
+    	<para>最初寫於1999年的星際譯王1.31版是基於 Motif/LessTif 開發的。<application>&app;</application> 2 吸收了星際譯王1.31版的許多好想法，比如"掃描選擇區"。許多 <application>&app;</application> 2的重要特色，比如“模糊查詢”就來源於星際譯王1.31版。</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>馬</firstname>
+           	  <surname>蘇安</surname>
+           	  <affiliation>
+                <address><email>msa@wri.com.cn</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-stardict1.33+">
+    	<title>星際譯王 1.33+</title>
+    	<para>星際譯王1.33+版是對1.31的極大改進。她增加了許多辭典，這使我意識到辭典數據對於一個全新的、基於GTK2的辭典專案已經不再是一個障礙。如果沒有星際譯王1.33+版，我也不會開始<application>&app;</application> 2 專案。作者還幫助我把辭典的數據轉換到了<application>&app;</application>2</para>。
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>王</firstname>
+           	  <surname>煒</surname>
+           	  <affiliation>
+                <address><email>Opera.Wang@motorola.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-dictd">
+     	<title>DICT 專案</title>
+     	<para>很多編撰好的 dictd 辭典已經被轉換加入了<application>&app;</application>。來自 DICT 專案的 dictzip 也用在了<application>&app;</application>。</para> 
+	    <para>
+     	要獲得更多關於 DICT 專案的訊息，請訪問 
+		<ulink url="http://www.dict.org" type="http">www.dict.org</ulink>。
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-quick">
+     	<title>*Quick</title>
+     	<para>wquick的許多辭典都轉換加入到了 <application>&app;</application>。</para> 
+	    <para>
+     	要獲得更多關於*Quick專案的訊息，請訪問 
+		<ulink url="http://www.futureware.at/quick.htm" type="http">*Quick</ulink>。
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-blowfish">
+     	<title>Blowfish 專案</title>
+     	<para>Blowfish 專案提供了牛津現代英漢雙解辭典。</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Terrence</firstname>
+           	  <surname>Miao</surname>
+           	  <affiliation>
+                <address><email>terence_miao@email.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	要獲得更多關於 Blowfish 專案的訊息，請訪問
+		<ulink url="http://igloo.its.unimelb.edu.au/Blowfish/" type="http">Blowfish 專案網站</ulink>。
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-xdict">
+    	<title>XDICT</title>
+    	<para>XDICT 的辭典已經被成功匯入<application>&app;</application>。</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>伏</firstname>
+           	  <surname>建軍</surname>
+           	  <affiliation>
+                <address><email>fujianjun@163.net</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+    </sect2>
+
+	<sect2 id="stardict-projects-cdict">
+    	<title>cdict5</title>
+    	<para>cdict5 的辭典已被成功匯入<application>&app;</application>。</para> 
+
+		<sect3 id="stardict-projects-cdict-xcdict-tcltk">
+    	<title>xcdict-tcltk</title>
+		<sect3info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Leon</firstname>
+           	  <surname>Liang</surname>
+           	  <affiliation>
+                <address><email>Liang.Lu@CERN.CH</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect3info>
+		<para><ulink url="http://luliang.dhs.org/" type="http">xcdict-tcltk 網站</ulink></para>
+		</sect3>
+
+		<sect3 id="stardict-projects-cdict-cdict5-v1.3">
+    	<title>cdict5 v1.3</title>
+		<sect3info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Borg</firstname>
+           	  <surname>LU</surname>
+           	  <affiliation>
+                <address><email>dystopia@iname.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect3info>
+	    <para>
+     	要獲得更多關於 cdict5 專案的訊息，請訪問
+		<ulink url="http://www.freshports.org/chinese/cdict5/" type="http">cdict5 專案網站</ulink>。
+   		</para>
+		</sect3>
+    </sect2>
+
+	<sect2 id="stardict-projects-cedict">
+    	<title>CEDICT</title>
+    	<para>CEDICT 的辭典已經被匯入了<application>&app;</application>。</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>Paul</firstname>
+           	  <surname>Denisowski</surname>
+           	  <affiliation>
+                <address><email>cedict@chinesetools.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	要獲得更多關於 CEDICT 專案的訊息，請訪問
+     	<ulink url="http://www.mandarintools.com/cedict.html" type="http">CEDICT 專案網站</ulink>。
+   		</para>
+    </sect2>
+
+	<sect2 id="stardict-projects-cffd">
+    	<title>CFFD</title>
+    	<para><application>&app;</application>的圖示是從這個軟體得來的。CFFD 同樣也為我提供了一些有用的訊息。</para> 
+		<sect2info>
+     	<authorgroup>
+       	  <author>
+            <firstname>孔</firstname>
+           	  <surname>暉</surname>
+           	  <affiliation>
+                <address><email>konghui@xinhuanet.com</email></address>
+              </affiliation>
+          </author>
+        </authorgroup>
+		</sect2info>
+	    <para>
+     	要獲得更多關於 CFFD 專案的訊息，請訪問
+		<ulink url="http://cffd.cosoft.org.cn" type="http"> CFFD 專案網站</ulink>。
+   		</para>
+    </sect2>
+
+
+ </sect1>
+
+<!-- ============= Authors ================================ -->
+ <sect1 id="authors">
+   <title>開發者</title>
+   <sect1info>
+     <authorgroup>
+       <author>
+         <firstname>胡</firstname>
+           <surname>正</surname>
+           <affiliation>
+             <address><email>huzheng_001@163.com</email></address>
+           </affiliation>
+       </author>
+     </authorgroup>
+   </sect1info>
+   <para>
+     要獲得更多的關於
+     <application>&app;</application>的訊息，請訪問 <ulink
+     url="http://stardict.sourceforge.net/" type="http">星際譯王網站</ulink>。
+   </para>
+   <para>
+     請把所有該軟體的評論、建議、錯誤報告發送給胡正
+      (<email>huzheng_001@163.com</email>)。
+   </para>
+
+   <!-- For translations: uncomment this: -->
+
+   <para>
+     繁體中文翻譯由陳曉陽完成
+     (<email>roy.chan@debian.org.hk</email>)。請將有關本翻譯的評論和建議電郵給我。
+   </para>
+
+   <!-- -->
+
+ </sect1>
+
+</article>

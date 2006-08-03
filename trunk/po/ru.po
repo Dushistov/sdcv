@@ -1,0 +1,1152 @@
+# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Alex Murygin <murygin@aitoc.com>, 2003
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: stardict 2.4.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-07-05 22:57+0800\n"
+"PO-Revision-Date: 2006-07-02 15:51+0300\n"
+"Last-Translator: Evgeniy Dushistov <dushistov@mail.ru>\n"
+"Language-Team: ru <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/GNOME_Stardict.server.in.h:1
+msgid "stardict application"
+msgstr "stardict приложение"
+
+#: ../data/GNOME_Stardict.server.in.h:2
+msgid "stardict automation factory"
+msgstr "фабрика автоматизации stardict"
+
+#: ../data/stardict.desktop.in.h:1
+msgid "Lookup words"
+msgstr "Поиск слова"
+
+#. gtk_widget_set_app_paintable(window, TRUE);
+#: ../data/stardict.desktop.in.h:2 ../src/docklet.cpp:31 ../src/docklet.cpp:71
+#: ../src/mainwin.cpp:483 ../src/splash.cpp:78 ../src/stardict.cpp:173
+#: ../src/stardict.cpp:1691 ../src/win32/systray.cpp:196
+#: ../src/win32/systray.cpp:218
+msgid "StarDict"
+msgstr "StarDict"
+
+#: ../data/stardict.schemas.in.h:1
+msgid ""
+"A custom font that will be used in StarDict. This will only take effect if "
+"the \"Use Custom Font\" option is turned on."
+msgstr ""
+"Шрифт который будет использоваться в StarDict. Используется только если "
+"включена опция \"Использовать свой шрифт\"."
+
+#: ../data/stardict.schemas.in.h:2
+msgid "Custom Font"
+msgstr "Свой шрифт"
+
+#: ../data/stardict.schemas.in.h:3
+msgid "Dictionary order"
+msgstr "Порядок словарей"
+
+#: ../data/stardict.schemas.in.h:4
+msgid "Disabled dictionary list"
+msgstr "Список выключенных словарей"
+
+#: ../data/stardict.schemas.in.h:5
+msgid "Disabled tree dictionary list"
+msgstr "Список выключенных древовидных словарей"
+
+#: ../data/stardict.schemas.in.h:6
+msgid "Enable sound event"
+msgstr "Использовать звуки для событий"
+
+#: ../data/stardict.schemas.in.h:7
+msgid "Hide floating window when modifier key is released"
+msgstr "Прятать всплывающее окно, когда модификатор отпущен"
+
+#: ../data/stardict.schemas.in.h:8
+msgid ""
+"Hide floating window when modifier key is released. It only take effect when "
+"only_scan_while_modifier_key is turned on."
+msgstr ""
+"Прятать всплывающее окно, когда модификатор отпущен. Только если включено "
+"\"Сканировать, только если модификатор нажат \"."
+
+#: ../data/stardict.schemas.in.h:9
+msgid "Hide the list"
+msgstr "Спрятать список"
+
+#: ../data/stardict.schemas.in.h:10
+msgid "Hide the window on startup"
+msgstr "Прятать окно при старте "
+
+#: ../data/stardict.schemas.in.h:11
+msgid "Hpaned 's position"
+msgstr "Позиция разделителя"
+
+#: ../data/stardict.schemas.in.h:12
+msgid "List the dictionaries in order."
+msgstr "Отобразить словари по порядку."
+
+#: ../data/stardict.schemas.in.h:13
+msgid "List the dictionaries which are disabled."
+msgstr "Отобразить отключенные словари."
+
+#: ../data/stardict.schemas.in.h:14
+msgid "List the search websites."
+msgstr "Отобразить список сайтов поиска."
+
+#: ../data/stardict.schemas.in.h:15
+msgid "List the tree dictionaries in order."
+msgstr "Отобразить древовидные словари по порядку."
+
+#: ../data/stardict.schemas.in.h:16
+msgid "List the tree dictionaries which are disabled."
+msgstr "Отобразить отключенные древовидные словари."
+
+#: ../data/stardict.schemas.in.h:17
+msgid "Maximum window-height"
+msgstr "Максимальная высота окна"
+
+#: ../data/stardict.schemas.in.h:18
+msgid "Maximum window-width"
+msgstr "Максимальная ширина окна"
+
+#: ../data/stardict.schemas.in.h:19
+msgid "Only scan while modifier key is being pressed"
+msgstr "Сканировать только если комбинация-модификатор нажата"
+
+#: ../data/stardict.schemas.in.h:20
+msgid ""
+"Only scan while the modifier key is being pressed. The modifier key is set "
+"by \"scan_modifier_key\"."
+msgstr ""
+"Сканировать только если комбинация-модификатор нажата. Модификатор задается "
+"через \"Модификатор сканирования\"."
+
+#: ../data/stardict.schemas.in.h:21
+msgid ""
+"Only scan while this modifier key is being pressed. It can be Win(0), Shift"
+"(1), Alt(2) or Ctrl(3)."
+msgstr ""
+"Сканировать только если этот клавиша-модификатор нажата.Может быть Win(0), "
+"Shift(1), Alt(2) или Ctrl(3)."
+
+#: ../data/stardict.schemas.in.h:22
+msgid "Pronounce the word when it pops up."
+msgstr "Произнести слово при всплытие перевода"
+
+#: ../data/stardict.schemas.in.h:23
+msgid "Pronounce the word when the floating window pops up."
+msgstr "Произнести слово при появлении всплывающего окна."
+
+#: ../data/stardict.schemas.in.h:24
+msgid "Query in the floating window when middle mouse button is clicked"
+msgstr "Запрашивать в всплывающем окне когда средняя кнопка мыши нажата"
+
+#: ../data/stardict.schemas.in.h:25
+msgid "Scan modifier key"
+msgstr "Модификатор сканирования"
+
+#: ../data/stardict.schemas.in.h:26
+msgid "Scan the Selection"
+msgstr "Сканировать Выделенное"
+
+#: ../data/stardict.schemas.in.h:27
+msgid "Search website list"
+msgstr "Список сайтов для поиска"
+
+#: ../data/stardict.schemas.in.h:28
+msgid "The height of the main stardict window."
+msgstr "Высота главного окна stardict."
+
+#: ../data/stardict.schemas.in.h:29
+msgid "The hpaned's position, between the listview and the textview."
+msgstr ""
+"Позиция разделителя, находящегося между списком слов и областью перевода."
+
+#: ../data/stardict.schemas.in.h:30
+msgid "The maximum height of the floating stardict window."
+msgstr "Максимальная высота всплывающего окна с переводом."
+
+#: ../data/stardict.schemas.in.h:31
+msgid "The maximum width of the floating stardict window."
+msgstr "Максимальная ширина всплывающего окна с переводом."
+
+#: ../data/stardict.schemas.in.h:32
+msgid "The width of the main stardict window."
+msgstr "Ширина главного окна stardict."
+
+#: ../data/stardict.schemas.in.h:33
+msgid "Tree Dictionary order"
+msgstr "Порядок древовидных словарей"
+
+#: ../data/stardict.schemas.in.h:34
+msgid "Use Custom Font"
+msgstr "Использовать свой шрифт"
+
+#: ../data/stardict.schemas.in.h:35
+msgid "Whether the main window is maximized or not."
+msgstr "Максимизировать главное окно программы или нет."
+
+#: ../data/stardict.schemas.in.h:36
+msgid "Whether the window is maximized or not"
+msgstr "Максимизировать размеры окна или нет"
+
+#: ../data/stardict.schemas.in.h:37
+msgid ""
+"Whether to enable sound events or not. StarDict will play a sound event when "
+"a button is active or released, and when a menu pops up."
+msgstr ""
+"Если озвучивание событий включено, StarDict будет проигрывать системные "
+"звуки при нажатии кнопок и при появлении всплывающего окна."
+
+#: ../data/stardict.schemas.in.h:38
+msgid "Whether to hide the main window on startup, or not."
+msgstr "Прятать ли главное окно сразу после запуска или нет."
+
+#: ../data/stardict.schemas.in.h:39
+msgid "Whether to hide the word-list view or not."
+msgstr "Прятать ли список с подходящими словами или нет."
+
+#: ../data/stardict.schemas.in.h:40
+msgid ""
+"Whether to lock the floating window or not. While locked, the window will "
+"not disappear."
+msgstr ""
+"Закреплять ли всплывающее окно. Когда закреплено, окно всегда отображается "
+"на этом месте."
+
+#: ../data/stardict.schemas.in.h:41
+msgid ""
+"Whether to query in the floating window, or in the main window. Query is "
+"activated by the user clicking the middle mouse button on the notification "
+"area icon."
+msgstr ""
+"Запрашивать во всплывающем или главном окне. Происходит когда пользователь "
+"нажимает среднюю кнопку мыши на иконке в области уведомления."
+
+#: ../data/stardict.schemas.in.h:42
+msgid ""
+"Whether to scan the selection or not. When the user selects text, stardict "
+"will popup a flat window showing the meaning of that text."
+msgstr ""
+"Сканировать выделенное. Когда пользователь выделил текст, StarDict откроет "
+"всплывающее окно в котором отобразит значение выделенного."
+
+#: ../data/stardict.schemas.in.h:43
+msgid ""
+"Whether to use a user-defined font in StarDict, instead of the default "
+"system font. If this option is turned on, then the font named in the "
+"\"Custom Font\" option will be used instead of the system font."
+msgstr ""
+"Использовать или нет указанный шрифт, вместо системного шрифта по умолчанию. "
+"Если данная опция включена, тогда будет использоваться шрифт указанный в "
+"\"Свой шрифт\"."
+
+#: ../data/stardict.schemas.in.h:44
+msgid "Window-height"
+msgstr "Высота окна "
+
+#: ../data/stardict.schemas.in.h:45
+msgid "Window-width"
+msgstr "Ширина окна "
+
+#: ../data/stardict.schemas.in.h:46
+msgid "lock position (x)"
+msgstr "Закрепить позицию по x."
+
+#: ../data/stardict.schemas.in.h:47
+msgid "lock position (y)"
+msgstr "Закрепить позицию по y"
+
+#: ../data/stardict.schemas.in.h:48
+msgid "the window's x position while locked."
+msgstr "Позиция окна по x когда закреплено."
+
+#: ../data/stardict.schemas.in.h:49
+msgid "the window's y position while locked."
+msgstr "Позиция окна по y когда закреплено."
+
+#: ../data/stardict.schemas.in.h:50
+msgid "whether to lock the window or not"
+msgstr "Закреплять окно или нет"
+
+#: ../src/conf.cpp:233
+#, c-format
+msgid ""
+"Dictionary.com\thttp://dictionary.reference.com\thttp://dictionary.reference."
+"com/search?q=%s\n"
+"dict.leo.org\thttp://dict.leo.org\thttp://dict.leo.org/?search=%s&lang=en\n"
+"H2G2\thttp://www.h2g2.com\thttp://www.h2g2.com/Search?searchstring=%"
+"s&searchtype=ARTICLE&skip=0&show=20&showapproved=1&shownormal=1&showsubmitted=1\n"
+"WhatIs\thttp://whatis.techtarget.com\thttp://whatis.techtarget.com/"
+"wsearchResults/1,290214,sid9,00.html?query=%s\n"
+"Altavista\thttp://www.altavista.com\thttp://www.altavista.com/cgi-bin/query?"
+"q=%s\n"
+"WEB.DE\thttp://suche.web.de\thttp://suche.web.de/search/?su=%s\n"
+"WebCrawler\thttp://www.webcrawler.com\thttp://www.webcrawler.com/cgi-bin/"
+"WebQuery?searchText=%s\n"
+"Google\thttp://www.google.com\thttp://www.google.com/search?q=%s\n"
+"Yahoo\thttp://search.yahoo.com\thttp://search.yahoo.com/bin/search?p=%s\n"
+"CMU\thttp://www.speech.cs.cmu.edu\thttp://www.speech.cs.cmu.edu/cgi-bin/"
+"cmudict?in=%s\n"
+msgstr ""
+
+#: ../src/conf.cpp:257
+msgid "win32_use_custom_font=0"
+msgstr "win32_use_custom_font=0"
+
+#: ../src/conf.cpp:268
+msgid "win32_custom_font="
+msgstr "win32_custom_font="
+
+#: ../src/dictmanagedlg.cpp:251 ../src/dictmanagedlg.cpp:321
+msgid "Dictionary Name"
+msgstr "Название словаря"
+
+#: ../src/dictmanagedlg.cpp:252 ../src/dictmanagedlg.cpp:327
+msgid "Word count"
+msgstr "Количество слов"
+
+#: ../src/dictmanagedlg.cpp:253
+msgid "Author"
+msgstr "Автор"
+
+#: ../src/dictmanagedlg.cpp:254
+msgid "Email"
+msgstr "Email"
+
+#: ../src/dictmanagedlg.cpp:255
+msgid "Website"
+msgstr "Сайт"
+
+#: ../src/dictmanagedlg.cpp:256
+msgid "Description"
+msgstr "Описание"
+
+#: ../src/dictmanagedlg.cpp:257
+msgid "Date"
+msgstr "Дата"
+
+#: ../src/dictmanagedlg.cpp:258
+msgid "File name"
+msgstr "Файл"
+
+#: ../src/dictmanagedlg.cpp:315
+msgid "Enable"
+msgstr "Включить"
+
+#: ../src/dictmanagedlg.cpp:584
+msgid "D_ictionaries"
+msgstr "С_ловари"
+
+#: ../src/dictmanagedlg.cpp:599
+msgid "T_ree dictionaries"
+msgstr "_Древовидные словари"
+
+#: ../src/dictmanagedlg.cpp:623
+msgid "These settings will take effect the next time you run StarDict."
+msgstr "Эти настройки войдут в силу только после перезапуска StarDict."
+
+#: ../src/dictmanagedlg.cpp:634
+msgid "Manage Dictionaries"
+msgstr "Управление словарями"
+
+#: ../src/docklet.cpp:34 ../src/docklet.cpp:63 ../src/win32/systray.cpp:221
+msgid "StarDict - Scanning"
+msgstr "StarDict - Сканирование"
+
+#: ../src/docklet.cpp:37 ../src/docklet.cpp:67 ../src/win32/systray.cpp:224
+msgid "StarDict - Stopped"
+msgstr "StarDict - Остановлен"
+
+#: ../src/docklet.cpp:122 ../src/mainwin.cpp:1712
+msgid "_Scan"
+msgstr "_Сканировать"
+
+#: ../src/docklet.cpp:130 ../src/mainwin.cpp:551
+msgid "_Quit"
+msgstr "В_ыйти"
+
+#: ../src/floatwin.cpp:121
+msgid "Query in the main window"
+msgstr "Запросить в главном окне"
+
+#: ../src/floatwin.cpp:130
+msgid "Save to file"
+msgstr "Сохранить в файл"
+
+#: ../src/floatwin.cpp:138 ../src/mainwin.cpp:1259
+msgid "Pronounce the word"
+msgstr "Произнести слово"
+
+#: ../src/floatwin.cpp:148
+msgid "Stop selection-scanning"
+msgstr "Остановить сканирование выделенного "
+
+#: ../src/floatwin.cpp:160
+msgid "Help"
+msgstr "Справка"
+
+#: ../src/floatwin.cpp:168 ../src/mainwin.cpp:1745 ../src/win32/systray.cpp:79
+msgid "Quit"
+msgstr "Выйти"
+
+#: ../src/floatwin.cpp:182
+msgid "Lock floating window"
+msgstr "Запереть всплывающее окно"
+
+#: ../src/floatwin.cpp:267
+msgid "Fuzzy query"
+msgstr "Нечёткий запрос"
+
+#: ../src/floatwin.cpp:273
+msgid "has succeeded.\n"
+msgstr "удачен.\n"
+
+#: ../src/floatwin.cpp:274
+msgid "Found "
+msgstr "Найдено "
+
+#: ../src/floatwin.cpp:276
+msgid "1 word:\n"
+msgstr "1 слово:\n"
+
+#: ../src/floatwin.cpp:281
+msgid " words:\n"
+msgstr " слов:\n"
+
+#: ../src/floatwin.cpp:730
+msgid "_Copy"
+msgstr "С_копировать"
+
+#: ../src/floatwin.cpp:736
+msgid "_Save"
+msgstr "_Сохранить"
+
+#: ../src/floatwin.cpp:741
+msgid "_Query"
+msgstr "_Запросить"
+
+#: ../src/floatwin.cpp:748
+msgid "_Play"
+msgstr "_Воспроизвести"
+
+#: ../src/floatwin.cpp:756
+msgid "_Fuzzy Query"
+msgstr "_Нечёткий запрос"
+
+#: ../src/inifile.cpp:135
+#, c-format
+msgid "Can not open: %s - %s\n"
+msgstr "Не могу открыть: %s - %s\n"
+
+#: ../src/mainwin.cpp:85
+msgid "Clear the search box"
+msgstr "Очистить строчку запроса"
+
+#: ../src/mainwin.cpp:111
+msgid "Fuzzy Query"
+msgstr "Нечёткий запрос"
+
+#: ../src/mainwin.cpp:123
+msgid "Go Back - Right button: history (Alt+Left)"
+msgstr "Назад - Правая кнопка: история (Alt+Left)"
+
+#: ../src/mainwin.cpp:133
+msgid "Previous word (Alt+Up)"
+msgstr "Предыдущее слово (Alt+Up)"
+
+#: ../src/mainwin.cpp:143
+msgid "Next word (Alt+Down)"
+msgstr "Следующее слово (Alt+Down)"
+
+#: ../src/mainwin.cpp:153
+msgid "Show the main menu (Alt+M)"
+msgstr "Показать главное меню (Alt+M)"
+
+#: ../src/mainwin.cpp:480
+msgid "translator_credits"
+msgstr ""
+"Alex Murygin <murygin@aitoc.com>\n"
+"Евгений Душистов <dushistov@mail.ru>"
+
+#: ../src/mainwin.cpp:486
+msgid "StarDict is an international dictionary for GNOME."
+msgstr "StarDict это международный словарь для GNOME."
+
+#: ../src/mainwin.cpp:514
+msgid "Pr_eferences"
+msgstr "_Настройки"
+
+#: ../src/mainwin.cpp:521
+msgid "Manage _Dict"
+msgstr "Управление _словарями"
+
+#: ../src/mainwin.cpp:529
+msgid "_New Version"
+msgstr "Новая _версия"
+
+#: ../src/mainwin.cpp:537
+msgid "_Help"
+msgstr "_Справка"
+
+#: ../src/mainwin.cpp:543
+msgid "_About"
+msgstr "_О программе"
+
+#: ../src/mainwin.cpp:1117
+msgid "_List"
+msgstr "С_писок"
+
+#: ../src/mainwin.cpp:1137
+msgid "_Result"
+msgstr "_Словарь"
+
+#: ../src/mainwin.cpp:1157
+msgid "_Tree"
+msgstr "_Древовидные"
+
+#: ../src/mainwin.cpp:1212
+msgid "Show the word list"
+msgstr "Показать список со словами"
+
+#: ../src/mainwin.cpp:1227
+msgid "Hide the word list"
+msgstr "Спрятать список со словами"
+
+#: ../src/mainwin.cpp:1245
+msgid "Copy"
+msgstr "Cкопировать"
+
+#: ../src/mainwin.cpp:1273
+msgid "Save to file(Alt+E)"
+msgstr "Сохранить в файл(Alt+E)"
+
+#: ../src/mainwin.cpp:1283
+msgid "Print"
+msgstr "Печатать"
+
+#: ../src/mainwin.cpp:1298
+msgid "Search in the definition (Ctrl+F)"
+msgstr "Поиск в окне результатов (Ctrl+F)"
+
+#: ../src/mainwin.cpp:1481
+msgid ""
+"Warning! No dictionary is loaded.\n"
+"Please go to StarDict's website and download some dictionaries:\n"
+"http://stardict.sourceforge.net"
+msgstr ""
+"Внимание! Ни один словарь не загружен.\n"
+"Пожалуйста загрузите их с сайта StarDict!\n"
+"http://stardict.cosoft.org.cn/ или\n"
+"http://stardict.sourceforge.net"
+
+#: ../src/mainwin.cpp:1489
+msgid ""
+"        Welcome to StarDict!\n"
+"\n"
+"   Press Ctrl+Q to quit. Press Alt+Z to iconify the window or Alt+X to hide "
+"the window.\n"
+"   Press Alt+C or ESC to clear the input entry's text.\n"
+"   Press Space key to move focus to the input entry.\n"
+"   If the query word was not found, you can press Tab key to select the "
+"first word in the word list.\n"
+"   After selected some text, clicking the middle mouse button on the main "
+"window's Definition area or on the notification area icon will look up that "
+"word.\n"
+"   StarDict can match strings against patterns containing '*' (wildcard) and "
+"'?' (joker).\n"
+"   Input a word beginning with '/' to do a Fuzzy query.\n"
+"   When the floating window reports that a word was not found, double "
+"clicking will perform a fuzzy query.\n"
+msgstr ""
+"        Добро пожаловать в StarDict!\n"
+"\n"
+"   Нажмите Ctrl-Q или Alt-X для выхода.  Нажмите Alt-Z для сворачивания окна "
+"или Alt+X для спрятывания.\n"
+"   Нажмите ESC для очистки строки запроса.\n"
+"   Нажмите Пробел для перехода в строку запроса.\n"
+"   Если запрошенное слово не найдено, можете нажать Tab для выбора первого "
+"слова в списке слов.\n"
+"   После выделения слова в окне результатов, нажмите среднюю кнопку для "
+"запроса этого слова.\n"
+"   StarDict может делать запросы при помощи шаблонов '*' (wildcard) и "
+"'?' (joker).\n"
+"   Запросы начинающиеся с '/' расматривается как \"нечёткие\" запросы.\n"
+"   Когда ничего не найдено во всплывающем окне, двойной щелчок производит "
+"\"нечёткий\" запрос.\n"
+
+#: ../src/mainwin.cpp:1508
+msgid ""
+"       Welcome to StarDict\n"
+"StarDict is a Cross-Platform and international dictionary written in Gtk2. "
+"It has powerful features such as \"Glob-style pattern matching,\" \"Scan "
+"selected word,\" \"Fuzzy query,\" etc.\n"
+"\n"
+"       Here is an introduction to using StarDict:\n"
+"\n"
+"       1. Glob-style pattern matching\n"
+"       You can input strings containing '*' (wildcard) and '?' (joker) as "
+"the pattern. '*' matches an arbitrary, possibly empty, string, and '?' "
+"matches an arbitrary character. After pressing Enter, the words that match "
+"this pattern will be shown in the list.\n"
+"       2. Fuzzy query\n"
+"       When you can't remember how to spell a word exactly, you can try "
+"StarDict's Fuzzy query. It uses \"Levenshtein Edit Distance\" to compute the "
+"similarity between two words, and gives the match results which are most "
+"similar to the word that you input. To create a fuzzy query, just input the "
+"word with a beginning \"/\", and then press Enter.\n"
+"       3. Full-text search\n"
+"       Full-text search searchs a word in the data. To create a Full-text "
+"search, just input the word with a beginning \"|\", and then press Enter. "
+"For example, \"|ab cd\" searchs data which contain both \"ab\" and \"cd\". "
+"If the words contain Space character, you can use \"\\ \", such as \"|apple"
+"\\ pie\", other escaping characters are \"\\\\\" for '\\', \"\\t\" for Tab "
+"and \"\\n\" for new line.\n"
+"       4. Special character search\n"
+"       If your words contain special characters, you can use '\\' to escape "
+"it, for example, \"a\\*b\\?\" searchs \"a*b?\", \"\\/abc\" searchs \"/abc"
+"\".\n"
+"       5. Scan selected word\n"
+"       Turn on the check button at the bottom-left corner of the StarDict "
+"window to activate this feature. When this feature is on, StarDict will "
+"automatically look up words, phrases, and Chinese characters in other "
+"applications. Just highlight a word or phrase with your mouse, and a "
+"floating window will pop up showing the definition of the selected word.\n"
+"       6. Dictionary management\n"
+"       Click the \"Manage dictionaries\" button at the bottom-right corner "
+"of the window to access the dictionary management dialog. From here, you can "
+"disable some dictionaries that you don't need, and set the dictionaries' "
+"querying order.\n"
+"\n"
+"\n"
+"       Statement: This program is distributed in the hope that it will be "
+"useful, but WITHOUT ANY WARRANTY; without the warranty that the word "
+"spelling, definition, and phonetic information are correct.\n"
+msgstr ""
+"       Добро пожаловать в StarDict\n"
+"       StarDict это кросс-платформенный международный словарь написанный на "
+"Gtk2. Он обладает рядом мощных особенностей, таких как \"Поиск по шаблону\", "
+"\"Сканирование выделенных слов\", \"Нечёткий запрос\", и т.д.\n"
+"\n"
+"       Здесь перечислен список возможностей и их применения:\n"
+"\n"
+"       1. Поиск по шаблону\n"
+"       Пользователь может вводить слова содержащие '*' (wildcard) и "
+"'?' (joker) как шаблоны. '*' соответствует любому, возможно пустому, "
+"символу, '?' соответсвует любому непустому символу. После нажатия ввода, "
+"слова которые соответствуют шаблону будут отображены в списке слов.\n"
+"       2. Нечёткий запрос\n"
+"       Если вы не можете вспомнить точное написание слова, Вы можете "
+"воспользоваться Нечётким запросом. Он использует Левенштайновский алгоритм "
+"для подсчета похожести двух слов, и выдает слова которые наиболее подходят "
+"введеному запросу. Для использования этой возможности запрос должен "
+"начинаться с \"/\".\n"
+"       3. Полнотекстовой поиск\n"
+"       Полнотекстовой поиск предназначен для поиска слова в словаре без "
+"помощи индекса. Чтобы воспользоваться им, просто поставьте перед словом \"|"
+"\", и нажмите Ввод. Например, \"|ab cd\" поможет найти словарные статьи "
+"содержащие и \"ab\" и \"cd\". Если слово содержит пробел, вы можете "
+"использовать \"\\ \", для его экранирования, например \"|apple\\ pie\". "
+"Также вы можете использовать \"\\\\\" чтобы найти '\\', \"\\t\" вместо Tab и "
+"\"\\n\" для поиска символа новой строки\n"
+"       4. Поиск специальных символов\n"
+"       Если вы хотите найти слово содержащие специальные символы, вы можете "
+"использовать '\\'  для их экранирования, например, \"a\\*b\\?\" для поиска "
+"\"a*b?\", \"\\/abc\"  для поиска \"/abc\".\n"
+"       5. Сканирование выделенного\n"
+"       Включается кнопкой в левом нижнем углу главного окна. Пользователь "
+"может пользоваться мышкой, для выделения слов в окнах других программ "
+"(работает как двойной щелчок по тексту, так и выделение левой кнопкой), "
+"всплывающее окно всплывает около выделенного текста и отображает перевод "
+"этого слова.\n"
+"       6. Управление словарями\n"
+"       Для отображения диалога управления словарями, нажмите кнопку "
+"\"Управление Словарями\" в правом нижнем углу. Здесь можно выключить словари "
+"которые не нужны и установить порядок словарей при запросе.\n"
+"\n"
+"\n"
+"       Заявление: Эта программа распространяется с надеждой что она будет "
+"полезной, но БЕЗ ВСЯКИХ ГАРАНТИЙ, без обязательств что написание, "
+"определение, фонетика слов верна.\n"
+
+#: ../src/mainwin.cpp:1628
+#, c-format
+msgid "The text \"%s\" was not found."
+msgstr "Слово \"%s\" не найдено."
+
+#: ../src/mainwin.cpp:1721
+msgid "Scan the selection"
+msgstr "Сканировать выделенное"
+
+#: ../src/mainwin.cpp:1735
+msgid "Show info"
+msgstr "Показать подсказку"
+
+#: ../src/mainwin.cpp:1758 ../src/prefsdlg.cpp:1671
+msgid "Preferences"
+msgstr "Настройки"
+
+#: ../src/mainwin.cpp:1768
+msgid "Manage dictionaries"
+msgstr "Управление словарями"
+
+#: ../src/mainwin.cpp:1778
+msgid "Go to the StarDict website"
+msgstr "Идти на сайт StarDict"
+
+#: ../src/mainwin.cpp:1790
+msgid "Search an Internet dictionary - Right button: website list"
+msgstr "Поискать в web словарях - Правая кнопка: список сайтов поиска"
+
+#: ../src/prefsdlg.cpp:70 ../src/prefsdlg.cpp:328
+msgid "Scan Selection"
+msgstr "Сканировать выделенное"
+
+#: ../src/prefsdlg.cpp:71 ../src/prefsdlg.cpp:473
+msgid "Font"
+msgstr "Шрифт"
+
+#: ../src/prefsdlg.cpp:72 ../src/prefsdlg.cpp:579
+msgid "Cache"
+msgstr "Кэш"
+
+#: ../src/prefsdlg.cpp:73 ../src/prefsdlg.cpp:718
+msgid "Export"
+msgstr "Экспортировать"
+
+#: ../src/prefsdlg.cpp:74 ../src/prefsdlg.cpp:779
+msgid "Sound"
+msgstr "Звук"
+
+#: ../src/prefsdlg.cpp:81 ../src/prefsdlg.cpp:862
+msgid "Input"
+msgstr "Ввод"
+
+#: ../src/prefsdlg.cpp:82 ../src/prefsdlg.cpp:90 ../src/prefsdlg.cpp:97
+msgid "Options"
+msgstr "Настройки"
+
+#: ../src/prefsdlg.cpp:83 ../src/prefsdlg.cpp:1258
+msgid "Search website"
+msgstr "Поиск в интернете"
+
+#: ../src/prefsdlg.cpp:98
+msgid "Size"
+msgstr "Размер"
+
+#: ../src/prefsdlg.cpp:105 ../src/stardict.cpp:1751
+msgid "Dictionary"
+msgstr "Словарь"
+
+#: ../src/prefsdlg.cpp:107 ../src/prefsdlg.cpp:944
+msgid "Main window"
+msgstr "Главное окно"
+
+#: ../src/prefsdlg.cpp:109 ../src/prefsdlg.cpp:1410
+msgid "Notification area icon"
+msgstr "Иконка в области уведомления"
+
+#: ../src/prefsdlg.cpp:111 ../src/prefsdlg.cpp:1466
+msgid "Floating window"
+msgstr "Всплывающее окно"
+
+#: ../src/prefsdlg.cpp:248
+msgid "Categories"
+msgstr "Категории"
+
+#: ../src/prefsdlg.cpp:344
+msgid "<span weight=\"bold\" size=\"x-large\">Scan Selection</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Сканировать Выделенное</span>"
+
+#: ../src/prefsdlg.cpp:352
+msgid "_Only scan while the modifier key is being pressed."
+msgstr "_Сканировать, только если модификатор нажат."
+
+#: ../src/prefsdlg.cpp:368
+msgid "H_ide floating window when modifier key released."
+msgstr "Прятать всплывающее окно, при нажатии модификатора."
+
+#: ../src/prefsdlg.cpp:378
+msgid "Scan modifier _key:"
+msgstr "_Модификатор сканирования:"
+
+#: ../src/prefsdlg.cpp:402
+msgid "_Scan clipboard."
+msgstr "_Следить за буфером обмена."
+
+#: ../src/prefsdlg.cpp:408
+msgid "_Use scan hotkey: Ctrl+Alt+F1."
+msgstr "_Попробуйте для сканирования использовать комбинацию: Ctrl+Alt+F1."
+
+#: ../src/prefsdlg.cpp:446
+msgid "Choose dictionary font"
+msgstr "Выбрать шрифт для словаря"
+
+#: ../src/prefsdlg.cpp:449 ../src/prefsdlg.cpp:519
+msgid "Choose"
+msgstr "Выбрать"
+
+#: ../src/prefsdlg.cpp:451
+msgid "Dictionary font"
+msgstr "Шрифт словаря"
+
+#: ../src/prefsdlg.cpp:489
+msgid "<span weight=\"bold\" size=\"x-large\">Font</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Шрифт</span>"
+
+#: ../src/prefsdlg.cpp:497
+msgid "_Use custom font."
+msgstr "_Использовать свой шрифт."
+
+#: ../src/prefsdlg.cpp:509
+msgid "Dictionary _font:"
+msgstr "_Шрифт словаря:"
+
+#: ../src/prefsdlg.cpp:595
+msgid "<span weight=\"bold\" size=\"x-large\">Cache</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Кэш</span>"
+
+#: ../src/prefsdlg.cpp:604
+msgid "Create c_ache files to speed up loading."
+msgstr "Создать к_эш для увеличения скорости загрузки."
+
+#: ../src/prefsdlg.cpp:609
+msgid "_Sort word list by collate function."
+msgstr "_Сортировать слова с помощью `collate' функции."
+
+#: ../src/prefsdlg.cpp:618
+msgid "\tCollate _function:"
+msgstr "\t`Collate' функция:"
+
+#: ../src/prefsdlg.cpp:673
+msgid ""
+"After enabled collation, when load the dictionaries for the first time, it "
+"will take some time for sorting, please wait for a moment."
+msgstr ""
+"После  того как вы выбрали `collation', загрузка словарей в первый раз может "
+"занять некоторое время из-за необходимости заново проиндексировать словари, "
+"пожалуйста не напрягайтесь и подождите."
+
+#: ../src/prefsdlg.cpp:679
+msgid "C_lean all cache files"
+msgstr "О_чистить кэш"
+
+#: ../src/prefsdlg.cpp:696
+msgid "Open file..."
+msgstr "Открыть файл..."
+
+#: ../src/prefsdlg.cpp:734
+msgid "<span weight=\"bold\" size=\"x-large\">Export</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Export</span>"
+
+#: ../src/prefsdlg.cpp:744
+msgid "_Only export word."
+msgstr "_Экспортировать только заголовок"
+
+#: ../src/prefsdlg.cpp:751
+msgid "File name:"
+msgstr "Имя файла:"
+
+#: ../src/prefsdlg.cpp:760
+msgid "_Browse..."
+msgstr "_Выбрать файл..."
+
+#: ../src/prefsdlg.cpp:795
+msgid "<span weight=\"bold\" size=\"x-large\">Sound</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Звук</span>"
+
+#: ../src/prefsdlg.cpp:805
+msgid "_Enable sound event."
+msgstr "_Использовать звуки для событий."
+
+#: ../src/prefsdlg.cpp:813
+msgid "Command for playing wav files:"
+msgstr "Команда для проигрывания wav файлов:"
+
+#: ../src/prefsdlg.cpp:826
+msgid "RealPeopleTTS search path:"
+msgstr "Путь поиска `RealPeopleTTS'::"
+
+#: ../src/prefsdlg.cpp:878
+msgid "<span weight=\"bold\" size=\"x-large\">Input</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Ввод</span>"
+
+#: ../src/prefsdlg.cpp:887
+msgid "_Search while typing."
+msgstr "_Искать слово во время набора."
+
+#: ../src/prefsdlg.cpp:892
+msgid "Show the _first word when not found."
+msgstr "Показывать _первое слово, когда поиск окончился неудачей."
+
+#: ../src/prefsdlg.cpp:960 ../src/prefsdlg.cpp:1426 ../src/prefsdlg.cpp:1482
+msgid "<span weight=\"bold\" size=\"x-large\">Options</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Настройки</span>"
+
+#: ../src/prefsdlg.cpp:971
+msgid "_Auto run StarDict after boot."
+msgstr "_Автоматически загружать StarDict после загрузки."
+
+#: ../src/prefsdlg.cpp:1001
+msgid "Hide main window when _starting StarDict."
+msgstr "Прятать главное окно при старте."
+
+#: ../src/prefsdlg.cpp:1011
+msgid "_Use open main window hotkey: Ctrl+Alt+Z."
+msgstr ""
+"_Попробуйте использовать комбинацию: Ctrl+Alt+Z для открытия главного окна."
+
+#: ../src/prefsdlg.cpp:1089
+msgid "Add"
+msgstr "Добавить"
+
+#: ../src/prefsdlg.cpp:1102 ../src/prefsdlg.cpp:1331
+msgid "Website Name"
+msgstr "Название сайта"
+
+#: ../src/prefsdlg.cpp:1114 ../src/prefsdlg.cpp:1339
+msgid "Website link"
+msgstr "Адрес сайта"
+
+#: ../src/prefsdlg.cpp:1125 ../src/prefsdlg.cpp:1347
+msgid "Website search link"
+msgstr "\"Разумная\" ссылка на сайт"
+
+#: ../src/prefsdlg.cpp:1146
+msgid "Please input the website name."
+msgstr "Введите название сайта."
+
+#: ../src/prefsdlg.cpp:1148
+msgid "Please input the website link."
+msgstr "Введите адрес сайта."
+
+#: ../src/prefsdlg.cpp:1150
+msgid "Please input the website search link."
+msgstr "Введите \"разумную\" ссылку на сайт."
+
+#: ../src/prefsdlg.cpp:1152
+#, c-format
+msgid ""
+"The website search link should contains a \"%%s\" string for querying a word."
+msgstr "\"Разумная\" ссылка должна содержать \"%%s\" строчку для поиска слов."
+
+#: ../src/prefsdlg.cpp:1231
+#, c-format
+msgid ""
+"The website search link should contains a \"%%s\" string for quering word."
+msgstr "\"Разумная\" ссылка должена содержать \"%%s\" строчку для поиска слов."
+
+#: ../src/prefsdlg.cpp:1275
+msgid "<span weight=\"bold\" size=\"x-large\">Search Website</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Поиск в интернете</span>"
+
+#: ../src/prefsdlg.cpp:1437
+msgid ""
+"_Query in the floating window when middle mouse\n"
+"button is clicked."
+msgstr ""
+"_Запрашивать во всплывающем окне, когда средняя\n"
+"кнопка нажата."
+
+#: ../src/prefsdlg.cpp:1490
+msgid "_Pronouce the word when it pops up."
+msgstr "_Произнести слово при появлении."
+
+#: ../src/prefsdlg.cpp:1499
+msgid "_Show floating window if word not found."
+msgstr "_Показать всплывающие окно перевода, если слово не найдено."
+
+#: ../src/prefsdlg.cpp:1534
+msgid "<span weight=\"bold\" size=\"x-large\">Max window size</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Максимальный размер окна</span>"
+
+#: ../src/prefsdlg.cpp:1556
+msgid "Max window _width:"
+msgstr "Максимальная _ширина окна:"
+
+#: ../src/prefsdlg.cpp:1566
+msgid "(default:320)"
+msgstr "(по умолчанию:320)"
+
+#: ../src/prefsdlg.cpp:1570
+msgid "Max window hei_ght:"
+msgstr "Максимальная _высота окна:"
+
+#: ../src/prefsdlg.cpp:1578
+msgid "(default:240)"
+msgstr "(по умолчанию:240)"
+
+#: ../src/prefsdlg.cpp:1649
+msgid "Cat_egories:"
+msgstr "_Категории:"
+
+#: ../src/selection.cpp:194 ../src/stardict.cpp:505 ../src/stardict.cpp:634
+#: ../src/stardict.cpp:794 ../src/stardict.cpp:806 ../src/stardict.cpp:811
+#: ../src/stardict.cpp:816 ../src/stardict.cpp:1209
+#: ../src/win32/clipboard.cpp:117
+msgid "<Not Found!>"
+msgstr "<Не найдено!>"
+
+#: ../src/splash.cpp:64
+msgid "Loading"
+msgstr "Загружаю"
+
+#: ../src/stardict.cpp:82
+msgid "Turn on all debugging messages"
+msgstr "Включить все отладочные сообщения"
+
+#: ../src/stardict.cpp:85
+msgid "Hide the main window"
+msgstr "Спрятать главное окно"
+
+#: ../src/stardict.cpp:88
+msgid "Quit an existing instance of stardict"
+msgstr "Закрыть запущенный stardict"
+
+#: ../src/stardict.cpp:862 ../src/stardict.cpp:1173
+msgid "Full-text search..."
+msgstr "Полнотекстовый поиск..."
+
+#: ../src/stardict.cpp:889
+msgid "There are no dictionary's article with such word :-("
+msgstr "Не существует словарной статьи содержащей такое слово."
+
+#: ../src/stardict.cpp:925
+msgid "There are too many spelling errors :-("
+msgstr "Слишком много ошибок написания:-("
+
+#: ../src/stardict.cpp:980
+msgid "Fuzzy query failed, too :-("
+msgstr "Нечёткий запрос не удался также :-("
+
+#: ../src/stardict.cpp:1006
+msgid "Found no words matching this pattern!"
+msgstr "Не найдено слов совпадающих с шаблоном!"
+
+#: ../src/stardict.cpp:1165
+msgid "Press Enter to list the words that match the pattern."
+msgstr "Нажмите ввод чтобы увидеть список слов совпадающих с шаблоном."
+
+#: ../src/stardict.cpp:1169
+msgid "Fuzzy query..."
+msgstr "Нечёткий запрос..."
+
+#: ../src/stardict.cpp:1584
+msgid "StarDict is already running. Using the running process."
+msgstr "StarDict уже запущен. Используется существующий процесс."
+
+#: ../src/utils.cpp:66
+#, c-format
+msgid "%s\\help\\stardict.chm"
+msgstr "%s\\help\\stardict-ru.chm"
+
+#: ../src/utils.cpp:171
+#, c-format
+msgid "Can not load image. %s"
+msgstr "Не могу загрузить изображение. %s"
+
+#: ../src/lib/stddict.cpp:843
+msgid "Sorting, please wait..."
+msgstr "Сортирую, подождите пожалуйста..."
+
+#: ../src/lib/stddict.cpp:999
+msgid "Loading..."
+msgstr "Загружаю..."
+
+#: ../src/win32/systray.cpp:75
+msgid "Scan"
+msgstr "Сканировать"
+
+#~ msgid "The stardict 's float window 's max height."
+#~ msgstr "Максимальная ширина всплывающего окна."
+
+#~ msgid "The stardict 's float window 's max width."
+#~ msgstr "Максимальная высота всплывающего окна."
+
+#~ msgid "The stardict 's main window 's height."
+#~ msgstr "Высота главного окна."
+
+#~ msgid "The stardict 's main window 's width."
+#~ msgstr "Ширина главного окна."
+
+#~ msgid "Window 's max height"
+#~ msgstr "Максимальная ширина окна"
+
+#~ msgid "Window 's max width"
+#~ msgstr "Максимальная высота окна"
+
+#~ msgid "lock's x position"
+#~ msgstr "Закрепить позицию по x."
+
+#~ msgid "_Dict Manage"
+#~ msgstr "_Управление словарями"
+
+#, fuzzy
+#~ msgid "Translated by"
+#~ msgstr "Alex Murygin <murygin@aitoc.com>"
+
+#~ msgid "Authors"
+#~ msgstr "Авторы"
+
+#, fuzzy
+#~ msgid "Author entry"
+#~ msgstr "Автор"
+
+#, fuzzy
+#~ msgid "A single author entry"
+#~ msgstr "Автор"
+
+#, fuzzy
+#~ msgid "Documenter entry"
+#~ msgstr "Автор"
+
+#~ msgid "Translator credits"
+#~ msgstr "Alex Murygin <murygin@aitoc.com>"
+
+#~ msgid "About %s"
+#~ msgstr "О программе %s"
+
+#, fuzzy
+#~ msgid "Cannot connect to gconf.\n"
+#~ msgstr "Невозможно подключиться к gconf."
+
+#~ msgid "Find"
+#~ msgstr "Найти"
+
+#~ msgid "_Search for:"
+#~ msgstr "_Искать:"
+
+#~ msgid "_Win"
+#~ msgstr "_Win"
+
+#~ msgid "_Shift"
+#~ msgstr "_Shift"
+
+#~ msgid "_Alt"
+#~ msgstr "_Alt"
+
+#~ msgid "_Ctrl"
+#~ msgstr "_Ctrl"
+
+#~ msgid "_Scan selection"
+#~ msgstr "_Сканировать выделенное"
+
+#~ msgid "Hide main window when _iconify."
+#~ msgstr "Прятать главное окно при сворачивание."
+
+#~ msgid "Hide the window when iconify."
+#~ msgstr "Прятать главное окно при сворачивание."
+
+#~ msgid "Whether hide the the main window when iconify."
+#~ msgstr "Прятать ли главное окно сразу после сворачивания."
+
+#~ msgid "Startup"
+#~ msgstr "Загрузка"
+
+#~ msgid "<span weight=\"bold\" size=\"x-large\">Startup</span>"
+#~ msgstr "<span weight=\"bold\" size=\"x-large\">Загрузка</span>"

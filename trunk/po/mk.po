@@ -1,0 +1,1270 @@
+# Macedonian translation of StarDict 2.4.1
+# Copyright (C) 2002, 2003 Hu Zheng <huzheng_001@163.com>
+# This file is distributed under the same license as the StarDict
+# package.
+# Novica Nakov <acivon@mail.com.mk>, 2003
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: stardict 2.4.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-07-05 22:57+0800\n"
+"PO-Revision-Date: 2003-10-14 14:23+0200\n"
+"Last-Translator: Novica Nakov <acivon@mail.com.mk>\n"
+"Language-Team: Macedonian <gnomk-main@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+#: ../data/GNOME_Stardict.server.in.h:1
+msgid "stardict application"
+msgstr "stardict апликација"
+
+#: ../data/GNOME_Stardict.server.in.h:2
+msgid "stardict automation factory"
+msgstr "stardict фабрика за автоматизација"
+
+#: ../data/stardict.desktop.in.h:1
+msgid "Lookup words"
+msgstr "Барај зборови"
+
+#. gtk_widget_set_app_paintable(window, TRUE);
+#: ../data/stardict.desktop.in.h:2 ../src/docklet.cpp:31 ../src/docklet.cpp:71
+#: ../src/mainwin.cpp:483 ../src/splash.cpp:78 ../src/stardict.cpp:173
+#: ../src/stardict.cpp:1691 ../src/win32/systray.cpp:196
+#: ../src/win32/systray.cpp:218
+msgid "StarDict"
+msgstr "StarDict"
+
+#: ../data/stardict.schemas.in.h:1
+msgid ""
+"A custom font that will be used in StarDict. This will only take effect if "
+"the \"Use Custom Font\" option is turned on."
+msgstr ""
+"Избран фонт кој ќе се користи во StarDict. Ова ќе се примени само ако е "
+"вклучена опцијата \"Користи сопствен фотн\"."
+
+#: ../data/stardict.schemas.in.h:2
+msgid "Custom Font"
+msgstr "Сопствен фонт"
+
+#: ../data/stardict.schemas.in.h:3
+msgid "Dictionary order"
+msgstr "Редослед на речници"
+
+#: ../data/stardict.schemas.in.h:4
+msgid "Disabled dictionary list"
+msgstr "Оневозможена листа на речници"
+
+#: ../data/stardict.schemas.in.h:5
+msgid "Disabled tree dictionary list"
+msgstr "Оневозможена листа на дрво речници"
+
+#: ../data/stardict.schemas.in.h:6
+msgid "Enable sound event"
+msgstr "Овозможи звучни настани"
+
+#: ../data/stardict.schemas.in.h:7
+#, fuzzy
+msgid "Hide floating window when modifier key is released"
+msgstr "Скриј го постоечкиот прозорец кога ќе го пуштам копчето за скенирање"
+
+#: ../data/stardict.schemas.in.h:8
+#, fuzzy
+msgid ""
+"Hide floating window when modifier key is released. It only take effect when "
+"only_scan_while_modifier_key is turned on."
+msgstr ""
+"Скриј го постоечкиот прозорец кога ќе го пуштам копчето за скенирање. Ова ќе "
+"има ефект кога е избрана опцијата скенирај_само_кога е вклучено_копчето_за "
+"скенирање."
+
+#: ../data/stardict.schemas.in.h:9
+msgid "Hide the list"
+msgstr "Скриј ја листата"
+
+#: ../data/stardict.schemas.in.h:10
+#, fuzzy
+msgid "Hide the window on startup"
+msgstr "При стартување скриј го прозорецот"
+
+#: ../data/stardict.schemas.in.h:11
+msgid "Hpaned 's position"
+msgstr "Hpaned 's позиција"
+
+#: ../data/stardict.schemas.in.h:12
+#, fuzzy
+msgid "List the dictionaries in order."
+msgstr "Листај ги речниците по редослед."
+
+#: ../data/stardict.schemas.in.h:13
+msgid "List the dictionaries which are disabled."
+msgstr "Листај ги речниците кои се оневозможени."
+
+#: ../data/stardict.schemas.in.h:14
+msgid "List the search websites."
+msgstr "Листај ги веб страните за пребарување."
+
+#: ../data/stardict.schemas.in.h:15
+#, fuzzy
+msgid "List the tree dictionaries in order."
+msgstr "Листај ги дрво речниците по редослед."
+
+#: ../data/stardict.schemas.in.h:16
+msgid "List the tree dictionaries which are disabled."
+msgstr "Листај ги дрво речниците кои се оневозможени."
+
+#: ../data/stardict.schemas.in.h:17
+#, fuzzy
+msgid "Maximum window-height"
+msgstr "Максмимална висина на про_зорецот:"
+
+#: ../data/stardict.schemas.in.h:18
+#, fuzzy
+msgid "Maximum window-width"
+msgstr "Максмимална ширина на п_розорецот:"
+
+#: ../data/stardict.schemas.in.h:19
+#, fuzzy
+msgid "Only scan while modifier key is being pressed"
+msgstr "Скенирај само кога е стиснато копчето за скенирање"
+
+#: ../data/stardict.schemas.in.h:20
+#, fuzzy
+msgid ""
+"Only scan while the modifier key is being pressed. The modifier key is set "
+"by \"scan_modifier_key\"."
+msgstr ""
+"Скенирај само кога е стиснато копчето за скенирање. Тоа копче се подесува со "
+"\"копче_за_пребарување\"."
+
+#: ../data/stardict.schemas.in.h:21
+#, fuzzy
+msgid ""
+"Only scan while this modifier key is being pressed. It can be Win(0), Shift"
+"(1), Alt(2) or Ctrl(3)."
+msgstr ""
+"Скенирај само кога е стиснато копчето за скенирање. Тоа може да биде Win(0), "
+"Shift(1), Alt(2) или Ctrl(3)."
+
+#: ../data/stardict.schemas.in.h:22
+#, fuzzy
+msgid "Pronounce the word when it pops up."
+msgstr "Изговори го зборот при прикажување."
+
+#: ../data/stardict.schemas.in.h:23
+#, fuzzy
+msgid "Pronounce the word when the floating window pops up."
+msgstr "Изговори го зборот при прикажување на прозорецот."
+
+#: ../data/stardict.schemas.in.h:24
+#, fuzzy
+msgid "Query in the floating window when middle mouse button is clicked"
+msgstr "Барај во прозорецот при кликање на средното копче на глушецот"
+
+#: ../data/stardict.schemas.in.h:25
+msgid "Scan modifier key"
+msgstr "Копче за пребарување"
+
+#: ../data/stardict.schemas.in.h:26
+msgid "Scan the Selection"
+msgstr "Скенирај за изборот"
+
+#: ../data/stardict.schemas.in.h:27
+#, fuzzy
+msgid "Search website list"
+msgstr "Веб страни за пребарување"
+
+#: ../data/stardict.schemas.in.h:28
+#, fuzzy
+msgid "The height of the main stardict window."
+msgstr "Пребарај во главниот прозорец"
+
+#: ../data/stardict.schemas.in.h:29
+#, fuzzy
+msgid "The hpaned's position, between the listview and the textview."
+msgstr "Hpaned 's позиција, помеѓу погледот на листата и на текстот."
+
+#: ../data/stardict.schemas.in.h:30
+#, fuzzy
+msgid "The maximum height of the floating stardict window."
+msgstr "Пребарај во главниот прозорец"
+
+#: ../data/stardict.schemas.in.h:31
+#, fuzzy
+msgid "The maximum width of the floating stardict window."
+msgstr "Скриј го главниот прозорец"
+
+#: ../data/stardict.schemas.in.h:32
+#, fuzzy
+msgid "The width of the main stardict window."
+msgstr "Скриј го главниот прозорец"
+
+#: ../data/stardict.schemas.in.h:33
+msgid "Tree Dictionary order"
+msgstr "Распоред на дрво речниците"
+
+#: ../data/stardict.schemas.in.h:34
+msgid "Use Custom Font"
+msgstr "Користи сопствен фонт"
+
+#: ../data/stardict.schemas.in.h:35
+#, fuzzy
+msgid "Whether the main window is maximized or not."
+msgstr "Дали главниот прозорец е максимизиран."
+
+#: ../data/stardict.schemas.in.h:36
+#, fuzzy
+msgid "Whether the window is maximized or not"
+msgstr "Дали прозорецот е максимизиран"
+
+#: ../data/stardict.schemas.in.h:37
+#, fuzzy
+msgid ""
+"Whether to enable sound events or not. StarDict will play a sound event when "
+"a button is active or released, and when a menu pops up."
+msgstr ""
+"Дали да се овозможат звучни настани. StarDict ќе испушти звук кога копчето е "
+"активно, отпуштено и при поп-ап менито."
+
+#: ../data/stardict.schemas.in.h:38
+#, fuzzy
+msgid "Whether to hide the main window on startup, or not."
+msgstr "Дали при стартување да се скрие главниот прозорец."
+
+#: ../data/stardict.schemas.in.h:39
+#, fuzzy
+msgid "Whether to hide the word-list view or not."
+msgstr "Дали да се скрие погледот на листа каде што е листат со зборови."
+
+#: ../data/stardict.schemas.in.h:40
+#, fuzzy
+msgid ""
+"Whether to lock the floating window or not. While locked, the window will "
+"not disappear."
+msgstr ""
+"Дали да се заклучи прозорецот кој се појавува. Додека е заклучен тој "
+"постојано ќе се појавува таму."
+
+#: ../data/stardict.schemas.in.h:41
+#, fuzzy
+msgid ""
+"Whether to query in the floating window, or in the main window. Query is "
+"activated by the user clicking the middle mouse button on the notification "
+"area icon."
+msgstr ""
+"Дали да се пребарува во главниот прозорец или не. Ова се случува кога "
+"кориснкот клика со средното копче на глушецот на иконата за областа за "
+"известување."
+
+#: ../data/stardict.schemas.in.h:42
+#, fuzzy
+msgid ""
+"Whether to scan the selection or not. When the user selects text, stardict "
+"will popup a flat window showing the meaning of that text."
+msgstr ""
+"Дали да се скенира за избророт. Кога корисникот ќе избере некојтекст, "
+"stardict ќе покаже прозорец со неговото значење."
+
+#: ../data/stardict.schemas.in.h:43
+#, fuzzy
+msgid ""
+"Whether to use a user-defined font in StarDict, instead of the default "
+"system font. If this option is turned on, then the font named in the "
+"\"Custom Font\" option will be used instead of the system font."
+msgstr ""
+"Дали да се користи специфичен фонт наместо системскиот фонт за StarDict. Ако "
+"оваа опција е вклучена, фонтото наведен во опцијата \"Сопствен фонт\" ќе се "
+"користи наместо системскиот фонт."
+
+#: ../data/stardict.schemas.in.h:44
+#, fuzzy
+msgid "Window-height"
+msgstr "Висината на прозорецот"
+
+#: ../data/stardict.schemas.in.h:45
+#, fuzzy
+msgid "Window-width"
+msgstr "Ширината на прозорецот"
+
+#: ../data/stardict.schemas.in.h:46
+#, fuzzy
+msgid "lock position (x)"
+msgstr "Y позиција на заклучување"
+
+#: ../data/stardict.schemas.in.h:47
+#, fuzzy
+msgid "lock position (y)"
+msgstr "Y позиција на заклучување"
+
+#: ../data/stardict.schemas.in.h:48
+msgid "the window's x position while locked."
+msgstr "X позицијата на прозорецот додека е заклучен."
+
+#: ../data/stardict.schemas.in.h:49
+msgid "the window's y position while locked."
+msgstr "Y позицијата на прозорецот додека е заклучен."
+
+#: ../data/stardict.schemas.in.h:50
+#, fuzzy
+msgid "whether to lock the window or not"
+msgstr "дали да се заклучи прозорецот"
+
+#: ../src/conf.cpp:233
+#, fuzzy, c-format
+msgid ""
+"Dictionary.com\thttp://dictionary.reference.com\thttp://dictionary.reference."
+"com/search?q=%s\n"
+"dict.leo.org\thttp://dict.leo.org\thttp://dict.leo.org/?search=%s&lang=en\n"
+"H2G2\thttp://www.h2g2.com\thttp://www.h2g2.com/Search?searchstring=%"
+"s&searchtype=ARTICLE&skip=0&show=20&showapproved=1&shownormal=1&showsubmitted=1\n"
+"WhatIs\thttp://whatis.techtarget.com\thttp://whatis.techtarget.com/"
+"wsearchResults/1,290214,sid9,00.html?query=%s\n"
+"Altavista\thttp://www.altavista.com\thttp://www.altavista.com/cgi-bin/query?"
+"q=%s\n"
+"WEB.DE\thttp://suche.web.de\thttp://suche.web.de/search/?su=%s\n"
+"WebCrawler\thttp://www.webcrawler.com\thttp://www.webcrawler.com/cgi-bin/"
+"WebQuery?searchText=%s\n"
+"Google\thttp://www.google.com\thttp://www.google.com/search?q=%s\n"
+"Yahoo\thttp://search.yahoo.com\thttp://search.yahoo.com/bin/search?p=%s\n"
+"CMU\thttp://www.speech.cs.cmu.edu\thttp://www.speech.cs.cmu.edu/cgi-bin/"
+"cmudict?in=%s\n"
+msgstr ""
+"dict.leo.org\thttp://dict.leo.org\thttp://dict.leo.org/?search=%s&lang=en\n"
+"H2G2\thttp://www.h2g2.com\thttp://www.h2g2.com/Search?searchstring=%"
+"s&searchtype=ARTICLE&skip=0&show=20&showapproved=1&shownormal=1&showsubmitted=1\n"
+"WhatIs\thttp://www.whatis.com\thttp://www.whatis.com/"
+"WhatIs_Search_Results_Exact/1,290214,,00.html?query=%s\n"
+"Altavista\thttp://www.altavista.com\thttp://www.altavista.com/cgi-bin/query?"
+"q=%s\n"
+"WEB.DE\thttp://suche.web.de\thttp://suche.web.de/search/?su=%s\n"
+"WebCrawler\thttp://www.webcrawler.com\thttp://www.webcrawler.com/cgi-bin/"
+"WebQuery?searchText=%s\n"
+"Google\thttp://www.google.com\thttp://www.google.com/search?q=%s\n"
+"Magellan\thttp://www.mckinley.com\thttp://www.mckinley.com/extsearch.cgi?"
+"query=%s\n"
+"Yahoo\thttp://search.yahoo.com\thttp://search.yahoo.com/bin/search?p=%s\n"
+"CMU\thttp://www.speech.cs.cmu.edu\thttp://www.speech.cs.cmu.edu/cgi-bin/"
+"cmudict?in=%s\n"
+
+#: ../src/conf.cpp:257
+#, fuzzy
+msgid "win32_use_custom_font=0"
+msgstr "К_ористи сопствен фонт:"
+
+#: ../src/conf.cpp:268
+#, fuzzy
+msgid "win32_custom_font="
+msgstr "К_ористи сопствен фонт:"
+
+#: ../src/dictmanagedlg.cpp:251 ../src/dictmanagedlg.cpp:321
+msgid "Dictionary Name"
+msgstr "Име на речник"
+
+#: ../src/dictmanagedlg.cpp:252 ../src/dictmanagedlg.cpp:327
+msgid "Word count"
+msgstr "Број на зборови"
+
+#: ../src/dictmanagedlg.cpp:253
+msgid "Author"
+msgstr "Автор"
+
+#: ../src/dictmanagedlg.cpp:254
+msgid "Email"
+msgstr "Email"
+
+#: ../src/dictmanagedlg.cpp:255
+msgid "Website"
+msgstr "Веб страна"
+
+#: ../src/dictmanagedlg.cpp:256
+msgid "Description"
+msgstr "Опис"
+
+#: ../src/dictmanagedlg.cpp:257
+msgid "Date"
+msgstr "Дате"
+
+#: ../src/dictmanagedlg.cpp:258
+msgid "File name"
+msgstr "Име на датотека"
+
+#: ../src/dictmanagedlg.cpp:315
+msgid "Enable"
+msgstr "Овозможи"
+
+#: ../src/dictmanagedlg.cpp:584
+msgid "D_ictionaries"
+msgstr "Речн_ици"
+
+#: ../src/dictmanagedlg.cpp:599
+msgid "T_ree dictionaries"
+msgstr "Д_рво речници"
+
+#: ../src/dictmanagedlg.cpp:623
+msgid "These settings will take effect the next time you run StarDict."
+msgstr "Овие подесувања ќе се применат при следното стартување StarDict."
+
+#: ../src/dictmanagedlg.cpp:634
+msgid "Manage Dictionaries"
+msgstr "Уреди ги речниците"
+
+#: ../src/docklet.cpp:34 ../src/docklet.cpp:63 ../src/win32/systray.cpp:221
+msgid "StarDict - Scanning"
+msgstr "StarDict - Скенирам"
+
+#: ../src/docklet.cpp:37 ../src/docklet.cpp:67 ../src/win32/systray.cpp:224
+msgid "StarDict - Stopped"
+msgstr "StarDict - Стопиран"
+
+#: ../src/docklet.cpp:122 ../src/mainwin.cpp:1712
+msgid "_Scan"
+msgstr "_Скенирај"
+
+#: ../src/docklet.cpp:130 ../src/mainwin.cpp:551
+msgid "_Quit"
+msgstr "_Излези"
+
+#: ../src/floatwin.cpp:121
+msgid "Query in the main window"
+msgstr "Пребарај во главниот прозорец"
+
+#: ../src/floatwin.cpp:130
+msgid "Save to file"
+msgstr "Сними во датотека"
+
+#: ../src/floatwin.cpp:138 ../src/mainwin.cpp:1259
+msgid "Pronounce the word"
+msgstr "Изговори го зборот"
+
+#: ../src/floatwin.cpp:148
+#, fuzzy
+msgid "Stop selection-scanning"
+msgstr "Стопирај го скенирај за изборот"
+
+#: ../src/floatwin.cpp:160
+msgid "Help"
+msgstr "Помош"
+
+#: ../src/floatwin.cpp:168 ../src/mainwin.cpp:1745 ../src/win32/systray.cpp:79
+msgid "Quit"
+msgstr "Излези"
+
+#: ../src/floatwin.cpp:182
+msgid "Lock floating window"
+msgstr "Заклучи го постоечкиот прозорец"
+
+#: ../src/floatwin.cpp:267
+msgid "Fuzzy query"
+msgstr "Слободното пребарување"
+
+#: ../src/floatwin.cpp:273
+msgid "has succeeded.\n"
+msgstr "успеа.\n"
+
+#: ../src/floatwin.cpp:274
+msgid "Found "
+msgstr "Пронајден(и) (с)е "
+
+#: ../src/floatwin.cpp:276
+msgid "1 word:\n"
+msgstr "1 збор:\n"
+
+#: ../src/floatwin.cpp:281
+msgid " words:\n"
+msgstr " зборови:\n"
+
+#: ../src/floatwin.cpp:730
+msgid "_Copy"
+msgstr "_Копирај"
+
+#: ../src/floatwin.cpp:736
+#, fuzzy
+msgid "_Save"
+msgstr "_Скенирај"
+
+#: ../src/floatwin.cpp:741
+msgid "_Query"
+msgstr "_Пребарување"
+
+#: ../src/floatwin.cpp:748
+msgid "_Play"
+msgstr "_Свири"
+
+#: ../src/floatwin.cpp:756
+msgid "_Fuzzy Query"
+msgstr "_Слободно пребарување"
+
+#: ../src/inifile.cpp:135
+#, c-format
+msgid "Can not open: %s - %s\n"
+msgstr ""
+
+#: ../src/mainwin.cpp:85
+msgid "Clear the search box"
+msgstr "Исчисти ја лентата за пребарување"
+
+#: ../src/mainwin.cpp:111
+msgid "Fuzzy Query"
+msgstr "Слободно пребарување"
+
+#: ../src/mainwin.cpp:123
+msgid "Go Back - Right button: history (Alt+Left)"
+msgstr "Оди назад - Десно копче: историја (Alt+Left)"
+
+#: ../src/mainwin.cpp:133
+msgid "Previous word (Alt+Up)"
+msgstr "Претходен збор (Alt+Up)"
+
+#: ../src/mainwin.cpp:143
+msgid "Next word (Alt+Down)"
+msgstr "Следен збор (Alt+Down)"
+
+#: ../src/mainwin.cpp:153
+msgid "Show the main menu (Alt+M)"
+msgstr "Покажи го главното мени (Alt+M)"
+
+#: ../src/mainwin.cpp:480
+msgid "translator_credits"
+msgstr "заслуги_на_преведувачот"
+
+#: ../src/mainwin.cpp:486
+#, fuzzy
+msgid "StarDict is an international dictionary for GNOME."
+msgstr "StarDict е интернационален речник за GNOME.\n"
+
+#: ../src/mainwin.cpp:514
+msgid "Pr_eferences"
+msgstr "Пр_еференции"
+
+#: ../src/mainwin.cpp:521
+#, fuzzy
+msgid "Manage _Dict"
+msgstr "Уреди ги речниците"
+
+#: ../src/mainwin.cpp:529
+msgid "_New Version"
+msgstr "_Нова верзија"
+
+#: ../src/mainwin.cpp:537
+msgid "_Help"
+msgstr "_Помош"
+
+#: ../src/mainwin.cpp:543
+msgid "_About"
+msgstr "З_а"
+
+#: ../src/mainwin.cpp:1117
+msgid "_List"
+msgstr "_Листа"
+
+#: ../src/mainwin.cpp:1137
+msgid "_Result"
+msgstr ""
+
+#: ../src/mainwin.cpp:1157
+msgid "_Tree"
+msgstr "_Дрво"
+
+#: ../src/mainwin.cpp:1212
+msgid "Show the word list"
+msgstr "Покажи ја ја листата со зборови"
+
+#: ../src/mainwin.cpp:1227
+msgid "Hide the word list"
+msgstr "Скриј ја листата со зборови"
+
+#: ../src/mainwin.cpp:1245
+msgid "Copy"
+msgstr "Копирај"
+
+#: ../src/mainwin.cpp:1273
+#, fuzzy
+msgid "Save to file(Alt+E)"
+msgstr "Сними во датотека"
+
+#: ../src/mainwin.cpp:1283
+msgid "Print"
+msgstr "Печати"
+
+#: ../src/mainwin.cpp:1298
+msgid "Search in the definition (Ctrl+F)"
+msgstr "Барај во дефиницијата (Ctrl+F)"
+
+#: ../src/mainwin.cpp:1481
+msgid ""
+"Warning! No dictionary is loaded.\n"
+"Please go to StarDict's website and download some dictionaries:\n"
+"http://stardict.sourceforge.net"
+msgstr ""
+"Предупредување! Нема вчитан речник.\n"
+"Од на веб страната на StarDict и симни некој речник:\n"
+"http://stardict.sourceforge.net"
+
+#: ../src/mainwin.cpp:1489
+msgid ""
+"        Welcome to StarDict!\n"
+"\n"
+"   Press Ctrl+Q to quit. Press Alt+Z to iconify the window or Alt+X to hide "
+"the window.\n"
+"   Press Alt+C or ESC to clear the input entry's text.\n"
+"   Press Space key to move focus to the input entry.\n"
+"   If the query word was not found, you can press Tab key to select the "
+"first word in the word list.\n"
+"   After selected some text, clicking the middle mouse button on the main "
+"window's Definition area or on the notification area icon will look up that "
+"word.\n"
+"   StarDict can match strings against patterns containing '*' (wildcard) and "
+"'?' (joker).\n"
+"   Input a word beginning with '/' to do a Fuzzy query.\n"
+"   When the floating window reports that a word was not found, double "
+"clicking will perform a fuzzy query.\n"
+msgstr ""
+"        Добредојде во StarDict!\n"
+"\n"
+"   Стисни Ctrl+Q за да излезеш. Стисни Alt+Z за да го иконифицираш "
+"прозорецот или Alt+X за да го скриеш прозорецот.\n"
+"   Стисни Alt+C или ESC за да го избришеш внесениот текст.\n"
+"   Стисни го копчето за празно место за курсорот да се појави во лентата за "
+"внесување.\n"
+"   Ако зборот кој го бараш не е пронајден, можеш да стиснеш на копчето Tab "
+"за да го избереш првиот збор од листата.\n"
+"   Откако ќе избреш некој текст, со кликање на средното копче од глушецот во "
+"областа за дефиниции на главниот прозорец или на иконата за областа за "
+"известување, тој збор ќе биде побаран во речникот.\n"
+"   StarDict can може да пребарува и за стрингови кои содржат '*' (луда "
+"карта) и '?' (џокер).\n"
+"   Внеси збор кој ќе почнува со '/' за да направиш слободно пребарување.\n"
+"   Кога постоечкиот прозорец ќе извести дека зборот не е пронајден, двојно "
+"кликање со глушецот ќе изврши слободно пребарување.\n"
+
+#: ../src/mainwin.cpp:1508
+#, fuzzy
+msgid ""
+"       Welcome to StarDict\n"
+"StarDict is a Cross-Platform and international dictionary written in Gtk2. "
+"It has powerful features such as \"Glob-style pattern matching,\" \"Scan "
+"selected word,\" \"Fuzzy query,\" etc.\n"
+"\n"
+"       Here is an introduction to using StarDict:\n"
+"\n"
+"       1. Glob-style pattern matching\n"
+"       You can input strings containing '*' (wildcard) and '?' (joker) as "
+"the pattern. '*' matches an arbitrary, possibly empty, string, and '?' "
+"matches an arbitrary character. After pressing Enter, the words that match "
+"this pattern will be shown in the list.\n"
+"       2. Fuzzy query\n"
+"       When you can't remember how to spell a word exactly, you can try "
+"StarDict's Fuzzy query. It uses \"Levenshtein Edit Distance\" to compute the "
+"similarity between two words, and gives the match results which are most "
+"similar to the word that you input. To create a fuzzy query, just input the "
+"word with a beginning \"/\", and then press Enter.\n"
+"       3. Full-text search\n"
+"       Full-text search searchs a word in the data. To create a Full-text "
+"search, just input the word with a beginning \"|\", and then press Enter. "
+"For example, \"|ab cd\" searchs data which contain both \"ab\" and \"cd\". "
+"If the words contain Space character, you can use \"\\ \", such as \"|apple"
+"\\ pie\", other escaping characters are \"\\\\\" for '\\', \"\\t\" for Tab "
+"and \"\\n\" for new line.\n"
+"       4. Special character search\n"
+"       If your words contain special characters, you can use '\\' to escape "
+"it, for example, \"a\\*b\\?\" searchs \"a*b?\", \"\\/abc\" searchs \"/abc"
+"\".\n"
+"       5. Scan selected word\n"
+"       Turn on the check button at the bottom-left corner of the StarDict "
+"window to activate this feature. When this feature is on, StarDict will "
+"automatically look up words, phrases, and Chinese characters in other "
+"applications. Just highlight a word or phrase with your mouse, and a "
+"floating window will pop up showing the definition of the selected word.\n"
+"       6. Dictionary management\n"
+"       Click the \"Manage dictionaries\" button at the bottom-right corner "
+"of the window to access the dictionary management dialog. From here, you can "
+"disable some dictionaries that you don't need, and set the dictionaries' "
+"querying order.\n"
+"\n"
+"\n"
+"       Statement: This program is distributed in the hope that it will be "
+"useful, but WITHOUT ANY WARRANTY; without the warranty that the word "
+"spelling, definition, and phonetic information are correct.\n"
+msgstr ""
+"       Добредојде во StarDict\n"
+"StarDict е повеќе платформски и интернационален речник напишан во Gtk2. Има "
+"моќни можности како \"Глобално пребарување,\" \"Скенирање на избран збор,\" "
+"\"Слободно пребарување,\" итн.\n"
+"\n"
+"       Еве вовед во користењето на StarDict:\n"
+"\n"
+"       1. Глобално пребарување\n"
+"       Можеш да внесеш стрингови кои содржат '*' (луда карта) и '?' (џокер) "
+"како збро за пребарување. '*' на арбитрарен, можеби и празен, стринг, а '?' "
+"се однесува на арбитрарен карактер. По стискање на копчето Enter, зборовите "
+"кои ги исполнуваат критериумите ќе бидат прикажани во листата.\n"
+"       2. Слободно пребарување\n"
+"       Кога не ти текнува како одреден збор точно се пишува, можеш да го "
+"испробаш слободнот пребарување на StarDict. Тоа го користи \"Levenshtein "
+"Edit Distance\" за да ја пресмета сличноста помеѓу два збора, и ги дава "
+"резултатите кои се наслични со зборот кој го внесуваш. За да извршиш "
+"слободно пребарување, пред зборот што го внесуваш, внеси и \"/\" (коса црта "
+"нанапред), и стисни Enter.\n"
+"       3. Скенирање на избран збор\n"
+"       Избери ја опцијата во долниот лев кош на прозорецот на StarDict за да "
+"ја вклучиш оваа можмност.  Кога оваа можност е вклучена, StarDict автоматски "
+"ќе бара зборови, фрази, и кинески карактери во други апликации   Со избирање "
+"на збор или фраза со твојот глушец ќе се појави прозорче кое ќе ја покажува "
+"дефиницијата на избраниот збор.\n"
+"       4. Уредување на речниците\n"
+"       Кликни на копчето \"Уреди ги речниците\" во десниот долен ќош на "
+"прозорецот за да пристапиш до дијалогот за уредување на речниците.  Од таму "
+"можеш да ги оневозможиш речниците што не ти требаат, и можеш да го подесиш "
+"редот на пребарување на речниците.\n"
+"\n"
+"\n"
+"       Изјава: Оваа програма се дистрибуира со надеж дека ќе биде корисна, "
+"но БЕЗ НИКАКВА ГАРАНЦИЈА; без гаранција дека правописот на зборовите, "
+"дефинициите и фонетичките информации се точни.\n"
+"\n"
+
+#: ../src/mainwin.cpp:1628
+#, c-format
+msgid "The text \"%s\" was not found."
+msgstr "Текстот \"%s\" не беше пронајден."
+
+#: ../src/mainwin.cpp:1721
+msgid "Scan the selection"
+msgstr "Скенирај за изборот"
+
+#: ../src/mainwin.cpp:1735
+msgid "Show info"
+msgstr "Покажи информации"
+
+#: ../src/mainwin.cpp:1758 ../src/prefsdlg.cpp:1671
+msgid "Preferences"
+msgstr "Преференции"
+
+#: ../src/mainwin.cpp:1768
+msgid "Manage dictionaries"
+msgstr "Уреди ги речниците"
+
+#: ../src/mainwin.cpp:1778
+msgid "Go to the StarDict website"
+msgstr "Оди на веб страната на StarDict"
+
+#: ../src/mainwin.cpp:1790
+msgid "Search an Internet dictionary - Right button: website list"
+msgstr "Пребарај во речник на Интернет - Десно копче: листа на веб страни"
+
+#: ../src/prefsdlg.cpp:70 ../src/prefsdlg.cpp:328
+msgid "Scan Selection"
+msgstr "Скенирај за изборот"
+
+#: ../src/prefsdlg.cpp:71 ../src/prefsdlg.cpp:473
+msgid "Font"
+msgstr "Фонт"
+
+#: ../src/prefsdlg.cpp:72 ../src/prefsdlg.cpp:579
+msgid "Cache"
+msgstr ""
+
+#: ../src/prefsdlg.cpp:73 ../src/prefsdlg.cpp:718
+msgid "Export"
+msgstr ""
+
+#: ../src/prefsdlg.cpp:74 ../src/prefsdlg.cpp:779
+msgid "Sound"
+msgstr "Звук"
+
+#: ../src/prefsdlg.cpp:81 ../src/prefsdlg.cpp:862
+msgid "Input"
+msgstr ""
+
+#: ../src/prefsdlg.cpp:82 ../src/prefsdlg.cpp:90 ../src/prefsdlg.cpp:97
+msgid "Options"
+msgstr "Опции"
+
+#: ../src/prefsdlg.cpp:83 ../src/prefsdlg.cpp:1258
+msgid "Search website"
+msgstr "Веб страни за пребарување"
+
+#: ../src/prefsdlg.cpp:98
+msgid "Size"
+msgstr "Големина"
+
+#: ../src/prefsdlg.cpp:105 ../src/stardict.cpp:1751
+msgid "Dictionary"
+msgstr "Речник"
+
+#: ../src/prefsdlg.cpp:107 ../src/prefsdlg.cpp:944
+msgid "Main window"
+msgstr "Главен прозорец"
+
+#: ../src/prefsdlg.cpp:109 ../src/prefsdlg.cpp:1410
+msgid "Notification area icon"
+msgstr "Икона за областа за известување"
+
+#: ../src/prefsdlg.cpp:111 ../src/prefsdlg.cpp:1466
+msgid "Floating window"
+msgstr "Постоечки прозорец"
+
+#: ../src/prefsdlg.cpp:248
+msgid "Categories"
+msgstr "Категории"
+
+#: ../src/prefsdlg.cpp:344
+msgid "<span weight=\"bold\" size=\"x-large\">Scan Selection</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Скенирај за изборот</span>"
+
+#: ../src/prefsdlg.cpp:352
+#, fuzzy
+msgid "_Only scan while the modifier key is being pressed."
+msgstr "Скенирај сам_о кога го стискам копчето за скенирање."
+
+#: ../src/prefsdlg.cpp:368
+msgid "H_ide floating window when modifier key released."
+msgstr "Скр_иј го постоечкиот прозорец кога ќе го пуштам копчето за скенирање."
+
+#: ../src/prefsdlg.cpp:378
+msgid "Scan modifier _key:"
+msgstr "Копче за с_кенирање:"
+
+#: ../src/prefsdlg.cpp:402
+msgid "_Scan clipboard."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:408
+msgid "_Use scan hotkey: Ctrl+Alt+F1."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:446
+msgid "Choose dictionary font"
+msgstr "Избери фонт за речник"
+
+#: ../src/prefsdlg.cpp:449 ../src/prefsdlg.cpp:519
+msgid "Choose"
+msgstr "Избери"
+
+#: ../src/prefsdlg.cpp:451
+msgid "Dictionary font"
+msgstr "Фонт за речник"
+
+#: ../src/prefsdlg.cpp:489
+msgid "<span weight=\"bold\" size=\"x-large\">Font</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Фонт</span>"
+
+#: ../src/prefsdlg.cpp:497
+msgid "_Use custom font."
+msgstr "К_ористи сопствен фонт:"
+
+#: ../src/prefsdlg.cpp:509
+msgid "Dictionary _font:"
+msgstr "_Фонт за речник:"
+
+#: ../src/prefsdlg.cpp:595
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"x-large\">Cache</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Фонт</span>"
+
+#: ../src/prefsdlg.cpp:604
+msgid "Create c_ache files to speed up loading."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:609
+msgid "_Sort word list by collate function."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:618
+msgid "\tCollate _function:"
+msgstr ""
+
+#: ../src/prefsdlg.cpp:673
+msgid ""
+"After enabled collation, when load the dictionaries for the first time, it "
+"will take some time for sorting, please wait for a moment."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:679
+msgid "C_lean all cache files"
+msgstr ""
+
+#: ../src/prefsdlg.cpp:696
+msgid "Open file..."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:734
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"x-large\">Export</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Фонт</span>"
+
+#: ../src/prefsdlg.cpp:744
+msgid "_Only export word."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:751
+#, fuzzy
+msgid "File name:"
+msgstr "Име на датотека"
+
+#: ../src/prefsdlg.cpp:760
+msgid "_Browse..."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:795
+msgid "<span weight=\"bold\" size=\"x-large\">Sound</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Звук</span>"
+
+#: ../src/prefsdlg.cpp:805
+msgid "_Enable sound event."
+msgstr "_Овозможи звучни настани."
+
+#: ../src/prefsdlg.cpp:813
+msgid "Command for playing wav files:"
+msgstr ""
+
+#: ../src/prefsdlg.cpp:826
+msgid "RealPeopleTTS search path:"
+msgstr ""
+
+#: ../src/prefsdlg.cpp:878
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"x-large\">Input</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Фонт</span>"
+
+#: ../src/prefsdlg.cpp:887
+#, fuzzy
+msgid "_Search while typing."
+msgstr "Пребарај во листата на веб страни"
+
+#: ../src/prefsdlg.cpp:892
+msgid "Show the _first word when not found."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:960 ../src/prefsdlg.cpp:1426 ../src/prefsdlg.cpp:1482
+msgid "<span weight=\"bold\" size=\"x-large\">Options</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Опции</span>"
+
+#: ../src/prefsdlg.cpp:971
+msgid "_Auto run StarDict after boot."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:1001
+msgid "Hide main window when _starting StarDict."
+msgstr "При _стартување на StarDict скриј го главниот прозорец."
+
+#: ../src/prefsdlg.cpp:1011
+msgid "_Use open main window hotkey: Ctrl+Alt+Z."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:1089
+msgid "Add"
+msgstr "Додај"
+
+#: ../src/prefsdlg.cpp:1102 ../src/prefsdlg.cpp:1331
+msgid "Website Name"
+msgstr "Име на веб страна"
+
+#: ../src/prefsdlg.cpp:1114 ../src/prefsdlg.cpp:1339
+msgid "Website link"
+msgstr "Линк за веб страна"
+
+#: ../src/prefsdlg.cpp:1125 ../src/prefsdlg.cpp:1347
+msgid "Website search link"
+msgstr "Линк за пребарување на веб страна"
+
+#: ../src/prefsdlg.cpp:1146
+msgid "Please input the website name."
+msgstr "Внеси го името на веб страната"
+
+#: ../src/prefsdlg.cpp:1148
+msgid "Please input the website link."
+msgstr "Внеси го линкот за веб страната"
+
+#: ../src/prefsdlg.cpp:1150
+msgid "Please input the website search link."
+msgstr "Внеси го линкот за пребарување на веб страната"
+
+#: ../src/prefsdlg.cpp:1152
+#, fuzzy, c-format
+msgid ""
+"The website search link should contains a \"%%s\" string for querying a word."
+msgstr ""
+"Линкот за пребарување на веб страна треба да содржи \"%%s\" стринг за "
+"пребарување на зборови."
+
+#: ../src/prefsdlg.cpp:1231
+#, c-format
+msgid ""
+"The website search link should contains a \"%%s\" string for quering word."
+msgstr ""
+"Линкот за пребарување на веб страна треба да содржи \"%%s\" стринг за "
+"пребарување на зборови."
+
+#: ../src/prefsdlg.cpp:1275
+msgid "<span weight=\"bold\" size=\"x-large\">Search Website</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Пребарај на веб страната</span>"
+
+#: ../src/prefsdlg.cpp:1437
+#, fuzzy
+msgid ""
+"_Query in the floating window when middle mouse\n"
+"button is clicked."
+msgstr ""
+"Пребарај во постоечкиот прозорец кога ќе _кликнам\n"
+"на средното копче на глушецот."
+
+#: ../src/prefsdlg.cpp:1490
+#, fuzzy
+msgid "_Pronouce the word when it pops up."
+msgstr "Изговори го зборот при _прикажување."
+
+#: ../src/prefsdlg.cpp:1499
+msgid "_Show floating window if word not found."
+msgstr ""
+
+#: ../src/prefsdlg.cpp:1534
+msgid "<span weight=\"bold\" size=\"x-large\">Max window size</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"x-large\">Максимална големина на прозорецот</"
+"span>"
+
+#: ../src/prefsdlg.cpp:1556
+msgid "Max window _width:"
+msgstr "Максмимална ширина на п_розорецот:"
+
+#: ../src/prefsdlg.cpp:1566
+msgid "(default:320)"
+msgstr "(основна:320)"
+
+#: ../src/prefsdlg.cpp:1570
+msgid "Max window hei_ght:"
+msgstr "Максмимална висина на про_зорецот:"
+
+#: ../src/prefsdlg.cpp:1578
+msgid "(default:240)"
+msgstr "(основна:240)"
+
+#: ../src/prefsdlg.cpp:1649
+msgid "Cat_egories:"
+msgstr "Кат_егории:"
+
+#: ../src/selection.cpp:194 ../src/stardict.cpp:505 ../src/stardict.cpp:634
+#: ../src/stardict.cpp:794 ../src/stardict.cpp:806 ../src/stardict.cpp:811
+#: ../src/stardict.cpp:816 ../src/stardict.cpp:1209
+#: ../src/win32/clipboard.cpp:117
+msgid "<Not Found!>"
+msgstr "<Не е пронајдено!>"
+
+#: ../src/splash.cpp:64
+msgid "Loading"
+msgstr ""
+
+#: ../src/stardict.cpp:82
+msgid "Turn on all debugging messages"
+msgstr "Вклучи ги сите пораки за дебагирање"
+
+#: ../src/stardict.cpp:85
+msgid "Hide the main window"
+msgstr "Скриј го главниот прозорец"
+
+#: ../src/stardict.cpp:88
+msgid "Quit an existing instance of stardict"
+msgstr "Излези од постоечкиот прозорец на stardict"
+
+#: ../src/stardict.cpp:862 ../src/stardict.cpp:1173
+msgid "Full-text search..."
+msgstr ""
+
+#: ../src/stardict.cpp:889
+msgid "There are no dictionary's article with such word :-("
+msgstr ""
+
+#: ../src/stardict.cpp:925
+msgid "There are too many spelling errors :-("
+msgstr "Има премногу правописни грешки :-("
+
+#: ../src/stardict.cpp:980
+msgid "Fuzzy query failed, too :-("
+msgstr "Слободното пребарување не успеа :-("
+
+#: ../src/stardict.cpp:1006
+msgid "Found no words matching this pattern!"
+msgstr "Не се пронајдени зборови кои се совпаѓаат со барањето!"
+
+#: ../src/stardict.cpp:1165
+msgid "Press Enter to list the words that match the pattern."
+msgstr "Стисни Enter за да ги излисташ зборовите кои се совпаѓаат со барањето."
+
+#: ../src/stardict.cpp:1169
+msgid "Fuzzy query..."
+msgstr "Слободно пребарување..."
+
+#: ../src/stardict.cpp:1584
+msgid "StarDict is already running. Using the running process."
+msgstr "StarDict е веќе вклучен.  Се користи постоечкиот процес."
+
+#: ../src/utils.cpp:66
+#, c-format
+msgid "%s\\help\\stardict.chm"
+msgstr "%s\\help\\stardict-mk.chm"
+
+#: ../src/utils.cpp:171
+#, c-format
+msgid "Can not load image. %s"
+msgstr ""
+
+#: ../src/lib/stddict.cpp:843
+msgid "Sorting, please wait..."
+msgstr ""
+
+#: ../src/lib/stddict.cpp:999
+msgid "Loading..."
+msgstr ""
+
+#: ../src/win32/systray.cpp:75
+msgid "Scan"
+msgstr "Скенирај"
+
+#~ msgid "The stardict 's float window 's max height."
+#~ msgstr "Максималната висина на прозорецот на stardict."
+
+#~ msgid "The stardict 's float window 's max width."
+#~ msgstr "Максималната ширина на прозорецот на stardict."
+
+#~ msgid "The stardict 's main window 's height."
+#~ msgstr "Максималната висина на главниот прозорец на stardict."
+
+#~ msgid "The stardict 's main window 's width."
+#~ msgstr "Максималната ширина на главниот прозорец на stardict."
+
+#~ msgid "Window 's max height"
+#~ msgstr "Максималната висина на прозорецот"
+
+#~ msgid "Window 's max width"
+#~ msgstr "Максималната ширина на прозорецот"
+
+#~ msgid "lock's x position"
+#~ msgstr "X позиција на заклучување"
+
+#~ msgid "_Dict Manage"
+#~ msgstr "Уре_ди ги речниците"
+
+#~ msgid "Credits"
+#~ msgstr "Заслуги"
+
+#~ msgid "Written by"
+#~ msgstr "Напишана од"
+
+#~ msgid "Documented by"
+#~ msgstr "Документирана од"
+
+#~ msgid "Translated by"
+#~ msgstr "Преведена од"
+
+#~ msgid "C_redits"
+#~ msgstr "За_слуги"
+
+#~ msgid "Program name"
+#~ msgstr "Име на програмата"
+
+#~ msgid "The name of the program"
+#~ msgstr "Името на програмата"
+
+#~ msgid "Program version"
+#~ msgstr "Верзија на програмата"
+
+#~ msgid "The version of the program"
+#~ msgstr "Верзијата на програмата"
+
+#~ msgid "Copyright string"
+#~ msgstr "Стринг за авторските права"
+
+#~ msgid "Copyright information for the program"
+#~ msgstr "Информации за авторските права на програмот"
+
+#~ msgid "Comments string"
+#~ msgstr "Стринг за коментари"
+
+#~ msgid "Comments about the program"
+#~ msgstr "Коментари за програмата"
+
+#~ msgid "Authors"
+#~ msgstr "Автори"
+
+#~ msgid "List of authors of the programs"
+#~ msgstr "Листа на автори на програмата"
+
+#~ msgid "Author entry"
+#~ msgstr "Информации за авторот"
+
+#~ msgid "A single author entry"
+#~ msgstr "Единствени информации за авторот"
+
+#~ msgid "Documenters"
+#~ msgstr "Документирачи"
+
+#~ msgid "List of people documenting the program"
+#~ msgstr "Листа на луѓе кои ја документираат програмата"
+
+#~ msgid "Documenter entry"
+#~ msgstr "Информации за документирачот"
+
+#~ msgid "A single documenter entry"
+#~ msgstr "Единствени информации за документирачот"
+
+#~ msgid "Translator credits"
+#~ msgstr "Novica Nakov <acivon@mail.com.mk>"
+
+#~ msgid ""
+#~ "Credits to the translators. This string should be marked as translatable"
+#~ msgstr ""
+#~ "Заслуги на преведувачите. Овој стринг треба да биде означен за преведување"
+
+#~ msgid "Logo"
+#~ msgstr "Лого"
+
+#~ msgid "A logo for the about box"
+#~ msgstr "Лого за прозорецот со информации"
+
+#~ msgid "About %s"
+#~ msgstr "За %s"
+
+#, fuzzy
+#~ msgid "Cannot connect to gconf.\n"
+#~ msgstr "Не можам да се поврзам со gconf."
+
+#~ msgid "Find"
+#~ msgstr "Најди"
+
+#~ msgid "_Search for:"
+#~ msgstr "_Пребарај за:"
+
+#~ msgid "_Win"
+#~ msgstr "_Win"
+
+#~ msgid "_Shift"
+#~ msgstr "_Shift"
+
+#~ msgid "_Alt"
+#~ msgstr "_Alt"
+
+#~ msgid "_Ctrl"
+#~ msgstr "_Ctrl"
+
+#~ msgid ""
+#~ "use_custom_font=1\n"
+#~ "custom_font=sans 8\n"
+#~ msgstr ""
+#~ "користи_сопствен_фонт=1\n"
+#~ "сопствен_фонт=sans 8\n"
+
+#~ msgid ""
+#~ "window_width=551\n"
+#~ "window_height=357\n"
+#~ "hpaned_pos=165\n"
+#~ msgstr ""
+#~ "ширина_на_прозорецот=551\n"
+#~ "висина_на_прозорецот=357\n"
+#~ "hpaned_pos=165\n"
+
+#~ msgid "_Scan selection"
+#~ msgstr "_Скенирај за изборот"

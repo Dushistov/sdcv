@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+_Name=StarDict
+_Comment=Lookup words
+Exec=stardict
+Terminal=0
+Type=Application
+Icon=stardict.png
+StartupNotify=true
+Categories=GNOME;Application;Utility;
+X-GNOME-DocPath=stardict/stardict.xml

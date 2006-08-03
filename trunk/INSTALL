@@ -1,0 +1,18 @@
+To Install StarDict:
+type:
+=============
+./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man
+make
+make install
+=============
+
+You can use:
+=============
+./configure --disable-gnome-support --prefix=/usr
+=============
+to build the "gtk library only" version of StarDict.
+
+You can use "./configure --enable-gpe-support --prefix=/usr" to build the GPE version of StarDict. For GPE, see http://gpe.handhelds.org
+
+Notice: you can download dictionaries from the StarDict website:
+http://stardict.sourceforge.net

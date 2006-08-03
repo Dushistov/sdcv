@@ -1,0 +1,1303 @@
+# This file is distributed under the same license as the StarDict package.
+# Copyright (C) 2003 THE StarDict's COPYRIGHT HOLDER
+# Volodymyr M. Lisivka <lvm@mystery.lviv.net>, 2003, 2006
+#  <>, 2006.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: stardict 2.4.7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-07-05 22:57+0800\n"
+"PO-Revision-Date: 2006-07-05 16:25+0300\n"
+"Last-Translator: Volodymyr M. Lisivka <vlisivka@gmail.com>\n"
+"Language-Team: Ukrainian <linux@linux.org.ua>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/GNOME_Stardict.server.in.h:1
+msgid "stardict application"
+msgstr "програма 'Зоряний словник'"
+
+#: ../data/GNOME_Stardict.server.in.h:2
+msgid "stardict automation factory"
+msgstr "фабрика автоматизації Зоряного словника"
+
+#: ../data/stardict.desktop.in.h:1
+msgid "Lookup words"
+msgstr "Слова пошуку"
+
+#. gtk_widget_set_app_paintable(window, TRUE);
+#: ../data/stardict.desktop.in.h:2 ../src/docklet.cpp:31 ../src/docklet.cpp:71
+#: ../src/mainwin.cpp:483 ../src/splash.cpp:78 ../src/stardict.cpp:173
+#: ../src/stardict.cpp:1691 ../src/win32/systray.cpp:196
+#: ../src/win32/systray.cpp:218
+msgid "StarDict"
+msgstr "Зоряний словник :: StarDict"
+
+#: ../data/stardict.schemas.in.h:1
+msgid ""
+"A custom font that will be used in StarDict. This will only take effect if "
+"the \"Use Custom Font\" option is turned on."
+msgstr ""
+"Шрифт, що використовується у Зоряному словнику. Буде використаний лише якщо "
+"включена опція \"Задіяти користувацький шрифт\"."
+
+#: ../data/stardict.schemas.in.h:2
+msgid "Custom Font"
+msgstr "Користувацький шрифт"
+
+#: ../data/stardict.schemas.in.h:3
+msgid "Dictionary order"
+msgstr "Порядок словників"
+
+#: ../data/stardict.schemas.in.h:4
+msgid "Disabled dictionary list"
+msgstr "Список виключених словників"
+
+#: ../data/stardict.schemas.in.h:5
+msgid "Disabled tree dictionary list"
+msgstr "Список виключених ієрархічних словників"
+
+#: ../data/stardict.schemas.in.h:6
+msgid "Enable sound event"
+msgstr "Використовувати звуки для подій"
+
+#: ../data/stardict.schemas.in.h:7
+msgid "Hide floating window when modifier key is released"
+msgstr "Ховати спливаюче вікно при відпусканні спеціальної клавіші"
+
+#: ../data/stardict.schemas.in.h:8
+msgid ""
+"Hide floating window when modifier key is released. It only take effect when "
+"only_scan_while_modifier_key is turned on."
+msgstr ""
+"Ховати спливаюче вікно при відпусканні спеціальної клавіші. Тільки якщо "
+"включено \"Слідкувати лише при натиснутій спеціальній клавіші\"."
+
+#: ../data/stardict.schemas.in.h:9
+msgid "Hide the list"
+msgstr "Сховати список"
+
+#: ../data/stardict.schemas.in.h:10
+msgid "Hide the window on startup"
+msgstr "Ховати вікно при старті"
+
+#: ../data/stardict.schemas.in.h:11
+msgid "Hpaned 's position"
+msgstr "Позиція горизонтального роздільника"
+
+#: ../data/stardict.schemas.in.h:12
+msgid "List the dictionaries in order."
+msgstr "Показати словники по порядку."
+
+#: ../data/stardict.schemas.in.h:13
+msgid "List the dictionaries which are disabled."
+msgstr "Показати відключені словники."
+
+#: ../data/stardict.schemas.in.h:14
+msgid "List the search websites."
+msgstr "Показати пошукові сайти."
+
+#: ../data/stardict.schemas.in.h:15
+msgid "List the tree dictionaries in order."
+msgstr "Показати ієрархічні словники по порядку."
+
+#: ../data/stardict.schemas.in.h:16
+msgid "List the tree dictionaries which are disabled."
+msgstr "Показати відключені ієрархічні словники."
+
+#: ../data/stardict.schemas.in.h:17
+msgid "Maximum window-height"
+msgstr "Максимальна висота вікна"
+
+#: ../data/stardict.schemas.in.h:18
+msgid "Maximum window-width"
+msgstr "Максимальна ширина вікна"
+
+#: ../data/stardict.schemas.in.h:19
+msgid "Only scan while modifier key is being pressed"
+msgstr "Слідкувати лише при натиснутій спеціальній клавіші"
+
+#: ../data/stardict.schemas.in.h:20
+msgid ""
+"Only scan while the modifier key is being pressed. The modifier key is set "
+"by \"scan_modifier_key\"."
+msgstr ""
+"Відслідковувати лише при натиснутій спеціальній клавіші. Спеціальна клавіша "
+"встановлюється \"Слідкувати зі спеціальною клавішею\"."
+
+#: ../data/stardict.schemas.in.h:21
+msgid ""
+"Only scan while this modifier key is being pressed. It can be Win(0), Shift"
+"(1), Alt(2) or Ctrl(3)."
+msgstr ""
+"Слідкувати за відміченим лише при нажатій спеціальній клавіші. Це може бути "
+"Win(0), Shift(1), Alt(2) або Ctrl(3)."
+
+#: ../data/stardict.schemas.in.h:22
+msgid "Pronounce the word when it pops up."
+msgstr "Промовляти слово при появі спливаючого вікна."
+
+#: ../data/stardict.schemas.in.h:23
+msgid "Pronounce the word when the floating window pops up."
+msgstr "Промовляти слово при появі спливаючого вікна."
+
+#: ../data/stardict.schemas.in.h:24
+msgid "Query in the floating window when middle mouse button is clicked"
+msgstr ""
+"Здійснювати пошук у спливаючому вікні при клацанні середньою кнопкою мишки "
+
+#: ../data/stardict.schemas.in.h:25
+msgid "Scan modifier key"
+msgstr "Спеціальна клавіша для слідкування"
+
+#: ../data/stardict.schemas.in.h:26
+msgid "Scan the Selection"
+msgstr "Слідкувати за виділеним"
+
+#: ../data/stardict.schemas.in.h:27
+msgid "Search website list"
+msgstr "Список пошукових сайтів"
+
+#: ../data/stardict.schemas.in.h:28
+msgid "The height of the main stardict window."
+msgstr "Висота головного вікна Зоряного словника"
+
+#: ../data/stardict.schemas.in.h:29
+msgid "The hpaned's position, between the listview and the textview."
+msgstr ""
+"Позиція роздільника, який знаходиться між списком слів та областю перекладу."
+
+#: ../data/stardict.schemas.in.h:30
+msgid "The maximum height of the floating stardict window."
+msgstr "Максимальна висота плаваючого вікна Зоряного словника."
+
+#: ../data/stardict.schemas.in.h:31
+msgid "The maximum width of the floating stardict window."
+msgstr "Максимальна ширина плаваючого вікна Зоряного словника."
+
+#: ../data/stardict.schemas.in.h:32
+msgid "The width of the main stardict window."
+msgstr "Ширина головного вікна зоряного словника."
+
+#: ../data/stardict.schemas.in.h:33
+msgid "Tree Dictionary order"
+msgstr "Порядок ієрархічних словників"
+
+#: ../data/stardict.schemas.in.h:34
+msgid "Use Custom Font"
+msgstr "Задіяти користувацький шрифт"
+
+#: ../data/stardict.schemas.in.h:35
+msgid "Whether the main window is maximized or not."
+msgstr "Чи максимального розміру головне вікно."
+
+#: ../data/stardict.schemas.in.h:36
+msgid "Whether the window is maximized or not"
+msgstr "Чи максимального розміру вікно"
+
+#: ../data/stardict.schemas.in.h:37
+msgid ""
+"Whether to enable sound events or not. StarDict will play a sound event when "
+"a button is active or released, and when a menu pops up."
+msgstr ""
+"Якщо задіяне озвучення, Зоряний словник програватиме звуки при активації "
+"кнопок та при появі спливаючого вікна."
+
+#: ../data/stardict.schemas.in.h:38
+msgid "Whether to hide the main window on startup, or not."
+msgstr "Чи ховати головне вікно відразу після запуску."
+
+#: ../data/stardict.schemas.in.h:39
+msgid "Whether to hide the word-list view or not."
+msgstr "Чи ховати список зі знайденими словами."
+
+#: ../data/stardict.schemas.in.h:40
+msgid ""
+"Whether to lock the floating window or not. While locked, the window will "
+"not disappear."
+msgstr ""
+"Закріплювати спливаюче вікно. Коли вікно закріплене, воно не зникатиме."
+
+#: ../data/stardict.schemas.in.h:41
+msgid ""
+"Whether to query in the floating window, or in the main window. Query is "
+"activated by the user clicking the middle mouse button on the notification "
+"area icon."
+msgstr ""
+"Здійснювати пошук у спливаючому або ж у головному вікні. Відбувається, коли "
+"користувач натискає середню кнопку миші на іконці у області сповіщень."
+
+#: ../data/stardict.schemas.in.h:42
+msgid ""
+"Whether to scan the selection or not. When the user selects text, stardict "
+"will popup a flat window showing the meaning of that text."
+msgstr ""
+"Чи відслідковувати відмічений текст. Коли користувач відмітив текст, Зоряний "
+"словник відкриє спливаюче вікно у якому покаже його значення."
+
+#: ../data/stardict.schemas.in.h:43
+msgid ""
+"Whether to use a user-defined font in StarDict, instead of the default "
+"system font. If this option is turned on, then the font named in the "
+"\"Custom Font\" option will be used instead of the system font."
+msgstr ""
+"Чи використовувати у Зоряному словнику вказаний шрифт замість системного "
+"шрифту за умовчанням. Якщо дана опція включена, тоді замість системного "
+"шрифту використовуватиметься шрифт вказаний у \"Користувацький шрифт\"."
+
+#: ../data/stardict.schemas.in.h:44
+msgid "Window-height"
+msgstr "Висота вікна"
+
+#: ../data/stardict.schemas.in.h:45
+msgid "Window-width"
+msgstr "Ширина вікна"
+
+#: ../data/stardict.schemas.in.h:46
+msgid "lock position (x)"
+msgstr "Позиція закріплення по x"
+
+#: ../data/stardict.schemas.in.h:47
+msgid "lock position (y)"
+msgstr "Позиція закріплення по у"
+
+#: ../data/stardict.schemas.in.h:48
+msgid "the window's x position while locked."
+msgstr "позиція вікна по x, коли воно закріплене."
+
+#: ../data/stardict.schemas.in.h:49
+msgid "the window's y position while locked."
+msgstr "позиція вікна по y, коли воно закріплене."
+
+#: ../data/stardict.schemas.in.h:50
+msgid "whether to lock the window or not"
+msgstr "чи закріплювати вікно"
+
+#: ../src/conf.cpp:233
+#, c-format
+msgid ""
+"Dictionary.com\thttp://dictionary.reference.com\thttp://dictionary.reference."
+"com/search?q=%s\n"
+"dict.leo.org\thttp://dict.leo.org\thttp://dict.leo.org/?search=%s&lang=en\n"
+"H2G2\thttp://www.h2g2.com\thttp://www.h2g2.com/Search?searchstring=%"
+"s&searchtype=ARTICLE&skip=0&show=20&showapproved=1&shownormal=1&showsubmitted=1\n"
+"WhatIs\thttp://whatis.techtarget.com\thttp://whatis.techtarget.com/"
+"wsearchResults/1,290214,sid9,00.html?query=%s\n"
+"Altavista\thttp://www.altavista.com\thttp://www.altavista.com/cgi-bin/query?"
+"q=%s\n"
+"WEB.DE\thttp://suche.web.de\thttp://suche.web.de/search/?su=%s\n"
+"WebCrawler\thttp://www.webcrawler.com\thttp://www.webcrawler.com/cgi-bin/"
+"WebQuery?searchText=%s\n"
+"Google\thttp://www.google.com\thttp://www.google.com/search?q=%s\n"
+"Yahoo\thttp://search.yahoo.com\thttp://search.yahoo.com/bin/search?p=%s\n"
+"CMU\thttp://www.speech.cs.cmu.edu\thttp://www.speech.cs.cmu.edu/cgi-bin/"
+"cmudict?in=%s\n"
+msgstr ""
+"Dictionary.com\thttp://dictionary.reference.com\thttp://dictionary.reference."
+"com/search?q=%s\n"
+"dict.leo.org\thttp://dict.leo.org\thttp://dict.leo.org/?search=%s&lang=en\n"
+"H2G2\thttp://www.h2g2.com\thttp://www.h2g2.com/Search?searchstring=%"
+"s&searchtype=ARTICLE&skip=0&show=20&showapproved=1&shownormal=1&showsubmitted=1\n"
+"WhatIs\thttp://whatis.techtarget.com\thttp://whatis.techtarget.com/"
+"wsearchResults/1,290214,sid9,00.html?query=%s\n"
+"Altavista\thttp://www.altavista.com\thttp://www.altavista.com/cgi-bin/query?"
+"q=%s\n"
+"WEB.DE\thttp://suche.web.de\thttp://suche.web.de/search/?su=%s\n"
+"WebCrawler\thttp://www.webcrawler.com\thttp://www.webcrawler.com/cgi-bin/"
+"WebQuery?searchText=%s\n"
+"Google\thttp://www.google.com\thttp://www.google.com/search?q=%s\n"
+"Yahoo\thttp://search.yahoo.com\thttp://search.yahoo.com/bin/search?p=%s\n"
+"Орфоепічний словник CMU\thttp://www.speech.cs.cmu.edu\thttp://www.speech.cs."
+"cmu.edu/cgi-bin/cmudict?in=%s\n"
+"ВТССУМ\thttp://www.slovnyk.net/\thttp://www.slovnyk.net/?swrd=%s\n"
+
+#: ../src/conf.cpp:257
+msgid "win32_use_custom_font=0"
+msgstr "win32_use_custom_font=0"
+
+#: ../src/conf.cpp:268
+msgid "win32_custom_font="
+msgstr "win32_custom_font="
+
+#: ../src/dictmanagedlg.cpp:251 ../src/dictmanagedlg.cpp:321
+msgid "Dictionary Name"
+msgstr "Назва словника"
+
+# @ gEdit gtk
+#: ../src/dictmanagedlg.cpp:252 ../src/dictmanagedlg.cpp:327
+msgid "Word count"
+msgstr "Кількість слів"
+
+# @ Galeon- artsbuilder cervisia galeon gimp-perl kdelibs kdesud keduca kfile_png.po kio kmcop.po knewsticker koffice kompare konsole noatun pan
+#: ../src/dictmanagedlg.cpp:253
+msgid "Author"
+msgstr "Автор"
+
+# @ Scrollkeeper bug-buddy columbo drakfw-uk evolution gEdit gnome-pim gnomeicu kaddressbook kaddressbook.po kcmemail kdelibs knode korganizer kpilot kword menu-messages menu-messages-uk mrproject
+#: ../src/dictmanagedlg.cpp:254
+msgid "Email"
+msgstr "Адреса"
+
+#: ../src/dictmanagedlg.cpp:255
+msgid "Website"
+msgstr "Сайт"
+
+# @ DrakX-uk Gabber Gallery Ximian-setup-tools anjuta bonobo bug-buddy control-center dr-genius filetypes gal gimp-perl gimp-std-plugins- glade- gnome-utils gnucash gnumeric guppi katepart.po kcmicons kcminfo kcminput kcmstyle kcron kde-i18n_4:2.2.2-2_kpersonalizer.po kdelibs kdemultimedia kdeprint keduca kfile_ogg.po kfile_png.po kio klipper kmail knode kpersonalizer.po kpilot ktables libbonoboui libkdenetwork noatun nsplugin nt pan screem xchat
+#: ../src/dictmanagedlg.cpp:256
+msgid "Description"
+msgstr "Опис"
+
+# @ Ximian-setup-tools balsa cervisia clockapplet columbo csvfilter drakcronat drakcronat-uk empath evolution gfax gnome-libs gnome-utils gnucash gnumeric gqview karchiver karchiver.po kdelibs kfile_ogg.po kfile_rfc khelpcenter kio kmail kmines.po knode kspread libgnomeui libkdehighscores.po noatun pan xfce xmms xmms-uk
+#: ../src/dictmanagedlg.cpp:257
+msgid "Date"
+msgstr "Дата"
+
+# @ EasyTag Gnome-find balsa gnome-utils nautilus xmms xmms-uk
+#: ../src/dictmanagedlg.cpp:258
+msgid "File name"
+msgstr "Ім'я файлу"
+
+# @ Dia control-center evolution fontinst gnome-pilot gnome-utils gtkhtml kdelibs konsole kpackage
+#: ../src/dictmanagedlg.cpp:315
+msgid "Enable"
+msgstr "Ввімкнути"
+
+#: ../src/dictmanagedlg.cpp:584
+msgid "D_ictionaries"
+msgstr "_Словники"
+
+#: ../src/dictmanagedlg.cpp:599
+msgid "T_ree dictionaries"
+msgstr "_Ієрархічні словники"
+
+#: ../src/dictmanagedlg.cpp:623
+msgid "These settings will take effect the next time you run StarDict."
+msgstr ""
+"Ці налаштування вступлять у силу тільки після перезапуску Зоряного словника."
+
+#: ../src/dictmanagedlg.cpp:634
+msgid "Manage Dictionaries"
+msgstr "Керування словниками"
+
+#: ../src/docklet.cpp:34 ../src/docklet.cpp:63 ../src/win32/systray.cpp:221
+msgid "StarDict - Scanning"
+msgstr "Зоряний словник - слідкування за виділеним"
+
+#: ../src/docklet.cpp:37 ../src/docklet.cpp:67 ../src/win32/systray.cpp:224
+msgid "StarDict - Stopped"
+msgstr "Зоряний словник - зупинений"
+
+#: ../src/docklet.cpp:122 ../src/mainwin.cpp:1712
+msgid "_Scan"
+msgstr "_Слідкувати"
+
+# @ eog gEdit gdm gnumeric gtk libgnomeui mrproject sodipodi
+#: ../src/docklet.cpp:130 ../src/mainwin.cpp:551
+msgid "_Quit"
+msgstr "_Вихід"
+
+#: ../src/floatwin.cpp:121
+msgid "Query in the main window"
+msgstr "Шукати у головному вікні"
+
+# @ kmail
+#: ../src/floatwin.cpp:130
+msgid "Save to file"
+msgstr "Зберегти у файлі"
+
+#: ../src/floatwin.cpp:138 ../src/mainwin.cpp:1259
+msgid "Pronounce the word"
+msgstr "Промовити слово"
+
+#: ../src/floatwin.cpp:148
+msgid "Stop selection-scanning"
+msgstr "Зупинити відслідковування виділеного"
+
+# @ DrakX-uk gnucash grip kdelibs mc menu-messages-uk menudrake-uk rpmdrake-uk userdrake-uk userdrake-uk-uk userdrake2-uk
+#: ../src/floatwin.cpp:160
+msgid "Help"
+msgstr "Довідка"
+
+# @ DrakX-uk drakcronat-uk drakwizard-uk gnucash kdelibs libc make mc rpmdrake-uk
+#: ../src/floatwin.cpp:168 ../src/mainwin.cpp:1745 ../src/win32/systray.cpp:79
+msgid "Quit"
+msgstr "Вихід"
+
+#: ../src/floatwin.cpp:182
+msgid "Lock floating window"
+msgstr "Закріпити спливаюче вікно"
+
+#: ../src/floatwin.cpp:267
+msgid "Fuzzy query"
+msgstr "Нечіткий пошук"
+
+#: ../src/floatwin.cpp:273
+msgid "has succeeded.\n"
+msgstr "вдалий.\n"
+
+#: ../src/floatwin.cpp:274
+msgid "Found "
+msgstr "Знайдено "
+
+#: ../src/floatwin.cpp:276
+msgid "1 word:\n"
+msgstr "1 слово:\n"
+
+#: ../src/floatwin.cpp:281
+msgid " words:\n"
+msgstr " слів:\n"
+
+# @ Galeon- IceWM anjuta evolution gEdit galeon gnome-libs gnome-utils gnumeric gtk gtkhtml libgnomeui mrproject
+#: ../src/floatwin.cpp:730
+msgid "_Copy"
+msgstr "С_копіювати"
+
+#: ../src/floatwin.cpp:736
+msgid "_Save"
+msgstr "_Зберегти"
+
+#: ../src/floatwin.cpp:741
+msgid "_Query"
+msgstr "_Шукати"
+
+# @ control-center
+#: ../src/floatwin.cpp:748
+msgid "_Play"
+msgstr "Про_грати"
+
+#: ../src/floatwin.cpp:756
+msgid "_Fuzzy Query"
+msgstr "_Нечіткий пошук"
+
+#: ../src/inifile.cpp:135
+#, c-format
+msgid "Can not open: %s - %s\n"
+msgstr "Не можу відкрити: %s - %s\n"
+
+#: ../src/mainwin.cpp:85
+msgid "Clear the search box"
+msgstr "Очистити рядок запиту"
+
+#: ../src/mainwin.cpp:111
+msgid "Fuzzy Query"
+msgstr "Нечіткий пошук"
+
+#: ../src/mainwin.cpp:123
+msgid "Go Back - Right button: history (Alt+Left)"
+msgstr "Назад - Права кнопка: історія (Alt+Left)"
+
+#: ../src/mainwin.cpp:133
+msgid "Previous word (Alt+Up)"
+msgstr "Попереднє слово (Alt+Up)"
+
+#: ../src/mainwin.cpp:143
+msgid "Next word (Alt+Down)"
+msgstr "Наступне слово (Alt+Down)"
+
+#: ../src/mainwin.cpp:153
+msgid "Show the main menu (Alt+M)"
+msgstr "Показати головне меню (Alt+M)"
+
+# @ camorama control-center file-roller- gEdit gnome-applets gnome-core gnome-games gnome-media gnome-panel gnome-utils gswitchit mrproject procman profterm yelp
+#: ../src/mainwin.cpp:480
+msgid "translator_credits"
+msgstr ""
+"Володимир Лісівка <lvm@mystery.lviv.net>\n"
+"Сергій Дубик <dubyk@library.lviv.ua>"
+
+#: ../src/mainwin.cpp:486
+msgid "StarDict is an international dictionary for GNOME."
+msgstr "Зоряний словник - це міжнародний словник для GNOME."
+
+#: ../src/mainwin.cpp:514
+msgid "Pr_eferences"
+msgstr "На_лаштування"
+
+#: ../src/mainwin.cpp:521
+msgid "Manage _Dict"
+msgstr "Керування словниками"
+
+#: ../src/mainwin.cpp:529
+msgid "_New Version"
+msgstr "_Нова версія?"
+
+# @ Galeon- IceWM Ximian-setup-tools bonobo control-center eog evolution gEdit gIDE galeon ggv glade- gnome-applets gnome-core gnome-libs gnome-media gnome-panel gnome-utils gnucash gnumeric gphoto gswitchit gtk libgnomeui mc mrproject nautilus profterm pybliographer sawfish sodipodi xchat
+#: ../src/mainwin.cpp:537
+msgid "_Help"
+msgstr "_Довідка"
+
+# @ Gabber IceWM eog file-roller- gEdit glade- gnumeric libgnomeui mrproject nautilus sawfish
+#: ../src/mainwin.cpp:543
+msgid "_About"
+msgstr "_Про програму"
+
+#: ../src/mainwin.cpp:1117
+msgid "_List"
+msgstr "_Список"
+
+#: ../src/mainwin.cpp:1137
+msgid "_Result"
+msgstr "_Результат"
+
+#: ../src/mainwin.cpp:1157
+msgid "_Tree"
+msgstr "_Ієрархія"
+
+#: ../src/mainwin.cpp:1212
+msgid "Show the word list"
+msgstr "Показати список зі словами"
+
+#: ../src/mainwin.cpp:1227
+msgid "Hide the word list"
+msgstr "Сховати список зі словами"
+
+# @ GIMP Galeon- Gnome-find Scribus Ximian-setup-tools anjuta evolution gEdit galeon glade- gnome-libs gnome-utils gnumeric gqview gtkhtml guppi kdelibs mc menu-messages menu-messages-uk mrproject nt profterm sawfish screem sodipodi xfce
+#: ../src/mainwin.cpp:1245
+msgid "Copy"
+msgstr "Скопіювати"
+
+# @ kmail
+#: ../src/mainwin.cpp:1273
+msgid "Save to file(Alt+E)"
+msgstr "Зберегти у файлі (Alt-E)"
+
+# @ DrakX-uk GIMP Galeon- Gnome-find anjuta balsa ee eog evolution gEdit gIDE galeon glade- gnome-print gnome-utils gnucash gnumeric guppi kdelibs mrproject mutt-1.4-4.src.rpm.dir_1_1_mutt-_po_uk.po nautilus pan screem sodipodi yank
+#: ../src/mainwin.cpp:1283
+msgid "Print"
+msgstr "Надрукувати"
+
+#: ../src/mainwin.cpp:1298
+msgid "Search in the definition (Ctrl+F)"
+msgstr "Пошук у вікні результатів (Ctrl+F)"
+
+#: ../src/mainwin.cpp:1481
+msgid ""
+"Warning! No dictionary is loaded.\n"
+"Please go to StarDict's website and download some dictionaries:\n"
+"http://stardict.sourceforge.net"
+msgstr ""
+"Увага! Жоден словник не завантажений.\n"
+" Будь ласка завантажите їх зі сайту Зоряного словника!\n"
+" http://stardict.cosoft.org.cn/ або ж з\n"
+"http://stardict.sourceforge.net"
+
+#: ../src/mainwin.cpp:1489
+msgid ""
+"        Welcome to StarDict!\n"
+"\n"
+"   Press Ctrl+Q to quit. Press Alt+Z to iconify the window or Alt+X to hide "
+"the window.\n"
+"   Press Alt+C or ESC to clear the input entry's text.\n"
+"   Press Space key to move focus to the input entry.\n"
+"   If the query word was not found, you can press Tab key to select the "
+"first word in the word list.\n"
+"   After selected some text, clicking the middle mouse button on the main "
+"window's Definition area or on the notification area icon will look up that "
+"word.\n"
+"   StarDict can match strings against patterns containing '*' (wildcard) and "
+"'?' (joker).\n"
+"   Input a word beginning with '/' to do a Fuzzy query.\n"
+"   When the floating window reports that a word was not found, double "
+"clicking will perform a fuzzy query.\n"
+msgstr ""
+"        Ласкаво просимо у Зоряний словник (StarDict)!\n"
+"\n"
+"   Для виходу з програми натисніть Ctrl+Q. Нажимайте Alt+Z для скинення "
+"вікна донизу а Alt+X заховає вікно.\n"
+"   Щоб очистити рядок вводу натисніть Alt+C або ESC.\n"
+"   Щоб передати фокус до рядка вводу натисніть клавішу Пробіл.\n"
+"   Якщо шуканого слова не знайдено, можете через клавішу Tab перейти до "
+"списку слів та вибрати перше слово.\n"
+"   Щоб шукати означення виділених слів/слова у головному вікні,- клацніть "
+"середньою кнопкою мишки на виділеному або на іконці у області сповіщень.\n"
+"   Зоряний словник може здійснювати пошук з допомогою шаблонів "
+"'*' (підстановлювальний знак) та '?' (багатозначник).\n"
+"   Щоб здійснити нечіткий пошук, введіть слово, що починатиметься з '/'.\n"
+"   Якщо спливаюче вікно повідомить, що слово не знайдене, клацніть подвійно "
+"для нечіткого пошуку.\n"
+
+#: ../src/mainwin.cpp:1508
+msgid ""
+"       Welcome to StarDict\n"
+"StarDict is a Cross-Platform and international dictionary written in Gtk2. "
+"It has powerful features such as \"Glob-style pattern matching,\" \"Scan "
+"selected word,\" \"Fuzzy query,\" etc.\n"
+"\n"
+"       Here is an introduction to using StarDict:\n"
+"\n"
+"       1. Glob-style pattern matching\n"
+"       You can input strings containing '*' (wildcard) and '?' (joker) as "
+"the pattern. '*' matches an arbitrary, possibly empty, string, and '?' "
+"matches an arbitrary character. After pressing Enter, the words that match "
+"this pattern will be shown in the list.\n"
+"       2. Fuzzy query\n"
+"       When you can't remember how to spell a word exactly, you can try "
+"StarDict's Fuzzy query. It uses \"Levenshtein Edit Distance\" to compute the "
+"similarity between two words, and gives the match results which are most "
+"similar to the word that you input. To create a fuzzy query, just input the "
+"word with a beginning \"/\", and then press Enter.\n"
+"       3. Full-text search\n"
+"       Full-text search searchs a word in the data. To create a Full-text "
+"search, just input the word with a beginning \"|\", and then press Enter. "
+"For example, \"|ab cd\" searchs data which contain both \"ab\" and \"cd\". "
+"If the words contain Space character, you can use \"\\ \", such as \"|apple"
+"\\ pie\", other escaping characters are \"\\\\\" for '\\', \"\\t\" for Tab "
+"and \"\\n\" for new line.\n"
+"       4. Special character search\n"
+"       If your words contain special characters, you can use '\\' to escape "
+"it, for example, \"a\\*b\\?\" searchs \"a*b?\", \"\\/abc\" searchs \"/abc"
+"\".\n"
+"       5. Scan selected word\n"
+"       Turn on the check button at the bottom-left corner of the StarDict "
+"window to activate this feature. When this feature is on, StarDict will "
+"automatically look up words, phrases, and Chinese characters in other "
+"applications. Just highlight a word or phrase with your mouse, and a "
+"floating window will pop up showing the definition of the selected word.\n"
+"       6. Dictionary management\n"
+"       Click the \"Manage dictionaries\" button at the bottom-right corner "
+"of the window to access the dictionary management dialog. From here, you can "
+"disable some dictionaries that you don't need, and set the dictionaries' "
+"querying order.\n"
+"\n"
+"\n"
+"       Statement: This program is distributed in the hope that it will be "
+"useful, but WITHOUT ANY WARRANTY; without the warranty that the word "
+"spelling, definition, and phonetic information are correct.\n"
+msgstr ""
+"       Ласкаво просимо у Зоряний словник\n"
+"       Зоряний словник це крос-платформний міжнародний словник написаний на "
+"Gtk2. Він володіє рядом могутніх особливостей, таких як \"пошук по шаблону"
+"\", \"слідкування за виділеними словами\", \"нечіткий пошук\" і т.д.\n"
+"\n"
+"       Наведемо список основних можливостей та їх застосування:\n"
+"\n"
+"       1. Пошук по шаблону\n"
+"       Користувач може вводити слова зі знаками '*' (підстановлювальний "
+"знак) та '?' (багатозначник) у якості шаблону. '*' відповідає будь-якому, "
+"можливо порожньому, символу, '?' відповідає будь-якому непорожньому символу. "
+"Після натиснення клавіші Enter, відповідні шаблону слова будуть відображені "
+"у списку слів.\n"
+"       2. Нечіткий пошук\n"
+"       Якщо Ви ніяк не пригадаєте точне написання слова, Ви можете "
+"скористатися нечітким пошуком. Він використовує Льовенштайновський алгоритм "
+"для підрахунку подібності двох слів, та видає слова що найбільш підходять "
+"введеному запиту. Для використовування цієї можливості запит повинен "
+"починатися з \"/\".\n"
+"·······3.·Повнотекстовий пошук\n"
+"·······Повнотекстовий пошук призначений для пошуку по даним.·Для створення "
+"повнотекстового пошуку,·вставте символ·\"|\" на початку рядка і натисніть "
+"Ввід·Наприклад,·\"|ab·cd\"·шукатиме дані які містять і \"ab\"·і·\"cd\".·Якщо "
+"слово містить пробіл,·ви можете використати·\"\\·\",·наприклад·\"|apple\\·pie"
+"\",·other·escaping·characters·are·\"\\\\\"·for·'\\',·\"\\t\"·for·Tab·and·"
+"\"\\n\"·for·new·line.\n"
+"·······4.·Пошук спеціальних символів\n"
+"·······If·your·words·contain·special·characters,"
+"·you·can·use·'\\'·to·escape·it,·for·example,·\"a\\*b\\?\"·searchs·\"a*b?\",·"
+"\"\\/abc\"·searchs·\"/abc\".\n"
+"       5. Слідкування за виділеним текстом\n"
+"       Включається кнопкою у лівому нижньому кутку головного вікна. "
+"Користувач може користуватися мишкою, для виділення слова/слів у вікнах "
+"інших програм (працює через подвійне клацання по тексту та і через виділення "
+"лівою кнопкою мишки), спливаюче вікно з'являється біля виділеного тексту та "
+"відображає переклад цього слова.\n"
+"       6. Керування словниками\n"
+"       Для відображення діалогу управління словниками, натисніть кнопку "
+"\"Керування словниками\" у правому нижньому кутку. Тут можна вимкнути "
+"словники які не потрібні та встановити порядок використання словників при "
+"пошуку.\n"
+"\n"
+"\n"
+"       Заява: Ця програма розповсюджується з надією що вона буде корисною, "
+"але БЕЗ ЖОДНИХ ГАРАНТІЙ, без зобов'язань відносного того, що написання, "
+"визначення та фонетика слів вірна.\n"
+
+# @ gEdit
+#: ../src/mainwin.cpp:1628
+#, c-format
+msgid "The text \"%s\" was not found."
+msgstr "Слово \"%s\" не знайдено."
+
+#: ../src/mainwin.cpp:1721
+msgid "Scan the selection"
+msgstr "Слідкувати за виділеним"
+
+#: ../src/mainwin.cpp:1735
+msgid "Show info"
+msgstr "Показати підказку"
+
+# @ Dia DrakX-uk GIMP Galeon- Scribus anjuta caitoo camorama eog gEdit galeon ggv gimp glade- gnome-applets gnome-games gnome-media gnome-pim gnome-utils kandy kandy.po karm kbabel kde-i18n_4:2.2.2-2_kdict.po kde-i18n_4:2.2.2-2_kooka.po kdemultimedia kdict.po kdvi keystone knode kompare kooka.po korganizer kpm krayon kspread kstockticker mc menu-messages menu-messages-uk nautilus noatun procman red-carpet sawfish userdrake xfce xmms xmms-uk yank
+#: ../src/mainwin.cpp:1758 ../src/prefsdlg.cpp:1671
+msgid "Preferences"
+msgstr "Налаштування"
+
+#: ../src/mainwin.cpp:1768
+msgid "Manage dictionaries"
+msgstr "Керування словниками"
+
+#: ../src/mainwin.cpp:1778
+msgid "Go to the StarDict website"
+msgstr "Відвідати сайт Зоряного словника"
+
+#: ../src/mainwin.cpp:1790
+msgid "Search an Internet dictionary - Right button: website list"
+msgstr ""
+"Пошукати в online-словниках/Інтернеті - Права кнопка: список пошукових сайтів"
+
+#: ../src/prefsdlg.cpp:70 ../src/prefsdlg.cpp:328
+msgid "Scan Selection"
+msgstr "Слідкувати за виділеним"
+
+# @ Dia Gallery Scribus control-center gEdit galeon ghex gimp-std-plugins- glade- gnome-libs gnumeric gtk guppi kdelibs libgnomecanvas libgnomeui menu-messages menu-messages-uk profterm screem xfce yudit
+#: ../src/prefsdlg.cpp:71 ../src/prefsdlg.cpp:473
+msgid "Font"
+msgstr "Шрифт"
+
+#: ../src/prefsdlg.cpp:72 ../src/prefsdlg.cpp:579
+msgid "Cache"
+msgstr "Кеш"
+
+#: ../src/prefsdlg.cpp:73 ../src/prefsdlg.cpp:718
+msgid "Export"
+msgstr "Експорт"
+
+# @ Scrollkeeper control-center gnome-games gnome-media gnomeicu kcmiwatcher menu-messages menu-messages-uk nautilus rpmdrake-uk sawfish xchat xfce
+#: ../src/prefsdlg.cpp:74 ../src/prefsdlg.cpp:779
+msgid "Sound"
+msgstr "Звук"
+
+#: ../src/prefsdlg.cpp:81 ../src/prefsdlg.cpp:862
+msgid "Input"
+msgstr "Ввід"
+
+# @ DrakX-uk GIMP Galeon- Gnome-find Scribus ToDoManager WindowMaker Ximian-setup-tools anjuta apacheconf-0.9.0-2.src.rpm.dir_1_1_apacheconf-_po_uk.po balsa drakcronat drakcronat-uk evolution galeon gdm glade- gnome-applets gnome-core gnome-games gnome-print gnucash gnumeric grip kdelibs mc nt pan screem xfce xmms xmms-uk yank
+#: ../src/prefsdlg.cpp:82 ../src/prefsdlg.cpp:90 ../src/prefsdlg.cpp:97
+msgid "Options"
+msgstr "Параметри"
+
+#: ../src/prefsdlg.cpp:83 ../src/prefsdlg.cpp:1258
+msgid "Search website"
+msgstr "Пошук в Інтернеті"
+
+# @ 1 Dia DrakX-uk GIMP Galeon- Gnome-find Scribus Ximian-setup-tools anaconda-7.3.92-4.src.rpm.dir_1_1_anaconda-_po_uk.po balsa childpanelextension colfind columbo control-center empath evolution file-roller- galeon gimp gimp-std-plugins- gnome-applets gnome-media gnome-panel gnome-utils gnumeric gqview gtk gtkhtml gtop- guppi kaddressbook kaddressbook.po karchiver karchiver.po kde-i18n_4:2.2.2-2_kooka.po kdelibs kdf kfind kfindpart kicker kio kivio klpq kmail knode koncd.po konqueror konsole kooka.po kpackage kshisen.po kword libgtop mc memprof nautilus red-carpet screem xchat xfce
+#: ../src/prefsdlg.cpp:98
+msgid "Size"
+msgstr "Розмір"
+
+# @ galeon gnome-utils
+#: ../src/prefsdlg.cpp:105 ../src/stardict.cpp:1751
+msgid "Dictionary"
+msgstr "Словник"
+
+# @ balsa gnome-media nt yank
+#: ../src/prefsdlg.cpp:107 ../src/prefsdlg.cpp:944
+msgid "Main window"
+msgstr "Головне вікно"
+
+#: ../src/prefsdlg.cpp:109 ../src/prefsdlg.cpp:1410
+msgid "Notification area icon"
+msgstr "Іконка для області сповіщень"
+
+#: ../src/prefsdlg.cpp:111 ../src/prefsdlg.cpp:1466
+msgid "Floating window"
+msgstr "Спливаюче вікно"
+
+# @ evolution gEdit gimp gnome-pim kaddressbook kaddressbook.po kdelibs korganizer xchat yelp
+#: ../src/prefsdlg.cpp:248
+msgid "Categories"
+msgstr "Категорії"
+
+#: ../src/prefsdlg.cpp:344
+msgid "<span weight=\"bold\" size=\"x-large\">Scan Selection</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Слідкувати за виділеним</span>"
+
+#: ../src/prefsdlg.cpp:352
+msgid "_Only scan while the modifier key is being pressed."
+msgstr "Слідкувати _лише при натиснутій спеціальній клавіші."
+
+#: ../src/prefsdlg.cpp:368
+msgid "H_ide floating window when modifier key released."
+msgstr "_Ховати спливаюче вікно при відпусканні спеціальної клавіші."
+
+#: ../src/prefsdlg.cpp:378
+msgid "Scan modifier _key:"
+msgstr "Слідкувати зі спеціальною _клавішею:"
+
+#: ../src/prefsdlg.cpp:402
+msgid "_Scan clipboard."
+msgstr "_Сканувати вміст кишені."
+
+#: ../src/prefsdlg.cpp:408
+msgid "_Use scan hotkey: Ctrl+Alt+F1."
+msgstr "_Сканувати при натисненій комбінації: Ctrl+Alt+F1."
+
+#: ../src/prefsdlg.cpp:446
+msgid "Choose dictionary font"
+msgstr "Вибрати шрифт для словника"
+
+# @ katepart.po koffice nautilus
+#: ../src/prefsdlg.cpp:449 ../src/prefsdlg.cpp:519
+msgid "Choose"
+msgstr "Вибрати"
+
+#: ../src/prefsdlg.cpp:451
+msgid "Dictionary font"
+msgstr "Шрифт словника"
+
+#: ../src/prefsdlg.cpp:489
+msgid "<span weight=\"bold\" size=\"x-large\">Font</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Шрифт</span>"
+
+#: ../src/prefsdlg.cpp:497
+msgid "_Use custom font."
+msgstr "_Задіяти користувацький шрифт."
+
+#: ../src/prefsdlg.cpp:509
+msgid "Dictionary _font:"
+msgstr "_Шрифт словника:"
+
+#: ../src/prefsdlg.cpp:595
+msgid "<span weight=\"bold\" size=\"x-large\">Cache</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Кеш</span>"
+
+#: ../src/prefsdlg.cpp:604
+msgid "Create c_ache files to speed up loading."
+msgstr "Створити кеш для пришвидшення запуску."
+
+#: ../src/prefsdlg.cpp:609
+msgid "_Sort word list by collate function."
+msgstr "Сортувати список слів за допомогою функції порівняння."
+
+#: ../src/prefsdlg.cpp:618
+msgid "\tCollate _function:"
+msgstr "\tФункція порівняння:"
+
+#: ../src/prefsdlg.cpp:673
+msgid ""
+"After enabled collation, when load the dictionaries for the first time, it "
+"will take some time for sorting, please wait for a moment."
+msgstr ""
+"При дозволеній функції порівняння, перше завантаження файлів займе деякий "
+"час."
+
+#: ../src/prefsdlg.cpp:679
+msgid "C_lean all cache files"
+msgstr "Очистити всі файли кешу"
+
+#: ../src/prefsdlg.cpp:696
+msgid "Open file..."
+msgstr "Відкрити файл..."
+
+#: ../src/prefsdlg.cpp:734
+msgid "<span weight=\"bold\" size=\"x-large\">Export</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Експорт</span>"
+
+#: ../src/prefsdlg.cpp:744
+msgid "_Only export word."
+msgstr "_Експортувати лише слово."
+
+# @ EasyTag Gnome-find balsa gnome-utils nautilus xmms xmms-uk
+#: ../src/prefsdlg.cpp:751
+msgid "File name:"
+msgstr "Ім'я файлу:"
+
+#: ../src/prefsdlg.cpp:760
+msgid "_Browse..."
+msgstr "_Переглянути..."
+
+#: ../src/prefsdlg.cpp:795
+msgid "<span weight=\"bold\" size=\"x-large\">Sound</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Звук</span>"
+
+#: ../src/prefsdlg.cpp:805
+msgid "_Enable sound event."
+msgstr "_Використовувати звуки для подій."
+
+#: ../src/prefsdlg.cpp:813
+msgid "Command for playing wav files:"
+msgstr "Команда для програвання файлів wav:"
+
+#: ../src/prefsdlg.cpp:826
+msgid "RealPeopleTTS search path:"
+msgstr "Шлях до RealPeopleTTS:"
+
+#: ../src/prefsdlg.cpp:878
+msgid "<span weight=\"bold\" size=\"x-large\">Input</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Ввід</span>"
+
+#: ../src/prefsdlg.cpp:887
+msgid "_Search while typing."
+msgstr "Шукати при наборі."
+
+#: ../src/prefsdlg.cpp:892
+msgid "Show the _first word when not found."
+msgstr "Показувати перше слово якщо нічого не знайдено."
+
+#: ../src/prefsdlg.cpp:960 ../src/prefsdlg.cpp:1426 ../src/prefsdlg.cpp:1482
+msgid "<span weight=\"bold\" size=\"x-large\">Options</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Параметри</span>"
+
+#: ../src/prefsdlg.cpp:971
+msgid "_Auto run StarDict after boot."
+msgstr "Автозапускати StarDict після завантаження."
+
+#: ../src/prefsdlg.cpp:1001
+msgid "Hide main window when _starting StarDict."
+msgstr "Ховати головне вікно при _старті Зоряного словника."
+
+#: ../src/prefsdlg.cpp:1011
+msgid "_Use open main window hotkey: Ctrl+Alt+Z."
+msgstr "_Відкрити головне вікно при комбінації: Ctrl+Alt+Z."
+
+# @ 1 CenterICQ Dia DrakX-uk GIMP Gabber Galeon- ToDoManager Ximian-setup-tools anaconda-7.3.92-4.src.rpm.dir_1_1_anaconda-_po_uk.po anjuta balsa drakcronat drakcronat-uk drakwizard drakwizard-uk evolution file-roller- firestarter galeon gimp glade- gnome-chess gnome-libs gnome-pim gnome-utils gnomeicu gnucash gnumeric gphoto guppi kdelibs mc memprof pybliographer rpmdrake-uk sawfish screem sodipodi userdrake xchat xfce xine-ui xmms xmms-uk yank
+#: ../src/prefsdlg.cpp:1089
+msgid "Add"
+msgstr "Додати"
+
+#: ../src/prefsdlg.cpp:1102 ../src/prefsdlg.cpp:1331
+msgid "Website Name"
+msgstr "Назва сайту"
+
+#: ../src/prefsdlg.cpp:1114 ../src/prefsdlg.cpp:1339
+msgid "Website link"
+msgstr "Адреса сайту"
+
+#: ../src/prefsdlg.cpp:1125 ../src/prefsdlg.cpp:1347
+msgid "Website search link"
+msgstr "Пошукове посилання на сайт"
+
+#: ../src/prefsdlg.cpp:1146
+msgid "Please input the website name."
+msgstr "Введіть назву сайту."
+
+#: ../src/prefsdlg.cpp:1148
+msgid "Please input the website link."
+msgstr "Введіть адресу сайту."
+
+#: ../src/prefsdlg.cpp:1150
+msgid "Please input the website search link."
+msgstr "Введіть посилання на пошук на сайті."
+
+#: ../src/prefsdlg.cpp:1152
+#, c-format
+msgid ""
+"The website search link should contains a \"%%s\" string for querying a word."
+msgstr ""
+"Пошукове посилання повинне містити послідовність \"%%s\", яка заміняється на "
+"шукане слово."
+
+#: ../src/prefsdlg.cpp:1231
+#, c-format
+msgid ""
+"The website search link should contains a \"%%s\" string for quering word."
+msgstr ""
+"Пошукове посилання повинне містити послідовність \"%%s\", яка заміняється на "
+"шукане слово."
+
+#: ../src/prefsdlg.cpp:1275
+msgid "<span weight=\"bold\" size=\"x-large\">Search Website</span>"
+msgstr "<span weight=\"bold\" size=\"x-large\">Пошук в Інтернеті</span>"
+
+#: ../src/prefsdlg.cpp:1437
+msgid ""
+"_Query in the floating window when middle mouse\n"
+"button is clicked."
+msgstr ""
+"_Шукати у спливаючому вікні при клацанні\n"
+"середньою кнопкою мишки."
+
+#: ../src/prefsdlg.cpp:1490
+msgid "_Pronouce the word when it pops up."
+msgstr "Про_мовляти слово при появі."
+
+#: ../src/prefsdlg.cpp:1499
+msgid "_Show floating window if word not found."
+msgstr "_Показувати плаваюче віконечко якщо слово не знадено."
+
+#: ../src/prefsdlg.cpp:1534
+msgid "<span weight=\"bold\" size=\"x-large\">Max window size</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"x-large\">Максимальний розмір вікна</span>"
+
+#: ../src/prefsdlg.cpp:1556
+msgid "Max window _width:"
+msgstr "Максимальна _ширина вікна:"
+
+#: ../src/prefsdlg.cpp:1566
+msgid "(default:320)"
+msgstr "(типово:320)"
+
+#: ../src/prefsdlg.cpp:1570
+msgid "Max window hei_ght:"
+msgstr "Максимальна _висота вікна:"
+
+#: ../src/prefsdlg.cpp:1578
+msgid "(default:240)"
+msgstr "(типово:240)"
+
+# @ gEdit
+#: ../src/prefsdlg.cpp:1649
+msgid "Cat_egories:"
+msgstr "_Категорії:"
+
+#: ../src/selection.cpp:194 ../src/stardict.cpp:505 ../src/stardict.cpp:634
+#: ../src/stardict.cpp:794 ../src/stardict.cpp:806 ../src/stardict.cpp:811
+#: ../src/stardict.cpp:816 ../src/stardict.cpp:1209
+#: ../src/win32/clipboard.cpp:117
+msgid "<Not Found!>"
+msgstr "<Не знайдено!>"
+
+#: ../src/splash.cpp:64
+msgid "Loading"
+msgstr "Завантаження"
+
+#: ../src/stardict.cpp:82
+msgid "Turn on all debugging messages"
+msgstr "Включити всі відлагожувальні повідомлення"
+
+#: ../src/stardict.cpp:85
+msgid "Hide the main window"
+msgstr "Сховати головне вікно"
+
+#: ../src/stardict.cpp:88
+msgid "Quit an existing instance of stardict"
+msgstr "Закрити запущений Зоряний словник"
+
+#: ../src/stardict.cpp:862 ../src/stardict.cpp:1173
+msgid "Full-text search..."
+msgstr "Повнотестовий пошук..."
+
+#: ../src/stardict.cpp:889
+msgid "There are no dictionary's article with such word :-("
+msgstr "Немає жодної словарної статті з цим словом :-("
+
+#: ../src/stardict.cpp:925
+msgid "There are too many spelling errors :-("
+msgstr "Занадто багато правописних помилок :-("
+
+#: ../src/stardict.cpp:980
+msgid "Fuzzy query failed, too :-("
+msgstr "Нечіткий пошук не вдався також :-("
+
+#: ../src/stardict.cpp:1006
+msgid "Found no words matching this pattern!"
+msgstr "Не знайдено слів, які б відповідали шаблону!"
+
+#: ../src/stardict.cpp:1165
+msgid "Press Enter to list the words that match the pattern."
+msgstr "Натисніть Enter, щоб побачити список слів які відповідають шаблону."
+
+#: ../src/stardict.cpp:1169
+msgid "Fuzzy query..."
+msgstr "Нечіткий пошук..."
+
+#: ../src/stardict.cpp:1584
+msgid "StarDict is already running. Using the running process."
+msgstr "Зоряний словник вже запущено. Використовується існуючий процес."
+
+#  gchar *filename = g_strdup_printf(_("file:///%s/help/C/stardict.html#stardict-dictmanage"), stardict_data_dir);
+#: ../src/utils.cpp:66
+#, c-format
+msgid "%s\\help\\stardict.chm"
+msgstr "%s\\help\\stardict-uk.chm"
+
+#: ../src/utils.cpp:171
+#, c-format
+msgid "Can not load image. %s"
+msgstr "Не можу завантажити зображення. %s"
+
+#: ../src/lib/stddict.cpp:843
+msgid "Sorting, please wait..."
+msgstr "Сортування, зачекайте, будь ласка..."
+
+#: ../src/lib/stddict.cpp:999
+msgid "Loading..."
+msgstr "Завантаження..."
+
+# @ EasyTag kdao kdelibs kdeprint nsplugin
+#: ../src/win32/systray.cpp:75
+msgid "Scan"
+msgstr "Слідкувати"
+
+#~ msgid "The stardict 's float window 's max height."
+#~ msgstr ""
+#~ "п°п╟п╨я│п╦п╪п╟п╩я▄пҐп╟ я┬п╦я─п╦пҐп╟ я│п©п╩п╦п╡п╟я▌я┤п╬пЁп╬ п╡я√п╨пҐп╟."
+
+#~ msgid "The stardict 's float window 's max width."
+#~ msgstr ""
+#~ "п°п╟п╨я│п╦п╪п╟п╩я▄пҐп╟ п╡п╦я│п╬я┌п╟ я│п©п╩п╦п╡п╟я▌я┤п╬пЁп╬ п╡я√п╨пҐп╟."
+
+#~ msgid "The stardict 's main window 's height."
+#~ msgstr "п▓п╦я│п╬я┌п╟ пЁп╬п╩п╬п╡пҐп╬пЁп╬ п╡я√п╨пҐп╟."
+
+#~ msgid "The stardict 's main window 's width."
+#~ msgstr "п╗п╦я─п╦пҐп╟ пЁп╬п╩п╬п╡пҐп╬пЁп╬ п╡я√п╨пҐп╟."
+
+#~ msgid "Window 's max height"
+#~ msgstr "п°п╨п╟я│п╦п╪п╟п╩я▄пҐп╟ п╡п╦я│п╬я┌п╟ п╡я√п╨пҐп╟"
+
+#~ msgid "Window 's max width"
+#~ msgstr "п°п╨п╟я│п╦п╪п╟п╩я▄пҐп╟ я┬п╦я─п╦пҐп╟ п╡я√п╨пҐп╟"
+
+#~ msgid "lock's x position"
+#~ msgstr "п≈п╟п╨я─я√п©п╦я┌п╦ п©п╬пЇп╦я├я√я▌ п©п╬ x."
+
+#~ msgid "_Dict Manage"
+#~ msgstr "п п╣я─я┐п╡п╟пҐпҐя▐ _я│п╩п╬п╡пҐп╦п╨п╟п╪п╦"
+
+# @ gnucash kdemultimedia libgnomeui xmms xmms-uk
+#~ msgid "Credits"
+#~ msgstr "п÷п╬пЄя▐п╨п╦"
+
+#~ msgid "Written by"
+#~ msgstr "п²п╟п©п╦я│п╟пҐп╬"
+
+#~ msgid "Documented by"
+#~ msgstr "п≈п╟пЄп╬п╨я┐п╪п╣пҐя┌п╬п╡п╟пҐп╬"
+
+#~ msgid "Translated by"
+#~ msgstr "п÷п╣я─п╣п╨п╩п╟пЄп╣пҐп╬"
+
+#~ msgid "C_redits"
+#~ msgstr "_п÷п╬пЄя▐п╨п╦"
+
+# @ libgnomeui
+#~ msgid "Program name"
+#~ msgstr "п├п╪'я▐ п©я─п╬пЁя─п╟п╪п╦"
+
+# @ glade- libgnomeui
+#~ msgid "The name of the program"
+#~ msgstr "п├п╪'я▐ п©я─п╬пЁя─п╟п╪п╦"
+
+# @ libgnomeui
+#~ msgid "Program version"
+#~ msgstr "п▓п╣я─я│я√я▐ п©я─п╬пЁя─п╟п╪п╦"
+
+# @ libgnomeui
+#~ msgid "The version of the program"
+#~ msgstr "п▓п╣я─я│я√я▐ п©я─п╬пЁя─п╟п╪п╦"
+
+# @ libgnomeui
+# * Yuriy Syrota <rasta@renome.rovno.ua>
+#~ msgid "Copyright string"
+#~ msgstr "п░п╡я┌п╬я─я│я▄п╨я√ п©я─п╟п╡п╟"
+
+# @ libgnomeui
+# * Yuriy Syrota <rasta@renome.rovno.ua>
+#~ msgid "Copyright information for the program"
+#~ msgstr ""
+#~ "п├пҐя└п╬я─п╪п╟я├я√я▐ п©я─п╬ п╟п╡я┌п╬я─я│я▄п╨я√ п©я─п╟п╡п╟ пҐп╟ "
+#~ "п©я─п╬пЁя─п╟п╪я┐"
+
+# @ libgnomeui
+#~ msgid "Comments string"
+#~ msgstr "п п╬п╪п╣пҐя┌п╟я─я√"
+
+# @ libgnomeui
+#~ msgid "Comments about the program"
+#~ msgstr "п п╬п╪п╣пҐя┌п╟я─я√ я┴п╬пЄп╬ п©я─п╬пЁя─п╟п╪п╦"
+
+# @ Scribus drakconf-uk gphoto kasbarextension kasbarextension.po kdvi libgnomeui nautilus pan
+#~ msgid "Authors"
+#~ msgstr "п░п╡я┌п╬я─п╦"
+
+# @ libgnomeui
+#~ msgid "List of authors of the programs"
+#~ msgstr "п║п©п╦я│п╬п╨ п╟п╡я┌п╬я─я√п╡ п©я─п╬пЁя─п╟п╪п╦"
+
+# @ libgnomeui
+#~ msgid "Author entry"
+#~ msgstr "п░п╡я┌п╬я─"
+
+# @ libgnomeui
+#~ msgid "A single author entry"
+#~ msgstr "п═я▐пЄп╬п╨ п╬пЄпҐп╬пЁп╬ п╟п╡я┌п╬я─п╟"
+
+# @ libgnomeui
+#~ msgid "Documenters"
+#~ msgstr "п■п╬п╨я┐п╪п╣пҐя┌п╟я┌п╬я─п╦"
+
+# @ libgnomeui
+#~ msgid "List of people documenting the program"
+#~ msgstr ""
+#~ "п║п©п╦я│п╬п╨ п╩я▌пЄп╣п╧, я▐п╨я√ пЄп╬п╨я┐п╪п╣пҐя┌я┐п╡п╟п╩п╦ "
+#~ "п©я─п╬пЁя─п╟п╪я┐"
+
+# @ libgnomeui
+#~ msgid "Documenter entry"
+#~ msgstr "п■п╬п╨я┐п╪п╣пҐя┌п╟я┌п╬я─п╟"
+
+# @ libgnomeui
+#~ msgid "A single documenter entry"
+#~ msgstr "п═я▐пЄп╬п╨ п╬пЄпҐп╬пЁп╬ пЄп╬п╨я┐п╪п╣пҐя┌п╟я┌п╬я─п╟"
+
+# @ libgnomeui
+#~ msgid "Translator credits"
+#~ msgstr ""
+#~ "п▓п╬п╩п╬пЄп╦п╪п╦я─ п⌡я√я│я√п╡п╨п╟ <lvm@mystery.lviv.net>\n"
+#~ "п║п╣я─пЁя√п╧ п■я┐п╠п╦п╨ <dubyk@library.lviv.ua>"
+
+# @ libgnomeui
+# * Yuriy Syrota <rasta@renome.rovno.ua>
+#~ msgid ""
+#~ "Credits to the translators. This string should be marked as translatable"
+#~ msgstr ""
+#~ "п├пҐя└п╬я─п╪п╟я├я√я▐ п©я─п╬ п©п╣я─п╣п╨п╩п╟пЄп╟я┤я√п╡. піп╣п╧ я─я▐пЄп╬п╨ "
+#~ "п╪п╟я■ п╠я┐я┌п╦ п©п╬пЇпҐп╟я┤п╣пҐп╦п╪ пЄп╬ п©п╣я─п╣п╨п╩п╟пЄя┐"
+
+# @ gnucash libgnomeui
+#~ msgid "Logo"
+#~ msgstr "п⌡п╬пЁп╬"
+
+# @ libgnomeui
+# * Yuriy Syrota <rasta@renome.rovno.ua>
+#~ msgid "A logo for the about box"
+#~ msgstr ""
+#~ "п∙п╪п╠п╩п╣п╪п╟ пЄп╩я▐ п╠п╩п╬п╨я┐ я√пҐя└п╬я─п╪п╟я├я√я≈ п©я─п╬ "
+#~ "п©я─п╬пЁя─п╟п╪я┐"
+
+# @ ToDoManager libgnomeui pan
+#~ msgid "About %s"
+#~ msgstr "п÷я─п╬ п©я─п╬пЁя─п╟п╪я┐ %s"
+
+#, fuzzy
+#~ msgid "Cannot connect to gconf.\n"
+#~ msgstr "п²п╣п╪п╬пІп╩п╦п╡п╬ п©я√пЄп╨п╩я▌я┤п╦я┌п╦я│я▐ пЄп╬ gconf."
+
+# @  Galeon- Gnome-find anjuta evolution gEdit gIDE galeon gnome-pim gnome-utils gnucash gtkhtml gtranslator karchiver karchiver.po kate katepart katepart.po kdelibs khexedit knodeN koffice konsole kpresenter kword mc nautilus noatun pybliographer screem xchat xfce yank
+#~ msgid "Find"
+#~ msgstr "п≈пҐп╟п╧я┌п╦"
+
+# @ yelp
+#~ msgid "_Search for:"
+#~ msgstr "_п╗я┐п╨п╟я┌п╦:"
+
+#~ msgid "_Win"
+#~ msgstr "_Win"
+
+#~ msgid "_Shift"
+#~ msgstr "_Shift"
+
+#~ msgid "_Alt"
+#~ msgstr "_Alt"
+
+#~ msgid "_Ctrl"
+#~ msgstr "_Ctrl"
+
+#~ msgid ""
+#~ "use_custom_font=1\n"
+#~ "custom_font=sans 8\n"
+#~ msgstr ""
+#~ "use_custom_font=0\n"
+#~ "custom_font=arial unicode ms 9\n"
+
+#~ msgid ""
+#~ "window_width=551\n"
+#~ "window_height=357\n"
+#~ "hpaned_pos=165\n"
+#~ msgstr ""
+#~ "window_width=601\n"
+#~ "window_height=357\n"
+#~ "hpaned_pos=165\n"
