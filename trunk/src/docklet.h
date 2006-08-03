@@ -10,7 +10,7 @@ enum DockLetIconType {
 	DOCKLET_STOP_ICON,
 };
 
-class DockLet{
+class DockLet {
 private:
 	EggTrayIcon *docklet;
 	GtkWidget *box;

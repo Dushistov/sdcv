@@ -68,7 +68,7 @@ HINSTANCE stardictexe_hInstance;
 
 #include "stardict.h"
 
-AppFrame * gpAppFrame;
+Application * gpAppFrame;
 
 static gboolean hide_option = FALSE;
 
@@ -108,7 +108,7 @@ public:
 	void notify_about_work() { ProcessGtkEvent(); }
 } gtk_show_progress;
 /********************************************************************/
-AppCore::AppCore() :
+Application::Application() :
 	oLibs(&gtk_show_progress,
 	      conf->get_bool("/apps/stardict/preferences/dictionary/create_cache_file"),
 	      conf->get_bool("/apps/stardict/preferences/dictionary/enable_collation"),
@@ -117,10 +117,16 @@ AppCore::AppCore() :
 	window = NULL; //need by save_yourself_cb().
 	dict_manage_dlg = NULL;
 	prefs_dlg = NULL;
+#ifdef CONFIG_GNOME
+	gnome_sound_init(NULL);
+#endif
 }
 
-AppCore::~AppCore()
+Application::~Application()
 {
+#ifdef CONFIG_GNOME
+	gnome_sound_shutdown();
+#endif
 	delete dict_manage_dlg;
 	delete prefs_dlg;
 	g_free(iCurrentIndex);
@@ -133,7 +139,7 @@ public:
 	}
 } load_show_progress;
 
-void AppCore::Create(gchar *queryword)
+void Application::Create(gchar *queryword)
 {
 	oLibs.set_show_progress(&load_show_progress);
 	oLibs.load(conf->get_strlist("/apps/stardict/manage_dictionaries/dict_dirs_list"),
@@ -243,7 +249,7 @@ void AppCore::Create(gchar *queryword)
 		oMidWin.oTextWin.ShowInitFailed();
 }
 
-gboolean AppCore::on_delete_event(GtkWidget * window, GdkEvent *event , AppCore *oAppCore)
+gboolean Application::on_delete_event(GtkWidget * window, GdkEvent *event , Application *oAppCore)
 {
 #ifdef _WIN32
 	oAppCore->oDockLet.stardict_systray_minimize(oAppCore->window);
@@ -257,7 +263,7 @@ gboolean AppCore::on_delete_event(GtkWidget * window, GdkEvent *event , AppCore 
 	return true;
 }
 
-gboolean AppCore::on_window_state_event(GtkWidget * window, GdkEventWindowState *event , AppCore *oAppCore)
+gboolean Application::on_window_state_event(GtkWidget * window, GdkEventWindowState *event , Application *oAppCore)
 {
 	if (event->changed_mask == GDK_WINDOW_STATE_WITHDRAWN) {
 		if (event->new_window_state & GDK_WINDOW_STATE_WITHDRAWN) {
@@ -287,7 +293,7 @@ gboolean AppCore::on_window_state_event(GtkWidget * window, GdkEventWindowState 
 	return false;
 }
 
-gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *event , AppCore *oAppCore)
+gboolean Application::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *event , Application *oAppCore)
 {
 	gboolean return_val=true;  //if return TRUE,the widget which in the main window will not receive any keyboard event.
 
@@ -434,7 +440,7 @@ gboolean AppCore::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *even
 	return return_val;
 }
 
-bool AppCore::SimpleLookupToFloat(const char* sWord, bool bShowIfNotFound)
+bool Application::SimpleLookupToFloat(const char* sWord, bool bShowIfNotFound)
 {
 	if (sWord==NULL || sWord[0]=='\0')
 		return true;
@@ -510,7 +516,7 @@ bool AppCore::SimpleLookupToFloat(const char* sWord, bool bShowIfNotFound)
 }
 
 #ifdef _WIN32
-bool AppCore::SmartLookupToFloat(const gchar* sWord, int BeginPos, bool bShowIfNotFound)
+bool Application::SmartLookupToFloat(const gchar* sWord, int BeginPos, bool bShowIfNotFound)
 {
 	if (sWord==NULL || sWord[0]=='\0')
 		return true;
@@ -639,7 +645,7 @@ bool AppCore::SmartLookupToFloat(const gchar* sWord, int BeginPos, bool bShowIfN
 }
 #endif
 
-void AppCore::BuildResultData(const char* sWord, CurrentIndex *iIndex, const gchar *piIndexValidStr, int iLib, gchar ***pppWord, gchar ****ppppWordData, bool &bFound, gint Method)
+void Application::BuildResultData(const char* sWord, CurrentIndex *iIndex, const gchar *piIndexValidStr, int iLib, gchar ***pppWord, gchar ****ppppWordData, bool &bFound, gint Method)
 {
 	gint i, j;
 	gint count=0, syncount;
@@ -731,7 +737,7 @@ void AppCore::BuildResultData(const char* sWord, CurrentIndex *iIndex, const gch
 	}
 }
 
-void AppCore::FreeResultData(gchar ***pppWord, gchar ****ppppWordData)
+void Application::FreeResultData(gchar ***pppWord, gchar ****ppppWordData)
 {
 	if (!pppWord)
 		return;
@@ -764,7 +770,7 @@ void AppCore::FreeResultData(gchar ***pppWord, gchar ****ppppWordData)
  * (sWord,piIndex,true), show word by piIndex's information.
  * it will always found, so bTryMoreIfNotFound is useless.
  */
-bool AppCore::SimpleLookupToTextWin(const char* sWord, CurrentIndex *piIndex, const gchar *piIndexValidStr, bool bTryMoreIfNotFound, bool bShowNotfound, bool isShowFirst)
+bool Application::SimpleLookupToTextWin(const char* sWord, CurrentIndex *piIndex, const gchar *piIndexValidStr, bool bTryMoreIfNotFound, bool bShowNotfound, bool isShowFirst)
 {
 	bool bFound = false;
 	gchar ***pppWord = (gchar ***)g_malloc(sizeof(gchar **) * oLibs.ndicts());
@@ -847,7 +853,7 @@ static gboolean on_fulltext_search_window_delete_event(GtkWidget * window, GdkEv
 	return true;
 }
 
-void AppCore::LookupDataToMainWin(const gchar *sWord)
+void Application::LookupDataToMainWin(const gchar *sWord)
 {
 	if (!sWord || !*sWord)
 		return;
@@ -893,7 +899,7 @@ void AppCore::LookupDataToMainWin(const gchar *sWord)
 	gtk_widget_destroy(search_window);
 }
 
-void AppCore::LookupWithFuzzyToMainWin(const gchar *sWord)
+void Application::LookupWithFuzzyToMainWin(const gchar *sWord)
 {
 	if (sWord[0] == '\0')
 		return;
@@ -926,7 +932,7 @@ void AppCore::LookupWithFuzzyToMainWin(const gchar *sWord)
 	}
 }
 
-void AppCore::LookupWithFuzzyToFloatWin(const gchar *sWord)
+void Application::LookupWithFuzzyToFloatWin(const gchar *sWord)
 {
 	if (sWord[0] == '\0')
 		return;
@@ -980,7 +986,7 @@ void AppCore::LookupWithFuzzyToFloatWin(const gchar *sWord)
 		ShowNotFoundToFloatWin(sWord,_("Fuzzy query failed, too :-("), true);
 }
 
-void AppCore::LookupWithRuleToMainWin(const gchar *word)
+void Application::LookupWithRuleToMainWin(const gchar *word)
 {
 	change_cursor busy(window->window, gpAppFrame->oAppSkin.watch_cursor.get(), gpAppFrame->oAppSkin.normal_cursor.get());
 
@@ -1008,7 +1014,7 @@ void AppCore::LookupWithRuleToMainWin(const gchar *word)
 	g_free(ppMatchWord);
 }
 
-void AppCore::ShowDataToTextWin(gchar ***pppWord, gchar ****ppppWordData,const gchar * sOriginWord, bool isShowFirst)
+void Application::ShowDataToTextWin(gchar ***pppWord, gchar ****ppppWordData,const gchar * sOriginWord, bool isShowFirst)
 {
 	oMidWin.oTextWin.Show(pppWord, ppppWordData);
 	if (isShowFirst)
@@ -1044,7 +1050,7 @@ void AppCore::ShowDataToTextWin(gchar ***pppWord, gchar ****ppppWordData,const g
 	gtk_widget_set_sensitive(oMidWin.oToolWin.PronounceWordButton, canRead);
 }
 
-void AppCore::ShowTreeDictDataToTextWin(guint32 offset, guint32 size, gint iTreeDict)
+void Application::ShowTreeDictDataToTextWin(guint32 offset, guint32 size, gint iTreeDict)
 {
 	oMidWin.oTextWin.ShowTreeDictData(oTreeDicts.poGetWordData(offset, size, iTreeDict));
 	oMidWin.oTextWin.query_result = TEXT_WIN_TREEDICT;
@@ -1052,7 +1058,7 @@ void AppCore::ShowTreeDictDataToTextWin(guint32 offset, guint32 size, gint iTree
 	oMidWin.oIndexWin.oResultWin.Clear();
 }
 
-void AppCore::ShowNotFoundToTextWin(const char* sWord,const char* sReason, TextWinQueryResult query_result)
+void Application::ShowNotFoundToTextWin(const char* sWord,const char* sReason, TextWinQueryResult query_result)
 {
 	oMidWin.oTextWin.Show(sReason);
 	oMidWin.oTextWin.query_result = query_result;
@@ -1066,12 +1072,12 @@ void AppCore::ShowNotFoundToTextWin(const char* sWord,const char* sReason, TextW
 	gtk_widget_set_sensitive(oMidWin.oToolWin.PronounceWordButton, canRead);
 }
 
-void AppCore::ShowNotFoundToFloatWin(const char* sWord,const char* sReason, gboolean fuzzy)
+void Application::ShowNotFoundToFloatWin(const char* sWord,const char* sReason, gboolean fuzzy)
 {
 	oFloatWin.ShowNotFound(sWord, sReason, fuzzy);
 }
 
-void AppCore::TopWinEnterWord(const gchar *text)
+void Application::TopWinEnterWord(const gchar *text)
 {
 	if (text[0]=='\0')
 		return;
@@ -1157,7 +1163,7 @@ void AppCore::TopWinEnterWord(const gchar *text)
 		gpAppFrame->oReadWord.read(oMidWin.oTextWin.pronounceWord.c_str());
 }
 
-void AppCore::TopWinWordChange(const gchar* sWord)
+void Application::TopWinWordChange(const gchar* sWord)
 {
 	std::string res;
 	switch (analyse_query(sWord, res)) {
@@ -1179,7 +1185,7 @@ void AppCore::TopWinWordChange(const gchar* sWord)
 	}
 }
 
-void AppCore::ListWords(const gchar *sWord, CurrentIndex* iIndex, bool showfirst)
+void Application::ListWords(const gchar *sWord, CurrentIndex* iIndex, bool showfirst)
 {
 	CurrentIndex *iCurrent = (CurrentIndex*)g_memdup(iIndex, sizeof(CurrentIndex)*oLibs.ndicts());
 
@@ -1218,7 +1224,7 @@ void AppCore::ListWords(const gchar *sWord, CurrentIndex* iIndex, bool showfirst
 	g_free(iCurrent);
 }
 
-void AppCore::Query(const gchar *word)
+void Application::Query(const gchar *word)
 {
 	oTopWin.InsertHisList(oTopWin.GetText());
 	oTopWin.InsertBackList();
@@ -1244,7 +1250,7 @@ void AppCore::Query(const gchar *word)
 	oTopWin.InsertBackList(word);
 }
 
-void AppCore::ListClick(const gchar *word)
+void Application::ListClick(const gchar *word)
 {
 	oTopWin.InsertHisList(oTopWin.GetText());
 	oTopWin.InsertBackList();
@@ -1264,7 +1270,7 @@ private:
 	progress_win &pw;
 };
 
-void AppCore::PopupPrefsDlg()
+void Application::PopupPrefsDlg()
 {
 	if (!prefs_dlg) {
 		prefs_dlg = new PrefsDlg(GTK_WINDOW(window),
@@ -1290,7 +1296,7 @@ void AppCore::PopupPrefsDlg()
 	}
 }
 
-void AppCore::reload_dicts()
+void Application::reload_dicts()
 {
 	oLibs.reload(conf->get_strlist("/apps/stardict/manage_dictionaries/dict_dirs_list"),
 		     conf->get_strlist("/apps/stardict/manage_dictionaries/dict_order_list"),
@@ -1307,7 +1313,7 @@ void AppCore::reload_dicts()
 		TopWinWordChange(sWord);
 }
 
-void AppCore::PopupDictManageDlg()
+void Application::PopupDictManageDlg()
 {
 
 	if (!dict_manage_dlg)
@@ -1321,7 +1327,7 @@ void AppCore::PopupDictManageDlg()
 	oLibs.set_show_progress(&gtk_show_progress);
 }
 
-void AppCore::End()
+void Application::End()
 {
 	oSelection.End();
 #ifdef _WIN32
@@ -1348,22 +1354,8 @@ void AppCore::End()
 }
 
 
-/***************************************************/
-AppFrame::AppFrame()
-{
-#ifdef CONFIG_GNOME
-    gnome_sound_init(NULL);
-#endif
-}
 
-AppFrame::~AppFrame()
-{
-#ifdef CONFIG_GNOME
-	gnome_sound_shutdown();
-#endif
-}
-
-void AppFrame::Init(gchar *queryword)
+void Application::Init(gchar *queryword)
 {
 	conf->notify_add("/apps/stardict/preferences/main_window/hide_list",
 									 on_main_win_hide_list_changed, this);
@@ -1392,7 +1384,7 @@ void AppFrame::Init(gchar *queryword)
 	gtk_main();
 }
 
-void AppFrame::Quit()
+void Application::Quit()
 {
 
 	if (!conf->get_bool("/apps/stardict/preferences/main_window/maximized")) {
@@ -1421,9 +1413,9 @@ void AppFrame::Quit()
 	 gtk_main_quit();
 }
 
-void AppFrame::on_main_win_hide_list_changed(const baseconfval* hideval, void *arg)
+void Application::on_main_win_hide_list_changed(const baseconfval* hideval, void *arg)
 {
-	AppFrame *app = static_cast<AppFrame *>(arg);
+	Application *app = static_cast<Application *>(arg);
 	bool hide=static_cast<const confval<bool> *>(hideval)->val;
 	if (hide) {
 		gtk_widget_hide(app->oMidWin.oToolWin.HideListButton);
@@ -1436,9 +1428,9 @@ void AppFrame::on_main_win_hide_list_changed(const baseconfval* hideval, void *a
 	}
 }
 
-void AppFrame::on_dict_scan_select_changed(const baseconfval* scanval, void *arg)
+void Application::on_dict_scan_select_changed(const baseconfval* scanval, void *arg)
 {
-	AppFrame *app = static_cast<AppFrame *>(arg);
+	Application *app = static_cast<Application *>(arg);
 	bool scan=static_cast<const confval<bool> *>(scanval)->val;
 
 	gtk_widget_set_sensitive(app->oFloatWin.StopButton, scan);
@@ -1472,9 +1464,9 @@ void AppFrame::on_dict_scan_select_changed(const baseconfval* scanval, void *arg
 	}
 }
 
-void AppFrame::on_floatwin_lock_changed(const baseconfval* lockval, void *arg)
+void Application::on_floatwin_lock_changed(const baseconfval* lockval, void *arg)
 {
-	AppFrame *app = static_cast<AppFrame *>(arg);
+	Application *app = static_cast<Application *>(arg);
 	bool lock=static_cast<const confval<bool> *>(lockval)->val;
   if (lock)
     gtk_image_set_from_stock(GTK_IMAGE(app->oFloatWin.lock_image),GTK_STOCK_GOTO_LAST,GTK_ICON_SIZE_MENU);
@@ -1482,9 +1474,9 @@ void AppFrame::on_floatwin_lock_changed(const baseconfval* lockval, void *arg)
     gtk_image_set_from_stock(GTK_IMAGE(app->oFloatWin.lock_image),GTK_STOCK_GO_FORWARD,GTK_ICON_SIZE_MENU);
 }
 
-void AppFrame::on_floatwin_lock_x_changed(const baseconfval* lock_x_val, void *arg)
+void Application::on_floatwin_lock_x_changed(const baseconfval* lock_x_val, void *arg)
 {
-	AppFrame *app = static_cast<AppFrame *>(arg);
+	Application *app = static_cast<Application *>(arg);
 	int lock_x=static_cast<const confval<int> *>(lock_x_val)->val;
 	if (conf->get_bool("/apps/stardict/preferences/floating_window/lock")) {
     gint old_x, old_y;
@@ -1494,9 +1486,9 @@ void AppFrame::on_floatwin_lock_x_changed(const baseconfval* lock_x_val, void *a
   }
 }
 
-void AppFrame::on_floatwin_lock_y_changed(const baseconfval* lock_y_val, void *arg)
+void Application::on_floatwin_lock_y_changed(const baseconfval* lock_y_val, void *arg)
 {
-	AppFrame *app = static_cast<AppFrame *>(arg);
+	Application *app = static_cast<Application *>(arg);
 	int lock_y=static_cast<const confval<int> *>(lock_y_val)->val;
 
 	if (conf->get_bool("/apps/stardict/preferences/floating_window/lock")) {
@@ -1507,9 +1499,9 @@ void AppFrame::on_floatwin_lock_y_changed(const baseconfval* lock_y_val, void *a
   }
 }
 
-void AppFrame::on_scan_modifier_key_changed(const baseconfval* keyval, void *arg)
+void Application::on_scan_modifier_key_changed(const baseconfval* keyval, void *arg)
 {
-	AppFrame *app = static_cast<AppFrame *>(arg);
+	Application *app = static_cast<Application *>(arg);
 	int key=static_cast<const confval<int> *>(keyval)->val;
 	app->unlock_keys->set_comb(combnum2str(key));
 }
@@ -1798,9 +1790,9 @@ int main(int argc,char **argv)
 	}
 #endif
 	conf.reset(new AppConf);
-	AppFrame oAppFrame;
-	gpAppFrame = &oAppFrame;
-	oAppFrame.Init(queryword);
+	Application app;
+	gpAppFrame = &app;
+	app.Init(queryword);
 
   return EXIT_SUCCESS;
 }
