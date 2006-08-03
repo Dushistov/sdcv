@@ -68,8 +68,6 @@ private:
 	static void on_main_menu_about_activate(GtkMenuItem *menuitem, TopWin *oTopWin);
 	static void on_main_menu_quit_activate(GtkMenuItem *menuitem, TopWin *oTopWin);
 
-	static void ClipboardReceivedCallback(GtkClipboard *clipboard, const gchar *text, gpointer data);
-
 	void LoadHistory(void);
 	void SaveHistory(void);
 public:
@@ -97,7 +95,8 @@ public:
 	bool HasFocus() {
     return GTK_WIDGET_HAS_FOCUS(GTK_COMBO(WordCombo)->entry);
   }
-
+	//TODO: check if gcc bug?
+			static void ClipboardReceivedCallback(GtkClipboard *clipboard, const gchar *text, gpointer data);
 };
 
 class ListWin

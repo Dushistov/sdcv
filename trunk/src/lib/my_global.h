@@ -13,6 +13,10 @@ typedef char            my_bool; /* Small bool */
 
 #define min(a, b)       ((a) < (b) ? (a) : (b))
 
+#if defined(_MSC_VER)
+#  define __attribute__(arg) /**/
+#  define inline __inline
+#endif
 
 #endif /* my_global_h */
 

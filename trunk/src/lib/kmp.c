@@ -9,12 +9,13 @@ static int max_size = 0;
 
 static void GetPrefixValue(const char* strPattern, int iPatternLen)
 {
+		int i, j; /* i runs through the string, j counts the hits*/
+
     if (iPatternLen>max_size) {
         prefix = (int*)realloc(prefix, iPatternLen*sizeof(int));
         max_size = iPatternLen;
     }
    
-    int i, j; /* i runs through the string, j counts the hits*/
     i = 1; j = 0;
     prefix[0] = 0;
    

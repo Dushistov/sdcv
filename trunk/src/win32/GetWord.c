@@ -1,6 +1,11 @@
 #include "GetWord.h"
 #include "TextOutHook.h"
 
+//TODO: more general solution?
+#if defined(_MSC_VER)
+#  define strcasecmp   _stricmp
+#endif
+
 TKnownWndClass GetWindowType(HWND WND, const char* WNDClass)
 {
 	const char* StrKnownClasses[] = {
@@ -129,14 +134,18 @@ static int GetWordFromConsolePack(TConsoleParams *params)
 			CurPos.Y = csbi.srWindow.Top + params->Pt.y * (csbi.srWindow.Bottom - csbi.srWindow.Top + 1) / params->ClientRect.bottom;
 			if ((CurPos.X >= 0) && (CurPos.X <= csbi.dwSize.X - 1) && (CurPos.Y >= 0) && (CurPos.Y <= csbi.dwSize.Y - 1)) {
 				int BegPos;
+				char *Buf;
+
 				BegPos = CurPos.X;
 				CurPos.X = 0;
-				char *Buf = GlobalAlloc(GMEM_FIXED, csbi.dwSize.X + 1);
+				Buf = GlobalAlloc(GMEM_FIXED, csbi.dwSize.X + 1);
 				if (Buf) {
 					DWORD ActualRead;
 					if ((ReadConsoleOutputCharacter(hStdOut, Buf, csbi.dwSize.X, CurPos, &ActualRead)) && (ActualRead == csbi.dwSize.X)) {
-						OemToCharBuff(Buf, Buf, csbi.dwSize.X);
 						int WordLen;
+
+						OemToCharBuff(Buf, Buf, csbi.dwSize.X);
+
 						if (csbi.dwSize.X > 255)
 							WordLen = 255;
 						else
@@ -155,14 +164,17 @@ static void GetWordFromConsolePackEnd() {}
 
 static BOOL RemoteExecute(HANDLE hProcess, void *RemoteThread, DWORD RemoteSize, void *Data, int DataSize, DWORD *dwReturn)
 {
+	void *pData;
+	HANDLE hThread;
 	void *pRemoteThread = VirtualAllocEx(hProcess, NULL, RemoteSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+
 	if (!pRemoteThread)
 		return FALSE;
 	if (!WriteProcessMemory(hProcess, pRemoteThread, RemoteThread, RemoteSize, 0)) {
 		VirtualFreeEx(hProcess, pRemoteThread, RemoteSize, MEM_RELEASE);
 		return FALSE;
 	}
-	void *pData = VirtualAllocEx(hProcess, NULL, DataSize, MEM_COMMIT, PAGE_READWRITE);
+	pData = VirtualAllocEx(hProcess, NULL, DataSize, MEM_COMMIT, PAGE_READWRITE);
 	if (!pData) {
 		VirtualFreeEx(hProcess, pRemoteThread, RemoteSize, MEM_RELEASE);
 		return FALSE;
@@ -173,7 +185,7 @@ static BOOL RemoteExecute(HANDLE hProcess, void *RemoteThread, DWORD RemoteSize,
 		return FALSE;
 	}
 	// Bug: I don't know why the next line will fail in Windows XP, so get word from cmd.exe can't work presently.
-	HANDLE hThread = CreateRemoteThread(hProcess, 0, 0, (LPTHREAD_START_ROUTINE)pRemoteThread, pData, 0, 0);
+	hThread = CreateRemoteThread(hProcess, 0, 0, (LPTHREAD_START_ROUTINE)pRemoteThread, pData, 0, 0);
 	WaitForSingleObject(hThread, INFINITE);
 	GetExitCodeThread(hThread, dwReturn);
 	ReadProcessMemory(hProcess, pData, Data, DataSize, 0);
@@ -189,15 +201,19 @@ static BOOL RemoteExecute(HANDLE hProcess, void *RemoteThread, DWORD RemoteSize,
 
 static char* GetWordFromConsole(HWND WND, POINT Pt, int *BeginPos)
 {
+	DWORD pid;
 	TConsoleParams *TP;
+	DWORD MaxWordSize;
+	char *Result;
+
 	TP = malloc(sizeof(TConsoleParams));
 	TP->WND = WND;
 	TP->Pt = Pt;
 	ScreenToClient(WND, &(TP->Pt));
 	GetClientRect(WND, &(TP->ClientRect));
-	DWORD pid;
+	
 	GetWindowThreadProcessId(GetParent(WND), &pid);
-	DWORD MaxWordSize;
+	
 	if (pid != GetCurrentProcessId()) {
 		// The next line will fail in Win2k, but OK in Windows XP.
 		HANDLE ph = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, FALSE, pid);
@@ -209,7 +225,7 @@ static char* GetWordFromConsole(HWND WND, POINT Pt, int *BeginPos)
 	} else {
 		MaxWordSize = GetWordFromConsolePack(TP);
 	}
-	char *Result;
+
 	if (MaxWordSize > 0) {
 		Result = strdup(TP->Buffer);
 	} else {

@@ -4,13 +4,13 @@
 #include <math.h>
 
 
-typedef BOOL WINAPI (*TextOutANextHook_t)(HDC hdc, int nXStart, int nYStart, LPCSTR lpszString,int cbString);
+typedef BOOL (WINAPI *TextOutANextHook_t)(HDC hdc, int nXStart, int nYStart, LPCSTR lpszString,int cbString);
 TextOutANextHook_t TextOutANextHook = NULL;
-typedef BOOL WINAPI (*TextOutWNextHook_t)(HDC hdc, int nXStart, int nYStart, LPCWSTR lpszString,int cbString);
+typedef BOOL (WINAPI *TextOutWNextHook_t)(HDC hdc, int nXStart, int nYStart, LPCWSTR lpszString,int cbString);
 TextOutWNextHook_t TextOutWNextHook = NULL; 
-typedef BOOL WINAPI (*ExtTextOutANextHook_t)(HDC hdc, int nXStart, int nYStart, UINT fuOptions, CONST RECT *lprc, LPCSTR lpszString, UINT cbString, CONST INT *lpDx);
+typedef BOOL (WINAPI *ExtTextOutANextHook_t)(HDC hdc, int nXStart, int nYStart, UINT fuOptions, CONST RECT *lprc, LPCSTR lpszString, UINT cbString, CONST INT *lpDx);
 ExtTextOutANextHook_t ExtTextOutANextHook = NULL;
-typedef BOOL WINAPI (*ExtTextOutWNextHook_t)(HDC hdc, int nXStart, int nYStart, UINT fuOptions, CONST RECT *lprc, LPCWSTR lpszString, UINT cbString, CONST INT *lpDx);
+typedef BOOL (WINAPI *ExtTextOutWNextHook_t)(HDC hdc, int nXStart, int nYStart, UINT fuOptions, CONST RECT *lprc, LPCWSTR lpszString, UINT cbString, CONST INT *lpDx);
 ExtTextOutWNextHook_t ExtTextOutWNextHook = NULL;
 
 typedef struct TEverythingParams {
@@ -25,6 +25,19 @@ typedef struct TEverythingParams {
 } TEverythingParams;
 
 TEverythingParams *CurParams = NULL;
+
+//TODO: more general solution?
+#if defined(_MSC_VER)
+static double round(double d)
+{
+		double c = ceil(d);
+		double f = floor(d);
+		if (d - f < .5)
+				return f;
+		else
+				return c;
+}
+#endif
 
 static void ConvertToMatchedWordA(TEverythingParams *TP)
 {
@@ -130,9 +143,12 @@ static void GetWordTextOutHook (TEverythingParams *TP)
 	ScreenToClient(TP->WND, &(TP->Pt));
 	if (TP->Pt.y<0) {
 		char buffer[256];
+		char buffer2[256];
+		HMENU menu;
+
 		GetWindowText(TP->WND, buffer, sizeof(buffer)-1);
 		SetWindowText(TP->WND, "");
-		char buffer2[256];
+
 		GetWindowText(TP->WND, buffer2, sizeof(buffer2)-1);
 		if (buffer2[0]) { // MDI window.
 			char *p = strstr(buffer, buffer2);
@@ -147,7 +163,7 @@ static void GetWordTextOutHook (TEverythingParams *TP)
 		CurParams->Active = TRUE;
 		SetWindowText(TP->WND, buffer);
 		CurParams->Active = FALSE;
-		HMENU menu = GetMenu(TP->WND);
+		menu = GetMenu(TP->WND);
 		if (menu) {
 			ClientToScreen(TP->WND, &(TP->Pt));
 			IterateThroughItems(TP->WND, menu, &(TP->Pt));
@@ -155,6 +171,7 @@ static void GetWordTextOutHook (TEverythingParams *TP)
 	}
 	else {
 		RECT UpdateRect;
+
 		GetClientRect(TP->WND, &UpdateRect);
 		UpdateRect.top = TP->Pt.y;
 		UpdateRect.bottom = TP->Pt.y + 1;
@@ -169,6 +186,7 @@ static void GetWordTextOutHook (TEverythingParams *TP)
 char* ExtractFromEverything(HWND WND, POINT Pt, int *BeginPos)
 {
 	TEverythingParams CParams;
+
 	ZeroMemory(&CParams, sizeof(CParams));
 	CParams.WND = WND;
 	CParams.Pt = Pt;
@@ -181,9 +199,12 @@ char* ExtractFromEverything(HWND WND, POINT Pt, int *BeginPos)
 static void IsInsidePointA(const HDC DC, int X, int Y, LPCSTR Str, int Count)
 {
 	SIZE Size;
+
 	if ((Count > 0) && GetTextExtentPoint32A(DC, Str, Count, &Size)) {
 		DWORD Flags = GetTextAlign(DC);
 		POINT Pt;
+		RECT Rect;
+
 		if (Flags & TA_UPDATECP) {
 			GetCurrentPositionEx(DC, &Pt);
 		} else {
@@ -203,17 +224,18 @@ static void IsInsidePointA(const HDC DC, int X, int Y, LPCSTR Str, int Count)
 			Pt.y-=Size.cy;
 		}
 		LPtoDP(DC, &Pt, 1);
-		RECT Rect;
+		
 		Rect.left = Pt.x;
 		Rect.right = Pt.x + Size.cx;
 		Rect.top = Pt.y;
 		Rect.bottom = Pt.y + Size.cy;
 		if (((Rect.left <= Rect.right) && (CurParams->Pt.x >= Rect.left) && (CurParams->Pt.x <= Rect.right)) ||
 			((Rect.left > Rect.right) && (CurParams->Pt.x <= Rect.left) && (CurParams->Pt.x >= Rect.right))) {
+			int BegPos;
 		//if (PtInRect(&Rect, CurParams->Pt)) {
 			CurParams->Active = !PtInRect(&Rect, CurParams->Pt);
 			//CurParams->Active = FALSE;
-			int BegPos = round(abs((CurParams->Pt.x - Rect.left) / (Rect.right - Rect.left)) * (Count - 1));
+			BegPos = round(abs((CurParams->Pt.x - Rect.left) / (Rect.right - Rect.left)) * (Count - 1));
 			while ((BegPos < Count - 1) && GetTextExtentPoint32A(DC, Str, BegPos + 1, &Size) && (Size.cx < CurParams->Pt.x - Rect.left))
 				BegPos++;
 			while ((BegPos >= 0) && GetTextExtentPoint32A(DC, Str, BegPos + 1, &Size) && (Size.cx > CurParams->Pt.x - Rect.left))
@@ -237,6 +259,8 @@ static void IsInsidePointW(const HDC DC, int X, int Y, LPCWSTR Str, int Count)
 	if ((Count > 0) && GetTextExtentPoint32W(DC, Str, Count, &Size)) {
 		DWORD Flags = GetTextAlign(DC);
 		POINT Pt;
+		RECT Rect;
+
 		if (Flags & TA_UPDATECP) {
 			GetCurrentPositionEx(DC, &Pt);
 		} else {
@@ -256,7 +280,7 @@ static void IsInsidePointW(const HDC DC, int X, int Y, LPCWSTR Str, int Count)
 			Pt.y-=Size.cy;
 		}
 		LPtoDP(DC, &Pt, 1);
-		RECT Rect;
+
 		Rect.left = Pt.x;
 		Rect.right = Pt.x + Size.cx;
 		Rect.top = Pt.y;
@@ -267,10 +291,12 @@ static void IsInsidePointW(const HDC DC, int X, int Y, LPCWSTR Str, int Count)
 		// And use GetWindowRect() then get Rect.left and Rect.top is only useful on Title bar.
 		if (((Rect.left <= Rect.right) && (CurParams->Pt.x >= Rect.left) && (CurParams->Pt.x <= Rect.right)) ||
 			((Rect.left > Rect.right) && (CurParams->Pt.x <= Rect.left) && (CurParams->Pt.x >= Rect.right))) {
+			int BegPos;
+
 		//if (PtInRect(&Rect, CurParams->Pt)) {
 			CurParams->Active = !PtInRect(&Rect, CurParams->Pt);
 			//CurParams->Active = FALSE;
-			int BegPos = round(abs((CurParams->Pt.x - Rect.left) / (Rect.right - Rect.left)) * (Count - 1));
+			BegPos = round(abs((CurParams->Pt.x - Rect.left) / (Rect.right - Rect.left)) * (Count - 1));
 			while ((BegPos < Count - 1) && GetTextExtentPoint32W(DC, Str, BegPos + 1, &Size) && (Size.cx < CurParams->Pt.x - Rect.left))
 				BegPos++;
 			while ((BegPos >= 0) && GetTextExtentPoint32W(DC, Str, BegPos + 1, &Size) && (Size.cx > CurParams->Pt.x - Rect.left))
@@ -339,10 +365,13 @@ static void UninstallTextOutHooks()
 DLLIMPORT void GetWord (TCurrentMode *P)
 {
 	TCHAR wClassName[64];
+	TKnownWndClass WndClass;
+	char *p;
+
 	if (GetClassName(P->WND, wClassName, sizeof(wClassName) / sizeof(TCHAR))==0)
 		wClassName[0] = '\0';
-	TKnownWndClass WndClass = GetWindowType(P->WND, wClassName);
-	char *p = TryGetWordFromAnyWindow(WndClass, P->WND, P->Pt, &(P->BeginPos));
+	WndClass = GetWindowType(P->WND, wClassName);
+	p = TryGetWordFromAnyWindow(WndClass, P->WND, P->Pt, &(P->BeginPos));
 	if (p) {
 	    P->WordLen = strlen(p);
 		strcpy(P->MatchedWord, p);

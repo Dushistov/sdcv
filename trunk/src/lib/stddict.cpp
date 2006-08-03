@@ -2156,7 +2156,7 @@ bool Libs::LookupWithFuzzy(const gchar *sWord, gchar *reslist[], gint reslist_si
 	if (sWord[0] == '\0')
 		return false;
 
-	Fuzzystruct oFuzzystruct[reslist_size];
+	std::vector<Fuzzystruct> oFuzzystruct(reslist_size);
 
 	for (int i=0; i<reslist_size; i++) {
 		oFuzzystruct[i].pMatchWord = NULL;
@@ -2245,7 +2245,7 @@ bool Libs::LookupWithFuzzy(const gchar *sWord, gchar *reslist[], gint reslist_si
 	g_free(ucs4_str2);
 
 	if (Found)// sort with distance
-		std::sort(oFuzzystruct, oFuzzystruct+reslist_size);
+		std::sort(oFuzzystruct.begin(), oFuzzystruct.end());
 
 	for (gint i=0; i<reslist_size; ++i)
 		reslist[i]=oFuzzystruct[i].pMatchWord;

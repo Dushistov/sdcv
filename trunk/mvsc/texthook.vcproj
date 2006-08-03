@@ -20,7 +20,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TEXTHOOK_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TEXTHOOK_EXPORTS;_CRT_SECURE_NO_DEPRECATE;BUILDING_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -175,15 +175,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\win32\GetWord.c"
+				RelativePath="..\src\win32\GetWord.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\win32\HookImportFunction.c"
+				RelativePath="..\src\win32\HookImportFunction.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\win32\TextOutHook.c"
+				RelativePath="..\src\win32\TextOutHook.c"
 				>
 			</File>
 		</Filter>
@@ -193,19 +193,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\src\win32\GetWord.h"
+				RelativePath="..\src\win32\GetWord.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\win32\HookImportFunction.h"
+				RelativePath="..\src\win32\HookImportFunction.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\win32\TextOutHook.h"
+				RelativePath="..\src\win32\TextOutHook.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\win32\ThTypes.h"
+				RelativePath="..\src\win32\ThTypes.h"
 				>
 			</File>
 		</Filter>

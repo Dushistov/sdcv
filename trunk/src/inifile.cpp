@@ -39,7 +39,8 @@ void str2list(const gchar *str, std::list<std::string> &slist)
 {
   gchar *p;
 	slist.clear();
-  while ((p = strchr(str, STRING_SEP))!=NULL) {
+	//TODO: const_cast is peace of shit, need more good solution
+  while ((p = strchr(const_cast<char *>(str), STRING_SEP))!=NULL) {
     slist.push_back(std::string(str, p - str));
     str = p+1;
 	}

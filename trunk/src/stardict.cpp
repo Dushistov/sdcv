@@ -879,8 +879,8 @@ void Application::LookupDataToMainWin(const gchar *sWord)
 	gtk_widget_show_all(search_window);
 
 	//clock_t t=clock();
-	std::vector<gchar *> reslist[oLibs.ndicts()];
-	if (oLibs.LookupData(sWord, reslist, updateSearchDialog, &Dialog, &cancel)) {
+	std::vector< std::vector<gchar *> > reslist(oLibs.ndicts());
+	if (oLibs.LookupData(sWord, &reslist[0], updateSearchDialog, &Dialog, &cancel)) {
 		oMidWin.oIndexWin.oListWin.list_word_type = LIST_WIN_DATA_LIST;
 		for (int i=0; i<oLibs.ndicts(); i++) {
 			if (!reslist[i].empty()) {
@@ -888,7 +888,7 @@ void Application::LookupDataToMainWin(const gchar *sWord)
 				break;
 			}
 		}
-		oMidWin.oIndexWin.oListWin.SetTreeModel(reslist);
+		oMidWin.oIndexWin.oListWin.SetTreeModel(&reslist[0]);
 		oMidWin.oIndexWin.oListWin.ReScroll();
 	} else {
 		oMidWin.oIndexWin.oListWin.list_word_type = LIST_WIN_EMPTY;
@@ -1676,7 +1676,12 @@ int main(int argc,char **argv)
 
 	std::string userdir(get_user_config_dir());
 	if (!g_file_test(userdir.c_str(), GFileTest(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_DIR))) {
+//TODO: more good solution?
+#ifdef _WIN32
+		if (g_mkdir(userdir.c_str(), 0)==-1)
+#else
 		if (g_mkdir(userdir.c_str(), S_IRWXU)==-1)
+#endif
 			g_warning("Cannot create directory %s.", userdir.c_str());
 	}
 #ifdef _WIN32

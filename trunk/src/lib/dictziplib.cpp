@@ -33,7 +33,11 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <unistd.h>
+#ifndef _WIN32
+#  include <unistd.h>
+#else
+#  include <io.h>
+#endif
 #include <limits.h>
 #include <fcntl.h>
 
@@ -275,7 +279,9 @@ bool dictData::open(const std::string& fname, int computeCRC)
 
 	this->initialized = 0;
 
-	if (stat(fname.c_str(), &sb) || !S_ISREG(sb.st_mode)) {
+	if (!g_file_test(fname.c_str(), 
+			GFileTest(G_FILE_TEST_EXISTS | G_FILE_TEST_IS_REGULAR))) {
+	//if (stat(fname.c_str(), &sb) || !S_ISREG(sb.st_mode)) {
 		//err_warning( __FUNCTION__,
 		//   "%s is not a regular file -- ignoring\n", fname );
 		return false;

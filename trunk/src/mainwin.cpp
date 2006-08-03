@@ -656,7 +656,12 @@ void TopWin::InsertHisList(const gchar *word)
 
 void TopWin::SaveHistory()
 {
-	FILE *f=g_fopen(conf->get_string("/apps/stardict/preferences/dictionary/history").c_str(), "w");
+	/*
+	 * Do not use g_fopen here, g_fopen part of gtk dll on windows
+	 * if fread from mvsc and g_fopen uses fopen from glibc you god
+	 * segfault
+	 */
+	FILE *f = fopen(conf->get_string("/apps/stardict/preferences/dictionary/history").c_str(), "w");
 	if (!f)
 		return;
 	GList *hist_list = HisList;
@@ -674,7 +679,12 @@ void TopWin::LoadHistory()
 	if (g_stat (filename, &stats) == -1)
         	return;
 	FILE *historyfile;
-	historyfile = g_fopen(filename,"r");
+	/*
+	 * Do not use g_fopen here, g_fopen part of gtk dll on windows
+	 * if fread from mvsc and g_fopen uses fopen from glibc you god
+	 * segfault
+	 */
+	historyfile = fopen(filename,"rb");
 	if (!historyfile)
 		return;
 	gchar *buffer = (gchar *)g_malloc (stats.st_size + 1);

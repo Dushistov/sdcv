@@ -1,6 +1,6 @@
 #include "resource.h"
 
-STARDICT_NORMAL_TRAY_ICON	ICON "src/win32/systray-normal.ico"
-STARDICT_SCAN_TRAY_ICON		ICON "src/win32/systray-scan.ico"
-STARDICT_STOP_TRAY_ICON		ICON "src/win32/systray-stop.ico"
+STARDICT_NORMAL_TRAY_ICON	ICON "systray-normal.ico"
+STARDICT_SCAN_TRAY_ICON		ICON "systray-scan.ico"
+STARDICT_STOP_TRAY_ICON		ICON "systray-stop.ico"
 

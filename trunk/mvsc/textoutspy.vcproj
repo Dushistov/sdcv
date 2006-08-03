@@ -20,7 +20,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TEXTOUTSPY_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;TEXTOUTSPY_EXPORTS;BUILDING_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -175,11 +175,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\win32\TextOutSpy.c"
+				RelativePath="..\src\win32\TextOutSpy.c"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\win32\ThTypes.c"
+				RelativePath="..\src\win32\ThTypes.c"
 				>
 			</File>
 		</Filter>
@@ -189,11 +189,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\src\win32\TextOutSpy.h"
+				RelativePath="..\src\win32\TextOutSpy.h"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\win32\ThTypes.h"
+				RelativePath="..\src\win32\ThTypes.h"
 				>
 			</File>
 		</Filter>

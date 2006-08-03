@@ -54,12 +54,15 @@ LRESULT CALLBACK MouseHookProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
 	if ((nCode == HC_ACTION) && ((wParam == WM_MOUSEMOVE) || (wParam == WM_NCMOUSEMOVE))) {
 		if (WaitForSingleObject(hSynhroMutex, 0) == WAIT_OBJECT_0) {
+			HWND WND;
+			TCHAR wClassName[64];
+
 			if (GlobalData->TimerID) {
 				if (KillTimer(0, GlobalData->TimerID))
 					GlobalData->TimerID=0;
 			}
-			HWND WND = WindowFromPoint(((PMOUSEHOOKSTRUCT)lParam)->pt);
-			TCHAR wClassName[64];
+			WND = WindowFromPoint(((PMOUSEHOOKSTRUCT)lParam)->pt);
+			
 			if (GetClassName(WND, wClassName, sizeof(wClassName) / sizeof(TCHAR))) {
 					const char* DisableClasses[] = {
 						"gdkWindowChild",
