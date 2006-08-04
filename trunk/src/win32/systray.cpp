@@ -87,7 +87,7 @@ void DockLet::systray_show_menu(int x, int y)
            of the menu scope */
 	SetForegroundWindow(systray_hwnd);
 
-  if (conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection"))
+  if (conf->get_bool_at("dictionary/scan_selection"))
 		CheckMenuItem(systray_menu, SYSTRAY_CMND_MENU_SCAN, MF_BYCOMMAND | MF_CHECKED);
 	else
 		CheckMenuItem(systray_menu, SYSTRAY_CMND_MENU_SCAN, MF_BYCOMMAND | MF_UNCHECKED);
@@ -129,7 +129,7 @@ LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wp
 	{
 		if ( lparam == WM_LBUTTONDOWN ) {
 			if (GetKeyState(VK_CONTROL)<0) {
-				conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection", !conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection"));
+				conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection", !conf->get_bool_at("dictionary/scan_selection"));
 			}
 		} else if ( lparam == WM_LBUTTONDBLCLK ) {
 			// Only use left button will conflict with the menu.
@@ -153,7 +153,7 @@ LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wp
 				}
 			}
 		} else if (lparam == WM_MBUTTONDOWN) {
-			if (conf->get_bool("/apps/stardict/preferences/notification_area_icon/query_in_floatwin")) {
+			if (conf->get_bool_at("notification_area_icon/query_in_floatwin")) {
 				gpAppFrame->oSelection.LastClipWord.clear();
 				gtk_selection_convert (gpAppFrame->oSelection.selection_widget, GDK_SELECTION_PRIMARY, gpAppFrame->oSelection.UTF8_STRING_Atom, GDK_CURRENT_TIME);
 			} else {

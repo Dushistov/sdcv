@@ -74,9 +74,9 @@ HWND Mouseover::Create_hiddenwin()
 
 void Mouseover::ShowTranslation()
 {
-	if (!conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection")) // Needed by acrobat plugin.
+	if (!conf->get_bool_at("dictionary/scan_selection")) // Needed by acrobat plugin.
 		return;
-	if (conf->get_bool("/apps/stardict/preferences/dictionary/only_scan_while_modifier_key")) {
+	if (conf->get_bool_at("dictionary/only_scan_while_modifier_key")) {
     	bool do_scan = gpAppFrame->unlock_keys->is_pressed();
 		if (!do_scan)
 			return;
