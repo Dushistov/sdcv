@@ -1,7 +1,7 @@
 /* 
  * This file part of StarDict - A international dictionary for GNOME.
  * http://stardict.sourceforge.net
- * Copyright (C) 2005 Evgeniy <dushistov@mail.ru>
+ * Copyright (C) 2005-2006 Evgeniy <dushistov@mail.ru>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -217,9 +217,9 @@ bool inifile::read_strlist(const gchar *sect, const gchar * key, std::list<std::
 void inifile::write_bool(const gchar *sect, const gchar *key, bool val)
 {
 	if (val)
-    save_string(sect, key, "1");
+		save_string(sect, key, "1");
 	else
-    save_string(sect, key, "0");
+		save_string(sect, key, "0");
 	expose_event(sect, key, val);
 }
 //---------------------------------------------------------------------------------
@@ -272,10 +272,12 @@ void inifile::write_strlist(const gchar *sect, const gchar *key, const std::list
 }
 //---------------------------------------------------------------------------------
 void inifile::notify_add(const gchar *sect, const gchar *key, 
-												 void (*on_change)(const baseconfval*, void *), void *arg)
+			 const sigc::slot<void, const baseconfval*>& slot)
 {
-	std::string name(std::string(sect)+"/"+key);
-
-	change_events_map[name].on_change=on_change;
-	change_events_map[name].arg=arg;
+	std::string name = std::string(sect) + "/" + key;
+	ChangeEventsMap::iterator it =
+		change_events_map_.insert(
+			std::make_pair(name,
+				       sigc::signal<void, const baseconfval*>())).first;
+	it->second.connect(slot);
 }

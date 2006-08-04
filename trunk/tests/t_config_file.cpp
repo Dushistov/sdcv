@@ -1,7 +1,7 @@
-/* 
+/*
  * This file part of StarDict - A international dictionary for GNOME.
  * http://stardict.sourceforge.net
- * Copyright (C) 2005 Evgeniy <dushistov@mail.ru>
+ * Copyright (C) 2005-2006 Evgeniy <dushistov@mail.ru>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,30 +50,49 @@ std::ostream& operator<<(std::ostream& os, const strlist &sl)
 struct tmp_file {
 	string fname;
 	tmp_file(const string& fn) : fname(fn) {}
-	~tmp_file() { 
-		if (remove(fname.c_str())==-1) 
+	~tmp_file() {
+		if (remove(fname.c_str())==-1)
 			std::cerr<<"can not remove: "<<fname<<". "<<strerror(errno)<<std::endl;
 	}
 };
 
+class EventHandler : public sigc::trackable {
+public:
+	EventHandler() : get_event_(false) {}
+	void on_event(const baseconfval*) { get_event_ = true; }
+	bool is_recieve_event() const { return get_event_; }
+private:
+	bool get_event_;
+};
+
 #define TEST(type, def_val, some_val) do { \
-		type type##_val=def_val; \
+		type type##_val = def_val; \
 		cf->read_##type("/stardict-test", #type, type##_val); \
-		if (type##_val!=def_val) { \
+		if (type##_val != def_val) { \
 			std::cerr<<"type: "<<#type<<", default value was changed"<<std::endl;	\
 			std::cerr<<"default: "<<def_val<<std::endl<<"have: "<<type##_val<<std::endl; \
 			return false; \
-		}												\
+		}  \
+		EventHandler ehandler;		\
+		if (check_events) \
+			cf->notify_add("/stardict-test", #type,		\
+				       sigc::mem_fun(ehandler, &EventHandler::on_event)); \
+		\
+		cf->write_##type("/stardict-test", #type, def_val); \
 		cf->write_##type("/stardict-test", #type, some_val); \
+		if (check_events && !ehandler.is_recieve_event()) {		      \
+			std::cerr << "type: " << #type << "handler was not exposed" << std::endl; \
+			return false; \
+		} \
 		cf->read_##type("/stardict-test", #type, type##_val); \
-		if (type##_val!=some_val) { \
-			std::cerr<<"type: "<<#type<<", default value was NOT changed"<<std::endl;	\
+		if (type##_val != some_val) { \
+			std::cerr<<"type: "<<#type<<", default value was NOT changed"<<std::endl;  \
 			std::cerr<<"set to: "<<some_val<<std::endl<<"get: "<<type##_val<<std::endl; \
 			return false; \
-		}											\
-	}	while (0)
+		} \
+	} while (0)
 
-static bool is_test_passed(config_file *cf)
+static bool is_test_passed(config_file *cf, bool check_events = true)
 {
 	TEST(bool, true, false);
 	TEST(int, 17, 18);
@@ -104,7 +123,7 @@ bool test_gconf()
 	cf.reset(new gconf_file("/apps/stardict"));
 	tmp_file tf=tmp1;
 	tmp_file tf1=tmp2;
-	bool res=is_test_passed(cf.get());
+	bool res = is_test_passed(cf.get(), false);
 	cf.reset(0);
 	system("gconftool-2 --shutdown");
 	return res;
@@ -126,7 +145,7 @@ int main(int argc, char *argv[])
 		std::cerr<<"ini file test failed"<<std::endl;
 		return EXIT_FAILURE;
 	}
-		
+
 #ifdef CONFIG_GNOME
 	gtk_init(&argc, &argv);
 	if (!test_gconf()) {
@@ -134,6 +153,6 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 #endif
-	
+
 	return EXIT_SUCCESS;
 }

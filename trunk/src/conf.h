@@ -108,7 +108,8 @@ public:
 	}
 
 
-	void notify_add(const std::string& name, void (*on_change)(const baseconfval*, void *), void *arg);
+	void notify_add(const std::string&,
+			const sigc::slot<void, const baseconfval*>&);
 private:
 	std::auto_ptr<config_file> cf_;
 	cache_t cache_;

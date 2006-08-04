@@ -174,10 +174,11 @@ void AppConf::save_value(const std::string& name, const baseconfval* cv)
 	}
 }
 //---------------------------------------------------------------------------------
-void AppConf::notify_add(const std::string& name, void (*on_change)(const baseconfval*, void *), void *arg)
+void AppConf::notify_add(const std::string& name,
+			 const sigc::slot<void, const baseconfval*>& slot)
 {
 	std::pair<std::string, std::string> split_name = split(name);
-	cf_->notify_add(split_name.first.c_str(), split_name.second.c_str(), on_change, arg);
+	cf_->notify_add(split_name.first.c_str(), split_name.second.c_str(), slot);
 }
 //---------------------------------------------------------------------------------
 //load preference

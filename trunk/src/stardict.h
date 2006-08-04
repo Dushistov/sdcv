@@ -44,7 +44,7 @@ const int MAX_FLOAT_WINDOW_FUZZY_MATCH_ITEM=5;
 const int LIST_WIN_ROW_NUM = 30; //how many words show in the list win.
 
 
-class Application {
+class Application : public sigc::trackable {
 private:
 	DictManageDlg *dict_manage_dlg;
 	PrefsDlg *prefs_dlg;
@@ -54,13 +54,13 @@ private:
 	static gboolean on_window_state_event(GtkWidget * window, GdkEventWindowState *event , Application *oApplication);
 	static gboolean vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *event , Application *oApplication);
 	void reload_dicts();
-	static void on_main_win_hide_list_changed(const baseconfval*, void *arg);
-	static void on_dict_scan_select_changed(const baseconfval*, void *arg);
-	static void on_floatwin_lock_changed(const baseconfval*, void *arg);
+	void on_main_win_hide_list_changed(const baseconfval*);
+	void on_dict_scan_select_changed(const baseconfval*);
+	void on_floatwin_lock_changed(const baseconfval*);
 
-	static void on_floatwin_lock_x_changed(const baseconfval*, void *arg);
-	static void on_floatwin_lock_y_changed(const baseconfval*, void *arg);
-	static void on_scan_modifier_key_changed(const baseconfval*, void *arg);
+	void on_floatwin_lock_x_changed(const baseconfval*);
+	void on_floatwin_lock_y_changed(const baseconfval*);
+	void on_scan_modifier_key_changed(const baseconfval*);
 public:
 	CurrentIndex *iCurrentIndex;
 	GtkWidget *window;

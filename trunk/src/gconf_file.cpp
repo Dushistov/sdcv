@@ -1,7 +1,7 @@
 /* 
  * This file part of StarDict - A international dictionary for GNOME.
  * http://stardict.sourceforge.net
- * Copyright (C) 2005 Evgeniy <dushistov@mail.ru>
+ * Copyright (C) 2005-2006 Evgeniy <dushistov@mail.ru>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,15 +49,16 @@ gconf_file::~gconf_file()
 
 bool gconf_file::read_bool(const gchar *sect, const gchar *key, bool& val)
 {
-  if (!gconf_client)
-    return false;
+	if (!gconf_client)
+		return false;
   
 	std::string real_key(std::string(sect)+"/"+key);
 
-	GConfValue *gval=gconf_client_get(gconf_client, real_key.c_str(), NULL);
+	GConfValue *gval =
+		gconf_client_get(gconf_client, real_key.c_str(), NULL);
 	if (!gval)
 		return false;
-	val=gconf_value_get_bool(gval);
+	val = gconf_value_get_bool(gval);
 	gconf_value_free(gval);
 
 	return true;
@@ -116,11 +117,11 @@ bool gconf_file::read_strlist(const gchar * sect, const gchar * key, std::list<s
 
 void gconf_file::write_bool(const gchar *sect, const gchar *key, bool val)
 {
-if (!gconf_client)
-    return;
-  gchar *real_key=g_strdup_printf("%s/%s", sect, key);
-  gconf_client_set_bool(gconf_client, real_key, val, NULL);
-  g_free(real_key);
+	if (!gconf_client)
+		return;
+	gchar *real_key = g_strdup_printf("%s/%s", sect, key);
+	gconf_client_set_bool(gconf_client, real_key, val, NULL);
+	g_free(real_key);
 }
 
 void gconf_file::write_int(const gchar *sect, const gchar *key, int val)
@@ -157,9 +158,10 @@ void gconf_file::write_strlist(const gchar *sect, const gchar *key, const std::l
 }
 
 static void gconf_client_notify_func(GConfClient *client, guint cnxn_id,
-																		 GConfEntry *entry, gpointer user_data)
+				     GConfEntry *entry, gpointer user_data)
 {
-	change_handler<const baseconfval *> *ch=static_cast<change_handler<const baseconfval *> *>(user_data);
+	sigc::signal<void, const baseconfval*> *ch =
+		static_cast< sigc::signal<void, const baseconfval*> *>(user_data);
 	std::auto_ptr<baseconfval> cv;
 	switch (entry->value->type) {
 	case GCONF_VALUE_BOOL:
@@ -191,23 +193,25 @@ static void gconf_client_notify_func(GConfClient *client, guint cnxn_id,
 	default:
 		return;
 	}
-	(*ch)(cv.get());
+	ch->emit(cv.get());
 }
 
 static void gfree_func(gpointer data)
 {
-	change_handler<baseconfval> *bcv=static_cast<change_handler<baseconfval> *>(data);
+	sigc::signal<void, const baseconfval*> *bcv =
+		static_cast< sigc::signal<void, const baseconfval*> *>(data);
 	delete bcv;
 }
 
-void gconf_file::notify_add(const gchar *sect, const gchar *key, 
-														void (*on_change)(const baseconfval*, void *), void *arg)
+void gconf_file::notify_add(const gchar *sect, const gchar *key,
+			    const sigc::slot<void, const baseconfval*>& slot)
 {
 	std::string name(std::string(sect)+"/"+key);
-	change_handler<const baseconfval *> *ch=new change_handler<const baseconfval*>;
-	ch->on_change=on_change;
-	ch->arg=arg;
-	guint id=gconf_client_notify_add(gconf_client, name.c_str(), 
-																	 gconf_client_notify_func, ch, gfree_func, NULL);
+	sigc::signal<void, const baseconfval*> *ch =
+		new sigc::signal<void, const baseconfval*>;
+	ch->connect(slot);
+	guint id = gconf_client_notify_add(gconf_client, name.c_str(), 
+					   gconf_client_notify_func, ch,
+					   gfree_func, NULL);
 	notification_ids.push_back(id);
 }

@@ -1358,17 +1358,17 @@ void Application::End()
 void Application::Init(gchar *queryword)
 {
 	conf->notify_add("/apps/stardict/preferences/main_window/hide_list",
-									 on_main_win_hide_list_changed, this);
+			 sigc::mem_fun(*this, &Application::on_main_win_hide_list_changed));
 	conf->notify_add("/apps/stardict/preferences/dictionary/scan_selection",
-									 on_dict_scan_select_changed, this);
+			 sigc::mem_fun(*this, &Application::on_dict_scan_select_changed));
 	conf->notify_add("/apps/stardict/preferences/floating_window/lock",
-									 on_floatwin_lock_changed, this);
+			 sigc::mem_fun(*this, &Application::on_floatwin_lock_changed));
 	conf->notify_add("/apps/stardict/preferences/floating_window/lock_x",
-									 on_floatwin_lock_x_changed, this);
+			 sigc::mem_fun(*this, &Application::on_floatwin_lock_x_changed));
 	conf->notify_add("/apps/stardict/preferences/floating_window/lock_y",
-									 on_floatwin_lock_y_changed, this);
+			 sigc::mem_fun(*this, &Application::on_floatwin_lock_y_changed));
 	conf->notify_add("/apps/stardict/preferences/dictionary/scan_modifier_key",
-									 on_scan_modifier_key_changed, this);
+			 sigc::mem_fun(*this, &Application::on_scan_modifier_key_changed));
 	if (!hide_option)
 		stardict_splash.show();
 
@@ -1413,97 +1413,93 @@ void Application::Quit()
 	 gtk_main_quit();
 }
 
-void Application::on_main_win_hide_list_changed(const baseconfval* hideval, void *arg)
+void Application::on_main_win_hide_list_changed(const baseconfval* hideval)
 {
-	Application *app = static_cast<Application *>(arg);
-	bool hide=static_cast<const confval<bool> *>(hideval)->val;
+	bool hide = static_cast<const confval<bool> *>(hideval)->val;
 	if (hide) {
-		gtk_widget_hide(app->oMidWin.oToolWin.HideListButton);
-		gtk_widget_show(app->oMidWin.oToolWin.ShowListButton);
-		gtk_widget_hide(app->oMidWin.oIndexWin.vbox);
+		gtk_widget_hide(oMidWin.oToolWin.HideListButton);
+		gtk_widget_show(oMidWin.oToolWin.ShowListButton);
+		gtk_widget_hide(oMidWin.oIndexWin.vbox);
 	}	else {
-		gtk_widget_hide(app->oMidWin.oToolWin.ShowListButton);
-		gtk_widget_show(app->oMidWin.oToolWin.HideListButton);
-		gtk_widget_show(app->oMidWin.oIndexWin.vbox);
+		gtk_widget_hide(oMidWin.oToolWin.ShowListButton);
+		gtk_widget_show(oMidWin.oToolWin.HideListButton);
+		gtk_widget_show(oMidWin.oIndexWin.vbox);
 	}
 }
 
-void Application::on_dict_scan_select_changed(const baseconfval* scanval, void *arg)
+void Application::on_dict_scan_select_changed(const baseconfval* scanval)
 {
-	Application *app = static_cast<Application *>(arg);
-	bool scan=static_cast<const confval<bool> *>(scanval)->val;
+	bool scan = static_cast<const confval<bool> *>(scanval)->val;
 
-	gtk_widget_set_sensitive(app->oFloatWin.StopButton, scan);
-	if (scan != gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(app->oBottomWin.ScanSelectionCheckButton)))
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(app->oBottomWin.ScanSelectionCheckButton), scan);
+	gtk_widget_set_sensitive(oFloatWin.StopButton, scan);
+	if (scan != gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(oBottomWin.ScanSelectionCheckButton)))
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(oBottomWin.ScanSelectionCheckButton), scan);
 
 	if (scan) {
-		if (!GTK_WIDGET_VISIBLE(app->window))
-			app->oDockLet.SetIcon(DOCKLET_SCAN_ICON);
-		bool lock=conf->get_bool_at("floating_window/lock");
-		if (lock && !app->oFloatWin.QueryingWord.empty())
-			app->oFloatWin.Show();
-		app->oSelection.start();
+		if (!GTK_WIDGET_VISIBLE(window))
+			oDockLet.SetIcon(DOCKLET_SCAN_ICON);
+		bool lock = conf->get_bool_at("floating_window/lock");
+		if (lock && !oFloatWin.QueryingWord.empty())
+			oFloatWin.Show();
+		oSelection.start();
 #ifdef _WIN32
-		if (conf->get_bool_at("dictionary/scan_clipboard")) {
-			app->oClipboard.start();
-		}
-		app->oMouseover.start();
+		if (conf->get_bool_at("dictionary/scan_clipboard"))
+			oClipboard.start();
+		
+		oMouseover.start();
 #endif
 	} else {
-		if (!GTK_WIDGET_VISIBLE(app->window))
-			app->oDockLet.SetIcon(DOCKLET_STOP_ICON);
-		app->oFloatWin.Hide();
-		app->oSelection.stop();
+		if (!GTK_WIDGET_VISIBLE(window))
+			oDockLet.SetIcon(DOCKLET_STOP_ICON);
+		oFloatWin.Hide();
+		oSelection.stop();
 #ifdef _WIN32
 		if (conf->get_bool_at("dictionary/scan_clipboard")) {
-			app->oClipboard.stop();
+			oClipboard.stop();
 		}
-		app->oMouseover.stop();
+		oMouseover.stop();
 #endif
 	}
 }
 
-void Application::on_floatwin_lock_changed(const baseconfval* lockval, void *arg)
+void Application::on_floatwin_lock_changed(const baseconfval* lockval)
 {
-	Application *app = static_cast<Application *>(arg);
-	bool lock=static_cast<const confval<bool> *>(lockval)->val;
-  if (lock)
-    gtk_image_set_from_stock(GTK_IMAGE(app->oFloatWin.lock_image),GTK_STOCK_GOTO_LAST,GTK_ICON_SIZE_MENU);
-  else
-    gtk_image_set_from_stock(GTK_IMAGE(app->oFloatWin.lock_image),GTK_STOCK_GO_FORWARD,GTK_ICON_SIZE_MENU);
+	bool lock = static_cast<const confval<bool> *>(lockval)->val;
+	if (lock)
+		gtk_image_set_from_stock(GTK_IMAGE(oFloatWin.lock_image),
+					 GTK_STOCK_GOTO_LAST,GTK_ICON_SIZE_MENU);
+	else
+		gtk_image_set_from_stock(GTK_IMAGE(oFloatWin.lock_image),
+					 GTK_STOCK_GO_FORWARD,GTK_ICON_SIZE_MENU);
 }
 
-void Application::on_floatwin_lock_x_changed(const baseconfval* lock_x_val, void *arg)
+void Application::on_floatwin_lock_x_changed(const baseconfval* lock_x_val)
 {
-	Application *app = static_cast<Application *>(arg);
-	int lock_x=static_cast<const confval<int> *>(lock_x_val)->val;
+	int lock_x = static_cast<const confval<int> *>(lock_x_val)->val;
 	if (conf->get_bool_at("floating_window/lock")) {
-    gint old_x, old_y;
-    gtk_window_get_position(GTK_WINDOW(app->oFloatWin.FloatWindow), &old_x, &old_y);
-    if (lock_x!=old_x)
-      gtk_window_move(GTK_WINDOW(app->oFloatWin.FloatWindow), lock_x, old_y);
+		gint old_x, old_y;
+		gtk_window_get_position(GTK_WINDOW(oFloatWin.FloatWindow), &old_x, &old_y);
+		if (lock_x != old_x)
+			gtk_window_move(GTK_WINDOW(oFloatWin.FloatWindow), lock_x, old_y);
+	}
+}
+
+void Application::on_floatwin_lock_y_changed(const baseconfval* lock_y_val)
+{
+	int lock_y = static_cast<const confval<int> *>(lock_y_val)->val;
+
+	if (conf->get_bool_at("floating_window/lock")) {
+		gint old_x,old_y;
+		gtk_window_get_position(GTK_WINDOW(oFloatWin.FloatWindow), &old_x, &old_y);
+		if (lock_y != old_y)
+			gtk_window_move(GTK_WINDOW(oFloatWin.FloatWindow), old_x, lock_y);
   }
 }
 
-void Application::on_floatwin_lock_y_changed(const baseconfval* lock_y_val, void *arg)
+void Application::on_scan_modifier_key_changed(const baseconfval* keyval)
 {
-	Application *app = static_cast<Application *>(arg);
-	int lock_y=static_cast<const confval<int> *>(lock_y_val)->val;
-
-	if (conf->get_bool_at("floating_window/lock")) {
-    gint old_x,old_y;
-    gtk_window_get_position(GTK_WINDOW(app->oFloatWin.FloatWindow), &old_x, &old_y);
-    if (lock_y!=old_y)
-      gtk_window_move(GTK_WINDOW(app->oFloatWin.FloatWindow), old_x, lock_y);
-  }
-}
-
-void Application::on_scan_modifier_key_changed(const baseconfval* keyval, void *arg)
-{
-	Application *app = static_cast<Application *>(arg);
-	int key=static_cast<const confval<int> *>(keyval)->val;
-	app->unlock_keys->set_comb(combnum2str(key));
+	int key = static_cast<const confval<int> *>(keyval)->val;
+	unlock_keys->set_comb(combnum2str(key));
 }
 
 gchar* GetPureEnglishAlpha(gchar *str)
