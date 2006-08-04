@@ -79,16 +79,32 @@ public:
 		set_value(name, v);
 	}
 
+	void set_bool_at(const std::string& name, const bool& v) {
+		set_value_at(name, v);
+	}
+
 	void set_int(const std::string& name, const int& v) {
 		set_value(name, v);
+	}
+
+	void set_int_at(const std::string& name, const int& v) {
+		set_value_at(name, v);
 	}
 
 	void set_string(const std::string& name, const std::string& v) {
 		set_value(name, v);
 	}
 
+	void set_string_at(const std::string& name, const std::string& v) {
+		set_value_at(name, v);
+	}
+
 	void set_strlist(const std::string& name, const std::list<std::string>& v) {
 		set_value(name, v);
+	}
+
+	void set_strlist_at(const std::string& name, const std::list<std::string>& v) {
+		set_value_at(name, v);
 	}
 
 
@@ -108,6 +124,12 @@ private:
 		static_cast<confval<T> *>(p->second)->val = val;
 		save_value(name, p->second);
 	}
+
+	template <typename T>
+	void set_value_at(const std::string& name, const T& val) {
+		set_value("/apps/stardict/preferences/" + name, val);
+	}
+
 	static std::string get_default_history_filename();
 	static std::string get_default_export_filename();
 	static std::list<std::string> get_default_search_website_list();

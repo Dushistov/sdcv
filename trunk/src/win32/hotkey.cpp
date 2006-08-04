@@ -30,7 +30,7 @@ HWND Hotkey::Create_hiddenwin()
 
 void Hotkey::ToggleScan()
 {
-	conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection",
+	conf->set_bool_at("dictionary/scan_selection",
 					!conf->get_bool_at("dictionary/scan_selection"));
 }
 

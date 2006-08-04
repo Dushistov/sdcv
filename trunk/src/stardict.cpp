@@ -287,7 +287,7 @@ gboolean Application::on_window_state_event(GtkWidget * window, GdkEventWindowSt
 			}
 		}
 	}	else if (event->changed_mask == GDK_WINDOW_STATE_MAXIMIZED)
-	  conf->set_bool("/apps/stardict/preferences/main_window/maximized",
+	  conf->set_bool_at("main_window/maximized",
 									 (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED));
 
 	return false;
@@ -1390,17 +1390,17 @@ void Application::Quit()
 	if (!conf->get_bool_at("main_window/maximized")) {
 		gint width, height;
 		gtk_window_get_size(GTK_WINDOW(window), &width, &height);
-    conf->set_int("/apps/stardict/preferences/main_window/window_width", width);
-    conf->set_int("/apps/stardict/preferences/main_window/window_height", height);
+    conf->set_int_at("main_window/window_width", width);
+    conf->set_int_at("main_window/window_height", height);
 	}
 	gint pos = gtk_paned_get_position(GTK_PANED(oMidWin.hpaned));
-  conf->set_int("/apps/stardict/preferences/main_window/hpaned_pos", pos);
+  conf->set_int_at("main_window/hpaned_pos", pos);
 
 	if (conf->get_bool_at("floating_window/lock")) {
 		gint x, y;
 		gtk_window_get_position(GTK_WINDOW(oFloatWin.FloatWindow), &x, &y);
-    conf->set_int("/apps/stardict/preferences/floating_window/lock_x", x);
-    conf->set_int("/apps/stardict/preferences/floating_window/lock_y", y);
+    conf->set_int_at("floating_window/lock_x", x);
+    conf->set_int_at("floating_window/lock_y", y);
 	}
 
 	End();

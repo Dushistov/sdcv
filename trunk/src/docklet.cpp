@@ -105,7 +105,7 @@ void DockLet::DestroyedCallback(GtkWidget *widget, DockLet *oDockLet)
 
 void DockLet::MenuScanCallback(GtkCheckMenuItem *checkmenuitem, gpointer user_data)
 {
-  conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection",
+  conf->set_bool_at("dictionary/scan_selection",
 								 gtk_check_menu_item_get_active(checkmenuitem));
 }
 
@@ -211,7 +211,7 @@ gboolean DockLet::ButtonPressCallback(GtkWidget *button, GdkEventButton *event, 
 		if ((event->state & GDK_CONTROL_MASK) && 
 				!(event->state & GDK_MOD1_MASK) && 
 				!(event->state & GDK_SHIFT_MASK)) {
-      conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection",
+      conf->set_bool_at("dictionary/scan_selection",
 										 !conf->get_bool_at("dictionary/scan_selection"));
 			return true;
     } else {			

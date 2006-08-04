@@ -1310,12 +1310,12 @@ void ToolWin::Create(GtkWidget *vbox)
 
 void ToolWin::ShowListCallback(GtkWidget *widget, gpointer data)
 {
-  conf->set_bool("/apps/stardict/preferences/main_window/hide_list", false);
+  conf->set_bool_at("main_window/hide_list", false);
 }
 
 void ToolWin::HideListCallback(GtkWidget *widget, gpointer data)
 {
-  conf->set_bool("/apps/stardict/preferences/main_window/hide_list", true);
+  conf->set_bool_at("main_window/hide_list", true);
 }
 
 #ifndef CONFIG_GPE
@@ -1803,7 +1803,7 @@ void BottomWin::Create(GtkWidget *vbox)
 void BottomWin::ScanCallback(GtkToggleButton *button, gpointer data)
 {
 	bool scan_selection=gtk_toggle_button_get_active(button);
-  conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection",
+  conf->set_bool_at("dictionary/scan_selection",
 									scan_selection);
 }
 

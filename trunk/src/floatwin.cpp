@@ -75,11 +75,11 @@ void FloatWin::Create()
 		conf->get_int_at("floating_window/max_window_height");
 	if (max_window_width < MIN_MAX_FLOATWIN_WIDTH || 
 			max_window_width > screen_width)
-		conf->set_int("/apps/stardict/preferences/floating_window/max_window_width",
+		conf->set_int_at("floating_window/max_window_width",
 									DEFAULT_MAX_FLOATWIN_WIDTH);
 	if (max_window_height < MIN_MAX_FLOATWIN_HEIGHT ||
 			max_window_height > screen_height)
-		conf->set_int("/apps/stardict/preferences/floating_window/max_window_height", DEFAULT_MAX_FLOATWIN_HEIGHT);
+		conf->set_int_at("floating_window/max_window_height", DEFAULT_MAX_FLOATWIN_HEIGHT);
 	
 	int lock_x=
 		conf->get_int_at("floating_window/lock_x");
@@ -845,7 +845,7 @@ void FloatWin::on_play_click(GtkWidget *widget, FloatWin *oFloatWin)
 void FloatWin::on_stop_click(GtkWidget *widget, FloatWin *oFloatWin)
 {
 	play_sound_on_event("buttonactive");
-	conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection", false);
+	conf->set_bool_at("dictionary/scan_selection", false);
 }
 
 #ifndef CONFIG_GPE
@@ -868,6 +868,6 @@ void FloatWin::on_quit_click(GtkWidget *widget, FloatWin *oFloatWin)
 void FloatWin::vLockCallback(GtkWidget *widget, FloatWin *oFloatWin)
 {
 	play_sound_on_event("buttonactive");
-	conf->set_bool("/apps/stardict/preferences/floating_window/lock", 
+	conf->set_bool_at("floating_window/lock", 
 								 !conf->get_bool_at("floating_window/lock"));
 }

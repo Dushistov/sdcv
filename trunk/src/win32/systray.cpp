@@ -115,9 +115,9 @@ LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wp
 		switch(LOWORD(wparam)) {
 		case SYSTRAY_CMND_MENU_SCAN:
 			if (GetMenuState(gpAppFrame->oDockLet.systray_menu, SYSTRAY_CMND_MENU_SCAN, MF_BYCOMMAND) & MF_CHECKED) {
-				conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection", FALSE);
+				conf->set_bool_at("dictionary/scan_selection", FALSE);
 			} else {
-				conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection", TRUE);
+				conf->set_bool_at("dictionary/scan_selection", TRUE);
 			}				
 			break;
 		case SYSTRAY_CMND_MENU_QUIT:
@@ -129,7 +129,7 @@ LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wp
 	{
 		if ( lparam == WM_LBUTTONDOWN ) {
 			if (GetKeyState(VK_CONTROL)<0) {
-				conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection", !conf->get_bool_at("dictionary/scan_selection"));
+				conf->set_bool_at("dictionary/scan_selection", !conf->get_bool_at("dictionary/scan_selection"));
 			}
 		} else if ( lparam == WM_LBUTTONDBLCLK ) {
 			// Only use left button will conflict with the menu.
