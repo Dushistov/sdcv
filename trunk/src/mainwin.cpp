@@ -854,7 +854,7 @@ void ListWin::SetTreeModel(std::vector<gchar *> *reslist)
 {
 	GtkTreeIter parent;
 	GtkTreeIter iter;
-	for (int i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
+	for (std::size_t i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
 		if (!reslist[i].empty()) {
 			gtk_tree_store_append (tree_model, &parent, NULL);
 			gtk_tree_store_set (tree_model, &parent, 0, gpAppFrame->oLibs.dict_name(i).c_str(), -1);
@@ -1558,7 +1558,7 @@ void TextWin::Show(gchar ***Word, gchar ****WordData)
 	view->GotoBegin();
 
 	int j,k;
-	for (int i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
+	for (std::size_t i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
 		if (Word[i]) {
 			view->AppendHeader(gpAppFrame->oLibs.dict_name(i), i);
 			j=0;

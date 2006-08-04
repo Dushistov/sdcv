@@ -501,10 +501,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\win32\systray.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\win32\ThTypes.h"
 				>
 			</File>
@@ -520,6 +516,14 @@
 				RelativePath="..\src\win32\win32_iskeyspressed.h"
 				>
 			</File>
+			<Filter
+				Name="win32"
+				>
+				<File
+					RelativePath="..\src\win32\systray.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

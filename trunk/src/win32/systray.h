@@ -4,10 +4,15 @@
  *  Author: Herman Bloggs <hermanator12002@yahoo.com>
  *  Date: November, 2002
  *  Description: Gaim systray functionality
+ *
+ * Come from gaim. changed by Hu Zheng <huzheng_001@163.com> for StarDict.
+ * http://stardict.sourceforge.net 2003.09.22
+ *
+ * Modified 2006 by Evgeniy Dushistov <dushistov@mail.ru to avoid
+ * dependicies from stardict.h
  */
 
-// Come from gaim. changed by Hu Zheng <huzheng_001@163.com> for StarDict.
-// http://stardict.sourceforge.net 2003.09.22
+
 
 #ifndef _SYSTRAY_H_
 #define _SYSTRAY_H_
@@ -15,22 +20,36 @@
 #include <windows.h>
 #include <gtk/gtk.h>
 
-enum DockLetIconType {
-	DOCKLET_NORMAL_ICON,
-	DOCKLET_SCAN_ICON,
-	DOCKLET_STOP_ICON,
+class TrayIcon {
+public:
+	enum State {
+			NORMAL_ICON,
+			SCAN_ICON,
+			STOP_ICON,
+	};
+	sigc::signal<void> on_quit_;
+	sigc::signal<void, bool> on_change_scan_;
+	sigc::signal<void> on_middle_button_click_;
+	sigc::signal<void> on_maximize_;
+
+	TrayIcon(GtkWidget *mainwin) : mainwin_(mainwin) {}
+	virtual ~TrayIcon() {}
+	virtual void set_state(State) = 0;
+	virtual void minimize_to_tray() = 0;		
+	virtual void maximize_from_tray() = 0;
+protected:
+	GtkWidget *mainwin_;
 };
 
-class DockLet{
+class DockLet : public TrayIcon {
 public:	
-	DockLet();
-	void init();
-	void cleanup();
-	void SetIcon(DockLetIconType icon_type);
-	static void stardict_systray_minimize( GtkWidget* );
-	static void stardict_systray_maximize( GtkWidget* );
+	DockLet(GtkWidget *mainwin);
+	~DockLet();
+	void set_state(State);
+	void minimize_to_tray();
+	void maximize_from_tray();		
 private:
-	DockLetIconType current_icon;
+	State cur_state_;
 	HWND systray_hwnd;
 	HMENU systray_menu; // gtk menu don't work fine here.
 	NOTIFYICONDATA stardict_nid;
@@ -44,6 +63,9 @@ private:
 	void systray_init_icon(HWND hWnd, HICON icon);
 	void systray_change_icon(HICON icon, char* text);
 	static LRESULT CALLBACK systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+	static void stardict_systray_minimize( GtkWidget* );
+	static void stardict_systray_maximize( GtkWidget* );
+	void on_left_btn();
 };
 
 #endif /* _SYSTRAY_H_ */

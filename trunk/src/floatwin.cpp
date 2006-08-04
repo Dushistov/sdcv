@@ -199,7 +199,7 @@ void FloatWin::ShowText(gchar ***Word, gchar ****WordData, const gchar * sOrigin
 	mark += "</span></b>";
 	view->AppendPangoText(mark.c_str());
 	int j,k;
-	for (int i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
+	for (std::size_t i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
 		if (Word[i]) {
 			view->AppendNewline();
 			view->AppendHeader(gpAppFrame->oLibs.dict_name(i), i);
@@ -233,7 +233,7 @@ void FloatWin::ShowText(gchar ***Word, gchar ****WordData, const gchar * sOrigin
 		else
 			PronounceWord = sOriginWord;
 	} else {
-		for (int i=0;i< gpAppFrame->oLibs.ndicts(); i++) {
+		for (std::size_t i=0;i< gpAppFrame->oLibs.ndicts(); i++) {
 			if (Word[i] && strcmp(Word[i][0], sOriginWord)) {
 				if (gpAppFrame->oReadWord.canRead(Word[i][0])) {
 					canRead = TRUE;
@@ -306,7 +306,7 @@ void FloatWin::ShowText(gchar ****ppppWord, gchar *****pppppWordData, const gcha
     g_free(m_str);
     mark += "</span></b>";
     view->AppendPangoText(mark.c_str());
-    for (int i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
+	for (std::size_t i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
 	if (ppppWord[j][i]) {
 		view->AppendNewline();
 		view->AppendHeader(gpAppFrame->oLibs.dict_name(i), i);
@@ -810,10 +810,10 @@ void FloatWin::on_query_click(GtkWidget *widget, FloatWin *oFloatWin)
 	if (!conf->get_bool_at("floating_window/lock"))
 		oFloatWin->Hide();
 	gpAppFrame->Query(oFloatWin->QueryingWord.c_str());	
-#ifdef _WIN32
+
 	if (!GTK_WIDGET_VISIBLE(gpAppFrame->window))
-		gpAppFrame->oDockLet.stardict_systray_maximize(gpAppFrame->window);
-#endif
+		gpAppFrame->tray_icon_->maximize_from_tray();		
+
 	gtk_window_present(GTK_WINDOW(gpAppFrame->window));
 }
 

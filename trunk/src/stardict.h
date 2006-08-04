@@ -12,7 +12,6 @@
 # include <libgnome/libgnome.h>
 #endif
 
-
 class Application;
 
 #include "conf.h"
@@ -61,6 +60,9 @@ private:
 	void on_floatwin_lock_x_changed(const baseconfval*);
 	void on_floatwin_lock_y_changed(const baseconfval*);
 	void on_scan_modifier_key_changed(const baseconfval*);
+	void on_change_scan(bool);
+	void on_tray_middle_btn();
+	void on_tray_maximize();
 public:
 	CurrentIndex *iCurrentIndex;
 	GtkWidget *window;
@@ -73,15 +75,14 @@ public:
 	TopWin oTopWin;
 	MidWin oMidWin;
 	BottomWin oBottomWin;
-
+	std::auto_ptr<TrayIcon> tray_icon_;
 	Selection oSelection;
 #ifdef _WIN32
 	Clipboard oClipboard;
 	Mouseover oMouseover;
 	Hotkey oHotkey;
 #endif
-	FloatWin oFloatWin;
-	DockLet oDockLet;
+	FloatWin oFloatWin;	
 
 	Libs oLibs;
 	TreeDicts oTreeDicts;

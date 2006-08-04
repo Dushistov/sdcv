@@ -132,6 +132,41 @@ Application::~Application()
 	g_free(iCurrentIndex);
 }
 
+void Application::on_change_scan(bool newval)
+{
+		conf->set_bool_at("dictionary/scan_selection", newval);
+}
+
+void Application::on_tray_middle_btn()
+{
+	if (conf->get_bool_at("notification_area_icon/query_in_floatwin")) {
+		oSelection.LastClipWord.clear();
+		gtk_selection_convert(oSelection.selection_widget,
+							GDK_SELECTION_PRIMARY, 
+							oSelection.UTF8_STRING_Atom, 
+							GDK_CURRENT_TIME);
+	} else {				
+		tray_icon_->maximize_from_tray();
+		gtk_window_present(GTK_WINDOW(window));
+		gtk_selection_convert(oMidWin.oTextWin.view->Widget(),
+						GDK_SELECTION_PRIMARY,
+						oSelection.UTF8_STRING_Atom,
+						GDK_CURRENT_TIME);
+	}	
+}
+
+void Application::on_tray_maximize()
+{
+	tray_icon_->maximize_from_tray();
+	gtk_window_present(GTK_WINDOW(window));	
+	if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(oTopWin.WordCombo)->entry))[0])
+		//so user can input word directly.
+		gtk_widget_grab_focus(oMidWin.oTextWin.view->Widget()); 
+	else
+		//this won't change selection text.		
+		gtk_widget_grab_focus(GTK_COMBO(oTopWin.WordCombo)->entry); 
+}
+
 class load_show_progress_t : public show_progress_t {
 public:
 	void notify_about_start(const std::string& title) {
@@ -195,11 +230,15 @@ void Application::Create(gchar *queryword)
 	unlock_keys.reset(static_cast<hotkeys *>(stardict_class_factory::create_class_by_name("hotkeys", GTK_WINDOW(window))));
 	unlock_keys->set_comb(combnum2str(conf->get_int_at("dictionary/scan_modifier_key")));
 	oFloatWin.Create();
-#ifdef _WIN32
-	oDockLet.init();
-#else
-	oDockLet.Create();
-#endif
+	tray_icon_.reset(new DockLet(window));
+	
+	tray_icon_->on_quit_.connect(sigc::mem_fun(this, &Application::Quit));
+	tray_icon_->on_change_scan_.connect(sigc::mem_fun(this,
+                                     &Application::on_change_scan));
+	tray_icon_->on_middle_button_click_.connect(sigc::mem_fun(this,
+				&Application::on_tray_middle_btn));
+	tray_icon_->on_maximize_.connect(sigc::mem_fun(this,
+		&Application::on_tray_maximize));
 	oSelection.Init();
 #ifdef _WIN32
 	oClipboard.Init();
@@ -233,9 +272,9 @@ void Application::Create(gchar *queryword)
 		gtk_widget_realize(window); // This may be needed, so gtk_window_get_screen() in gtk_iskeyspressed.cpp can always work.
 		gdk_notify_startup_complete();
 		if (scan)
-			gpAppFrame->oDockLet.SetIcon(DOCKLET_SCAN_ICON);
+				tray_icon_->set_state(TrayIcon::SCAN_ICON);
 		else
-			gpAppFrame->oDockLet.SetIcon(DOCKLET_STOP_ICON);
+				tray_icon_->set_state(TrayIcon::STOP_ICON);
 	}
 
 	if (oLibs.ndicts()) {
@@ -249,41 +288,41 @@ void Application::Create(gchar *queryword)
 		oMidWin.oTextWin.ShowInitFailed();
 }
 
-gboolean Application::on_delete_event(GtkWidget * window, GdkEvent *event , Application *oAppCore)
+gboolean Application::on_delete_event(GtkWidget * window, GdkEvent *event,
+									  Application *app)
 {
-#ifdef _WIN32
-	oAppCore->oDockLet.stardict_systray_minimize(oAppCore->window);
-	gtk_widget_hide(oAppCore->window);
+#ifdef _WIN32	
+	app->tray_icon_->minimize_to_tray();
 #else
-	if (oAppCore->oDockLet.embedded)
-		gtk_widget_hide(oAppCore->window);
+	if (app->tray_icon_->embedded)
+		gtk_widget_hide(app->window);
 	else
-		gpAppFrame->Quit();
+		app->Quit();
 #endif
 	return true;
 }
 
-gboolean Application::on_window_state_event(GtkWidget * window, GdkEventWindowState *event , Application *oAppCore)
+gboolean Application::on_window_state_event(GtkWidget * window, GdkEventWindowState *event , Application *app)
 {
 	if (event->changed_mask == GDK_WINDOW_STATE_WITHDRAWN) {
 		if (event->new_window_state & GDK_WINDOW_STATE_WITHDRAWN) {
 			if (conf->get_bool_at("dictionary/scan_selection"))
-				gpAppFrame->oDockLet.SetIcon(DOCKLET_SCAN_ICON);
+					app->tray_icon_->set_state(TrayIcon::SCAN_ICON);
 			else
-				gpAppFrame->oDockLet.SetIcon(DOCKLET_STOP_ICON);
+					app->tray_icon_->set_state(TrayIcon::STOP_ICON);
 		} else {
-			gpAppFrame->oDockLet.SetIcon(DOCKLET_NORMAL_ICON);
-			if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(oAppCore->oTopWin.WordCombo)->entry))[0])
-				gtk_widget_grab_focus(oAppCore->oMidWin.oTextWin.view->Widget());
+				app->tray_icon_->set_state(TrayIcon::NORMAL_ICON);
+			if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(app->oTopWin.WordCombo)->entry))[0])
+				gtk_widget_grab_focus(app->oMidWin.oTextWin.view->Widget());
 		}
 	} else if (event->changed_mask == GDK_WINDOW_STATE_ICONIFIED) {
 		if (!(event->new_window_state & GDK_WINDOW_STATE_ICONIFIED)) {
-			if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(oAppCore->oTopWin.WordCombo)->entry))[0]) {
-				gtk_widget_grab_focus(oAppCore->oMidWin.oTextWin.view->Widget()); //this is better than the next two line because it don't change selection.
-				//gtk_widget_grab_focus(GTK_COMBO(oAppCore->oTopWin.WordCombo)->entry);
-				//gtk_editable_select_region(GTK_EDITABLE(GTK_COMBO(oAppCore->oTopWin.WordCombo)->entry), 0, -1);
+			if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(app->oTopWin.WordCombo)->entry))[0]) {
+				gtk_widget_grab_focus(app->oMidWin.oTextWin.view->Widget()); //this is better than the next two line because it don't change selection.
+				//gtk_widget_grab_focus(GTK_COMBO(app->oTopWin.WordCombo)->entry);
+				//gtk_editable_select_region(GTK_EDITABLE(GTK_COMBO(app->oTopWin.WordCombo)->entry), 0, -1);
 			} else {
-				gtk_widget_grab_focus(GTK_COMBO(oAppCore->oTopWin.WordCombo)->entry);
+				gtk_widget_grab_focus(GTK_COMBO(app->oTopWin.WordCombo)->entry);
 			}
 		}
 	}	else if (event->changed_mask == GDK_WINDOW_STATE_MAXIMIZED)
@@ -306,10 +345,9 @@ gboolean Application::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *
 	else if ((event->keyval==GDK_x || event->keyval==GDK_X) && only_mod1_pressed) {
 		if (event->type==GDK_KEY_PRESS) {
 #ifdef _WIN32
-			oAppCore->oDockLet.stardict_systray_minimize(oAppCore->window);
-			gtk_widget_hide(window);
+			oAppCore->tray_icon_->minimize_to_tray();
 #else
-			if (oAppCore->oDockLet.embedded)
+			if (oAppCore->tray_icon_->embedded)
 				gtk_widget_hide(window);
 			else
 				gpAppFrame->Quit();
@@ -479,7 +517,7 @@ bool Application::SimpleLookupToFloat(const char* sWord, bool bShowIfNotFound)
 			*EndPointer--='\0';
 
 		bool bFound = false;
-		for (int iLib=0;iLib<oLibs.ndicts();iLib++)
+		for (std::size_t iLib=0;iLib<oLibs.ndicts();iLib++)
 			BuildResultData(SearchWord, iIndex, false, iLib, pppWord, ppppWordData, bFound, 2);
 		if (bFound) {
 			oFloatWin.ShowText(pppWord, ppppWordData, SearchWord);
@@ -541,7 +579,7 @@ bool Application::SmartLookupToFloat(const gchar* sWord, int BeginPos, bool bSho
 	int SearchTimes = 2;
 	while (SearchTimes) {
 		bool bFound = false;
-		for (int iLib=0;iLib<oLibs.ndicts();iLib++)
+		for (std::size_t iLib=0;iLib<oLibs.ndicts();iLib++)
 			BuildResultData(P1, iIndex, false, iLib, pppWord, ppppWordData, bFound, 2);
 		if (bFound) {
 			oFloatWin.ShowText(pppWord, ppppWordData, P1);
@@ -741,8 +779,8 @@ void Application::FreeResultData(gchar ***pppWord, gchar ****ppppWordData)
 {
 	if (!pppWord)
 		return;
-	int i, j, k;
-	for (i=0; i<oLibs.ndicts(); i++) {
+	int j, k;
+	for (std::size_t i=0; i<oLibs.ndicts(); i++) {
 		if (pppWord[i]) {
 			j=0;
 			while (pppWord[i][j]) {
@@ -781,11 +819,11 @@ bool Application::SimpleLookupToTextWin(const char* sWord, CurrentIndex *piIndex
 	else
 		iIndex = piIndex;
 
-	for (int iLib=0; iLib<oLibs.ndicts(); iLib++)
+	for (std::size_t iLib=0; iLib<oLibs.ndicts(); iLib++)
 		BuildResultData(sWord, iIndex, piIndexValidStr, iLib, pppWord, ppppWordData, bFound, 0);
 	if (!bFound && !piIndexValidStr) {
-		for (int iLib=0; iLib<oLibs.ndicts(); iLib++)
-			BuildResultData(sWord, iIndex, NULL, iLib, pppWord, ppppWordData, bFound, 1);
+			for (std::size_t iLib=0; iLib<oLibs.ndicts(); iLib++)
+				BuildResultData(sWord, iIndex, NULL, iLib, pppWord, ppppWordData, bFound, 1);
 	}
 	if (bFound) {
 		ShowDataToTextWin(pppWord, ppppWordData, sWord, isShowFirst);
@@ -799,11 +837,11 @@ bool Application::SimpleLookupToTextWin(const char* sWord, CurrentIndex *piIndex
 					if (bShowNotfound)
 						ShowNotFoundToTextWin(sWord,_("<Not Found!>"), TEXT_WIN_NOT_FOUND);
 				} else {
-					for (int iLib=0;iLib<oLibs.ndicts();iLib++)
-						BuildResultData(hword, iIndex, NULL, iLib, pppWord, ppppWordData, bFound, 0);
+						for (std::size_t iLib=0;iLib<oLibs.ndicts();iLib++)
+								BuildResultData(hword, iIndex, NULL, iLib, pppWord, ppppWordData, bFound, 0);
 					if (!bFound) {
-						for (int iLib=0; iLib<oLibs.ndicts(); iLib++)
-							BuildResultData(hword, iIndex, NULL, iLib, pppWord, ppppWordData, bFound, 1);
+							for (std::size_t iLib=0; iLib<oLibs.ndicts(); iLib++)
+								BuildResultData(hword, iIndex, NULL, iLib, pppWord, ppppWordData, bFound, 1);
 					}
 					if (bFound) {
 						ShowDataToTextWin(pppWord, ppppWordData, sWord, isShowFirst);
@@ -882,12 +920,12 @@ void Application::LookupDataToMainWin(const gchar *sWord)
 	std::vector< std::vector<gchar *> > reslist(oLibs.ndicts());
 	if (oLibs.LookupData(sWord, &reslist[0], updateSearchDialog, &Dialog, &cancel)) {
 		oMidWin.oIndexWin.oListWin.list_word_type = LIST_WIN_DATA_LIST;
-		for (int i=0; i<oLibs.ndicts(); i++) {
+		for (std::size_t i=0; i < oLibs.ndicts(); i++)
 			if (!reslist[i].empty()) {
 				SimpleLookupToTextWin(reslist[i][0], iCurrentIndex, NULL); // so iCurrentIndex is refreshed.
 				break;
 			}
-		}
+		
 		oMidWin.oIndexWin.oListWin.SetTreeModel(&reslist[0]);
 		oMidWin.oIndexWin.oListWin.ReScroll();
 	} else {
@@ -960,7 +998,7 @@ void Application::LookupWithFuzzyToFloatWin(const gchar *sWord)
 			ppppWordData = (gchar ****)g_malloc(sizeof(gchar ***) * oLibs.ndicts());
 
 			ppOriginWord[i] = fuzzy_reslist[i];
-			for (int iLib=0; iLib<oLibs.ndicts(); iLib++)
+			for (std::size_t iLib=0; iLib<oLibs.ndicts(); iLib++)
 				BuildResultData(fuzzy_reslist[i], iIndex, false, iLib, pppWord, ppppWordData, bFound, 2);
 			if (bFound) {// it is certainly be true.
 				ppppWord[i]=pppWord;
@@ -1024,7 +1062,7 @@ void Application::ShowDataToTextWin(gchar ***pppWord, gchar ****ppppWordData,con
 	oMidWin.oTextWin.queryWord = sOriginWord;
 
 	oMidWin.oIndexWin.oResultWin.Clear();
-	for (int i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
+	for (std::size_t i=0; i<gpAppFrame->oLibs.ndicts(); i++) {
 		if (pppWord[i]) {
 			gchar *mark = g_strdup_printf("%d", i);
 			oMidWin.oIndexWin.oResultWin.InsertLast(oLibs.dict_name(i).c_str(), mark);
@@ -1032,20 +1070,20 @@ void Application::ShowDataToTextWin(gchar ***pppWord, gchar ****ppppWordData,con
 		}
 	}
 
-	gboolean canRead = gpAppFrame->oReadWord.canRead(sOriginWord);
+	gboolean canRead = oReadWord.canRead(sOriginWord);
 	if (canRead) {
 		oMidWin.oTextWin.pronounceWord = sOriginWord;
 	}
 	else {
-		for (int i=0;i< gpAppFrame->oLibs.ndicts(); i++) {
-			if (pppWord[i] && strcmp(pppWord[i][0], sOriginWord)) {
-				if (gpAppFrame->oReadWord.canRead(pppWord[i][0])) {
-					canRead = true;
-					oMidWin.oTextWin.pronounceWord = pppWord[i][0];
+			for (std::size_t i=0;i< oLibs.ndicts(); i++) {
+				if (pppWord[i] && strcmp(pppWord[i][0], sOriginWord)) {
+						if (oReadWord.canRead(pppWord[i][0])) {
+								canRead = true;
+								oMidWin.oTextWin.pronounceWord = pppWord[i][0];
+						}
+						break;
 				}
-				break;
 			}
-		}
 	}
 	gtk_widget_set_sensitive(oMidWin.oToolWin.PronounceWordButton, canRead);
 }
@@ -1336,11 +1374,9 @@ void Application::End()
 	oHotkey.End();
 #endif
 	oFloatWin.End();
-#ifdef _WIN32
-	oDockLet.cleanup();
-#else
-	oDockLet.End();
-#endif
+
+	tray_icon_.reset(NULL);
+
 	if (dict_manage_dlg)
 		dict_manage_dlg->Close();
 	if (prefs_dlg)
@@ -1437,7 +1473,7 @@ void Application::on_dict_scan_select_changed(const baseconfval* scanval)
 
 	if (scan) {
 		if (!GTK_WIDGET_VISIBLE(window))
-			oDockLet.SetIcon(DOCKLET_SCAN_ICON);
+				tray_icon_->set_state(TrayIcon::SCAN_ICON);
 		bool lock = conf->get_bool_at("floating_window/lock");
 		if (lock && !oFloatWin.QueryingWord.empty())
 			oFloatWin.Show();
@@ -1450,7 +1486,7 @@ void Application::on_dict_scan_select_changed(const baseconfval* scanval)
 #endif
 	} else {
 		if (!GTK_WIDGET_VISIBLE(window))
-			oDockLet.SetIcon(DOCKLET_STOP_ICON);
+			tray_icon_->set_state(TrayIcon::STOP_ICON);
 		oFloatWin.Hide();
 		oSelection.stop();
 #ifdef _WIN32

@@ -36,10 +36,10 @@ void Hotkey::ToggleScan()
 
 void Hotkey::ShowMainwindow()
 {
-#ifdef _WIN32
+
 	if (!GTK_WIDGET_VISIBLE(gpAppFrame->window))
-		gpAppFrame->oDockLet.stardict_systray_maximize(gpAppFrame->window);
-#endif
+		gpAppFrame->tray_icon_->maximize_from_tray();
+
 	gtk_window_present(GTK_WINDOW(gpAppFrame->window));
 	if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(gpAppFrame->oTopWin.WordCombo)->entry))[0]) {
 		gtk_widget_grab_focus(gpAppFrame->oMidWin.oTextWin.view->Widget()); //so user can input word directly.

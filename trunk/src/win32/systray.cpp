@@ -3,9 +3,7 @@
 #include <glib/gi18n.h>
 #include "resource.h"
 #include "MinimizeToTray.h"
-#include "../stardict.h"
 #include "../conf.h"
-
 
 #include "systray.h"
 
@@ -16,15 +14,15 @@ enum SYSTRAY_CMND {
 	SYSTRAY_CMND_MENU_SCAN,
 };
 
+extern HINSTANCE stardictexe_hInstance;
 
-DockLet::DockLet()
+DockLet::DockLet(GtkWidget *mainwin) : TrayIcon(mainwin)
 {
-	current_icon = DOCKLET_NORMAL_ICON;
-}
+	cur_state_ = NORMAL_ICON;
 
-void DockLet::init()
-{
 	systray_hwnd = systray_create_hiddenwin();
+	::SetWindowLongPtr(systray_hwnd, GWL_USERDATA,
+			reinterpret_cast<LONG_PTR>(this));
 
 	systray_create_menu();
 
@@ -41,9 +39,7 @@ void DockLet::init()
 HWND DockLet::systray_create_hiddenwin()
 {
 	WNDCLASSEX wcex;
-	TCHAR wname[32];
-
-	strcpy(wname, "StarDictSystray");
+	TCHAR wname[] = TEXT("StarDictSystray");
 
 	wcex.cbSize = sizeof(WNDCLASSEX);
 
@@ -62,7 +58,7 @@ HWND DockLet::systray_create_hiddenwin()
 	RegisterClassEx(&wcex);
 
 	// Create the window
-	return (CreateWindow(wname, "", 0, 0, 0, 0, 0, GetDesktopWindow(), NULL, stardictexe_hInstance, 0));
+	return CreateWindow(wname, "", 0, 0, 0, 0, 0, GetDesktopWindow(), NULL, stardictexe_hInstance, 0);
 }
 
 void DockLet::systray_create_menu()
@@ -102,9 +98,34 @@ void DockLet::systray_show_menu(int x, int y)
 		       );
 }
 
+void DockLet::minimize_to_tray()
+{
+	stardict_systray_minimize(mainwin_);
+	gtk_widget_hide(mainwin_);
+}
+
+void DockLet::maximize_from_tray()
+{
+	stardict_systray_maximize(mainwin_);	
+}
+
+void DockLet::on_left_btn()
+{
+	if (GTK_WIDGET_VISIBLE(mainwin_)) {	
+		HWND hwnd = static_cast<HWND>(GDK_WINDOW_HWND(mainwin_->window));
+		if (IsIconic(hwnd))	
+			ShowWindow(hwnd, SW_RESTORE);		
+		else
+			minimize_to_tray();	
+	} else
+		on_maximize_.emit();	
+}
+
 LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	static UINT taskbarRestartMsg; /* static here means value is kept across multiple calls to this func */
+	DockLet *dock =
+			reinterpret_cast<DockLet *>(::GetWindowLongPtr(hwnd, GWL_USERDATA));
 
 	switch (msg) {
 	case WM_CREATE:
@@ -114,59 +135,34 @@ LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wp
 	case WM_COMMAND:
 		switch(LOWORD(wparam)) {
 		case SYSTRAY_CMND_MENU_SCAN:
-			if (GetMenuState(gpAppFrame->oDockLet.systray_menu, SYSTRAY_CMND_MENU_SCAN, MF_BYCOMMAND) & MF_CHECKED) {
-				conf->set_bool_at("dictionary/scan_selection", FALSE);
-			} else {
-				conf->set_bool_at("dictionary/scan_selection", TRUE);
-			}				
+				
+			if (GetMenuState(dock->systray_menu, SYSTRAY_CMND_MENU_SCAN,
+					MF_BYCOMMAND) & MF_CHECKED)				
+				dock->on_change_scan_.emit(false);
+			else				
+				dock->on_change_scan_.emit(true);						
 			break;
 		case SYSTRAY_CMND_MENU_QUIT:
-			gpAppFrame->Quit();
+			dock->on_quit_.emit();
 			break;
 		}
 		break;
 	case WM_TRAYMESSAGE:
 	{
 		if ( lparam == WM_LBUTTONDOWN ) {
-			if (GetKeyState(VK_CONTROL)<0) {
-				conf->set_bool_at("dictionary/scan_selection", !conf->get_bool_at("dictionary/scan_selection"));
-			}
+			if (GetKeyState(VK_CONTROL)<0)
+				dock->on_change_scan_.emit(!conf->get_bool_at("dictionary/scan_selection"));			
 		} else if ( lparam == WM_LBUTTONDBLCLK ) {
 			// Only use left button will conflict with the menu.
-			if (GTK_WIDGET_VISIBLE(gpAppFrame->window)) {
-				HWND main_window = static_cast<HWND>(GDK_WINDOW_HWND(gpAppFrame->window->window));
-				if (IsIconic(main_window)) {
-					ShowWindow(main_window,SW_RESTORE);
-				//} else if (GetForegroundWindow() != main_window) {
-					//SetForegroundWindow(main_window);
-				} else {
-					stardict_systray_minimize(gpAppFrame->window);
-					gtk_widget_hide(gpAppFrame->window);
-				}
-			} else {
-				stardict_systray_maximize(gpAppFrame->window);
-				gtk_window_present(GTK_WINDOW(gpAppFrame->window));
-				if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(gpAppFrame->oTopWin.WordCombo)->entry))[0]) {
-					gtk_widget_grab_focus(gpAppFrame->oMidWin.oTextWin.view->Widget()); //so user can input word directly.
-				} else {
-					gtk_widget_grab_focus(GTK_COMBO(gpAppFrame->oTopWin.WordCombo)->entry); //this won't change selection text.
-				}
-			}
+			dock->on_left_btn();
 		} else if (lparam == WM_MBUTTONDOWN) {
-			if (conf->get_bool_at("notification_area_icon/query_in_floatwin")) {
-				gpAppFrame->oSelection.LastClipWord.clear();
-				gtk_selection_convert (gpAppFrame->oSelection.selection_widget, GDK_SELECTION_PRIMARY, gpAppFrame->oSelection.UTF8_STRING_Atom, GDK_CURRENT_TIME);
-			} else {
-				stardict_systray_maximize(gpAppFrame->window);
-				gtk_window_present(GTK_WINDOW(gpAppFrame->window));
-				gtk_selection_convert (gpAppFrame->oMidWin.oTextWin.view->Widget(), GDK_SELECTION_PRIMARY, gpAppFrame->oSelection.UTF8_STRING_Atom, GDK_CURRENT_TIME);
-			}	
+			dock->on_middle_button_click_.emit();			
 		} else if (lparam == WM_RBUTTONUP) {
 			/* Right Click */
 			POINT mpoint;
 			GetCursorPos(&mpoint);
 
-			gpAppFrame->oDockLet.systray_show_menu(mpoint.x, mpoint.y);
+			dock->systray_show_menu(mpoint.x, mpoint.y);
 		}
 		break;
 	}
@@ -174,7 +170,7 @@ LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wp
 		if (msg == taskbarRestartMsg) {
 			/* explorer crashed and left us hanging... 
 			   This will put the systray icon back in it's place, when it restarts */
-			Shell_NotifyIcon(NIM_ADD,&(gpAppFrame->oDockLet.stardict_nid));
+			Shell_NotifyIcon(NIM_ADD, &(dock->stardict_nid));
 		}
 	}
 
@@ -209,27 +205,28 @@ void DockLet::systray_change_icon(HICON icon, char* text)
 	Shell_NotifyIcon(NIM_MODIFY,&stardict_nid);
 }
 
-void DockLet::SetIcon(DockLetIconType icon_type)
+void DockLet::set_state(State new_state)
 {
-	if (current_icon == icon_type)
+	if (cur_state_ == new_state)
 		return;
-	switch (icon_type) {
-		case DOCKLET_NORMAL_ICON:
-			systray_change_icon(sysicon_normal, _("StarDict"));
-			break;
-		case DOCKLET_SCAN_ICON:
-			systray_change_icon(sysicon_scan, _("StarDict - Scanning"));
-			break;
-		case DOCKLET_STOP_ICON:
-			systray_change_icon(sysicon_stop, _("StarDict - Stopped"));
-			break;
+
+	switch (new_state) {
+	case NORMAL_ICON:
+		systray_change_icon(sysicon_normal, _("StarDict"));
+		break;
+	case SCAN_ICON:
+		systray_change_icon(sysicon_scan, _("StarDict - Scanning"));
+		break;
+	case STOP_ICON:
+		systray_change_icon(sysicon_stop, _("StarDict - Stopped"));
+		break;
 	}
-	current_icon = icon_type;
+	cur_state_ = new_state;
 }
 
-void DockLet::cleanup()
+DockLet::~DockLet()
 {
-	Shell_NotifyIcon(NIM_DELETE,&stardict_nid);	
+	Shell_NotifyIcon(NIM_DELETE, &stardict_nid);	
 	DestroyMenu(systray_menu);
 	DestroyWindow(systray_hwnd);
 }
