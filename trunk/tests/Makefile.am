@@ -9,6 +9,7 @@ endif
 t_config_file_SOURCES = t_config_file.cpp \
 	$(top_builddir)/src/config_file.hpp \
 	$(top_builddir)/src/inifile.hpp $(top_builddir)/src/inifile.cpp \
+	$(top_builddir)/src/utils.h \
 	$(GCONF_MODULE_HPP) $(GCONF_MODULE_CPP)
 
 t_dict_SOURCES = t_dict.cpp

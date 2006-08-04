@@ -1,7 +1,7 @@
-/* 
+/*
  * This file part of StarDict - A international dictionary for GNOME.
  * http://stardict.sourceforge.net
- * Copyright (C) 2005 Evgeniy <dushistov@mail.ru>
+ * Copyright (C) 2005-2006 Evgeniy <dushistov@mail.ru>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -148,36 +148,23 @@ std::string combnum2str(gint comb_code)
   }
 }
 
-std::vector<std::string> split(const std::string& str, char sep)
-{
-	std::vector<std::string> res;
-	std::string::size_type prev_pos=0, pos = 0;
-	while ((pos=str.find(sep, prev_pos))!=std::string::npos) {
-		res.push_back(std::string(str, prev_pos, pos-prev_pos));
-		prev_pos=pos+1;
-	}
-	res.push_back(std::string(str, prev_pos, str.length()-prev_pos));
-
-	return res;
-}
-
 GdkPixbuf *load_image_from_file(const std::string& filename)
 {
 	GError *err=NULL;
 	GdkPixbuf *res=gdk_pixbuf_new_from_file(filename.c_str(), &err);
-	if (!res) {		
-		 GtkWidget *message_dlg = 
+	if (!res) {
+		 GtkWidget *message_dlg =
 			 gtk_message_dialog_new(
-															NULL,
-															(GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
-															GTK_MESSAGE_ERROR,
-															GTK_BUTTONS_OK,
-															_("Can not load image. %s"), err->message);
-    
+				 NULL,
+				 (GtkDialogFlags)(GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
+				 GTK_MESSAGE_ERROR,
+				 GTK_BUTTONS_OK,
+				 _("Can not load image. %s"), err->message);
+
     gtk_dialog_set_default_response(GTK_DIALOG(message_dlg), GTK_RESPONSE_OK);
-    
+
     gtk_window_set_resizable(GTK_WINDOW(message_dlg), FALSE);
-    
+
     gtk_dialog_run(GTK_DIALOG(message_dlg));
     gtk_widget_destroy(message_dlg);
 		g_error_free(err);
@@ -191,4 +178,14 @@ void play_sound_on_event(const gchar *eventname)
 {
 	if (conf->get_bool_at("dictionary/enable_sound_event"))
 	  play_wav_file(gStarDictDataDir+ G_DIR_SEPARATOR_S "sounds" G_DIR_SEPARATOR_S +eventname+".wav");
+}
+
+void split(const std::string& str, char sep, std::vector<std::string>& res)
+{
+	std::string::size_type prev_pos = 0, pos = 0;
+	while ((pos = str.find(sep, prev_pos)) != std::string::npos) {
+		res.push_back(std::string(str, prev_pos, pos-prev_pos));
+		prev_pos = pos+1;
+	}
+	res.push_back(std::string(str, prev_pos, str.length() - prev_pos));
 }

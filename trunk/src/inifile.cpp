@@ -28,24 +28,28 @@
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
 
+#include "utils.h"
 
 #include "inifile.hpp"
 
-const char STRING_SEP = 0xff;
+const guchar STRING_SEP = 0xff;
 
 //---------------------------------------------------------------------------------
-//may be use split from utils module ???
-void str2list(const gchar *str, std::list<std::string> &slist)
+template<class Container>
+static void mysplit(const std::string& str, char sep, Container& res)
 {
-  gchar *p;
-	slist.clear();
-	//TODO: const_cast is peace of shit, need more good solution
-  while ((p = strchr(const_cast<char *>(str), STRING_SEP))!=NULL) {
-    slist.push_back(std::string(str, p - str));
-    str = p+1;
+	std::string::size_type prev_pos = 0, pos = 0;
+	while ((pos = str.find(sep, prev_pos)) != std::string::npos) {
+		res.push_back(std::string(str, prev_pos, pos - prev_pos));
+		prev_pos = pos+1;
 	}
-  if (str[0])
-    slist.push_back(str);
+	res.push_back(std::string(str, prev_pos, str.length() - prev_pos));
+}
+//---------------------------------------------------------------------------------
+static inline void str2list(const std::string& str, std::list<std::string> &sl)
+{
+	sl.clear();
+	mysplit(str, STRING_SEP, sl);
 }
 
 //---------------------------------------------------------------------------------
@@ -67,7 +71,7 @@ config_line *config_section::find_string(const std::string& key)
 {
 	std::list<config_line>::iterator it=
 		std::find_if(lines.begin(), lines.end(), with_such_key(key));
-	if (it==lines.end())
+	if (it == lines.end())
 		return NULL;
 	return &(*it);
 }
@@ -97,65 +101,65 @@ config_section *inifile::find_section(const std::string& name)
 //---------------------------------------------------------------------------------
 bool inifile::open_inifile(const std::string& filename)
 {	  
-  gchar *tmp;
-  gint i;
+	gchar *tmp;	
 
-  cfgfilename = filename;  
+	cfgfilename = filename;  
 
-	gchar *buffer=NULL;
-	if (!g_file_get_contents(filename.c_str(), &buffer, NULL, NULL))
+	gchar *bufp = NULL;
+	if (!g_file_get_contents(filename.c_str(), &bufp, NULL, NULL))
 		return false;
+	std::vector<std::string> lines;
+	{
+		ResourceWrapper<gchar, void, g_free> buf(bufp);
+		mysplit(buf.get(), '\n', lines);
+	}
 
-  gchar **lines = g_strsplit(buffer, "\n", 0);
-  g_free(buffer);
-  i = 0;
-  while (lines[i]) {
-    if (lines[i][0] == '[') {
-      if ((tmp = strchr(lines[i], ']'))) {
+	for (std::vector<std::string>::iterator it = lines.begin();
+	     it != lines.end(); ++it)
+		if ((*it)[0] == '[') {
+			if ((tmp = strchr(&(*it)[0], ']'))) {
 				*tmp = '\0';
-				create_section(&lines[i][1]);
-      }
-    } else if(lines[i][0] != '#' && !sections.empty()) {
-      if ((tmp = strchr (lines[i], '='))) {
+				create_section(&(*it)[1]);
+			}
+		} else if ((*it)[0] != '#' && !sections.empty()) {
+			if ((tmp = strchr (&(*it)[0], '='))) {
 				*tmp = '\0';
 				tmp++;
-				sections.back().create_string(lines[i], tmp);
-      }
-    }
-    i++;
-  }
-  g_strfreev(lines);
+				sections.back().create_string(&(*it)[0], tmp);
+			}
+		}
+	
 
-  return true;
+	return true;
 }
 //---------------------------------------------------------------------------------
 bool inifile::saveas(const std::string& filename)
 { 
-  FILE *file=g_fopen(filename.c_str(), "wb"); 
-  if (!file) {
-    g_warning(_("Can not open: %s - %s\n"), filename.c_str(), strerror(errno));
-    return false;
-  }
+	FILE *file=g_fopen(filename.c_str(), "wb"); 
+	if (!file) {
+		g_warning(_("Can not open: %s - %s\n"), filename.c_str(), strerror(errno));
+		return false;
+	}
 
   
 	for (std::list<config_section>::iterator i=sections.begin();
-			 i!=sections.end(); ++i)
-    if (!i->lines.empty()) {
-      fprintf(file, "[%s]\n", i->name.c_str());
+	     i!=sections.end(); ++i)
+		if (!i->lines.empty()) {
+			fprintf(file, "[%s]\n", i->name.c_str());
 			for (std::list<config_line>::iterator j=i->lines.begin();
-					 j!=i->lines.end(); ++j)
+			     j!=i->lines.end(); ++j)
 				fprintf(file, "%s=%s\n", j->key.c_str(), j->value.c_str());
       
-      fprintf(file, "\n");
-    }
+			fprintf(file, "\n");
+		}
 	
-  fclose(file);
-  return true;
+	fclose(file);
+	return true;
 }
 //---------------------------------------------------------------------------------
 inifile::inifile(const std::string& path)
 {	
-	cfgfilename=path;
+	cfgfilename = path;
 	open_inifile(cfgfilename);
 }
 //---------------------------------------------------------------------------------
@@ -163,13 +167,13 @@ bool inifile::read_bool(const gchar *sect, const gchar *key, bool& val)
 {
 	std::string str;
 
-  if (!read_string(sect, key, str))
-    return false;  
+	if (!read_string(sect, key, str))
+		return false;  
 
-  if (str=="0")
-    val = false;
+	if (str=="0")
+		val = false;
 	else
-    val = true;
+		val = true;
 
 	return true;
 }
@@ -178,10 +182,10 @@ bool inifile::read_int(const gchar *sect, const gchar *key, int& val)
 {
 	std::string str;
 
-  if (!read_string(sect, key, str))
-    return false;
+	if (!read_string(sect, key, str))
+		return false;
   
-  val = atoi(str.c_str());
+	val = atoi(str.c_str());
 
 	return true;
 }
@@ -192,11 +196,11 @@ bool inifile::read_string(const gchar * sect, const gchar *key, std::string& val
 	if (!section)
 		return false;
 
-  config_line *line=section->find_string(key);
+	config_line *line=section->find_string(key);
 	if (!line)
 		return false;
 
-  val = line->value;
+	val = line->value;
 
 	return true;
 }
@@ -205,11 +209,11 @@ bool inifile::read_strlist(const gchar *sect, const gchar * key, std::list<std::
 {
 	std::string str;
 
-  if (!read_string(sect, key, str))
-    return false;
+	if (!read_string(sect, key, str))
+		return false;
   
 
-  str2list(str.c_str(), slist);
+	str2list(str, slist);
 
 	return true;
 }
@@ -226,23 +230,23 @@ void inifile::write_bool(const gchar *sect, const gchar *key, bool val)
 void inifile::write_int(const gchar *sect, const gchar *key, int val)
 {
 	gchar *strvalue = g_strdup_printf("%d", val);
-  save_string(sect, key, strvalue);
-  g_free(strvalue);
+	save_string(sect, key, strvalue);
+	g_free(strvalue);
 	expose_event(sect, key, val);
 }
 //---------------------------------------------------------------------------------
 void inifile::save_string(const gchar *sect, const gchar *key, const std::string& val)
 {
-  config_section *section = find_section(sect);
-  if (!section)
-    section = create_section(sect);
+	config_section *section = find_section(sect);
+	if (!section)
+		section = create_section(sect);
 
-  config_line *line=section->find_string(key);
-  if (line) 
-    line->value = val;
+	config_line *line=section->find_string(key);
+	if (line) 
+		line->value = val;
 	else
-    section->create_string(key, val);
-  save();
+		section->create_string(key, val);
+	save();
 }
 //---------------------------------------------------------------------------------
 void inifile::write_string(const gchar *sect, const gchar *key, const std::string& val)
@@ -254,20 +258,20 @@ void inifile::write_string(const gchar *sect, const gchar *key, const std::strin
 void inifile::write_strlist(const gchar *sect, const gchar *key, const std::list<std::string>& slist)
 {
 	std::string str;
-	std::list<std::string>::const_iterator p=slist.begin();
+	std::list<std::string>::const_iterator p = slist.begin();
 
-	if (p!=slist.end()) {
-    str+=*p;
+	if (p != slist.end()) {
+		str+=*p;
 		++p;
-  }
+	}
 
-  while (p!=slist.end()) {
-    str += STRING_SEP;
-    str += *p;
+	while (p != slist.end()) {
+		str += STRING_SEP;
+		str += *p;
 		++p;
-  }
+	}
  
-  save_string(sect, key, str);
+	save_string(sect, key, str);
 	expose_event(sect, key, slist);
 }
 //---------------------------------------------------------------------------------

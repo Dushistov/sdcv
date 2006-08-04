@@ -4,26 +4,11 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
 
-template <typename T, typename unref_res_t, void (*unref_res)(unref_res_t *)>
-struct resource_wrapper {
-	resource_wrapper() : p(NULL) {}
-	~resource_wrapper() { free_resource(); }
-	T *get() { return p; }
-	void reset(T *newp) {
-		if (p==newp)		 
-			return;
-		free_resource();
-		p=newp;
-	}
-private:
-	T *p;
-
-	void free_resource() { if (p) unref_res(p); }
-};
+#include "utils.h"
 
 
-typedef resource_wrapper<GdkCursor, GdkCursor, gdk_cursor_unref> Skin_cursor;
-typedef resource_wrapper<GdkPixbuf, void, g_object_unref> Skin_pixbuf_1;
+typedef ResourceWrapper<GdkCursor, GdkCursor, gdk_cursor_unref> Skin_cursor;
+typedef ResourceWrapper<GdkPixbuf, void, g_object_unref> Skin_pixbuf_1;
 
 struct AppSkin {
 	int width,height;

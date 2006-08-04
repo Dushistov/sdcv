@@ -1835,13 +1835,15 @@ gboolean BottomWin::on_internetsearch_button_press(GtkWidget * widget, GdkEventB
 		GtkWidget *menuitem;
 		
 		for (std::list<std::string>::const_iterator ci=list.begin(); ci!=list.end(); ++ci) {
-			std::vector<std::string> web_list = split(*ci, '\t');
+			std::vector<std::string> web_list;
+			split(*ci, '\t', web_list);
 			if (web_list.size()==3 && web_list[2].find("%s")!=std::string::npos) {
 				menuitem = gtk_image_menu_item_new_with_label(web_list[0].c_str());
 					g_signal_connect(G_OBJECT(menuitem), "activate",
-													 G_CALLBACK(on_internetsearch_menu_item_activate),
-													 const_cast<char *>(ci->c_str()));
-					gtk_menu_shell_append(GTK_MENU_SHELL(oBottomWin->SearchWebsiteMenu), menuitem);
+							 G_CALLBACK(on_internetsearch_menu_item_activate),
+							 const_cast<char *>(ci->c_str()));
+					gtk_menu_shell_append(GTK_MENU_SHELL(oBottomWin->SearchWebsiteMenu),
+							      menuitem);
 			}
 		}
 
@@ -1854,7 +1856,8 @@ gboolean BottomWin::on_internetsearch_button_press(GtkWidget * widget, GdkEventB
 
 void BottomWin::on_internetsearch_menu_item_activate(GtkMenuItem *menuitem, const gchar *website)
 {
-	std::vector<std::string> weblist = split(website, '\t');
+	std::vector<std::string> weblist;
+	split(website, '\t', weblist);
 
 	if (weblist[2].find("%s")==std::string::npos)
 		return;
@@ -1876,8 +1879,8 @@ void BottomWin::InternetSearchCallback(GtkButton *button, BottomWin *oBottomWin)
 	if (search_website_list.empty())
 		return;
 
-	std::vector<std::string> weblist = 
-		split(search_website_list.front(), '\t');
+	std::vector<std::string> weblist;
+	split(search_website_list.front(), '\t', weblist);
 
 	if (weblist.size()!=3)
 		return;

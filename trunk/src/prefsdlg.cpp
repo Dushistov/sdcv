@@ -1291,15 +1291,16 @@ void PrefsDlg::setup_mainwin_searchwebsite_page()
 	GtkTreeIter iter;
 	for (std::list<std::string>::const_iterator wit=web_list.begin();
 			 wit!=web_list.end(); ++wit) {
-		std::vector<std::string> l=split(*wit, '\t');
+		std::vector<std::string> l;
+		split(*wit, '\t', l);
 		if (l.size()==3) {
 			gtk_list_store_append(model, &iter);
 			gtk_list_store_set(model, &iter, 
-												 0, l[0].c_str(), 
-												 1, l[1].c_str(), 
-												 2, l[2].c_str(), 
-												 3, TRUE, 
-												 -1);
+					   0, l[0].c_str(), 
+					   1, l[1].c_str(), 
+					   2, l[2].c_str(), 
+					   3, TRUE, 
+					   -1);
 		}
 	}
 	
