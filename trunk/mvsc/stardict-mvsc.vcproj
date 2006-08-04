@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;E:\evgeniy\projects\stardict-project\gtk\include\atk-1.0&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include\cairo&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\gtk-2.0\include&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include\pango-1.0&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include\gtk-2.0&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\glib-2.0\include&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include\glib-2.0&quot;"
+				AdditionalIncludeDirectories="&quot;E:\evgeniy\projects\stardict-project\libsigc++-2.0.16&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include\atk-1.0&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include\cairo&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\gtk-2.0\include&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include\pango-1.0&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include\gtk-2.0&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\glib-2.0\include&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\include\glib-2.0&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,9 +62,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glib-2.0.lib intl.lib cairo.lib gdk-win32-2.0.lib gdk_pixbuf-2.0.lib gettextpo.lib gmodule-2.0.lib gobject-2.0.lib gthread-2.0.lib gtk-win32-2.0.lib pango-1.0.lib pangocairo-1.0.lib zdll.lib"
+				AdditionalDependencies="glib-2.0.lib intl.lib cairo.lib gdk-win32-2.0.lib gdk_pixbuf-2.0.lib gettextpo.lib gmodule-2.0.lib gobject-2.0.lib gthread-2.0.lib gtk-win32-2.0.lib pango-1.0.lib pangocairo-1.0.lib zdll.lib sigc-2.0d.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;E:\evgeniy\projects\stardict-project\gtk\lib&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\pango&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\gtk-2.0&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\glib-2.0&quot;"
+				AdditionalLibraryDirectories="&quot;E:\evgeniy\projects\stardict-project\libsigc++-2.0.16\MSVC_Net2003\Debug&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\pango&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\gtk-2.0&quot;;&quot;E:\evgeniy\projects\stardict-project\gtk\lib\glib-2.0&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"

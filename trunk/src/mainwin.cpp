@@ -655,13 +655,8 @@ void TopWin::InsertHisList(const gchar *word)
 }
 
 void TopWin::SaveHistory()
-{
-	/*
-	 * Do not use g_fopen here, g_fopen part of gtk dll on windows
-	 * if fread from mvsc and g_fopen uses fopen from glibc you god
-	 * segfault
-	 */
-	FILE *f = fopen(conf->get_string_at("dictionary/history").c_str(), "w");
+{	
+	FILE *f = g_fopen(conf->get_string_at("dictionary/history").c_str(), "w");
 	if (!f)
 		return;
 	GList *hist_list = HisList;
@@ -669,7 +664,10 @@ void TopWin::SaveHistory()
 		fprintf(f, "%s\n", (char *)hist_list->data);
 		hist_list=g_list_next(hist_list);
 	}
+	//TODO: more good solution?
+#ifndef _MSC_VER
 	fclose(f);
+#endif
 }
 
 void TopWin::LoadHistory()
@@ -678,18 +676,15 @@ void TopWin::LoadHistory()
 	struct stat stats;
 	if (g_stat (filename, &stats) == -1)
         	return;
-	FILE *historyfile;
-	/*
-	 * Do not use g_fopen here, g_fopen part of gtk dll on windows
-	 * if fread from mvsc and g_fopen uses fopen from glibc you god
-	 * segfault
-	 */
-	historyfile = fopen(filename,"rb");
+	FILE *historyfile = g_fopen(filename,"rb");
 	if (!historyfile)
 		return;
 	gchar *buffer = (gchar *)g_malloc (stats.st_size + 1);
 	size_t readsize = fread (buffer, 1, stats.st_size, historyfile);
+	//TODO: more good solution?
+#ifndef _MSC_VER
 	fclose (historyfile);
+#endif
 	buffer[readsize] = '\0';
 	gchar *p,*p1;
 	p=buffer;

@@ -145,15 +145,17 @@ bool inifile::saveas(const std::string& filename)
 	for (std::list<config_section>::iterator i=sections.begin();
 	     i!=sections.end(); ++i)
 		if (!i->lines.empty()) {
-			fprintf(file, "[%s]\n", i->name.c_str());
+			g_fprintf(file, "[%s]\n", i->name.c_str());
 			for (std::list<config_line>::iterator j=i->lines.begin();
 			     j!=i->lines.end(); ++j)
-				fprintf(file, "%s=%s\n", j->key.c_str(), j->value.c_str());
+				g_fprintf(file, "%s=%s\n", j->key.c_str(), j->value.c_str());
       
-			fprintf(file, "\n");
+			g_fprintf(file, "\n");
 		}
-	
+	//TODO: more good solution?
+#ifndef _MSC_VER
 	fclose(file);
+#endif	
 	return true;
 }
 //---------------------------------------------------------------------------------
