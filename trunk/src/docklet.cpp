@@ -136,7 +136,7 @@ void DockLet::PopupMenu(GdkEventButton *event)
 
 		gtk_widget_show_all(menu);
 	}
-	bool scan_selection=conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection");
+	bool scan_selection=conf->get_bool_at("dictionary/scan_selection");
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(scan_menuitem),
 																 scan_selection);
 	
@@ -212,7 +212,7 @@ gboolean DockLet::ButtonPressCallback(GtkWidget *button, GdkEventButton *event, 
 				!(event->state & GDK_MOD1_MASK) && 
 				!(event->state & GDK_SHIFT_MASK)) {
       conf->set_bool("/apps/stardict/preferences/dictionary/scan_selection",
-										 !conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection"));
+										 !conf->get_bool_at("dictionary/scan_selection"));
 			return true;
     } else {			
 			if (GTK_WIDGET_VISIBLE(gpAppFrame->window)) {
@@ -229,7 +229,7 @@ gboolean DockLet::ButtonPressCallback(GtkWidget *button, GdkEventButton *event, 
 			}
 		}		
   } else if (event->button ==2) {
-		if (conf->get_bool("/apps/stardict/preferences/notification_area_icon/query_in_floatwin")) {
+		if (conf->get_bool_at("notification_area_icon/query_in_floatwin")) {
 			gpAppFrame->oSelection.LastClipWord.clear();
 			gtk_selection_convert(gpAppFrame->oSelection.selection_widget, GDK_SELECTION_PRIMARY, gpAppFrame->oSelection.UTF8_STRING_Atom, GDK_CURRENT_TIME);
     } else {

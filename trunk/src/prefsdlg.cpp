@@ -287,10 +287,10 @@ void PrefsDlg::on_setup_dictionary_scan_clipboard_ckbutton_toggled(GtkToggleButt
 {
 	gboolean b = gtk_toggle_button_get_active(button);
 	if (b) {
-		if (conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection"))
+		if (conf->get_bool_at("dictionary/scan_selection"))
 			gpAppFrame->oClipboard.start();
 	} else {
-		if (conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection"))
+		if (conf->get_bool_at("dictionary/scan_selection"))
 			gpAppFrame->oClipboard.stop();
 	}
 	conf->set_bool("/apps/stardict/preferences/dictionary/scan_clipboard", b);
@@ -352,7 +352,7 @@ void PrefsDlg::setup_dictionary_scan_page()
 	GtkWidget *check_button = gtk_check_button_new_with_mnemonic(_("_Only scan while the modifier key is being pressed."));
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
 	bool only_scan_while_modifier_key=
-	conf->get_bool("/apps/stardict/preferences/dictionary/only_scan_while_modifier_key");
+	conf->get_bool_at("dictionary/only_scan_while_modifier_key");
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), 
 															 only_scan_while_modifier_key);
@@ -369,7 +369,7 @@ void PrefsDlg::setup_dictionary_scan_page()
 	gtk_box_pack_start(GTK_BOX(scan_modifier_key_vbox),check_button,false,false,0);	
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button),
-															 conf->get_bool("/apps/stardict/preferences/dictionary/hide_floatwin_when_modifier_key_released"));
+															 conf->get_bool_at("dictionary/hide_floatwin_when_modifier_key_released"));
 	g_signal_connect (G_OBJECT (check_button), "toggled", G_CALLBACK (on_setup_dictionary_scan_hide_ckbutton_toggled), this);		
 
 	hbox = gtk_hbox_new(false, 12);		
@@ -390,7 +390,7 @@ void PrefsDlg::setup_dictionary_scan_page()
 
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(option_menu), menu);
 	int scan_modifier_key=
-		conf->get_int("/apps/stardict/preferences/dictionary/scan_modifier_key");
+		conf->get_int_at("dictionary/scan_modifier_key");
 
 	gtk_option_menu_set_history(GTK_OPTION_MENU(option_menu), scan_modifier_key);
 	
@@ -401,13 +401,13 @@ void PrefsDlg::setup_dictionary_scan_page()
 #ifdef _WIN32
 	check_button = gtk_check_button_new_with_mnemonic(_("_Scan clipboard."));
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool("/apps/stardict/preferences/dictionary/scan_clipboard"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool_at("dictionary/scan_clipboard"));
 	g_signal_connect(G_OBJECT(check_button), "toggled", 
 									 G_CALLBACK(on_setup_dictionary_scan_clipboard_ckbutton_toggled), this);
 
 	check_button = gtk_check_button_new_with_mnemonic(_("_Use scan hotkey: Ctrl+Alt+F1."));
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool("/apps/stardict/preferences/dictionary/use_scan_hotkey"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool_at("dictionary/use_scan_hotkey"));
 	g_signal_connect(G_OBJECT(check_button), "toggled", 
 									 G_CALLBACK(on_setup_dictionary_use_scan_hotkey_ckbutton_toggled), this);
 #endif
@@ -435,7 +435,7 @@ void PrefsDlg::on_setup_dictionary_font_ckbutton_toggled(GtkToggleButton *button
   conf->set_bool("/apps/stardict/preferences/dictionary/use_custom_font", b);
 	if (b) {
 		const std::string &custom_font=
-			conf->get_string("/apps/stardict/preferences/dictionary/custom_font");
+			conf->get_string_at("dictionary/custom_font");
 		oPrefsDlg->change_font_for_all_widgets(custom_font);
 	} else
 		oPrefsDlg->change_font_for_all_widgets("");
@@ -497,7 +497,7 @@ void PrefsDlg::setup_dictionary_font_page()
 	GtkWidget *check_button = gtk_check_button_new_with_mnemonic(_("_Use custom font."));
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
 	bool use_custom_font=
-		conf->get_bool("/apps/stardict/preferences/dictionary/use_custom_font");
+		conf->get_bool_at("dictionary/use_custom_font");
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button),
 															 use_custom_font);
@@ -511,7 +511,7 @@ void PrefsDlg::setup_dictionary_font_page()
 	gtk_misc_set_alignment (GTK_MISC (label), 0, .5);	
 	GtkWidget *button;
 	const std::string &custom_font=
-		conf->get_string("/apps/stardict/preferences/dictionary/custom_font");
+		conf->get_string_at("dictionary/custom_font");
 
 	if (!custom_font.empty())
 		button = gtk_button_new_with_label(custom_font.c_str());
@@ -602,12 +602,12 @@ void PrefsDlg::setup_dictionary_cache_page()
 	gtk_box_pack_start(GTK_BOX(vbox),vbox1,false,false, 0);
 	GtkWidget *check_button;
 	check_button = gtk_check_button_new_with_mnemonic(_("Create c_ache files to speed up loading."));
-	bool enable = conf->get_bool("/apps/stardict/preferences/dictionary/create_cache_file");
+	bool enable = conf->get_bool_at("dictionary/create_cache_file");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), enable);
 	g_signal_connect (G_OBJECT (check_button), "toggled", G_CALLBACK (on_setup_dictionary_cache_CreateCacheFile_ckbutton_toggled), (gpointer)this);
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
 	check_button = gtk_check_button_new_with_mnemonic(_("_Sort word list by collate function."));
-	enable = conf->get_bool("/apps/stardict/preferences/dictionary/enable_collation");
+	enable = conf->get_bool_at("dictionary/enable_collation");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), enable);
 	g_signal_connect (G_OBJECT (check_button), "toggled", G_CALLBACK (on_setup_dictionary_cache_EnableCollation_ckbutton_toggled), (gpointer)this);
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
@@ -663,7 +663,7 @@ void PrefsDlg::setup_dictionary_cache_page()
 	menuitem=gtk_menu_item_new_with_mnemonic("utf8__turkish__ci");
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 	gtk_option_menu_set_menu(GTK_OPTION_MENU(option_menu), menu);
-	int collate_function = conf->get_int("/apps/stardict/preferences/dictionary/collate_function");
+	int collate_function = conf->get_int_at("dictionary/collate_function");
 	gtk_option_menu_set_history(GTK_OPTION_MENU(option_menu), collate_function);
 	gtk_label_set_mnemonic_widget(GTK_LABEL(label), option_menu);
 	gtk_box_pack_start(GTK_BOX(collation_hbox), option_menu, FALSE, FALSE, 0);
@@ -742,7 +742,7 @@ void PrefsDlg::setup_dictionary_export_page()
 
 	GtkWidget *check_button;
 	check_button = gtk_check_button_new_with_mnemonic(_("_Only export word."));
-	bool enable= conf->get_bool("/apps/stardict/preferences/dictionary/only_export_word");
+	bool enable= conf->get_bool_at("dictionary/only_export_word");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), enable);
 	g_signal_connect (G_OBJECT (check_button), "toggled", G_CALLBACK (on_setup_dictionary_export_ckbutton_toggled), this);
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
@@ -751,7 +751,7 @@ void PrefsDlg::setup_dictionary_export_page()
 	label=gtk_label_new(_("File name:"));
 	gtk_box_pack_start(GTK_BOX(hbox1), label, FALSE, FALSE, 0);
 	GtkWidget *e = gtk_entry_new();
-	const std::string &exportfile= conf->get_string("/apps/stardict/preferences/dictionary/export_file");
+	const std::string &exportfile= conf->get_string_at("dictionary/export_file");
 	gtk_entry_set_text(GTK_ENTRY(e), exportfile.c_str());
 	gtk_box_pack_start(GTK_BOX(hbox1), e, TRUE, TRUE, 0);
 	eExportFile=GTK_ENTRY(e);
@@ -804,7 +804,7 @@ void PrefsDlg::setup_dictionary_sound_page()
 	GtkWidget *check_button;
 	check_button = gtk_check_button_new_with_mnemonic(_("_Enable sound event."));
 	bool enable=
-		conf->get_bool("/apps/stardict/preferences/dictionary/enable_sound_event");
+		conf->get_bool_at("dictionary/enable_sound_event");
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), enable);
 	g_signal_connect (G_OBJECT (check_button), "toggled", G_CALLBACK (on_setup_dictionary_sound_ckbutton_toggled), (gpointer)this);
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
@@ -815,7 +815,7 @@ void PrefsDlg::setup_dictionary_sound_page()
 	GtkWidget *e = gtk_entry_new();
 	gtk_widget_set_size_request(e, 50, -1);
 	const std::string &playcmd=
-		conf->get_string("/apps/stardict/preferences/dictionary/play_command");
+		conf->get_string_at("dictionary/play_command");
 	gtk_entry_set_text(GTK_ENTRY(e), playcmd.c_str());
 	gtk_box_pack_start(GTK_BOX(hbox2), e, TRUE, TRUE, 0);
 	gtk_widget_set_sensitive(hbox2, enable);  
@@ -829,7 +829,7 @@ void PrefsDlg::setup_dictionary_sound_page()
 	tts_textview = gtk_text_view_new();
 	gtk_widget_set_size_request(tts_textview, -1, 70);
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(tts_textview), GTK_WRAP_CHAR);
-	const std::string &ttspath = conf->get_string("/apps/stardict/preferences/dictionary/tts_path");
+	const std::string &ttspath = conf->get_string_at("dictionary/tts_path");
 	GtkTextBuffer *text_view_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tts_textview));
 	gtk_text_buffer_set_text(text_view_buffer, ttspath.c_str(), -1);
 	GtkWidget *scrolled_window = gtk_scrolled_window_new(NULL, NULL);
@@ -886,12 +886,12 @@ void PrefsDlg::setup_mainwin_input_page()
 	GtkWidget *check_button;
 	check_button = gtk_check_button_new_with_mnemonic(_("_Search while typing."));
 	gtk_box_pack_start(GTK_BOX(vbox1), check_button, FALSE, FALSE, 0);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool("/apps/stardict/preferences/main_window/search_while_typing"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool_at("main_window/search_while_typing"));
 	g_signal_connect(G_OBJECT(check_button), "toggled", 
 									 G_CALLBACK(on_setup_mainwin_searchWhileTyping_ckbutton_toggled), this);
 	check_button = gtk_check_button_new_with_mnemonic(_("Show the _first word when not found."));
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool("/apps/stardict/preferences/main_window/showfirst_when_notfound"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool_at("main_window/showfirst_when_notfound"));
 	g_signal_connect(G_OBJECT(check_button), "toggled", 
 									 G_CALLBACK(on_setup_mainwin_showfirstWhenNotfound_ckbutton_toggled), this);
 }
@@ -1001,7 +1001,7 @@ void PrefsDlg::setup_mainwin_options_page()
 	check_button = gtk_check_button_new_with_mnemonic(_("Hide main window when _starting StarDict."));
 	gtk_box_pack_start(GTK_BOX(vbox1), check_button, FALSE, FALSE, 0);
 	bool hide=
-		conf->get_bool("/apps/stardict/preferences/main_window/hide_on_startup");
+		conf->get_bool_at("main_window/hide_on_startup");
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), hide);
 	g_signal_connect(G_OBJECT(check_button), "toggled", 
@@ -1010,7 +1010,7 @@ void PrefsDlg::setup_mainwin_options_page()
 #ifdef _WIN32
 	check_button = gtk_check_button_new_with_mnemonic(_("_Use open main window hotkey: Ctrl+Alt+Z."));
 	gtk_box_pack_start(GTK_BOX(vbox1),check_button,false,false,0);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool("/apps/stardict/preferences/dictionary/use_mainwindow_hotkey"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool_at("dictionary/use_mainwindow_hotkey"));
 	g_signal_connect(G_OBJECT(check_button), "toggled", 
 									 G_CALLBACK(on_setup_mainwin_use_mainwindow_hotkey_ckbutton_toggled), this);
 #endif
@@ -1286,7 +1286,7 @@ void PrefsDlg::setup_mainwin_searchwebsite_page()
 	model = gtk_list_store_new (4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
 
 	const std::list<std::string> &web_list=
-		conf->get_strlist("/apps/stardict/preferences/main_window/search_website_list");
+		conf->get_strlist_at("main_window/search_website_list");
 
 	GtkTreeIter iter;
 	for (std::list<std::string>::const_iterator wit=web_list.begin();
@@ -1436,7 +1436,7 @@ void PrefsDlg::setup_NotificationAreaIcon_options_page()
 	GtkWidget *check_button;
 	check_button = gtk_check_button_new_with_mnemonic(_("_Query in the floating window when middle mouse\nbutton is clicked."));
 	bool query_in_floatwin=
-	conf->get_bool("/apps/stardict/preferences/notification_area_icon/query_in_floatwin");
+	conf->get_bool_at("notification_area_icon/query_in_floatwin");
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), 
 															 query_in_floatwin);
@@ -1489,7 +1489,7 @@ void PrefsDlg::setup_floatwin_options_page()
 	gtk_box_pack_start(GTK_BOX(vbox),vbox1,false,false, 0);
 	GtkWidget *check_button = gtk_check_button_new_with_mnemonic(_("_Pronouce the word when it pops up."));
 	bool pronounce_when_popup=
-		conf->get_bool("/apps/stardict/preferences/floating_window/pronounce_when_popup");
+		conf->get_bool_at("floating_window/pronounce_when_popup");
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button),
 															 pronounce_when_popup);
@@ -1497,7 +1497,7 @@ void PrefsDlg::setup_floatwin_options_page()
 	gtk_box_pack_start(GTK_BOX(vbox1), check_button, FALSE, FALSE, 0);
 
 	check_button = gtk_check_button_new_with_mnemonic(_("_Show floating window if word not found."));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool("/apps/stardict/preferences/floating_window/show_if_not_found"));
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(check_button), conf->get_bool_at("floating_window/show_if_not_found"));
 	g_signal_connect(G_OBJECT(check_button), "toggled", G_CALLBACK(on_setup_show_float_if_not_found), this);	
 	gtk_box_pack_start(GTK_BOX(vbox1), check_button, FALSE, FALSE, 0);
 }
@@ -1544,9 +1544,9 @@ void PrefsDlg::setup_floatwin_size_page()
 	gtk_box_pack_start(GTK_BOX(vbox),table,false,false,0);
 	
 	int max_width=
-		conf->get_int("/apps/stardict/preferences/floating_window/max_window_width");
+		conf->get_int_at("floating_window/max_window_width");
 	int max_height=
-		conf->get_int("/apps/stardict/preferences/floating_window/max_window_height");
+		conf->get_int_at("floating_window/max_window_height");
 
 	GdkScreen *screen = gtk_window_get_screen(parent_window);
 	gint screen_width = gdk_screen_get_width(screen);

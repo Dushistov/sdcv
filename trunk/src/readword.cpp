@@ -12,7 +12,7 @@
 
 ReadWord::ReadWord()
 {
-	const std::string &path = conf->get_string("/apps/stardict/preferences/dictionary/tts_path");
+	const std::string &path = conf->get_string_at("dictionary/tts_path");
 	loadpath(path.c_str());
 }
 

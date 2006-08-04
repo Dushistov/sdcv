@@ -59,7 +59,7 @@ void play_wav_file(const std::string& filename)
   gnome_sound_play(filename.c_str());
 #else
 	const std::string &playcmd=
-		conf->get_string("/apps/stardict/preferences/dictionary/play_command");
+		conf->get_string_at("dictionary/play_command");
   spawn_command(playcmd.c_str(), filename.c_str());
 #endif
 }
@@ -189,6 +189,6 @@ GdkPixbuf *load_image_from_file(const std::string& filename)
 
 void play_sound_on_event(const gchar *eventname)
 {
-	if (conf->get_bool("/apps/stardict/preferences/dictionary/enable_sound_event"))
+	if (conf->get_bool_at("dictionary/enable_sound_event"))
 	  play_wav_file(gStarDictDataDir+ G_DIR_SEPARATOR_S "sounds" G_DIR_SEPARATOR_S +eventname+".wav");
 }

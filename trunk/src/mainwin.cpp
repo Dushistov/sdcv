@@ -169,7 +169,7 @@ void TopWin::on_entry_changed(GtkEntry *entry, TopWin *oTopWin)
 {
 	if (!(oTopWin->enable_change_cb))
 		return;
-	if (!conf->get_bool("/apps/stardict/preferences/main_window/search_while_typing"))
+	if (!conf->get_bool_at("main_window/search_while_typing"))
 		return;
 	const gchar *sWord = gtk_entry_get_text(entry);
 	if(sWord[0]!='\0') {
@@ -661,7 +661,7 @@ void TopWin::SaveHistory()
 	 * if fread from mvsc and g_fopen uses fopen from glibc you god
 	 * segfault
 	 */
-	FILE *f = fopen(conf->get_string("/apps/stardict/preferences/dictionary/history").c_str(), "w");
+	FILE *f = fopen(conf->get_string_at("dictionary/history").c_str(), "w");
 	if (!f)
 		return;
 	GList *hist_list = HisList;
@@ -674,7 +674,7 @@ void TopWin::SaveHistory()
 
 void TopWin::LoadHistory()
 {
-	const gchar *filename = conf->get_string("/apps/stardict/preferences/dictionary/history").c_str();
+	const gchar *filename = conf->get_string_at("dictionary/history").c_str();
 	struct stat stats;
 	if (g_stat (filename, &stats) == -1)
         	return;
@@ -1097,7 +1097,7 @@ void IndexWin::Create(GtkWidget *hpaned)
 {
 	vbox = gtk_vbox_new(FALSE, 3);
 
-	if (!conf->get_bool("/apps/stardict/preferences/main_window/hide_list"))
+	if (!conf->get_bool_at("main_window/hide_list"))
 		gtk_widget_show(vbox);
 	
 	gtk_paned_pack1(GTK_PANED(hpaned),vbox,true,true);
@@ -1237,7 +1237,7 @@ void ToolWin::Create(GtkWidget *vbox)
 	gtk_tooltips_set_tip(gpAppFrame->tooltips, HideListButton,_("Hide the word list"),NULL);
 
 
-	if (conf->get_bool("/apps/stardict/preferences/main_window/hide_list"))
+	if (conf->get_bool_at("main_window/hide_list"))
 		gtk_widget_show(ShowListButton);
 	else
 		gtk_widget_show(HideListButton);
@@ -1339,9 +1339,9 @@ void ToolWin::do_save()
 {
 	TextWin &oTextWin=gpAppFrame->oMidWin.oTextWin;
 
-	if (conf->get_bool("/apps/stardict/preferences/dictionary/only_export_word")) {
+	if (conf->get_bool_at("dictionary/only_export_word")) {
 		if (!oTextWin.queryWord.empty()) {
-			FILE *fp = fopen(conf->get_string("/apps/stardict/preferences/dictionary/export_file").c_str(), "a+");
+			FILE *fp = fopen(conf->get_string_at("dictionary/export_file").c_str(), "a+");
         	        if(fp) {
 				fputs(oTextWin.queryWord.c_str(),fp);
 				fputs("\n",fp);
@@ -1355,7 +1355,7 @@ void ToolWin::do_save()
 		GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(oTextWin.view->Widget()));
 		if (gtk_text_buffer_get_selection_bounds(buffer, &start, &end))
 			 str = gtk_text_buffer_get_text(buffer, &start, &end, false);
-		FILE *fp = fopen(conf->get_string("/apps/stardict/preferences/dictionary/export_file").c_str(), "a+");
+		FILE *fp = fopen(conf->get_string_at("dictionary/export_file").c_str(), "a+");
 		if(fp) {
 			if(str) {
 				fputs(oTextWin.queryWord.c_str(),fp);
@@ -1697,7 +1697,7 @@ void MidWin::Create(GtkWidget *vbox)
 	oToolWin.Create(vbox1);
 	oTextWin.Create(vbox1);	
 
-	int pos=conf->get_int("/apps/stardict/preferences/main_window/hpaned_pos");
+	int pos=conf->get_int_at("main_window/hpaned_pos");
 
 	gtk_paned_set_position(GTK_PANED(hpaned), pos);
 }
@@ -1722,7 +1722,7 @@ void BottomWin::Create(GtkWidget *vbox)
 	ScanSelectionCheckButton = gtk_check_button_new_with_mnemonic(_("_Scan"));
 	gtk_widget_show(ScanSelectionCheckButton);
 	GTK_WIDGET_UNSET_FLAGS (ScanSelectionCheckButton, GTK_CAN_FOCUS);
-  bool scan=conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection");
+  bool scan=conf->get_bool_at("dictionary/scan_selection");
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(ScanSelectionCheckButton), scan);
 	g_signal_connect(G_OBJECT(ScanSelectionCheckButton), "toggled", 
@@ -1823,7 +1823,7 @@ gboolean BottomWin::on_internetsearch_button_press(GtkWidget * widget, GdkEventB
 {
 	if (event->button == 3) {
 		const std::list<std::string> &list=
-			conf->get_strlist("/apps/stardict/preferences/main_window/search_website_list");
+			conf->get_strlist_at("main_window/search_website_list");
 		if (list.empty())
 			return true;
 	
@@ -1872,7 +1872,7 @@ void BottomWin::on_internetsearch_menu_item_activate(GtkMenuItem *menuitem, cons
 void BottomWin::InternetSearchCallback(GtkButton *button, BottomWin *oBottomWin)
 {	
 	const std::list<std::string> &search_website_list=
-		conf->get_strlist("/apps/stardict/preferences/main_window/search_website_list");
+		conf->get_strlist_at("main_window/search_website_list");
 	if (search_website_list.empty())
 		return;
 

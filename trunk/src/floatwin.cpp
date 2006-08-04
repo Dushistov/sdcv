@@ -70,9 +70,9 @@ void FloatWin::Create()
 	gint screen_width = gdk_screen_get_width(screen);
 	gint screen_height = gdk_screen_get_height(screen);
 	int max_window_width=
-		conf->get_int("/apps/stardict/preferences/floating_window/max_window_width");
+		conf->get_int_at("floating_window/max_window_width");
 	int max_window_height=
-		conf->get_int("/apps/stardict/preferences/floating_window/max_window_height");
+		conf->get_int_at("floating_window/max_window_height");
 	if (max_window_width < MIN_MAX_FLOATWIN_WIDTH || 
 			max_window_width > screen_width)
 		conf->set_int("/apps/stardict/preferences/floating_window/max_window_width",
@@ -82,14 +82,14 @@ void FloatWin::Create()
 		conf->set_int("/apps/stardict/preferences/floating_window/max_window_height", DEFAULT_MAX_FLOATWIN_HEIGHT);
 	
 	int lock_x=
-		conf->get_int("/apps/stardict/preferences/floating_window/lock_x");
+		conf->get_int_at("floating_window/lock_x");
 	int lock_y=
-		conf->get_int("/apps/stardict/preferences/floating_window/lock_y");
+		conf->get_int_at("floating_window/lock_y");
 	
 	max_window_width=
-		conf->get_int("/apps/stardict/preferences/floating_window/max_window_width");
+		conf->get_int_at("floating_window/max_window_width");
 	max_window_height=
-		conf->get_int("/apps/stardict/preferences/floating_window/max_window_height");
+		conf->get_int_at("floating_window/max_window_height");
 	if (lock_x<0)
 		lock_x=0;
 	else if (lock_x > (screen_width - max_window_width))
@@ -148,7 +148,7 @@ void FloatWin::Create()
 	gtk_tooltips_set_tip(gpAppFrame->tooltips, StopButton, _("Stop selection-scanning"),NULL);
 
 	gtk_widget_set_sensitive(gpAppFrame->oFloatWin.StopButton, 
-													 conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection"));
+													 conf->get_bool_at("dictionary/scan_selection"));
 
 #ifndef CONFIG_GPE
 	button= gtk_button_new();
@@ -170,7 +170,7 @@ void FloatWin::Create()
 
 	button = gtk_button_new();
 
-	if (conf->get_bool("/apps/stardict/preferences/floating_window/lock"))
+	if (conf->get_bool_at("floating_window/lock"))
 		lock_image= gtk_image_new_from_stock(GTK_STOCK_GOTO_LAST,GTK_ICON_SIZE_MENU);
 	else
 		lock_image= gtk_image_new_from_stock(GTK_STOCK_GO_FORWARD,GTK_ICON_SIZE_MENU);
@@ -249,7 +249,7 @@ void FloatWin::ShowText(gchar ***Word, gchar ****WordData, const gchar * sOrigin
 	gtk_widget_set_sensitive(PronounceWordButton, canRead);
 
 	Popup(true);
-	if (canRead && (!pronounced) && conf->get_bool("/apps/stardict/preferences/floating_window/pronounce_when_popup"))
+	if (canRead && (!pronounced) && conf->get_bool_at("floating_window/pronounce_when_popup"))
 		gpAppFrame->oReadWord.read(PronounceWord.c_str());
 }
 
@@ -342,7 +342,7 @@ void FloatWin::ShowText(gchar ****ppppWord, gchar *****pppppWordData, const gcha
  
   Popup(false);
   /*bool pronounce_when_popup=
-		conf->get_bool("/apps/stardict/preferences/floating_window/pronounce_when_popup");
+		conf->get_bool_at("floating_window/pronounce_when_popup");
 
   if (canRead && pronounce_when_popup)
     gpAppFrame->oReadWord.read(PronounceWord.c_str());*/
@@ -356,7 +356,7 @@ void FloatWin::ShowNotFound(const char* sWord,const char* sReason, gboolean fuzz
 	else
 		found_result = FLOAT_WIN_NOT_FOUND;
 
-	if (!conf->get_bool("/apps/stardict/preferences/floating_window/show_if_not_found"))
+	if (!conf->get_bool_at("floating_window/show_if_not_found"))
 		return;
 
 	gchar *text;
@@ -384,7 +384,7 @@ void FloatWin::ShowNotFound(const char* sWord,const char* sReason, gboolean fuzz
 	g_free(m_word);
 	g_free(m_reason);
 
-	if (canRead && (!pronounced) && conf->get_bool("/apps/stardict/preferences/floating_window/pronounce_when_popup"))
+	if (canRead && (!pronounced) && conf->get_bool_at("floating_window/pronounce_when_popup"))
 		gpAppFrame->oReadWord.read(PronounceWord.c_str());
 }
 
@@ -394,7 +394,7 @@ void FloatWin::Popup(gboolean updatePosition)
 
   GtkRequisition requisition;
   gtk_widget_size_request(view->Widget(), &requisition);
-	int max_window_width=conf->get_int("/apps/stardict/preferences/floating_window/max_window_width");
+	int max_window_width=conf->get_int_at("floating_window/max_window_width");
   if (requisition.width > max_window_width) {
 		// it is not really max window width setting.
     gtk_widget_set_size_request(view->Widget(), max_window_width, -1);
@@ -404,7 +404,7 @@ void FloatWin::Popup(gboolean updatePosition)
   gint window_width,window_height;
   window_width = 2*(FLOATWIN_BORDER_WIDTH+2) + requisition.width; // 2 is the frame 's width.or get it by gtk function? i am lazy,hoho
 	int max_window_height=
-		conf->get_int("/apps/stardict/preferences/floating_window/max_window_height");
+		conf->get_int_at("floating_window/max_window_height");
   if (requisition.height > max_window_height) {
     static gint vscrollbar_width = 0;
     if (!vscrollbar_width) {
@@ -431,7 +431,7 @@ void FloatWin::Popup(gboolean updatePosition)
   }	
 
 
-	if (conf->get_bool("/apps/stardict/preferences/floating_window/lock")) {
+	if (conf->get_bool_at("floating_window/lock")) {
     gtk_window_resize(GTK_WINDOW(FloatWindow),window_width,window_height);
     now_window_width = window_width;
     now_window_height = window_height;
@@ -513,7 +513,7 @@ gint FloatWin::vTimeOutCallback(gpointer data)
 {
   FloatWin *oFloatWin = static_cast<FloatWin *>(data);
 	bool lock=
-		conf->get_bool("/apps/stardict/preferences/floating_window/lock");
+		conf->get_bool_at("floating_window/lock");
   if(!lock && !oFloatWin->ismoving && 
      GTK_WIDGET_VISIBLE(oFloatWin->FloatWindow)) {
     GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(oFloatWin->FloatWindow));
@@ -522,9 +522,9 @@ gint FloatWin::vTimeOutCallback(gpointer data)
     gint iCurrentX,iCurrentY;
     gdk_display_get_pointer(display, NULL, &iCurrentX, &iCurrentY, NULL);
 		bool only_scan_while_modifier_key=
-			conf->get_bool("/apps/stardict/preferences/dictionary/only_scan_while_modifier_key");
+			conf->get_bool_at("dictionary/only_scan_while_modifier_key");
 		bool hide_floatwin_when_modifier_key_released=
-			conf->get_bool("/apps/stardict/preferences/dictionary/hide_floatwin_when_modifier_key_released");
+			conf->get_bool_at("dictionary/hide_floatwin_when_modifier_key_released");
     if (only_scan_while_modifier_key && 
 				hide_floatwin_when_modifier_key_released) {
       if (iCurrentX == oFloatWin->popup_pointer_x && iCurrentY==oFloatWin->popup_pointer_y) {
@@ -807,7 +807,7 @@ void FloatWin::on_query_click(GtkWidget *widget, FloatWin *oFloatWin)
 {
 	play_sound_on_event("buttonactive");
 
-	if (!conf->get_bool("/apps/stardict/preferences/floating_window/lock"))
+	if (!conf->get_bool_at("floating_window/lock"))
 		oFloatWin->Hide();
 	gpAppFrame->Query(oFloatWin->QueryingWord.c_str());	
 #ifdef _WIN32
@@ -819,15 +819,15 @@ void FloatWin::on_query_click(GtkWidget *widget, FloatWin *oFloatWin)
 
 void FloatWin::on_save_click(GtkWidget *widget, FloatWin *oFloatWin)
 {
-	if (conf->get_bool("/apps/stardict/preferences/dictionary/only_export_word")) {
-		FILE *fp = fopen(conf->get_string("/apps/stardict/preferences/dictionary/export_file").c_str(), "a+");
+	if (conf->get_bool_at("dictionary/only_export_word")) {
+		FILE *fp = fopen(conf->get_string_at("dictionary/export_file").c_str(), "a+");
 		if(fp) {
 			fputs(oFloatWin->QueryingWord.c_str(),fp);
 			fputs("\n",fp);
 			fclose(fp);
 		}
 	} else {
-		FILE *fp = fopen(conf->get_string("/apps/stardict/preferences/dictionary/export_file").c_str(), "a+");
+		FILE *fp = fopen(conf->get_string_at("dictionary/export_file").c_str(), "a+");
 		if(fp) {
 			fputs(oFloatWin->view->GetText().c_str(),fp);
 			fputs("\n\n",fp);
@@ -853,7 +853,7 @@ void FloatWin::on_help_click(GtkWidget *widget, FloatWin *oFloatWin)
 {
 	play_sound_on_event("buttonactive");
 
-	if (!conf->get_bool("/apps/stardict/preferences/floating_window/lock"))
+	if (!conf->get_bool_at("floating_window/lock"))
 		oFloatWin->Hide();
 	show_help("stardict-scan-selection");
 }
@@ -869,5 +869,5 @@ void FloatWin::vLockCallback(GtkWidget *widget, FloatWin *oFloatWin)
 {
 	play_sound_on_event("buttonactive");
 	conf->set_bool("/apps/stardict/preferences/floating_window/lock", 
-								 !conf->get_bool("/apps/stardict/preferences/floating_window/lock"));
+								 !conf->get_bool_at("floating_window/lock"));
 }
