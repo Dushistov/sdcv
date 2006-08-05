@@ -812,10 +812,8 @@ void FloatWin::on_query_click(GtkWidget *widget, FloatWin *oFloatWin)
 		oFloatWin->Hide();
 	gpAppFrame->Query(oFloatWin->QueryingWord.c_str());	
 
-	if (!GTK_WIDGET_VISIBLE(gpAppFrame->window))
-		gpAppFrame->tray_icon_->maximize_from_tray();		
 
-	gtk_window_present(GTK_WINDOW(gpAppFrame->window));
+	gpAppFrame->tray_icon_->maximize_from_tray();	
 }
 
 void FloatWin::on_save_click(GtkWidget *widget, FloatWin *oFloatWin)

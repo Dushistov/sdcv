@@ -106,7 +106,9 @@ void DockLet::minimize_to_tray()
 
 void DockLet::maximize_from_tray()
 {
-	stardict_systray_maximize(mainwin_);	
+	if (!GTK_WIDGET_VISIBLE(mainwin_))
+		stardict_systray_maximize(mainwin_);
+	gtk_window_present(GTK_WINDOW(mainwin_));
 }
 
 void DockLet::on_left_btn()
@@ -117,8 +119,10 @@ void DockLet::on_left_btn()
 			ShowWindow(hwnd, SW_RESTORE);		
 		else
 			minimize_to_tray();	
-	} else
+	} else {
+		maximize_from_tray();
 		on_maximize_.emit();	
+	}
 }
 
 LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)

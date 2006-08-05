@@ -19,16 +19,16 @@ public:
 	DockLet(GtkWidget *, GtkTooltips *, const AppSkin&,
 		State state = NORMAL_ICON);
 	~DockLet();
-	bool is_embedded() const { return embedded_; }
+
 	void set_state(State);
 	void minimize_to_tray();
-	void maximize_from_tray() {}
+	void maximize_from_tray();
 private:
 	EggTrayIcon *docklet_;
 	GtkWidget *box_;
 	GtkWidget *image_; //icon image.
-	typedef  ResourceWrapper<GtkWidget, GtkWidget, gtk_widget_destroy> Menu;
-	Menu menu_;
+	typedef  ResourceWrapper<GtkWidget, GtkWidget, gtk_widget_destroy> GMenu;
+	GMenu menu_;
 	GtkWidget *scan_menuitem_;
 	State cur_state_;
 	typedef std::map<State, std::pair<std::string, GdkPixbuf *> > StateMap;

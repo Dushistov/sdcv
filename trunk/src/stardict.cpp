@@ -150,7 +150,6 @@ void Application::on_tray_middle_btn()
 							GDK_CURRENT_TIME);
 	} else {				
 		tray_icon_->maximize_from_tray();
-		gtk_window_present(GTK_WINDOW(window));
 		gtk_selection_convert(oMidWin.oTextWin.view->Widget(),
 						GDK_SELECTION_PRIMARY,
 						oSelection.UTF8_STRING_Atom,
@@ -160,8 +159,6 @@ void Application::on_tray_middle_btn()
 
 void Application::on_tray_maximize()
 {
-	tray_icon_->maximize_from_tray();
-	gtk_window_present(GTK_WINDOW(window));	
 	if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(oTopWin.WordCombo)->entry))[0])
 		//so user can input word directly.
 		gtk_widget_grab_focus(oMidWin.oTextWin.view->Widget()); 
