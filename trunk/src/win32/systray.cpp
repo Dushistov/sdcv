@@ -22,7 +22,7 @@ DockLet::DockLet(GtkWidget *mainwin) : TrayIcon(mainwin)
 
 	systray_hwnd = systray_create_hiddenwin();
 	::SetWindowLongPtr(systray_hwnd, GWL_USERDATA,
-			reinterpret_cast<LONG_PTR>(this));
+			   reinterpret_cast<LONG_PTR>(this));
 
 	systray_create_menu();
 
@@ -50,7 +50,7 @@ HWND DockLet::systray_create_hiddenwin()
 	wcex.hInstance		= stardictexe_hInstance;
 	wcex.hIcon		= NULL;
 	wcex.hCursor		= NULL,
-	wcex.hbrBackground	= NULL;
+		wcex.hbrBackground	= NULL;
 	wcex.lpszMenuName	= NULL;
 	wcex.lpszClassName	= wname;
 	wcex.hIconSm		= NULL;
@@ -68,11 +68,11 @@ void DockLet::systray_create_menu()
 	/* create popup menu */
 	if((systray_menu = CreatePopupMenu())) {
 		AppendMenu(systray_menu, MF_CHECKED, SYSTRAY_CMND_MENU_SCAN,
-			       (locenc=g_locale_from_utf8(_("Scan"), -1, NULL, NULL, NULL)));
+			   (locenc=g_locale_from_utf8(_("Scan"), -1, NULL, NULL, NULL)));
 		g_free(locenc);
 		AppendMenu(systray_menu, MF_SEPARATOR, 0, 0);
 		AppendMenu(systray_menu, MF_STRING, SYSTRAY_CMND_MENU_QUIT,
-			       (locenc=g_locale_from_utf8(_("Quit"), -1, NULL, NULL, NULL)));
+			   (locenc=g_locale_from_utf8(_("Quit"), -1, NULL, NULL, NULL)));
 		g_free(locenc);
 	}
 }
@@ -83,7 +83,7 @@ void DockLet::systray_show_menu(int x, int y)
            of the menu scope */
 	SetForegroundWindow(systray_hwnd);
 
-  if (conf->get_bool_at("dictionary/scan_selection"))
+	if (conf->get_bool_at("dictionary/scan_selection"))
 		CheckMenuItem(systray_menu, SYSTRAY_CMND_MENU_SCAN, MF_BYCOMMAND | MF_CHECKED);
 	else
 		CheckMenuItem(systray_menu, SYSTRAY_CMND_MENU_SCAN, MF_BYCOMMAND | MF_UNCHECKED);
@@ -95,7 +95,7 @@ void DockLet::systray_show_menu(int x, int y)
 		       0,                   // reserved, must be zero
 		       systray_hwnd,        // handle to owner window
 		       NULL                 // ignored
-		       );
+		);
 }
 
 void DockLet::minimize_to_tray()
@@ -113,15 +113,15 @@ void DockLet::maximize_from_tray()
 
 void DockLet::on_left_btn()
 {
-	if (GTK_WIDGET_VISIBLE(mainwin_)) {	
+	if (GTK_WIDGET_VISIBLE(mainwin_)) {
 		HWND hwnd = static_cast<HWND>(GDK_WINDOW_HWND(mainwin_->window));
-		if (IsIconic(hwnd))	
-			ShowWindow(hwnd, SW_RESTORE);		
+		if (IsIconic(hwnd))
+			ShowWindow(hwnd, SW_RESTORE);
 		else
-			minimize_to_tray();	
+			minimize_to_tray();
 	} else {
 		maximize_from_tray();
-		on_maximize_.emit();	
+		on_maximize_.emit();
 	}
 }
 
@@ -129,22 +129,22 @@ LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wp
 {
 	static UINT taskbarRestartMsg; /* static here means value is kept across multiple calls to this func */
 	DockLet *dock =
-			reinterpret_cast<DockLet *>(::GetWindowLongPtr(hwnd, GWL_USERDATA));
+		reinterpret_cast<DockLet *>(::GetWindowLongPtr(hwnd, GWL_USERDATA));
 
 	switch (msg) {
 	case WM_CREATE:
 		taskbarRestartMsg = RegisterWindowMessage("TaskbarCreated");
 		break;
-		
+
 	case WM_COMMAND:
 		switch(LOWORD(wparam)) {
 		case SYSTRAY_CMND_MENU_SCAN:
-				
+
 			if (GetMenuState(dock->systray_menu, SYSTRAY_CMND_MENU_SCAN,
-					MF_BYCOMMAND) & MF_CHECKED)				
+					 MF_BYCOMMAND) & MF_CHECKED)
 				dock->on_change_scan_.emit(false);
-			else				
-				dock->on_change_scan_.emit(true);						
+			else
+				dock->on_change_scan_.emit(true);
 			break;
 		case SYSTRAY_CMND_MENU_QUIT:
 			dock->on_quit_.emit();
@@ -155,12 +155,12 @@ LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wp
 	{
 		if ( lparam == WM_LBUTTONDOWN ) {
 			if (GetKeyState(VK_CONTROL)<0)
-				dock->on_change_scan_.emit(!conf->get_bool_at("dictionary/scan_selection"));			
+				dock->on_change_scan_.emit(!conf->get_bool_at("dictionary/scan_selection"));
 		} else if ( lparam == WM_LBUTTONDBLCLK ) {
 			// Only use left button will conflict with the menu.
 			dock->on_left_btn();
 		} else if (lparam == WM_MBUTTONDOWN) {
-			dock->on_middle_button_click_.emit();			
+			dock->on_middle_button_click_.emit();
 		} else if (lparam == WM_RBUTTONUP) {
 			/* Right Click */
 			POINT mpoint;
@@ -170,9 +170,9 @@ LRESULT CALLBACK DockLet::systray_mainmsg_handler(HWND hwnd, UINT msg, WPARAM wp
 		}
 		break;
 	}
-	default: 
+	default:
 		if (msg == taskbarRestartMsg) {
-			/* explorer crashed and left us hanging... 
+			/* explorer crashed and left us hanging...
 			   This will put the systray icon back in it's place, when it restarts */
 			Shell_NotifyIcon(NIM_ADD, &(dock->stardict_nid));
 		}
@@ -230,7 +230,7 @@ void DockLet::set_state(State new_state)
 
 DockLet::~DockLet()
 {
-	Shell_NotifyIcon(NIM_DELETE, &stardict_nid);	
+	Shell_NotifyIcon(NIM_DELETE, &stardict_nid);
 	DestroyMenu(systray_menu);
 	DestroyWindow(systray_hwnd);
 }

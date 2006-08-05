@@ -214,10 +214,10 @@ void Application::Create(gchar *queryword)
 	gtk_window_set_title (GTK_WINDOW (window), _("StarDict"));
 	gtk_window_set_icon(GTK_WINDOW(window), gpAppFrame->oAppSkin.icon.get());
 	gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-	g_signal_connect (G_OBJECT (window), "delete_event", G_CALLBACK (on_delete_event), this);
-	g_signal_connect (G_OBJECT (window), "window_state_event", G_CALLBACK (on_window_state_event), this);
-	g_signal_connect (G_OBJECT (window), "key_press_event", G_CALLBACK (vKeyPressReleaseCallback), this);
-	g_signal_connect (G_OBJECT (window), "key_release_event", G_CALLBACK (vKeyPressReleaseCallback), this);
+	g_signal_connect (G_OBJECT(window), "delete_event", G_CALLBACK(on_delete_event), this);
+	g_signal_connect(G_OBJECT(window), "window_state_event", G_CALLBACK(on_window_state_event), this);
+	g_signal_connect (G_OBJECT(window), "key_press_event", G_CALLBACK(vKeyPressReleaseCallback), this);
+	g_signal_connect(G_OBJECT(window), "key_release_event", G_CALLBACK(vKeyPressReleaseCallback), this);
 
 	tooltips = gtk_tooltips_new ();
 
@@ -230,22 +230,24 @@ void Application::Create(gchar *queryword)
 	unlock_keys.reset(static_cast<hotkeys *>(stardict_class_factory::create_class_by_name("hotkeys", GTK_WINDOW(window))));
 	unlock_keys->set_comb(combnum2str(conf->get_int_at("dictionary/scan_modifier_key")));
 	oFloatWin.Create();
-	tray_icon_.reset(new DockLet(window, tooltips, oAppSkin));
+	bool scan = conf->get_bool_at("dictionary/scan_selection");
+	tray_icon_.reset(new DockLet(window, scan, tooltips, oAppSkin));
 	
 	tray_icon_->on_quit_.connect(sigc::mem_fun(this, &Application::Quit));
 	tray_icon_->on_change_scan_.connect(sigc::mem_fun(this,
                                      &Application::on_change_scan));
 	tray_icon_->on_middle_button_click_.connect(sigc::mem_fun(this,
 				&Application::on_tray_middle_btn));
-	tray_icon_->on_maximize_.connect(sigc::mem_fun(this,
-		&Application::on_tray_maximize));
+	tray_icon_->connect_on_maximize(
+		sigc::mem_fun(this,
+			      &Application::on_tray_maximize));
 	oSelection.Init();
 #ifdef _WIN32
 	oClipboard.Init();
 	oMouseover.Init();
 	oHotkey.Init();
 #endif
-	bool scan=conf->get_bool_at("dictionary/scan_selection");
+	
 	if (scan) {
 		oSelection.start();
 #ifdef _WIN32
@@ -267,14 +269,12 @@ void Application::Create(gchar *queryword)
 	//NOTICE: when docklet embedded failed,it should always show the window,but,how to detect the failure?
 	// As stardict is FOR GNOME,so i don't want to consider the case that haven't the Notification area applet.
 	if (!hide_option && (queryword || !hide)) {
+		tray_icon_->hide_state();
 		gtk_widget_show(window);
 	} else {
-		gtk_widget_realize(window); // This may be needed, so gtk_window_get_screen() in gtk_iskeyspressed.cpp can always work.
+		// This may be needed, so gtk_window_get_screen() in gtk_iskeyspressed.cpp can always work.
+		gtk_widget_realize(window); 
 		gdk_notify_startup_complete();
-		if (scan)
-				tray_icon_->set_state(TrayIcon::SCAN_ICON);
-		else
-				tray_icon_->set_state(TrayIcon::STOP_ICON);
 	}
 
 	if (oLibs.ndicts()) {
@@ -294,34 +294,51 @@ gboolean Application::on_delete_event(GtkWidget *, GdkEvent *, Application *app)
 	return TRUE;
 }
 
-gboolean Application::on_window_state_event(GtkWidget * window, GdkEventWindowState *event , Application *app)
+gboolean Application::on_window_state_event(GtkWidget *window,
+					    GdkEventWindowState *event,
+					    Application *app)
 {
-	if (event->changed_mask == GDK_WINDOW_STATE_WITHDRAWN) {
+	switch (event->changed_mask) {
+	case GDK_WINDOW_STATE_WITHDRAWN:
 		if (event->new_window_state & GDK_WINDOW_STATE_WITHDRAWN) {
 			if (conf->get_bool_at("dictionary/scan_selection"))
-					app->tray_icon_->set_state(TrayIcon::SCAN_ICON);
+				app->tray_icon_->set_scan_mode(true);
 			else
-					app->tray_icon_->set_state(TrayIcon::STOP_ICON);
+				app->tray_icon_->set_scan_mode(false);
 		} else {
-				app->tray_icon_->set_state(TrayIcon::NORMAL_ICON);
+			app->tray_icon_->hide_state();
 			if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(app->oTopWin.WordCombo)->entry))[0])
 				gtk_widget_grab_focus(app->oMidWin.oTextWin.view->Widget());
 		}
-	} else if (event->changed_mask == GDK_WINDOW_STATE_ICONIFIED) {
+		break;
+	case GDK_WINDOW_STATE_ICONIFIED:
 		if (!(event->new_window_state & GDK_WINDOW_STATE_ICONIFIED)) {
 			if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(app->oTopWin.WordCombo)->entry))[0]) {
-				gtk_widget_grab_focus(app->oMidWin.oTextWin.view->Widget()); //this is better than the next two line because it don't change selection.
-				//gtk_widget_grab_focus(GTK_COMBO(app->oTopWin.WordCombo)->entry);
-				//gtk_editable_select_region(GTK_EDITABLE(GTK_COMBO(app->oTopWin.WordCombo)->entry), 0, -1);
+				//this is better than the next two line because it don't change selection.
+				gtk_widget_grab_focus(app->oMidWin.oTextWin.view->Widget());
+#if 0
+				gtk_widget_grab_focus(GTK_COMBO(app->oTopWin.WordCombo)->entry);
+				gtk_editable_select_region(
+					GTK_EDITABLE(
+						GTK_COMBO(
+							app->oTopWin.WordCombo)->entry),
+					0, -1);
+#endif
 			} else {
 				gtk_widget_grab_focus(GTK_COMBO(app->oTopWin.WordCombo)->entry);
 			}
 		}
-	}	else if (event->changed_mask == GDK_WINDOW_STATE_MAXIMIZED)
-	  conf->set_bool_at("main_window/maximized",
-									 (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED));
+		break;
+	case GDK_WINDOW_STATE_MAXIMIZED:
+		conf->set_bool_at("main_window/maximized",
+				  (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED));
+		break;
+	default:
+		/*nothing*/;
+		break;
+	}
 
-	return false;
+	return FALSE;
 }
 
 gboolean Application::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *event , Application *oAppCore)
@@ -1458,7 +1475,7 @@ void Application::on_dict_scan_select_changed(const baseconfval* scanval)
 
 	if (scan) {
 		if (!GTK_WIDGET_VISIBLE(window))
-				tray_icon_->set_state(TrayIcon::SCAN_ICON);
+			tray_icon_->set_scan_mode(true);
 		bool lock = conf->get_bool_at("floating_window/lock");
 		if (lock && !oFloatWin.QueryingWord.empty())
 			oFloatWin.Show();
@@ -1471,7 +1488,7 @@ void Application::on_dict_scan_select_changed(const baseconfval* scanval)
 #endif
 	} else {
 		if (!GTK_WIDGET_VISIBLE(window))
-			tray_icon_->set_state(TrayIcon::STOP_ICON);
+			tray_icon_->set_scan_mode(false);
 		oFloatWin.Hide();
 		oSelection.stop();
 #ifdef _WIN32

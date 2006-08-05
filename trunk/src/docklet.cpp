@@ -1,25 +1,52 @@
+/* 
+ * This file part of StarDict - A international dictionary for GNOME.
+ * http://stardict.sourceforge.net
+ * Changed by Evgeniy <dushistov@mail.ru> on 2006.08
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
 #endif
 
 #include <glib/gi18n.h>
 
-#include "conf.h"
 #include "eggtrayicon.h"
 #include "skin.h"
 
 #include "docklet.h"
 
 
-void DockLet::create_docklet(State state)
+void DockLet::create_docklet(bool state)
 {
-	StateMap::const_iterator it = state_map_.find(state);
-	g_assert(it != state_map_.end());
 	docklet_ = egg_tray_icon_new("StarDict");
 	box_ = gtk_event_box_new();
 
-	gtk_tooltips_set_tip(tooltips_, box_, it->second.first.c_str(), NULL);
-	image_ = gtk_image_new_from_pixbuf(it->second.second);
+	if (hide_state_) {
+		gtk_tooltips_set_tip(tooltips_, box_, _("StarDict"), NULL);
+		image_ = gtk_image_new_from_pixbuf(normal_icon_);
+	} else if (state) {
+		gtk_tooltips_set_tip(tooltips_, box_, _("StarDict - Scanning"),
+				     NULL);
+		image_ = gtk_image_new_from_pixbuf(scan_icon_);
+	} else {
+		gtk_tooltips_set_tip(tooltips_, box_, _("StarDict - Stopped"),
+				     NULL);
+		image_ = gtk_image_new_from_pixbuf(stop_icon_);
+	}
+
 	cur_state_ = state;
 
 	g_signal_connect(G_OBJECT(docklet_), "embedded",
@@ -37,38 +64,40 @@ void DockLet::create_docklet(State state)
 	g_object_ref(G_OBJECT(docklet_));
 }
 
-DockLet::DockLet(GtkWidget *win, GtkTooltips *tooltips, const AppSkin& skin,
-		 State state) : TrayIcon(win)
+DockLet::DockLet(GtkWidget *win, bool state, GtkTooltips *tooltips,
+		 const AppSkin& skin) : TrayIcon(win)
 {
 	image_ = NULL;
 	embedded_ = false;
+	hide_state_ = false;
 
 	tooltips_ = tooltips;
 
-	state_map_[NORMAL_ICON] =
-		std::make_pair(_("StarDict"),
-			       skin.get_image("docklet_normal_icon"));
+	normal_icon_ = skin.get_image("docklet_normal_icon");
+	scan_icon_ =  skin.get_image("docklet_scan_icon");
+	stop_icon_ = skin.get_image("docklet_stop_icon");
 
-	state_map_[SCAN_ICON] =
-		std::make_pair(_("StarDict - Scanning"),
-			       skin.get_image("docklet_scan_icon"));
-
-	state_map_[STOP_ICON] =
-		std::make_pair(_("StarDict - Stopped"),
-			       skin.get_image("docklet_stop_icon"));
 	create_docklet(state);
 }
 
-void DockLet::set_state(State new_state)
+void DockLet::set_scan_mode(bool is_on)
 {
-	if (!image_ || new_state == cur_state_)
+	if (!image_ || (!hide_state_ && is_on == cur_state_))
 		return;
-	StateMap::const_iterator it = state_map_.find(new_state);
-	g_assert(it != state_map_.end());
 
-	gtk_tooltips_set_tip(tooltips_, box_, it->second.first.c_str(), NULL);
-	gtk_image_set_from_pixbuf(GTK_IMAGE(image_), it->second.second);
-	cur_state_ = new_state;
+	hide_state_ = false;
+
+	if (is_on) {
+		gtk_tooltips_set_tip(tooltips_, box_, _("StarDict - Scanning"),
+				     NULL);
+		gtk_image_set_from_pixbuf(GTK_IMAGE(image_), scan_icon_);
+	} else {
+		gtk_tooltips_set_tip(tooltips_, box_, _("StarDict - Stopped"),
+				     NULL);
+		gtk_image_set_from_pixbuf(GTK_IMAGE(image_), stop_icon_);
+	}
+
+	cur_state_ = is_on;
 }
 
 DockLet::~DockLet()
@@ -128,9 +157,9 @@ void DockLet::popup_menu(GdkEventButton *event)
 
 		gtk_widget_show_all(menu_.get());
 	}
-	bool scan_selection=conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection");
+
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(scan_menuitem_),
-				       scan_selection);
+				       cur_state_);
 
 	gtk_menu_popup(GTK_MENU(menu_.get()), NULL, NULL, NULL, NULL,
 		       event->button, event->time);
@@ -138,8 +167,8 @@ void DockLet::popup_menu(GdkEventButton *event)
 
 gboolean DockLet::docklet_create(gpointer data)
 {
+	g_assert(data);
 	DockLet *d = static_cast<DockLet *>(data);
-	g_assert(d);
 	d->create_docklet(d->cur_state_);
 	return FALSE; /* for when we're called by the glib idle handler */
 }
@@ -149,6 +178,14 @@ void DockLet::on_embedded(GtkWidget *widget, gpointer data)
 	static_cast<DockLet *>(data)->embedded_ = true;
 }
 
+void DockLet::hide_state()
+{
+	if (hide_state_)
+		return;
+	gtk_tooltips_set_tip(tooltips_, box_, _("StarDict"), NULL);
+	gtk_image_set_from_pixbuf(GTK_IMAGE(image_), normal_icon_);
+	hide_state_ = true;
+}
 
 gboolean DockLet::on_btn_press(GtkWidget *button, GdkEventButton *event,
 			       DockLet *oDockLet)
@@ -161,9 +198,7 @@ gboolean DockLet::on_btn_press(GtkWidget *button, GdkEventButton *event,
 		if ((event->state & GDK_CONTROL_MASK) &&
 		    !(event->state & GDK_MOD1_MASK) &&
 		    !(event->state & GDK_SHIFT_MASK)) {
-			bool scan_select =
-				conf->get_bool_at("dictionary/scan_selection");
-			oDockLet->on_change_scan_.emit(!scan_select);
+			oDockLet->on_change_scan_.emit(!oDockLet->cur_state_);
 			return TRUE;
 		} else {
 			if (GTK_WIDGET_VISIBLE(oDockLet->mainwin_))	

@@ -48,6 +48,7 @@ else
 fi
 
 DEP_MODULES="$DEP_MODULES sigc++-2.0 >= 2.0.0"
+DEP_MODULES="$DEP_MODULES gthread-2.0"
 
 dnl
 dnl Start of pkg-config checks

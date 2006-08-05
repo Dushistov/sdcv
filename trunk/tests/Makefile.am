@@ -1,4 +1,5 @@
-noinst_PROGRAMS = t_config_file t_dict t_fuzzy t_query t_lookupdata
+noinst_PROGRAMS = t_config_file t_dict t_fuzzy t_query t_lookupdata \
+	t_trayicon
 EXTRA_DIST = sample1.ifo sample1.idx sample1.dict
 
 if GNOME_SUPPORT
@@ -11,6 +12,11 @@ t_config_file_SOURCES = t_config_file.cpp \
 	$(top_builddir)/src/inifile.hpp $(top_builddir)/src/inifile.cpp \
 	$(top_builddir)/src/utils.h \
 	$(GCONF_MODULE_HPP) $(GCONF_MODULE_CPP)
+
+t_trayicon_SOURCES = t_trayicon.cpp \
+	$(top_builddir)/src/docklet.cpp $(top_builddir)/src/docklet.h \
+	$(top_builddir)/src/eggtrayicon.c $(top_builddir)/src/eggtrayicon.h \
+	$(top_builddir)/src/trayicon.hpp
 
 t_dict_SOURCES = t_dict.cpp
 t_dict_DEPENDENCIES = $(top_builddir)/src/lib/libstardict.a
@@ -27,4 +33,4 @@ t_lookupdata_DEPENDENCIES = $(top_builddir)/src/lib/libstardict.a
 LDADD = @STARDICT_LIBS@ $(top_builddir)/src/lib/libstardict.a
 INCLUDES = @STARDICT_CFLAGS@  -I$(top_builddir) -I$(top_builddir)/src -I$(top_builddir)/src/lib
 
-TESTS = t_config_file t_dict t_query t_lookupdata
+TESTS = t_config_file t_dict t_query t_lookupdata t_trayicon
