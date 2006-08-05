@@ -2,39 +2,49 @@
 #define __SD_DOCKLET_H__
 
 #include <gtk/gtk.h>
-#include "eggtrayicon.h"
+#include <map>
+#include <utility>
+#include <string>
 
-enum DockLetIconType {
-	DOCKLET_NORMAL_ICON,
-	DOCKLET_SCAN_ICON,
-	DOCKLET_STOP_ICON,
-};
+#include "utils.h"
 
-class DockLet {
+#include "trayicon.hpp"
+
+//forward declarations to speedup building
+class AppSkin;
+struct EggTrayIcon;
+
+class DockLet : public TrayIcon{
+public:
+	DockLet(GtkWidget *, GtkTooltips *, const AppSkin&,
+		State state = NORMAL_ICON);
+	~DockLet();
+	bool is_embedded() const { return embedded_; }
+	void set_state(State);
+	void minimize_to_tray();
+	void maximize_from_tray() {}
 private:
-	EggTrayIcon *docklet;
-	GtkWidget *box;
-	GtkWidget *image; //icon image.
-	GtkWidget *menu,*scan_menuitem;
-	DockLetIconType current_icon;
+	EggTrayIcon *docklet_;
+	GtkWidget *box_;
+	GtkWidget *image_; //icon image.
+	typedef  ResourceWrapper<GtkWidget, GtkWidget, gtk_widget_destroy> Menu;
+	Menu menu_;
+	GtkWidget *scan_menuitem_;
+	State cur_state_;
+	typedef std::map<State, std::pair<std::string, GdkPixbuf *> > StateMap;
+	StateMap state_map_;
+	GtkTooltips *tooltips_;
+	bool embedded_;
 
-	static void EmbeddedCallback(GtkWidget *widget, gpointer data);
-	static void DestroyedCallback(GtkWidget *widget, DockLet *oDockLet);
-	static gboolean ButtonPressCallback(GtkWidget *button, GdkEventButton *event, DockLet *oDockLet);	
+	static void on_embedded(GtkWidget *, gpointer);
+	static void on_destroy(GtkWidget *, DockLet *);
+	static gboolean on_btn_press(GtkWidget *, GdkEventButton *, DockLet *);
+	static void on_menu_scan(GtkCheckMenuItem *, gpointer);
+	static void on_quit(GtkMenuItem *, gpointer);
+	static gboolean docklet_create(gpointer);
 
-	static void MenuScanCallback(GtkCheckMenuItem *checkmenuitem, gpointer user_data);
-	static void MenuQuitCallback(GtkMenuItem *menuitem, gpointer user_data);
-	
-	static gboolean docklet_create(gpointer data);
-
-	void PopupMenu(GdkEventButton *event);
-public:	
-	gboolean embedded;
-
-	DockLet();
-	void Create(DockLetIconType iconType = DOCKLET_NORMAL_ICON);
-	void End();
-	void SetIcon(DockLetIconType icon_type);
+	void popup_menu(GdkEventButton *);
+	void create_docklet(State);
 };
 
 

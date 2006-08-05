@@ -5,202 +5,196 @@
 #include <glib/gi18n.h>
 
 #include "conf.h"
-#include "stardict.h"
+#include "eggtrayicon.h"
+#include "skin.h"
 
 #include "docklet.h"
 
-/*
-// for my_gtk_window_get_active()
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-*/
 
-DockLet::DockLet()
+void DockLet::create_docklet(State state)
 {
-	menu = NULL;
-	image = NULL;
-	embedded = false;	
-	current_icon = DOCKLET_NORMAL_ICON;
-}
+	StateMap::const_iterator it = state_map_.find(state);
+	g_assert(it != state_map_.end());
+	docklet_ = egg_tray_icon_new("StarDict");
+	box_ = gtk_event_box_new();
 
-void DockLet::Create(DockLetIconType iconType)
-{	
-	docklet = egg_tray_icon_new("StarDict");
-	box = gtk_event_box_new();
-	if (iconType == DOCKLET_NORMAL_ICON) {
-		gtk_tooltips_set_tip(gpAppFrame->tooltips, box,_("StarDict"),NULL);
-		image = gtk_image_new_from_pixbuf(gpAppFrame->oAppSkin.docklet_normal_icon.get());
-	} else if (iconType == DOCKLET_SCAN_ICON) {
-		gtk_tooltips_set_tip(gpAppFrame->tooltips, box,_("StarDict - Scanning"),NULL);
-		image = gtk_image_new_from_pixbuf(gpAppFrame->oAppSkin.docklet_scan_icon.get());
-	} else {
-		gtk_tooltips_set_tip(gpAppFrame->tooltips, box,_("StarDict - Stopped"),NULL);
-		image = gtk_image_new_from_pixbuf(gpAppFrame->oAppSkin.docklet_stop_icon.get());
-	}
-	current_icon = iconType;
+	gtk_tooltips_set_tip(tooltips_, box_, it->second.first.c_str(), NULL);
+	image_ = gtk_image_new_from_pixbuf(it->second.second);
+	cur_state_ = state;
 
-	g_signal_connect(G_OBJECT(docklet), "embedded", G_CALLBACK(EmbeddedCallback), NULL);
-	g_signal_connect(G_OBJECT(docklet), "destroy", G_CALLBACK(DestroyedCallback), this);
-	g_signal_connect(G_OBJECT(box), "button-press-event", G_CALLBACK(ButtonPressCallback), this);
+	g_signal_connect(G_OBJECT(docklet_), "embedded",
+			 G_CALLBACK(on_embedded), this);
+	g_signal_connect(G_OBJECT(docklet_), "destroy", G_CALLBACK(on_destroy),
+			 this);
+	g_signal_connect(G_OBJECT(box_), "button-press-event",
+			 G_CALLBACK(on_btn_press), this);
 
-	gtk_container_add(GTK_CONTAINER(box), image);
-	gtk_container_add(GTK_CONTAINER(docklet), box);
-	gtk_widget_show_all(GTK_WIDGET(docklet));
+	gtk_container_add(GTK_CONTAINER(box_), image_);
+	gtk_container_add(GTK_CONTAINER(docklet_), box_);
+	gtk_widget_show_all(GTK_WIDGET(docklet_));
 
 	/* ref the docklet before we bandy it about the place */
-	g_object_ref(G_OBJECT(docklet));	
+	g_object_ref(G_OBJECT(docklet_));
 }
 
-void DockLet::SetIcon(DockLetIconType icon_type)
+DockLet::DockLet(GtkWidget *win, GtkTooltips *tooltips, const AppSkin& skin,
+		 State state) : TrayIcon(win)
 {
-	if (!image)
+	image_ = NULL;
+	embedded_ = false;
+
+	tooltips_ = tooltips;
+
+	state_map_[NORMAL_ICON] =
+		std::make_pair(_("StarDict"),
+			       skin.get_image("docklet_normal_icon"));
+
+	state_map_[SCAN_ICON] =
+		std::make_pair(_("StarDict - Scanning"),
+			       skin.get_image("docklet_scan_icon"));
+
+	state_map_[STOP_ICON] =
+		std::make_pair(_("StarDict - Stopped"),
+			       skin.get_image("docklet_stop_icon"));
+	create_docklet(state);
+}
+
+void DockLet::set_state(State new_state)
+{
+	if (!image_ || new_state == cur_state_)
 		return;
-	if (current_icon == icon_type)
-		return;
-	GdkPixbuf *p;
-	switch (icon_type) {
-		case DOCKLET_SCAN_ICON:
-			gtk_tooltips_set_tip(gpAppFrame->tooltips, box,_("StarDict - Scanning"),NULL);
-			p = gpAppFrame->oAppSkin.docklet_scan_icon.get();
-			break;
-		case DOCKLET_STOP_ICON:
-			gtk_tooltips_set_tip(gpAppFrame->tooltips, box,_("StarDict - Stopped"),NULL);
-			p = gpAppFrame->oAppSkin.docklet_stop_icon.get();
-			break;
-		default:
-			gtk_tooltips_set_tip(gpAppFrame->tooltips, box,_("StarDict"),NULL);
-			p = gpAppFrame->oAppSkin.docklet_normal_icon.get();
-			break;
-	}
-	gtk_image_set_from_pixbuf(GTK_IMAGE(image),p);
-	current_icon = icon_type;
+	StateMap::const_iterator it = state_map_.find(new_state);
+	g_assert(it != state_map_.end());
+
+	gtk_tooltips_set_tip(tooltips_, box_, it->second.first.c_str(), NULL);
+	gtk_image_set_from_pixbuf(GTK_IMAGE(image_), it->second.second);
+	cur_state_ = new_state;
 }
 
-void DockLet::End()
+DockLet::~DockLet()
 {
-	while (g_source_remove_by_user_data(&docklet)) {
-	}
-	
-	g_signal_handlers_disconnect_by_func(G_OBJECT(docklet), (void *)(DestroyedCallback), this);
-	gtk_widget_destroy(GTK_WIDGET(docklet));
-	g_object_unref(G_OBJECT(docklet));
-	
-	if (menu)
-		gtk_widget_destroy(menu);
+	while (g_source_remove_by_user_data(&docklet_))
+		;
+
+	g_signal_handlers_disconnect_by_func(G_OBJECT(docklet_),
+					     (void *)(on_destroy), this);
+	gtk_widget_destroy(GTK_WIDGET(docklet_));
+	g_object_unref(G_OBJECT(docklet_));
 }
 
-void DockLet::DestroyedCallback(GtkWidget *widget, DockLet *oDockLet)
+void DockLet::on_destroy(GtkWidget *widget, DockLet *oDockLet)
 {
-	oDockLet->embedded = false;
-	oDockLet->image = NULL;
-	/*if (!(GTK_WIDGET_VISIBLE(gpAppFrame->oAppCore.window)))
-		gtk_widget_show(gpAppFrame->oAppCore.window); // it is better not to use gtk_window_present().
-	*/
-	while (g_source_remove_by_user_data(&(oDockLet->docklet))) {
-	}
-	g_object_unref(G_OBJECT(oDockLet->docklet));
+	oDockLet->embedded_ = false;
+	oDockLet->image_ = NULL;
 
-	g_idle_add(oDockLet->docklet_create, (gpointer)(oDockLet->current_icon)); //when user add Nofification area applet again,it will show icon again.
+	while (g_source_remove_by_user_data(&oDockLet->docklet_))
+		;
+	g_object_unref(G_OBJECT(oDockLet->docklet_));
+
+	//when user add Nofification area applet again,it will show icon again.
+	g_idle_add(oDockLet->docklet_create, gpointer(oDockLet));
 }
 
-void DockLet::MenuScanCallback(GtkCheckMenuItem *checkmenuitem, gpointer user_data)
+void DockLet::on_menu_scan(GtkCheckMenuItem *checkmenuitem, gpointer user_data)
 {
-  conf->set_bool_at("dictionary/scan_selection",
-								 gtk_check_menu_item_get_active(checkmenuitem));
+	static_cast<DockLet *>(user_data)->on_change_scan_.emit(
+		gtk_check_menu_item_get_active(checkmenuitem));
 }
 
-void DockLet::MenuQuitCallback(GtkMenuItem *menuitem, gpointer user_data)
+void DockLet::on_quit(GtkMenuItem *menuitem, gpointer user_data)
 {
-	gpAppFrame->Quit();
+	static_cast<DockLet *>(user_data)->on_quit_.emit();
 }
 
-void DockLet::PopupMenu(GdkEventButton *event)
+void DockLet::popup_menu(GdkEventButton *event)
 {
-	if (!menu) {	
-		menu = gtk_menu_new();
-	
-		scan_menuitem = gtk_check_menu_item_new_with_mnemonic(_("_Scan"));		
-		g_signal_connect(G_OBJECT(scan_menuitem), "toggled", G_CALLBACK(MenuScanCallback), NULL);
-		gtk_menu_shell_append(GTK_MENU_SHELL(menu), scan_menuitem);
-	
-		GtkWidget *menuitem;
-		menuitem = gtk_separator_menu_item_new();
-		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+	if (!menu_.get()) {
+		menu_.reset(gtk_menu_new());
+
+		scan_menuitem_ = gtk_check_menu_item_new_with_mnemonic(_("_Scan"));
+		g_signal_connect(G_OBJECT(scan_menuitem_), "toggled",
+				 G_CALLBACK(on_menu_scan), this);
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu_.get()), scan_menuitem_);
+
+		GtkWidget *menuitem = gtk_separator_menu_item_new();
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu_.get()), menuitem);
 
 		menuitem = gtk_image_menu_item_new_with_mnemonic(_("_Quit"));
 		GtkWidget *image;
 		image = gtk_image_new_from_stock(GTK_STOCK_QUIT, GTK_ICON_SIZE_MENU);
 		gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(menuitem), image);
-		g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(MenuQuitCallback), NULL);
-		gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+		g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(on_quit), this);
+		gtk_menu_shell_append(GTK_MENU_SHELL(menu_.get()), menuitem);
 
-		gtk_widget_show_all(menu);
+		gtk_widget_show_all(menu_.get());
 	}
-	bool scan_selection=conf->get_bool_at("dictionary/scan_selection");
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(scan_menuitem),
-																 scan_selection);
-	
-	gtk_menu_popup(GTK_MENU(menu), NULL, NULL, NULL, NULL, event->button, event->time);
+	bool scan_selection=conf->get_bool("/apps/stardict/preferences/dictionary/scan_selection");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(scan_menuitem_),
+				       scan_selection);
+
+	gtk_menu_popup(GTK_MENU(menu_.get()), NULL, NULL, NULL, NULL,
+		       event->button, event->time);
 }
 
 gboolean DockLet::docklet_create(gpointer data)
 {
-	gpAppFrame->oDockLet.Create((DockLetIconType)(GPOINTER_TO_INT(data)));
-	return false; /* for when we're called by the glib idle handler */
+	DockLet *d = static_cast<DockLet *>(data);
+	g_assert(d);
+	d->create_docklet(d->cur_state_);
+	return FALSE; /* for when we're called by the glib idle handler */
 }
 
-void DockLet::EmbeddedCallback(GtkWidget *widget, gpointer data)
+void DockLet::on_embedded(GtkWidget *widget, gpointer data)
 {
-	gpAppFrame->oDockLet.embedded = true;	
+	static_cast<DockLet *>(data)->embedded_ = true;
 }
 
-/*
-static gboolean my_gtk_window_get_active(GtkWidget *main_window)
-{
-	// this don't perform very well, i hope gtk can support it some days.
-	// code come from libwnck/ screen.c/ update_active_window().
-	static Atom active_window_atom = None;
-	
-	if (active_window_atom == None)
-		active_window_atom = XInternAtom (gdk_display, "_NET_ACTIVE_WINDOW", FALSE);
-	
-	Atom type;
-	int format;
-	gulong nitems;
-	gulong bytes_after;
-	Window *w;
-	Window active_window;
 
-	int err, result;
-	gdk_error_trap_push ();
-	type = None;
-	result = XGetWindowProperty (gdk_display,
-			       GDK_ROOT_WINDOW(),
-			       active_window_atom,
-			       0, G_MAXLONG,
-			       False, XA_WINDOW, &type, &format, &nitems,
-			       &bytes_after, (guchar **)&w);		
-	XSync (gdk_display, False);
-	err = gdk_error_trap_pop ();
-	if (err != Success || result != Success) {
-    	return FALSE;
+gboolean DockLet::on_btn_press(GtkWidget *button, GdkEventButton *event,
+			       DockLet *oDockLet)
+{
+	if (event->type != GDK_BUTTON_PRESS)
+		return FALSE;
+
+	switch (event->button) {
+	case 1:
+		if ((event->state & GDK_CONTROL_MASK) &&
+		    !(event->state & GDK_MOD1_MASK) &&
+		    !(event->state & GDK_SHIFT_MASK)) {
+			bool scan_select =
+				conf->get_bool_at("dictionary/scan_selection");
+			oDockLet->on_change_scan_.emit(!scan_select);
+			return TRUE;
+		} else {
+			if (GTK_WIDGET_VISIBLE(oDockLet->mainwin_))	
+				gtk_widget_hide(oDockLet->mainwin_);
+			else
+				oDockLet->on_maximize_.emit();
+		}	
+		break;
+	case 2:
+		oDockLet->on_middle_button_click_.emit();
+		return TRUE;
+	case 3:
+		oDockLet->popup_menu(event);
+		return TRUE;
+	default:
+		/* nothing */;
+		break;
 	}
-
-	if (type != XA_WINDOW)
-    {
-      XFree (w);
-      return FALSE;
-    }
-	active_window = *w;
-	XFree (w);
-		
-	if (active_window == GDK_WINDOW_XID(main_window->window))
-		return true;
-	else
-		return false;
+	return FALSE;
 }
-*/
 
+void DockLet::minimize_to_tray()
+{
+	if (embedded_)
+		gtk_widget_hide(mainwin_);
+	else
+		on_quit_.emit();
+}
+
+
+#if 0
 gboolean DockLet::ButtonPressCallback(GtkWidget *button, GdkEventButton *event, DockLet *oDockLet)
 {
 	if (event->type != GDK_BUTTON_PRESS)
@@ -209,37 +203,38 @@ gboolean DockLet::ButtonPressCallback(GtkWidget *button, GdkEventButton *event, 
 	if (event->button ==1) {
 		
 		if ((event->state & GDK_CONTROL_MASK) && 
-				!(event->state & GDK_MOD1_MASK) && 
-				!(event->state & GDK_SHIFT_MASK)) {
-      conf->set_bool_at("dictionary/scan_selection",
-										 !conf->get_bool_at("dictionary/scan_selection"));
+		    !(event->state & GDK_MOD1_MASK) && 
+		    !(event->state & GDK_SHIFT_MASK)) {
+			conf->set_bool_at("dictionary/scan_selection",
+					  !conf->get_bool_at("dictionary/scan_selection"));
 			return true;
-    } else {			
+		} else {			
 			if (GTK_WIDGET_VISIBLE(gpAppFrame->window)) {
 				//if (GTK_WINDOW(gpAppFrame->window)->is_active) {
 				//if (my_gtk_window_get_active(gpAppFrame->window)) {
 				gtk_widget_hide(gpAppFrame->window);
-      }	else {
+			}	else {
 				gtk_window_present(GTK_WINDOW(gpAppFrame->window));
 				if (gtk_entry_get_text(GTK_ENTRY(GTK_COMBO(gpAppFrame->oTopWin.WordCombo)->entry))[0]) {
-				  gtk_widget_grab_focus(gpAppFrame->oMidWin.oTextWin.view->Widget()); //so user can input word directly.
+					gtk_widget_grab_focus(gpAppFrame->oMidWin.oTextWin.view->Widget()); //so user can input word directly.
 				} else {
 					gtk_widget_grab_focus(GTK_COMBO(gpAppFrame->oTopWin.WordCombo)->entry); //this won't change selection text.
 				}
 			}
 		}		
-  } else if (event->button ==2) {
+	} else if (event->button ==2) {
 		if (conf->get_bool_at("notification_area_icon/query_in_floatwin")) {
 			gpAppFrame->oSelection.LastClipWord.clear();
 			gtk_selection_convert(gpAppFrame->oSelection.selection_widget, GDK_SELECTION_PRIMARY, gpAppFrame->oSelection.UTF8_STRING_Atom, GDK_CURRENT_TIME);
-    } else {
+		} else {
 			gtk_window_present(GTK_WINDOW(gpAppFrame->window));
 			gtk_selection_convert (gpAppFrame->oMidWin.oTextWin.view->Widget(), GDK_SELECTION_PRIMARY, gpAppFrame->oSelection.UTF8_STRING_Atom, GDK_CURRENT_TIME);
 		}
 		return true;
-  } else if (event->button ==3) {
+	} else if (event->button ==3) {
 		oDockLet->PopupMenu(event);
 		return true;
 	}
 	return false;
 }
+#endif

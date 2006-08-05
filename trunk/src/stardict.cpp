@@ -54,8 +54,10 @@
 #  include <gdk/gdkwin32.h>
 #  include <windows.h>
 #  include "win32/intl.h"
-
+#  include "systray.h"
 HINSTANCE stardictexe_hInstance;
+#else
+#  include "docklet.h"
 #endif
 
 #include "splash.h"
@@ -65,6 +67,7 @@ HINSTANCE stardictexe_hInstance;
 #include "iskeyspressed.hpp"
 #include "class_factory.hpp"
 #include "progresswin.hpp"
+#include "trayicon.hpp"
 
 #include "stardict.h"
 
@@ -230,7 +233,7 @@ void Application::Create(gchar *queryword)
 	unlock_keys.reset(static_cast<hotkeys *>(stardict_class_factory::create_class_by_name("hotkeys", GTK_WINDOW(window))));
 	unlock_keys->set_comb(combnum2str(conf->get_int_at("dictionary/scan_modifier_key")));
 	oFloatWin.Create();
-	tray_icon_.reset(new DockLet(window));
+	tray_icon_.reset(new DockLet(window, tooltips, oAppSkin));
 	
 	tray_icon_->on_quit_.connect(sigc::mem_fun(this, &Application::Quit));
 	tray_icon_->on_change_scan_.connect(sigc::mem_fun(this,
@@ -288,18 +291,10 @@ void Application::Create(gchar *queryword)
 		oMidWin.oTextWin.ShowInitFailed();
 }
 
-gboolean Application::on_delete_event(GtkWidget * window, GdkEvent *event,
-									  Application *app)
+gboolean Application::on_delete_event(GtkWidget *, GdkEvent *, Application *app)
 {
-#ifdef _WIN32	
 	app->tray_icon_->minimize_to_tray();
-#else
-	if (app->tray_icon_->embedded)
-		gtk_widget_hide(app->window);
-	else
-		app->Quit();
-#endif
-	return true;
+	return TRUE;
 }
 
 gboolean Application::on_window_state_event(GtkWidget * window, GdkEventWindowState *event , Application *app)
@@ -344,14 +339,7 @@ gboolean Application::vKeyPressReleaseCallback(GtkWidget * window, GdkEventKey *
 	}
 	else if ((event->keyval==GDK_x || event->keyval==GDK_X) && only_mod1_pressed) {
 		if (event->type==GDK_KEY_PRESS) {
-#ifdef _WIN32
 			oAppCore->tray_icon_->minimize_to_tray();
-#else
-			if (oAppCore->tray_icon_->embedded)
-				gtk_widget_hide(window);
-			else
-				gpAppFrame->Quit();
-#endif
 		}
 	}
 	else if ((event->keyval==GDK_z || event->keyval==GDK_Z) && only_mod1_pressed) {

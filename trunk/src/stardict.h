@@ -12,6 +12,7 @@
 # include <libgnome/libgnome.h>
 #endif
 
+class TrayIcon;
 class Application;
 
 #include "conf.h"
@@ -19,12 +20,9 @@ class Application;
 #include "skin.h"
 #include "mainwin.h"
 #ifdef _WIN32
-#  include "win32/systray.h"
 #  include "win32/clipboard.h"
 #  include "win32/mouseover.h"
 #  include "win32/hotkey.h"
-#else
-#  include "docklet.h"
 #endif
 #include "floatwin.h"
 #include "selection.h"
