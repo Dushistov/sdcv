@@ -21,17 +21,18 @@ public:
 	void minimize_to_tray();
 	void maximize_from_tray();
 private:
+	bool hide_state_;
+	bool cur_state_;
+
 	EggTrayIcon *docklet_;
 	GtkWidget *box_;
 	GtkWidget *image_; //icon image.
 	typedef  ResourceWrapper<GtkWidget, GtkWidget, gtk_widget_destroy> GMenu;
 	GMenu menu_;
-	GtkWidget *scan_menuitem_;
-	bool cur_state_;
+	GtkWidget *scan_menuitem_;	
 	GdkPixbuf *normal_icon_, *stop_icon_, *scan_icon_;
 	GtkTooltips *tooltips_;
-	bool embedded_;
-	bool hide_state_;
+	bool embedded_;	
 
 	static void on_embedded(GtkWidget *, gpointer);
 	static void on_destroy(GtkWidget *, DockLet *);

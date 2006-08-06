@@ -12,13 +12,13 @@
 # include <libgnome/libgnome.h>
 #endif
 
-class TrayIcon;
 class Application;
 
 #include "conf.h"
 #include "lib/lib.h"
 #include "skin.h"
 #include "mainwin.h"
+#include "trayicon.hpp"
 #ifdef _WIN32
 #  include "win32/clipboard.h"
 #  include "win32/mouseover.h"

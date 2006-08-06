@@ -54,7 +54,7 @@
 #  include <gdk/gdkwin32.h>
 #  include <windows.h>
 #  include "win32/intl.h"
-#  include "systray.h"
+#  include "win32/systray.h"
 HINSTANCE stardictexe_hInstance;
 #else
 #  include "docklet.h"
@@ -231,7 +231,7 @@ void Application::Create(gchar *queryword)
 	unlock_keys->set_comb(combnum2str(conf->get_int_at("dictionary/scan_modifier_key")));
 	oFloatWin.Create();
 	bool scan = conf->get_bool_at("dictionary/scan_selection");
-	tray_icon_.reset(new DockLet(window, scan, tooltips, oAppSkin));
+	tray_icon_.reset(new DockLet(window, scan));
 	
 	tray_icon_->on_quit_.connect(sigc::mem_fun(this, &Application::Quit));
 	tray_icon_->on_change_scan_.connect(sigc::mem_fun(this,

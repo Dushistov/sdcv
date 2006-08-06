@@ -33,7 +33,6 @@
 #include "conf.h"
 #include "utils.h"
 #include "iskeyspressed.hpp"
-#include "trayicon.hpp"
 
 #include "floatwin.h"
 

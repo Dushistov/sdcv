@@ -361,14 +361,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\lib\collation.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\lib\common.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\conf.h"
 				>
 			</File>
@@ -377,27 +369,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\lib\data.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\dictmanagedlg.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\lib\dictziplib.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\lib\distance.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\eggtrayicon.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\lib\file.hpp"
 				>
 			</File>
 			<File
@@ -426,22 +402,6 @@
 			</File>
 			<File
 				RelativePath="..\src\iskeyspressed.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\lib\kmp.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\lib\lib.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\lib\m_ctype.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\lib\m_string.h"
 				>
 			</File>
 			<File
@@ -505,6 +465,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\trayicon.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\lib\treedict.hpp"
 				>
 			</File>
@@ -521,6 +485,50 @@
 				>
 				<File
 					RelativePath="..\src\win32\systray.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="lib"
+				>
+				<File
+					RelativePath="..\src\lib\collation.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lib\common.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lib\data.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lib\dictziplib.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lib\distance.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lib\file.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lib\kmp.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lib\lib.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lib\m_ctype.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lib\m_string.h"
 					>
 				</File>
 			</Filter>
