@@ -1,0 +1,145 @@
+# Ukrainian translations for sdcv package
+# Українські переклади для пакету sdcv.
+# Copyright (C) 2004 THE sdcv'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the sdcv package.
+#  <dushistov@mail.ru>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sdcv 0.3\n"
+"Report-Msgid-Bugs-To: dushistov@mail.ru\n"
+"POT-Creation-Date: 2006-04-24 15:18+0400\n"
+"PO-Revision-Date: 2004-12-14 17:54+0300\n"
+"Last-Translator:  <dubyk@lsl.lviv.ua>\n"
+"Language-Team: Ukrainian <dubyk@lsl.lviv.ua>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: src/sdcv.cpp:127
+#, c-format
+msgid ""
+"Unknown option.\n"
+"Try '%s --help' for more information.\n"
+msgstr ""
+"НевЁдома опцЁя.\n"
+"Спробуйте '%s --help' для отримання докладнішої інформації.\n"
+
+#: src/sdcv.cpp:134
+#, c-format
+msgid "Usage: %s [OPTIONS] words\n"
+msgstr "Використання: %s [OPTIONS] слова\n"
+
+#: src/sdcv.cpp:135
+#, c-format
+msgid "-h, --help               display this help and exit\n"
+msgstr "-h, --help               показати це повідомлення і завершити роботу\n"
+
+#: src/sdcv.cpp:136
+#, c-format
+msgid "-v, --version            display version information and exit\n"
+msgstr "-v, --version            показати номер версії і завершити роботу\n"
+
+#: src/sdcv.cpp:137
+#, c-format
+msgid ""
+"-l, --list-dicts         display list of available dictionaries and exit\n"
+msgstr ""
+"-l, --list-dicts         показати список доступних словників і завершити "
+"роботу\n"
+
+#: src/sdcv.cpp:138
+#, c-format
+msgid ""
+"-u, --use-dict bookname  for search use only dictionary with this bookname\n"
+msgstr ""
+"-u, --use-dict ім`я словника  для пошуку використовувати лише цей словник\n"
+
+#: src/sdcv.cpp:139
+#, c-format
+msgid "-n, --non-interactive    for use in scripts\n"
+msgstr "-n, --non-interactive    для використання у 'скриптах'\n"
+
+#: src/sdcv.cpp:140
+#, c-format
+msgid "--utf8-output            output must be in utf8\n"
+msgstr "--utf8-output            вивід програми повинен бути в utf8\n"
+
+#: src/sdcv.cpp:141
+#, c-format
+msgid "--utf8-input             input of sdcv in utf8\n"
+msgstr "--utf8-input             ввід програми в utf8\n"
+
+#: src/sdcv.cpp:142
+#, c-format
+msgid ""
+"--data-dir path/to/dir   use this directory as path to stardict data "
+"directory\n"
+msgstr ""
+"--data-dir тека    використовувати цю теку як шлях до stardict data "
+"directory\n"
+
+#: src/sdcv.cpp:148
+#, c-format
+msgid "Console version of Stardict, version %s\n"
+msgstr "Консольна версія Зоряного словника [Stardict], номер версії %s\n"
+
+#: src/sdcv.cpp:169
+#, fuzzy, c-format
+msgid "Dictionary's name   Word count\n"
+msgstr "назва словника     кількість слів\n"
+
+#: src/sdcv.cpp:191
+#, c-format
+msgid "g_mkdir failed: %s\n"
+msgstr ""
+
+#: src/sdcv.cpp:207
+msgid "Enter word or phrase: "
+msgstr "ВведЁть слово або фразу: "
+
+#: src/sdcv.cpp:215
+#, c-format
+msgid "There are no words/phrases to translate.\n"
+msgstr "Не задано слова/фрази для перекладу.\n"
+
+#: src/libwrapper.cpp:245
+msgid "popen failed"
+msgstr ""
+
+#: src/libwrapper.cpp:282
+#, c-format
+msgid "Can not convert %s to utf8.\n"
+msgstr "Не можу перетворити %s у utf8.\n"
+
+#: src/libwrapper.cpp:339 src/libwrapper.cpp:371
+#, c-format
+msgid "Found %d items, similar to %s.\n"
+msgstr "Знайдено %d слів, схожих на %s.\n"
+
+#: src/libwrapper.cpp:352
+#, fuzzy, c-format
+msgid "Your choice[-1 to abort]: "
+msgstr "Ваш вибір: "
+
+#: src/libwrapper.cpp:366
+#, fuzzy, c-format
+msgid ""
+"Invalid choise.\n"
+"It must be from 0 to %d or -1.\n"
+msgstr ""
+"Неправильний вибір.\n"
+"Повинно бути від 0 до %d.\n"
+
+#: src/libwrapper.cpp:382
+#, c-format
+msgid "Nothing similar to %s, sorry :(\n"
+msgstr "Нічого схожого на %s, даруйте :(\n"
+
+#~ msgid "Can not convert %s to current locale.\n"
+#~ msgstr "Не можу перетворити %s у локальне кодування.\n"
+
+#~ msgid "There is no dictionary with this bookname: %s.\n"
+#~ msgstr "Словника з таким іменем не існує: %s.\n"

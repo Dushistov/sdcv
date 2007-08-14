@@ -1,0 +1,70 @@
+sdcv-0.4.1 2005-12-10
+
+01 Nov 2005
+Adding a Chinese (traditional)  translation.
+Thanks to  Wei-Lun Chao <chaoweilun@pcmail.com.tw>.
+
+06 Sep 2005
+Adding a  Ukrainian translation.
+Thanks to  Serhij u Netrjah <dubyk@ukr.net>.
+
+sdcv-0.4 2005-06-07
+* Fix several bugs
+* libstardict by default linked statically with sdcv
+* Add a Simplified Chinese translation
+* documentation update
+* add ability to use readline library with sdcv
+* add ability hold history in ~/.sdcv_history
+
+Mon, 17 Jan 2005
+Adding a Simplified Chinese translation.
+Thanks to Cai Qian<caiqian@citiz.net>.
+
+16.01.2005
+Change code to make compilation on FreeBSD possible.
+Thank to Vladimir Kushnir for patch.
+
+sdcv 0.3.4 - 11.01.2005
+fixing handle results of fuzzy search
+make process_phrase more clever when show results
+cleanup interface of libstardict
+
+sdcv 0.3.3 - 05.01.2005
+fix in error in using -u option
+update slovak translation 
+thanks to Zdenko Podobny
+
+sdcv 0.3.2 - 03.01.2005
+fix error in working with gziped idx files, thanks to Zdenko Podobny
+<zdpo@mailbox.sk> for bug report.
+add slovak translation thanks again to Zdenko Podobny
+little changes in interface
+
+sdcv 0.3.1
+
+Fix SF in libstardict(bug in Lib::Lookup), 
+thanks to Andrey Bircoph for bug report,
+
+install needable headers for easy compilation 
+any application with libstardict(Vadim Suhanov advise).
+
+Update man page.
+
+sdcv 0.3
+
+Rewrite search engine to make it faster.
+Make translation of sdcv's meesages easy.
+Update man page.
+
+sdcv 0.2
+
+Add new options(Sheng Han request), use automake, autoconf, gettext.
+Divide sdcv from two parts: libstardict and sdcv by it self.
+Fix problem of compilation(do not include unistd.h to lib.h),
+thanks to CHAN Yee Seng and Amal Manuel for bug reports.
+Add man page.
+
+sdcv 0.1
+
+Initial release, thanks to Hu Zheng(author of StarDict) for help,
+and his code

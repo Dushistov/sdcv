@@ -1,0 +1,87 @@
+.TH SDCV 1 "2006-04-24" "sdcv-0.4.2"
+.SH NAME
+sdcv \- console version of StarDict program
+.SH SYNOPSIS
+.B sdcv 
+[ 
+.BI options 
+] 
+[list of words]
+.SH DESCRIPTION
+.I sdcv 
+is simple, cross-platform text-base utility 
+for work with dictionaries in StarDict's format.
+The word from "list of words" may be string 
+with leading '/' for using  Fuzzy search algorithm, 
+with leading '|' for using full-text search,
+string may contain '?' and '*' for using regexp search.
+It work in interactive and not interactive mode. 
+To exit from interactive mode press Ctrl+D. 
+In interactive mode, 
+if sdcv was compiled with readline library support,
+you can use UP and DOWN keys to work through history.
+.SH OPTIONS
+.TP 8
+.B "\-h  \-\-help"
+display help message and exit
+.TP 8
+.B "\-v \-\-verbose"
+display version and exit
+.TP 8
+.B "\-l \-\-list\-dicts" 
+display list of available dictionaries and exit
+.TP 8
+.B "\-u \-\-use\-dict filename"
+for search use only dictionary with this bookname
+.TP 8
+.B "\-n \-\-non\-interactive"
+for use in scripts
+.TP 8
+.B "\-\-utf8\-output"
+Force sdcv not use conversation to locale charset, output in utf8
+.TP 8
+.B "\-\-utf8\-input"
+Force sdcv not use conversation from locale charset, suppose that
+input in utf8
+.TP 8
+.B "\-\-data\-dir path/to/directory" 
+Use this directory as path to stardict data directory. This is mean that
+sdcv search dictionaries in data-dir/dic directory.
+.SH FILES
+.TP 
+/usr/share/stardict/dic 
+.TP
+$(HOME)/.stardict/dic
+
+Place, where sdcv expect to find dictionaries.
+Instead of /usr/share/stardict/dic you can use everything
+that you want, just set STARDICT_DATA_DIR enviroment variable.
+For example, if you have dictionaries in /mnt/data/stardict-dicts/dic,
+set STARDICT_DATA_DIR to /mnt/data/stardict-dicts.
+.TP
+$(HOME)/.sdcv_history
+
+This file include last  $(SDCV_HISTSIZE) words, which you seek with sdcv. 
+SDCV use this file only if it was compiled with readline library support.
+
+.SH ENVIROMENT 
+Environment Variables Used By \fIsdcv\fR:
+.TP 20
+.B STARDICT_DATA_DIR
+If set, sdcv use this variable as data directory, this is mean that sdcv
+search dictionaries in $\fBSTARDICT_DATA_DIR\fR\\dic
+.TP 20
+.B SDCV_HISTSIZE
+If set, sdcv wrote in $(HOME)/.sdcv_history only last $(SDCV_HISTSIZE) words, 
+which you seek using sdcv. If it is not set, then last 2000 words saved in $(HOME)/.sdcv_history.
+.TP 20
+.B SDCV_PAGER
+If SDCV_PAGER is set, its value is used as the  name of the program
+to use to display the dictionary's article.
+.SH BUGS
+Email bug reports to dushistov at mail dot ru. Be sure to include the word
+"sdcv" somewhere in the "Subject:" field.
+.SH AUTHORS
+Evgeniy A. Dushistov, Hu Zheng
+.SH SEE ALSO
+stardict(1), http://sdcv.sourceforge.net/, http://stardict.sourceforge.net 

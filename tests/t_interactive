@@ -1,0 +1,12 @@
+#!/bin/sh
+
+../src/sdcv -n >/dev/null 2>&1 &
+PID=$!
+sleep 1
+
+if kill -0 $PID >/dev/null 2>&1 ; then
+	echo "process wait input: $PID, test failed" >&2
+	exit 1
+fi
+
+exit 0

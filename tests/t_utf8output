@@ -1,0 +1,11 @@
+#!/bin/sh
+
+export LANG=ru_RU.KOI8-R
+unset SDCV_PAGER
+
+if ! ../src/sdcv -n --utf8-output man | tail -n -1 | iconv -f utf-8 -t utf-8 >/dev/null; then
+	echo "utf8 output didn't work" >&2
+	exit 1
+fi
+
+exit 0

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+unset SDCV_PAGER
+have=`../src/sdcv --data-dir ./ -l | wc -l`
+let have=have-1
+ndicts=`find "${HOME}"/.stardict/dic -name "*.ifo" -print | wc -l`
+let ndicts=ndicts+1
+if [ $have -ne $ndicts ]; then
+	let ndicts=ndicts-1
+	echo "test failed: sdcv says: we have: $have, but really we have: $ndicts" >&2
+	exit 1
+fi
+
+exit 0
