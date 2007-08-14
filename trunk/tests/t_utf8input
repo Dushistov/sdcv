@@ -1,0 +1,23 @@
+#!/bin/sh
+# This test is dirty hack: if you want try it
+# make sure that you have not small Russian dictionary, like mueller 7 GPL
+# or replace человек by something else
+
+unset SDCV_PAGER
+export LANG=ru_RU.KOI8-R
+IFS="
+"
+j=0
+for i in `../src/sdcv --utf8-input -n человек 2>&1`; do
+	let j=j+1
+	if [ $j -ne 1 ]; then
+		break;
+	fi
+done
+
+if [ $j -eq 1 ]; then
+	echo "empty results of search: test failed" >&2
+	exit 1
+fi
+
+exit 0

@@ -1,0 +1,53 @@
+Version 0.4.2
+* Cache scheme has been rewritten, size of cache has been reduced
+* Merge with stardict, speedup of lookup, and add full-text search
+* Russian translation update
+
+Version 0.4.1
+* Recreate cache if idx file was modified 
+* Abbility to use pager(SDCV_PAGER)
+* Add Chinese (traditional)  translation
+* Add  Ukrainian translation
+
+Version 0.4
+* Fix several bugs
+* libstardict by default linked statically with sdcv
+* Add a Simplified Chinese translation
+* documentation update
+* add ability to use readline library with sdcv
+* add ability hold history in ~/.sdcv_history
+
+Version 0.3.4
+* Fix bug of handling of fuzzy search
+* More clever showing search results
+
+Version 0.3.3
+* Fix bug in using -u option
+* Update Slovak translation
+
+Version 0.3.2
+* Fix bug in Dictionary::load for correct work with gzip'ed idx files
+* Add Slovak translation
+* Change format of output for -l option
+
+Version 0.3.1
+* Fix bug in Lib::Lookup, which cause SF and other problems in search
+* Change installation procedure to install with libstardict headers files,
+* to help compile any application with libstardict
+* Documentation update
+
+Version 0.3
+* update libstardict, make search in dictionaries and loading of dictionaries
+faster
+* add --data-dir option
+* -u, --use-dict now take bookname as argument, not a name of 'ifo' file
+* documentation update and improve
+
+Version 0.2
+
+* Add autoconf, automake, gettext support.
+* Divide package into two parts: libstardict and sdcv by it self.
+* Add options for:
+*   search word in special dictionary
+*   get list of dictionaries
+*   for using in scripts
