@@ -220,7 +220,7 @@ void Library::LookupData(const string &str, TSearchResultList& res_list)
 
 void Library::print_search_result(FILE *out, const TSearchResult & res)
 {
-	string loc_bookname, loc_def, loc_exp;
+	std::string loc_bookname, loc_def, loc_exp;
 	if(!utf8_output){
 		loc_bookname=utf8_to_locale_ign_err(res.bookname);
 		loc_def=utf8_to_locale_ign_err(res.def);
@@ -375,7 +375,7 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 		}
     
 	} else {
-		string loc_str;
+		std::string loc_str;
 		if (!utf8_output)
 			loc_str=utf8_to_locale_ign_err(str);
     

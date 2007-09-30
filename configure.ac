@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.52)
 
-AC_INIT(sdcv, 0.4.2, dushistov@mail.ru)
+AC_INIT(sdcv, 0.4.3, dushistov@mail.ru)
 AC_CONFIG_SRCDIR(src/sdcv.cpp)
 
 dnl Don't include maintainer make-rules by default
