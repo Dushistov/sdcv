@@ -1,7 +1,7 @@
 SUBDIRS=lib
 bin_PROGRAMS = sdcv
 sdcv_SOURCES = \
-	sdcv.cpp getopt.c getopt1.c getopt.h \
+	sdcv.cpp \
 	libwrapper.cpp libwrapper.hpp \
 	readline.cpp readline.hpp \
 	utils.cpp utils.hpp

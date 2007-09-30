@@ -30,7 +30,6 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
-#include <getopt.h>
 #include <string>
 #include <vector>
 #include <memory>
@@ -39,20 +38,7 @@
 #include "readline.hpp"
 #include "utils.hpp"
 
-const char gVersion[] = VERSION;
-
-
-struct option longopts[] ={
-	{"version", no_argument, NULL, 'v' },
-	{"help", no_argument, NULL, 'h' },
-	{"list-dicts", no_argument, NULL, 'l'},
-	{"use-dict", required_argument, NULL, 'u'},
-	{"non-interactive", no_argument, NULL, 'n'},
-	{"utf8-output", no_argument, NULL, 0},
-	{"utf8-input", no_argument, NULL, 1},
-	{"data-dir", required_argument, NULL, 2},
-	{ NULL, 0, NULL, 0 }
-};
+static const char gVersion[] = VERSION;
 
 struct PrintDictInfo {
 	void operator()(const std::string& filename, bool) {
@@ -65,9 +51,15 @@ struct PrintDictInfo {
 };
 
 struct CreateDisableList {
-	CreateDisableList(const strlist_t& enable_list_, strlist_t& disable_list_) :
-		enable_list(enable_list_), disable_list(disable_list_)
-	{}
+	CreateDisableList(gchar **use_dist_list, strlist_t& disable_list_) :
+		disable_list(disable_list_)
+	{
+		gchar **p = use_dist_list;
+		while (*p) {
+			enable_list.push_back(*p);
+			++p;
+		}
+	}
 	void operator()(const std::string& filename, bool) {
 		DictInfo dict_info;
 		if (dict_info.load_from_ifo_file(filename, false) &&
@@ -76,9 +68,23 @@ struct CreateDisableList {
 			disable_list.push_back(dict_info.ifo_file_name);		
 	}
 private:
-	const strlist_t& enable_list;
+	strlist_t enable_list;
 	strlist_t& disable_list;
 };
+
+namespace {
+void free_str_array(gchar **arr)
+{
+	gchar **p;
+
+	for (p = arr; *p; ++p)
+		g_free(*p);
+	g_free(arr);
+}
+}
+namespace glib {
+	typedef ResourceWrapper<gchar *, gchar *, free_str_array> StrArr;
+}
 
 int main(int argc, char *argv[])
 {
@@ -87,74 +93,64 @@ int main(int argc, char *argv[])
 	bindtextdomain (PACKAGE, LOCALEDIR);
 	textdomain (PACKAGE);
 #endif	 
-	int optc;
-	bool h = false, v = false, show_list_dicts=false, 
-		use_book_name=false, non_interactive=false, 
-		utf8_output=false, utf8_input=false;
-	strlist_t enable_list;
-	string data_dir;
-	int option_index = 0;
-	while ((optc = getopt_long (argc, argv, "hvu:ln", longopts, 
-				    &option_index))!=-1)
-		switch (optc){
-		case 0:
-			utf8_output=true;
-			break;
-		case 1:   
-			utf8_input=true;
-			break;
-		case 2:
-			data_dir=optarg;
-			break;
-		case 'v':
-			v = true;
-			break;
-		case 'h':
-			h = true;
-			break;
-		case 'l':
-			show_list_dicts=true;
-			break;
-		case 'u':
-			use_book_name=true;
-			enable_list.push_back(locale_to_utf8(optarg));
-			break;
-		case 'n':
-			non_interactive=true;
-			break;
-		case '?':
-			fprintf(stderr, 
-				_("Unknown option.\nTry '%s --help' for more information.\n"), 
-				argv[0]);
-			return EXIT_FAILURE;
-		}
-  
-	if (h) {
-		printf("sdcv - console version of StarDict.\n");
-		printf(_("Usage: %s [OPTIONS] words\n"), argv[0]);
-		printf(_("-h, --help               display this help and exit\n"));
-		printf(_("-v, --version            display version information and exit\n"));
-		printf(_("-l, --list-dicts         display list of available dictionaries and exit\n"));
-		printf(_("-u, --use-dict bookname  for search use only dictionary with this bookname\n"));
-		printf(_("-n, --non-interactive    for use in scripts\n"));
-		printf(_("--utf8-output            output must be in utf8\n"));
-		printf(_("--utf8-input             input of sdcv in utf8\n"));
-		printf(_("--data-dir path/to/dir   use this directory as path to stardict data directory\n"));
 
-		return EXIT_SUCCESS;
-	}
+	gboolean show_version = FALSE;
+	gboolean show_list_dicts = FALSE;
+	glib::StrArr use_dict_list;
+	gboolean non_interactive = FALSE;
+	gboolean utf8_output = FALSE;
+	gboolean utf8_input = FALSE;
+	glib::CharStr opt_data_dir;
 
-	if (v) {
+	GOptionEntry entries[] = {
+		{"version", 'v', 0, G_OPTION_ARG_NONE, &show_version, 
+		 _("display version information and exit"), NULL },
+		{"list-dicts", 'l', 0, G_OPTION_ARG_NONE, &show_list_dicts, 
+		 _("display list of available dictionaries and exit"), NULL},
+		{"use-dict", 'u', 0, G_OPTION_ARG_STRING_ARRAY, get_addr(use_dict_list),
+		 _("for search use only dictionary with this bookname"),
+		 _("bookname")},
+		{"non-interactive", 'n', 0, G_OPTION_ARG_NONE, &non_interactive, 
+		 _("for use in scripts"), NULL},
+		{"utf8-output", '0', 0, G_OPTION_ARG_NONE, &utf8_output, 
+		 _("output must be in utf8"), NULL},
+		{"utf8-input", '1', 0, G_OPTION_ARG_NONE, &utf8_input,
+		 _("input of sdcv in utf8"), NULL},
+		{"data-dir", '2', 0, G_OPTION_ARG_STRING, get_addr(opt_data_dir), 
+		 _("use this directory as path to stardict data directory"),
+		 _("path/to/dir")},
+		{ NULL },
+	};
+
+	glib::Error error;
+	GOptionContext *context;
+
+	 context = g_option_context_new(_(" words"));
+	 g_option_context_set_help_enabled(context, TRUE);
+	 g_option_context_add_main_entries(context, entries, NULL);
+	 gboolean parse_res = g_option_context_parse(context, &argc, &argv, get_addr(error));
+	 g_option_context_free(context);
+	 if (!parse_res) {
+		 fprintf(stderr, _("Invalid command line arguments: %s\n"),
+			 error->message);		 
+		 return EXIT_FAILURE;
+	 }
+
+	 if (show_version) {
 		printf(_("Console version of Stardict, version %s\n"), gVersion);
 		return EXIT_SUCCESS;
-	}
+	 }
 
-	const gchar *stardict_data_dir=g_getenv("STARDICT_DATA_DIR");
-	if (data_dir.empty()) {
+
+	const gchar *stardict_data_dir = g_getenv("STARDICT_DATA_DIR");
+	std::string data_dir;
+	if (!opt_data_dir) {
 		if (stardict_data_dir)
-			data_dir=stardict_data_dir;
+			data_dir = stardict_data_dir;
 		else
-			data_dir="/usr/share/stardict/dic";
+			data_dir = "/usr/share/stardict/dic";
+	} else {
+		data_dir = get_impl(opt_data_dir);
 	}
 
 
@@ -178,9 +174,9 @@ int main(int argc, char *argv[])
 	strlist_t disable_list;
 	//DictInfoList  dict_info_list;
   
-	if (use_book_name) {
+	if (use_dict_list) {
 		strlist_t empty_list;
-		CreateDisableList create_disable_list(enable_list, disable_list);
+		CreateDisableList create_disable_list(get_impl(use_dict_list), disable_list);
 		for_each_file(dicts_dir_list, ".ifo", empty_list, 
 			      empty_list, create_disable_list);
 	}

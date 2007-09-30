@@ -27,7 +27,7 @@
 
 #include "utils.hpp"
 
-bool stdio_getline(FILE *in, string & str)
+bool stdio_getline(FILE *in, std::string & str)
 {
   str.clear();
   int ch;
@@ -38,11 +38,11 @@ bool stdio_getline(FILE *in, string & str)
   return true;
 }
 
-string utf8_to_locale_ign_err(const string& utf8_str)
+std::string utf8_to_locale_ign_err(const std::string& utf8_str)
 {
 	gsize bytes_read, bytes_written;
 	GError *err=NULL;
-	string res;
+	std::string res;
   
 	const char * charset;
 	if (g_get_charset(&charset))
