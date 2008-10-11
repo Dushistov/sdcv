@@ -43,7 +43,7 @@ little changes in interface
 sdcv 0.3.1
 
 Fix SF in libstardict(bug in Lib::Lookup), 
-thanks to Andrey Bircoph for bug report,
+thanks to Andrey Savchenko for bug report,
 
 install needable headers for easy compilation 
 any application with libstardict(Vadim Suhanov advise).
