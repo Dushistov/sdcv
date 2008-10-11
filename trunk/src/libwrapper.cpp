@@ -23,6 +23,7 @@
 #endif
 
 #include <glib/gi18n.h>
+#include <cstring>
 #include <map>
 
 #include "utils.hpp"
