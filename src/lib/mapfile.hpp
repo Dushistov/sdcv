@@ -18,11 +18,11 @@
 class MapFile {
 public:
   MapFile(void) : 
-		data(NULL),
+		data(NULL)
 #ifdef HAVE_MMAP
-		mmap_fd(-1)
+		, mmap_fd(-1)
 #elif defined(_WIN32)
-		hFile(0),
+		,hFile(0),
 		hFileMap(0)
 #endif
 	{
