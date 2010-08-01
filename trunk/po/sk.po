@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.3.2\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2006-04-24 15:18+0400\n"
+"POT-Creation-Date: 2008-09-24 10:54+0200\n"
 "PO-Revision-Date: 2005-01-04 20:19+0100\n"
 "Last-Translator: Zdenko Podobný <zdpo@mailbox.sk>\n"
 "Language-Team: Slovak <<sk-i18n@lists.linux.sk>>\n"
@@ -102,35 +102,35 @@ msgstr "Vložte slovo alebo frázu: "
 msgid "There are no words/phrases to translate.\n"
 msgstr "Nie je čo preložiť.\n"
 
-#: src/libwrapper.cpp:245
+#: src/libwrapper.cpp:246
 msgid "popen failed"
 msgstr ""
 
-#: src/libwrapper.cpp:282
+#: src/libwrapper.cpp:283
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "nie je možné konvertovať %s na utf8.\n"
 
-#: src/libwrapper.cpp:339 src/libwrapper.cpp:371
+#: src/libwrapper.cpp:340 src/libwrapper.cpp:372
 #, c-format
 msgid "Found %d items, similar to %s.\n"
 msgstr "Nájdené %d položiek, podobných %s,\n"
 
-#: src/libwrapper.cpp:352
+#: src/libwrapper.cpp:353
 #, fuzzy, c-format
 msgid "Your choice[-1 to abort]: "
 msgstr "Vaša voľba: "
 
-#: src/libwrapper.cpp:366
+#: src/libwrapper.cpp:367
 #, fuzzy, c-format
 msgid ""
-"Invalid choise.\n"
+"Invalid choice.\n"
 "It must be from 0 to %d or -1.\n"
 msgstr ""
 "Neplatná voľba.\n"
 "Musí byť od 0 po %d.\n"
 
-#: src/libwrapper.cpp:382
+#: src/libwrapper.cpp:383
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "Ľutujem, nič sa nepodobá na %s :(\n"

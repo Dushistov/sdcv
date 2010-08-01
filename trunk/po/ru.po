@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.3\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2006-04-24 15:18+0400\n"
+"POT-Creation-Date: 2008-09-24 10:54+0200\n"
 "PO-Revision-Date: 2006-04-24 15:20+0300\n"
 "Last-Translator: Evgeniy Dushistov <dushistov@mail.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -105,35 +105,35 @@ msgstr "Введите слово или фразу: "
 msgid "There are no words/phrases to translate.\n"
 msgstr "Не задано слова/фразы для перевода.\n"
 
-#: src/libwrapper.cpp:245
+#: src/libwrapper.cpp:246
 msgid "popen failed"
 msgstr "функция popen завершилась с ошибкой"
 
-#: src/libwrapper.cpp:282
+#: src/libwrapper.cpp:283
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "Не могу преобразовать %s в utf8.\n"
 
-#: src/libwrapper.cpp:339 src/libwrapper.cpp:371
+#: src/libwrapper.cpp:340 src/libwrapper.cpp:372
 #, c-format
 msgid "Found %d items, similar to %s.\n"
 msgstr "Найдено %d слов, похожих на %s.\n"
 
-#: src/libwrapper.cpp:352
+#: src/libwrapper.cpp:353
 #, c-format
 msgid "Your choice[-1 to abort]: "
 msgstr "Ваш выбор[-1 - отмена]:"
 
-#: src/libwrapper.cpp:366
+#: src/libwrapper.cpp:367
 #, c-format
 msgid ""
-"Invalid choise.\n"
+"Invalid choice.\n"
 "It must be from 0 to %d or -1.\n"
 msgstr ""
 "Неправильный выбор.\n"
 "Должно быть от 0 до %d или -1.\n"
 
-#: src/libwrapper.cpp:382
+#: src/libwrapper.cpp:383
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "Ничего похожего на %s, извините :(\n"
