@@ -364,7 +364,7 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 				} else if (choise==-1)
 					break;
 				else
-					printf(_("Invalid choise.\nIt must be from 0 to %d or -1.\n"), 
+					printf(_("Invalid choice.\nIt must be from 0 to %d or -1.\n"), 
 					       res_list.size()-1);	  
 			}		
 		} else {
