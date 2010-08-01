@@ -1,14 +1,14 @@
-..TH SDCV 1 "2004-12-06" "sdcv-0.4"
-..SH NAME
+.TH SDCV 1 "2004-12-06" "sdcv-0.4"
+.SH NAME
 sdcv \- консольна версія Зоряного словника [Stardict]
-..SH SYNOPSIS
-..B sdcv 
+.SH SYNOPSIS
+.B sdcv 
 [ 
-..BI options 
+.BI options 
 ] 
 [list of words]
-..SH DESCRIPTION
-..I sdcv 
+.SH DESCRIPTION
+.I sdcv 
 sdcv проста, міжплатформена текстова утиліта для роботи із 
 словниками у форматі Зоряного словника [StarDict].
 Слово зі "списку слів", може бути рядком з початковим слешем '/' 
@@ -19,37 +19,37 @@ sdcv проста, міжплатформена текстова утиліта 
 У діалоговому режимі, якщо sdcv був скомпільований з підтримкою 
 бібліотеки readline, Ви можете використовувати клавіші ДОГОРИ 
 та ВНИЗ для роботи з хронологією.
-..SH OPTIONS
-..TP 8
-..B "\-h  \-\-help"
+.SH OPTIONS
+.TP 8
+.B "\-h  \-\-help"
 відображає повідомлення довідки та виходить
-..TP 8
-..B "\-v \-\-verbose"
+.TP 8
+.B "\-v \-\-verbose"
 відображає версію та виходить
-..TP 8
-..B "\-l \-\-list\-dicts" 
+.TP 8
+.B "\-l \-\-list\-dicts" 
 відображає список доступних словників та виходить
-..TP 8
-..B "\-u \-\-use\-dict filename"
+.TP 8
+.B "\-u \-\-use\-dict filename"
 для пошуку з використанням лише словника з цим іменем(bookname)
-..TP 8
-..B "\-n \-\-non\-interactive"
+.TP 8
+.B "\-n \-\-non\-interactive"
 для використання в скриптах
-..TP 8
-..B "\-\-utf8\-output"
+.TP 8
+.B "\-\-utf8\-output"
 Заставити sdcv розмовляти не в системному кодуванні locale, а робити вивід в utf8
-..TP 8
-..B "\-\-utf8\-input"
+.TP 8
+.B "\-\-utf8\-input"
 Заставити sdcv слухати не в системному кодуванні locale, а припускати що це 
 ввід в utf8
-..TP 8
-..B "\-\-data\-dir path/to/directory" 
+.TP 8
+.B "\-\-data\-dir path/to/directory" 
 Використовуйте цю теку як шлях до теки даних зоряного словника [stardict]. 
 Це значає, що sdcv шукає словники у теці data-dir/dic.
-..SH FILES
-..TP 
+.SH FILES
+.TP 
 /usr/share/stardict/dic 
-..TP
+.TP
 $(HOME)/.stardict/dic
 
 Місце, де sdcv очікує знайти словники.
@@ -57,28 +57,28 @@ $(HOME)/.stardict/dic
 що Ви хочете, лише встановіть змінну оточення STARDICT_DATA_DIR.
 Наприклад, якщо Ви маєте словники у теці /mnt/data/stardict-dicts/dic, 
 встановіть STARDICT_DATA_DIR у /mnt/data/stardict-dicts.
-..TP
+.TP
 $(HOME)/.sdcv_history
 
 Цей файл містить останні $(SDCV_HISTSIZE) слова, які Ви шукали з sdcv.
 SDCV використовує цей файл при умові, якщо sdcv був скомпільований 
 з підтримкою бібліотеки readline.
 
-..SH ENVIROMENT 
+.SH ENVIROMENT 
 Змінні оточення для \fIsdcv\fR:
-..TP 20
-..B STARDICT_DATA_DIR
+.TP 20
+.B STARDICT_DATA_DIR
 Якщо встановлена, sdcv використає цю змінну як теку даних, це означає, 
 що sdcv шукатиме словники у $\fBSTARDICT_DATA_DIR\fR\dic
-..TP 20
-..B SDCV_HISTSIZE
+.TP 20
+.B SDCV_HISTSIZE
 Якщо встановлена, sdcv писатиме у $(HOME)/.sdcv_history лише 
 останні $(SDCV_HISTSIZE) слова, які Ви шукали з sdcv. Якщо не встановлена, 
 то збірігатиметься останніх 2000 слів у $(HOME)/.sdcv_history.
-..SH BUGS
+.SH BUGS
 Звіти про помилки висилайте на адресу dushistov на mail крапка ru. 
 Не забувайте включати слово "sdcv" десь у полі "Тема:".
-..SH AUTHORS
+.SH AUTHORS
 Эвгений А. Душистов, Hu Zheng
-..SH SEE ALSO
+.SH SEE ALSO
 stardict(1), http://sdcv.sourceforge.net/, http://stardict.sourceforge.net 
