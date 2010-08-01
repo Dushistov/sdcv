@@ -1,10 +1,10 @@
 #!/bin/sh
 
 ndicts=`../src/sdcv -l | wc -l`
-let ndicts=ndicts-1
+ndicts=$(($ndicts-1))
 ncom=`find /usr/share/stardict/dic -name "*.ifo" | wc -l`
 nspe=`find "${HOME}"/.stardict/dic -name "*.ifo" | wc -l`
-let nmy=ncom+nspe
+nmy=$(($ncom+$nspe))
 
 if [ $nmy -ne $ndicts ]; then
 	echo "should be: $nmy, we have: $ndicts" >&2

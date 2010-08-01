@@ -9,7 +9,7 @@ IFS="
 "
 j=0
 for i in `../src/sdcv --utf8-input -n человек 2>&1`; do
-	let j=j+1
+	j=$(($j+1))
 	if [ $j -ne 1 ]; then
 		break;
 	fi
