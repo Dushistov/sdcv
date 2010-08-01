@@ -2,6 +2,7 @@ Version 0.4.3
 - fix build problems with gcc 4.x
 - French translation, thanks to Vincent Petry <PVince81@yahoo.fr>
 - Slovak translation update, thanks to Ivan Masár <helix84@centrum.sk>
+- Add Czech translation, thanks to Michal Čihař <michal@cihar.com>
 
 Version 0.4.2
 * Cache scheme has been rewritten, size of cache has been reduced
