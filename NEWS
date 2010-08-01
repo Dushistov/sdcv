@@ -1,3 +1,7 @@
+Version 0.4.3
+- fix build problems with gcc 4.x
+- French translation, thanks to Vincent Petry <PVince81@yahoo.fr>
+
 Version 0.4.2
 * Cache scheme has been rewritten, size of cache has been reduced
 * Merge with stardict, speedup of lookup, and add full-text search
