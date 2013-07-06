@@ -43,13 +43,14 @@ set(sdcv_SRCS
   src/utils.hpp
 
   src/lib/lib.cpp
-  src/lib/lib.h
+  src/lib/lib.hpp
   src/lib/dictziplib.cpp
   src/lib/dictziplib.hpp  
   src/lib/distance.cpp 
   src/lib/distance.h
   src/lib/mapfile.hpp
   src/lib/file.hpp
+  src/lib/file.cpp
 )
 
 if (ENABLE_NLS)
