@@ -11,6 +11,6 @@ public:
 	virtual void add_to_history(const std::string& phrase) {}
 };
 
+extern string sdcv_readline;
 extern read_line *create_readline_object();
-
 #endif//!_READLINE_HPP_
