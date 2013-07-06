@@ -1,3 +1,5 @@
 #cmakedefine HAVE_MMAP 1
 #cmakedefine HAVE_LOCALE_H 1
 #cmakedefine WITH_READLINE 1
+#cmakedefine ENABLE_NLS 1
+#cmakedefine GETTEXT_TRANSLATIONS_PATH "${GETTEXT_TRANSLATIONS_PATH}"

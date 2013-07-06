@@ -31,10 +31,7 @@ if (READLINE_INCLUDE_DIR AND READLINE_LIBRARY)
   set(WITH_READLINE TRUE)
 endif ()
 
-find_package(GettextTools REQUIRED)
-set(gettext_stockDir "${CMAKE_CURRENT_SOURCE_DIR}/po")
-set(gettext_langDir  "${CMAKE_CURRENT_BINARY_DIR}/lang")
-set(gettext_outDir   "${CMAKE_CURRENT_BINARY_DIR}/locale")
+option(ENABLE_NLS "Enable NLS support" True)
 
 set(sdcv_SRCS
   src/sdcv.cpp
@@ -55,16 +52,23 @@ set(sdcv_SRCS
   src/lib/file.hpp
 )
 
-gettext_make_target("lang"
-  HIERARCHY "{1}/{2}/{3}/{4}.mo"
-  KEYWORDS  "_"
-  DOMAIN    "sdcv"
-  STOCK_DIR ${gettext_stockDir}
-  LANG_DIR  ${gettext_langDir}
-  OUT_DIR   ${gettext_outDir}
-  SOURCE    ${sdcv_SRCS})
+if (ENABLE_NLS)
+  find_package(GettextTools REQUIRED)
+  set(gettext_stockDir "${CMAKE_CURRENT_SOURCE_DIR}/po")
+  set(gettext_langDir  "${CMAKE_CURRENT_BINARY_DIR}/lang")
+  set(gettext_outDir   "${CMAKE_CURRENT_BINARY_DIR}/locale")
+  set(GETTEXT_TRANSLATIONS_PATH "${CMAKE_INSTALL_PREFIX}/share/locale")
+  gettext_make_target("lang"
+    HIERARCHY "{1}/{2}/{3}/{4}.mo"
+    KEYWORDS  "_"
+    DOMAIN    "sdcv"
+    STOCK_DIR ${gettext_stockDir}
+    LANG_DIR  ${gettext_langDir}
+    OUT_DIR   ${gettext_outDir}
+    SOURCE    ${sdcv_SRCS})
 
-list(APPEND makeCleanFiles ${gettext_outDir})
+  list(APPEND makeCleanFiles ${gettext_outDir})
+endif ()
 
 include(CheckFunctionExists)
 check_function_exists(mmap HAVE_MMAP)
@@ -72,7 +76,7 @@ check_function_exists(mmap HAVE_MMAP)
 include(CheckIncludeFile)
 check_include_file(locale.h HAVE_LOCALE_H)
 
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
 	${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 
@@ -105,9 +109,19 @@ target_link_libraries(sdcv
   ${ZLIB_LIBRARIES}
   ${READLINE_LIBRARY}
 )
+if (ENABLE_NLS)
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "locale")
+endif ()
 
 include(CPack)
+
+INSTALL(TARGETS sdcv DESTINATION "bin")
+INSTALL(FILES doc/sdcv.1 DESTINATION "share/man/man1")
+INSTALL(FILES doc/uk/sdcv.1 DESTINATION "share/man/uk/man1")
+
+if (ENABLE_NLS)
+  INSTALL(DIRECTORY "${gettext_outDir}" DESTINATION "share")
+endif ()
 
 option(BUILD_TESTS "Enable automatic testing" False)
 if (BUILD_TESTS)
