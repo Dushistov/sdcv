@@ -1,11 +1,11 @@
-#ifndef __SD_LIB_H__
-#define __SD_LIB_H__
+#pragma once
 
 #include <cstdio>
 #include <list>
 #include <memory>
 #include <string>
 #include <vector>
+#include <functional>
 
 #include "dictziplib.hpp"
 
@@ -16,8 +16,8 @@ struct cacheItem {
 	guint32 offset;
 	gchar *data;
 	//write code here to make it inline
-	cacheItem() {data= NULL;}
-	~cacheItem() {g_free(data);}
+	cacheItem() { data = nullptr;}
+	~cacheItem() { g_free(data); }
 };
 
 const int WORDDATA_CACHE_NUM = 10;
@@ -25,18 +25,27 @@ const int INVALID_INDEX=-100;
 
 class DictBase {
 public:
-	DictBase();
-	~DictBase();
+	DictBase() {}
+	~DictBase() {
+        if (dictfile)
+            fclose(dictfile);
+    }
+    DictBase(const DictBase&) = delete;
+    DictBase& operator=(const DictBase&) = delete;
 	gchar * GetWordData(guint32 idxitem_offset, guint32 idxitem_size);
-	bool containSearchData();
+	bool containSearchData() const {
+        if (sametypesequence.empty())
+            return true;
+        return sametypesequence.find_first_of("mlgxty") != std::string::npos;
+    }
 	bool SearchData(std::vector<std::string> &SearchWords, guint32 idxitem_offset, guint32 idxitem_size, gchar *origin_data);
 protected:
 	std::string sametypesequence;
-	FILE *dictfile;
-	std::auto_ptr<dictData> dictdzfile;
+	FILE *dictfile = nullptr;
+	std::unique_ptr<dictData> dictdzfile;
 private:
 	cacheItem cache[WORDDATA_CACHE_NUM];
-	gint cache_cur;	
+	gint cache_cur = 0;	
 };
 
 //this structure contain all information about dictionary
@@ -51,64 +60,69 @@ struct DictInfo {
 	std::string description;
 	guint32 index_file_size;
 	std::string sametypesequence;
+
 	bool load_from_ifo_file(const std::string& ifofilename, bool istreedict);
 };
 
-class index_file {
+class IIndexFile {
 public:
 	guint32 wordentry_offset;
 	guint32 wordentry_size;  
 
-	virtual ~index_file() {}
+	virtual ~IIndexFile() {}
 	virtual bool load(const std::string& url, gulong wc, gulong fsize) = 0;
 	virtual const gchar *get_key(glong idx) = 0;
 	virtual void get_data(glong idx) = 0;
-	virtual  const gchar *get_key_and_data(glong idx) = 0;
+	virtual const gchar *get_key_and_data(glong idx) = 0;
 	virtual bool lookup(const char *str, glong &idx) = 0;
 };
 
 class Dict : public DictBase {
+public:
+	Dict() {}
+    Dict(const Dict&) = delete;
+    Dict& operator=(const Dict&) = delete;
+	bool load(const std::string& ifofilename);
+
+	gulong narticles() const { return wordcount; }
+	const std::string& dict_name() const { return bookname; }
+	const std::string& ifofilename() const { return ifo_file_name; }
+
+	const gchar *get_key(glong index) {	return idx_file->get_key(index); }
+	gchar *get_data(glong index) {
+        idx_file->get_data(index);
+        return DictBase::GetWordData(idx_file->wordentry_offset, idx_file->wordentry_size);
+    }
+	void get_key_and_data(glong index, const gchar **key, guint32 *offset, guint32 *size) {
+        *key = idx_file->get_key_and_data(index);
+        *offset = idx_file->wordentry_offset;
+        *size = idx_file->wordentry_size;
+    }
+	bool Lookup(const char *str, glong &idx) { return idx_file->lookup(str, idx); }
+
+	bool LookupWithRule(GPatternSpec *pspec, glong *aIndex, int iBuffLen);
 private:	
 	std::string ifo_file_name;
 	gulong wordcount;
 	std::string bookname;
 
-	std::auto_ptr<index_file> idx_file;
+	std::unique_ptr<IIndexFile> idx_file;
 	
 	bool load_ifofile(const std::string& ifofilename, gulong &idxfilesize);
-public:
-	Dict() {}
-	bool load(const std::string& ifofilename);
-
-	gulong narticles() { return wordcount; }
-	const std::string& dict_name() { return bookname; }
-	const std::string& ifofilename() { return ifo_file_name; }
-
-	const gchar *get_key(glong index)	{	return idx_file->get_key(index);	}
-	gchar *get_data(glong index)
-		{
-			idx_file->get_data(index);
-			return DictBase::GetWordData(idx_file->wordentry_offset, idx_file->wordentry_size);
-		}
-	void get_key_and_data(glong index, const gchar **key, guint32 *offset, guint32 *size)
-		{
-			*key = idx_file->get_key_and_data(index);
-			*offset = idx_file->wordentry_offset;
-			*size = idx_file->wordentry_size;
-		}
-	bool Lookup(const char *str, glong &idx) { return idx_file->lookup(str, idx);	}
-
-	bool LookupWithRule(GPatternSpec *pspec, glong *aIndex, int iBuffLen);
 };
 
 typedef std::list<std::string> strlist_t;
 
 class Libs {
 public:
-	typedef void (*progress_func_t)(void);
-
-	Libs(progress_func_t f=NULL);
+	Libs(std::function<void(void)> f = std::function<void(void)>()) {
+        progress_func = f;
+        iMaxFuzzyDistance  = MAX_FUZZY_DISTANCE; //need to read from cfg.
+    }
 	~Libs();
+    Libs(const Libs&) = delete;
+    Libs& operator=(const Libs&) = delete;
+
 	void load_dict(const std::string& url);
 	void load(const strlist_t& dicts_dirs, 
 		  const strlist_t& order_list, 
@@ -117,16 +131,16 @@ public:
 		    const strlist_t& order_list, 
 		    const strlist_t& disable_list);
 
-	glong narticles(int idict) { return oLib[idict]->narticles(); }
-	const std::string& dict_name(int idict) { return oLib[idict]->dict_name(); }
+	glong narticles(int idict) const { return oLib[idict]->narticles(); }
+	const std::string& dict_name(int idict) const { return oLib[idict]->dict_name(); }
 	gint ndicts() const { return oLib.size(); }
 
-	const gchar * poGetWord(glong iIndex,int iLib) { 
+	const gchar *poGetWord(glong iIndex, int iLib) { 
 		return oLib[iLib]->get_key(iIndex); 
 	}
 	gchar * poGetWordData(glong iIndex,int iLib) {
-		if (iIndex==INVALID_INDEX)
-			return NULL;
+		if (iIndex == INVALID_INDEX)
+			return nullptr;
 		return oLib[iLib]->get_data(iIndex);
 	}
 	const gchar *poGetCurrentWord(glong *iCurrent);
@@ -145,14 +159,13 @@ public:
 private:
 	std::vector<Dict *> oLib; // word Libs.
 	int iMaxFuzzyDistance;
-	progress_func_t progress_func;
+    std::function<void(void)> progress_func;
 };
 
 
-typedef enum {
+enum query_t {
 	qtSIMPLE, qtREGEXP, qtFUZZY, qtDATA
-} query_t;
+};
 	
 extern query_t analyze_query(const char *s, std::string& res); 
 
-#endif//!__SD_LIB_H__

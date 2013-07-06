@@ -14,62 +14,78 @@
 #include "file.hpp"
 #include "mapfile.hpp"
 
-#include "lib.h"
+#include "lib.hpp"
 
 // Notice: read src/tools/DICTFILE_FORMAT for the dictionary 
 // file's format information!
 
+namespace {
+    struct Fuzzystruct {
+        char * pMatchWord;
+        int iMatchWordDistance;
+    };
 
-static inline bool bIsVowel(gchar inputchar)
-{
-  gchar ch = g_ascii_toupper(inputchar);
-  return( ch=='A' || ch=='E' || ch=='I' || ch=='O' || ch=='U' );
-}
+    static inline bool bIsVowel(gchar inputchar)
+    {
+        gchar ch = g_ascii_toupper(inputchar);
+        return( ch=='A' || ch=='E' || ch=='I' || ch=='O' || ch=='U' );
+    }
 
-static bool bIsPureEnglish(const gchar *str) 
-{ 
-  // i think this should work even when it is UTF8 string :).
-  for (int i=0; str[i]!=0; i++) 
-    //if(str[i]<0)
-    //if(str[i]<32 || str[i]>126) // tab equal 9,so this is not OK.
-    // Better use isascii() but not str[i]<0 while char is default unsigned in arm
-    if (!isascii(str[i])) 
-            return false;            
-  return true;	
-}
+    static bool bIsPureEnglish(const gchar *str) 
+    { 
+        // i think this should work even when it is UTF8 string :).
+        for (int i=0; str[i]!=0; i++) 
+            //if(str[i]<0)
+            //if(str[i]<32 || str[i]>126) // tab equal 9,so this is not OK.
+            // Better use isascii() but not str[i]<0 while char is default unsigned in arm
+            if (!isascii(str[i])) 
+                return false;            
+        return true;	
+    }
 
-static inline guint32 get_uint32(const gchar *addr)
-{
-	guint32 result;
-	memcpy(&result, addr, sizeof(guint32));
-	return result;
-}
+    static inline guint32 get_uint32(const gchar *addr)
+    {
+        guint32 result;
+        memcpy(&result, addr, sizeof(guint32));
+        return result;
+    }
 
-static inline void set_uint32(gchar *addr, guint32 val)
-{
-	memcpy(addr, &val, sizeof(guint32));
-}
+    static inline void set_uint32(gchar *addr, guint32 val)
+    {
+        memcpy(addr, &val, sizeof(guint32));
+    }
 
-static inline gint stardict_strcmp(const gchar *s1, const gchar *s2) 
-{
-  gint a=g_ascii_strcasecmp(s1, s2);
-  if (a == 0)
-    return strcmp(s1, s2);
-  else
-    return a;
+    static inline gint stardict_strcmp(const gchar *s1, const gchar *s2) 
+    {
+        gint a=g_ascii_strcasecmp(s1, s2);
+        if (a == 0)
+            return strcmp(s1, s2);
+        else
+            return a;
+    }
+
+    static void unicode_strdown(gunichar *str)
+    {
+        while (*str) {
+            *str=g_unichar_tolower(*str);
+            ++str;
+        }
+    }
+
 }
 
 bool DictInfo::load_from_ifo_file(const std::string& ifofilename,
-																	bool istreedict)
+                                  bool istreedict)
 {
-  ifo_file_name=ifofilename;
+  ifo_file_name = ifofilename;
   gchar *buffer;
-  if (!g_file_get_contents(ifofilename.c_str(), &buffer, NULL, NULL))
+  if (!g_file_get_contents(ifofilename.c_str(), &buffer, nullptr, nullptr))
     return false;
   
 #define TREEDICT_MAGIC_DATA "StarDict's treedict ifo file\nversion=2.4.2\n"
 #define DICT_MAGIC_DATA "StarDict's dict ifo file\nversion=2.4.2\n"
-  const gchar *magic_data=istreedict ? TREEDICT_MAGIC_DATA : DICT_MAGIC_DATA;
+
+  const gchar *magic_data = istreedict ? TREEDICT_MAGIC_DATA : DICT_MAGIC_DATA;
   if (!g_str_has_prefix(buffer, magic_data)) {
     g_free(buffer);
     return false;
@@ -173,18 +189,6 @@ bool DictInfo::load_from_ifo_file(const std::string& ifofilename,
   g_free(buffer);
 
   return true;		
-}
-//===================================================================
-DictBase::DictBase()
-{	
-	dictfile = NULL;	
-	cache_cur =0;
-}
-
-DictBase::~DictBase()
-{	
-	if (dictfile)
-		fclose(dictfile);
 }
 
 gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
@@ -326,14 +330,6 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
   return data;
 }
 
-inline bool DictBase::containSearchData()
-{
-	if (sametypesequence.empty())
-		return true;
-
-	return sametypesequence.find_first_of("mlgxty")!=std::string::npos;
-}
-
 bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem_offset, guint32 idxitem_size, gchar *origin_data)
 {
 	int nWord = SearchWords.size();
@@ -435,403 +431,381 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 	return false;
 }
 
-class offset_index : public index_file {
-public:
-	offset_index() : idxfile(NULL) {}
-	~offset_index();
-	bool load(const std::string& url, gulong wc, gulong fsize);
-	const gchar *get_key(glong idx);
-	void get_data(glong idx);
-	const gchar *get_key_and_data(glong idx);
-	bool lookup(const char *str, glong &idx);
-private:
-	static const gint ENTR_PER_PAGE=32;
-	static const char *CACHE_MAGIC;
+namespace {
+    class OffsetIndex : public IIndexFile {
+    public:
+        OffsetIndex() : idxfile(nullptr) {}
+        ~OffsetIndex() {
+            if (idxfile)
+                fclose(idxfile);
+        }
+        bool load(const std::string& url, gulong wc, gulong fsize) override;
+        const gchar *get_key(glong idx) override;
+        void get_data(glong idx) override { get_key(idx); }
+        const gchar *get_key_and_data(glong idx) override {
+            return get_key(idx);
+        }
+        bool lookup(const char *str, glong &idx) override;
+    private:
+        static const gint ENTR_PER_PAGE = 32;
+        static const char *CACHE_MAGIC;
 
-	std::vector<guint32> wordoffset;
-	FILE *idxfile;
-	gulong wordcount;
+        std::vector<guint32> wordoffset;
+        FILE *idxfile;
+        gulong wordcount;
 
-	gchar wordentry_buf[256+sizeof(guint32)*2]; // The length of "word_str" should be less than 256. See src/tools/DICTFILE_FORMAT.
-	struct index_entry {
-		glong idx;
-		std::string keystr;
-		void assign(glong i, const std::string& str) {
-			idx=i;
-			keystr.assign(str);
-		}
-	};
-	index_entry first, last, middle, real_last;
+        gchar wordentry_buf[256+sizeof(guint32)*2]; // The length of "word_str" should be less than 256. See src/tools/DICTFILE_FORMAT.
+        struct index_entry {
+            glong idx;
+            std::string keystr;
+            void assign(glong i, const std::string& str) {
+                idx = i;
+                keystr.assign(str);
+            }
+        };
+        index_entry first, last, middle, real_last;
 
-	struct page_entry {
-		gchar *keystr;
-		guint32 off, size;
-	};
-	std::vector<gchar> page_data;
-	struct page_t {
-		glong idx;
-		page_entry entries[ENTR_PER_PAGE];
+        struct page_entry {
+            gchar *keystr;
+            guint32 off, size;
+        };
+        std::vector<gchar> page_data;
+        struct page_t {
+            glong idx = -1;
+            page_entry entries[ENTR_PER_PAGE];
 
-		page_t(): idx(-1) {}
-		void fill(gchar *data, gint nent, glong idx_);
-	} page;
-	gulong load_page(glong page_idx);
-	const gchar *read_first_on_page_key(glong page_idx);
-	const gchar *get_first_on_page_key(glong page_idx);
-	bool load_cache(const std::string& url);
-	bool save_cache(const std::string& url);
-	static strlist_t get_cache_variant(const std::string& url);
-};
+            page_t() {}
+            void fill(gchar *data, gint nent, glong idx_);
+        } page;
+        gulong load_page(glong page_idx);
+        const gchar *read_first_on_page_key(glong page_idx);
+        const gchar *get_first_on_page_key(glong page_idx);
+        bool load_cache(const std::string& url);
+        bool save_cache(const std::string& url);
+        static strlist_t get_cache_variant(const std::string& url);
+    };
 
-const char *offset_index::CACHE_MAGIC="StarDict's Cache, Version: 0.1";
+    const char *OffsetIndex::CACHE_MAGIC = "StarDict's Cache, Version: 0.1";
 
-class wordlist_index : public index_file {
-public:
-	wordlist_index() : idxdatabuf(NULL)	{}
-	~wordlist_index();
-	bool load(const std::string& url, gulong wc, gulong fsize);
-	const gchar *get_key(glong idx);
-	void get_data(glong idx);
-	const gchar *get_key_and_data(glong idx);
-	bool lookup(const char *str, glong &idx);
-private:
-	gchar *idxdatabuf;
-	std::vector<gchar *> wordlist;
-};
 
-void offset_index::page_t::fill(gchar *data, gint nent, glong idx_) 
-{
-	idx=idx_;
-	gchar *p=data;
-	glong len;
-	for (gint i=0; i<nent; ++i) {
-		entries[i].keystr=p;
-		len=strlen(p);
-		p+=len+1;
-		entries[i].off=g_ntohl(get_uint32(p));
-		p+=sizeof(guint32);
-		entries[i].size=g_ntohl(get_uint32(p));
-		p+=sizeof(guint32);
-	}
-}
+    class WordListIndex : public IIndexFile {
+    public:
+        WordListIndex() : idxdatabuf(nullptr)	{}
+        ~WordListIndex() { g_free(idxdatabuf); }
+        bool load(const std::string& url, gulong wc, gulong fsize) override;
+        const gchar *get_key(glong idx) override { return wordlist[idx]; }
+        void get_data(glong idx) override;
+        const gchar *get_key_and_data(glong idx) override {
+            get_data(idx);
+            return get_key(idx);
+        }
+        bool lookup(const char *str, glong &idx) override;
+    private:
+        gchar *idxdatabuf;
+        std::vector<gchar *> wordlist;
+    };
 
-offset_index::~offset_index()
-{
-	if (idxfile)
-		fclose(idxfile);
-}
+    void OffsetIndex::page_t::fill(gchar *data, gint nent, glong idx_) 
+    {
+        idx=idx_;
+        gchar *p=data;
+        glong len;
+        for (gint i=0; i<nent; ++i) {
+            entries[i].keystr=p;
+            len=strlen(p);
+            p+=len+1;
+            entries[i].off=g_ntohl(get_uint32(p));
+            p+=sizeof(guint32);
+            entries[i].size=g_ntohl(get_uint32(p));
+            p+=sizeof(guint32);
+        }
+    }
 
-inline const gchar *offset_index::read_first_on_page_key(glong page_idx)
-{
-	fseek(idxfile, wordoffset[page_idx], SEEK_SET);
-	guint32 page_size=wordoffset[page_idx+1]-wordoffset[page_idx];
-	fread(wordentry_buf,
-	      std::min(sizeof(wordentry_buf), static_cast<size_t>(page_size)),
-	      1, idxfile);
-	//TODO: check returned values, deal with word entry that strlen>255.
-	return wordentry_buf;
-}
+    inline const gchar *OffsetIndex::read_first_on_page_key(glong page_idx)
+    {
+        fseek(idxfile, wordoffset[page_idx], SEEK_SET);
+        guint32 page_size=wordoffset[page_idx+1]-wordoffset[page_idx];
+        fread(wordentry_buf,
+              std::min(sizeof(wordentry_buf), static_cast<size_t>(page_size)),
+              1, idxfile);
+        //TODO: check returned values, deal with word entry that strlen>255.
+        return wordentry_buf;
+    }
 
-inline const gchar *offset_index::get_first_on_page_key(glong page_idx)
-{
-	if (page_idx<middle.idx) {
-		if (page_idx==first.idx)
-			return first.keystr.c_str();
-		return read_first_on_page_key(page_idx);
-	} else if (page_idx>middle.idx) {
-		if (page_idx==last.idx)
-			return last.keystr.c_str();
-		return read_first_on_page_key(page_idx);
-	} else
+    inline const gchar *OffsetIndex::get_first_on_page_key(glong page_idx)
+    {
+        if (page_idx<middle.idx) {
+            if (page_idx==first.idx)
+                return first.keystr.c_str();
+            return read_first_on_page_key(page_idx);
+        } else if (page_idx>middle.idx) {
+            if (page_idx==last.idx)
+                return last.keystr.c_str();
+            return read_first_on_page_key(page_idx);
+        } else
 			return middle.keystr.c_str();
-}
+    }
 
-bool offset_index::load_cache(const std::string& url)
-{
-	strlist_t vars=get_cache_variant(url);
+    bool OffsetIndex::load_cache(const std::string& url)
+    {
+        const strlist_t vars = get_cache_variant(url);
 
-	for (strlist_t::const_iterator it=vars.begin(); it!=vars.end(); ++it) {
-		struct stat idxstat, cachestat;
-		if (g_stat(url.c_str(), &idxstat)!=0 ||
-                    g_stat(it->c_str(), &cachestat)!=0)
-			continue;
-		if (cachestat.st_mtime<idxstat.st_mtime)
-			continue;		
-		MapFile mf;
-		if (!mf.open(it->c_str(), cachestat.st_size))
-			continue;
-		if (strncmp(mf.begin(), CACHE_MAGIC, strlen(CACHE_MAGIC))!=0)
-			continue;
-		memcpy(&wordoffset[0], mf.begin()+strlen(CACHE_MAGIC), wordoffset.size()*sizeof(wordoffset[0]));
-		return true;
+        for (const std::string& item : vars) {
+            struct ::stat idxstat, cachestat;
+            if (g_stat(url.c_str(), &idxstat)!=0 ||
+                g_stat(item.c_str(), &cachestat)!=0)
+                continue;
+            if (cachestat.st_mtime<idxstat.st_mtime)
+                continue;		
+            MapFile mf;
+            if (!mf.open(item.c_str(), cachestat.st_size))
+                continue;
+            if (strncmp(mf.begin(), CACHE_MAGIC, strlen(CACHE_MAGIC))!=0)
+                continue;
+            memcpy(&wordoffset[0], mf.begin()+strlen(CACHE_MAGIC), wordoffset.size()*sizeof(wordoffset[0]));
+            return true;
 
-	}
+        }
 
-	return false;
-}
+        return false;
+    }
 
-strlist_t offset_index::get_cache_variant(const std::string& url)
-{
-	strlist_t res;
-	res.push_back(url+".oft");
-	if (!g_file_test(g_get_user_cache_dir(), G_FILE_TEST_EXISTS) &&
-	    g_mkdir(g_get_user_cache_dir(), 0700)==-1)
-		return res;
+    strlist_t OffsetIndex::get_cache_variant(const std::string& url)
+    {
+        strlist_t res = {url + ".oft"};
+        if (!g_file_test(g_get_user_cache_dir(), G_FILE_TEST_EXISTS) &&
+            g_mkdir(g_get_user_cache_dir(), 0700)==-1)
+            return res;
 
-	std::string cache_dir=std::string(g_get_user_cache_dir())+G_DIR_SEPARATOR_S+"sdcv";
+        const std::string cache_dir = std::string(g_get_user_cache_dir())+G_DIR_SEPARATOR_S+"sdcv";
 
-	if (!g_file_test(cache_dir.c_str(), G_FILE_TEST_EXISTS)) {
-		if (g_mkdir(cache_dir.c_str(), 0700)==-1)
-			return res;
-	} else if (!g_file_test(cache_dir.c_str(), G_FILE_TEST_IS_DIR))
-		return res;
+        if (!g_file_test(cache_dir.c_str(), G_FILE_TEST_EXISTS)) {
+            if (g_mkdir(cache_dir.c_str(), 0700)==-1)
+                return res;
+        } else if (!g_file_test(cache_dir.c_str(), G_FILE_TEST_IS_DIR))
+            return res;
 
-	gchar *base=g_path_get_basename(url.c_str());
-	res.push_back(cache_dir+G_DIR_SEPARATOR_S+base+".oft");
-	g_free(base);
-	return res;
-}
+        gchar *base = g_path_get_basename(url.c_str());
+        res.push_back(cache_dir+G_DIR_SEPARATOR_S+base+".oft");
+        g_free(base);
+        return res;
+    }
 
-bool offset_index::save_cache(const std::string& url)
-{
-	strlist_t vars=get_cache_variant(url);
-	for (strlist_t::const_iterator it=vars.begin(); it!=vars.end(); ++it) {
-		FILE *out=fopen(it->c_str(), "wb");
-		if (!out)
-			continue;
-		if (fwrite(CACHE_MAGIC, 1, strlen(CACHE_MAGIC), out)!=strlen(CACHE_MAGIC))
-			continue;
-		if (fwrite(&wordoffset[0], sizeof(wordoffset[0]), wordoffset.size(), out)!=wordoffset.size())
-			continue;
-		fclose(out);
-		printf("save to cache %s\n", url.c_str());
-		return true;
-	}
-	return false;
-}
+    bool OffsetIndex::save_cache(const std::string& url)
+    {
+        const strlist_t vars = get_cache_variant(url);
+        for (const std::string&  item : vars) {
+            FILE *out=fopen(item.c_str(), "wb");
+            if (!out)
+                continue;
+            if (fwrite(CACHE_MAGIC, 1, strlen(CACHE_MAGIC), out)!=strlen(CACHE_MAGIC))
+                continue;
+            if (fwrite(&wordoffset[0], sizeof(wordoffset[0]), wordoffset.size(), out)!=wordoffset.size())
+                continue;
+            fclose(out);
+            printf("save to cache %s\n", url.c_str());
+            return true;
+        }
+        return false;
+    }
 
-bool offset_index::load(const std::string& url, gulong wc, gulong fsize)
-{
-	wordcount=wc;
-	gulong npages=(wc-1)/ENTR_PER_PAGE+2;
-	wordoffset.resize(npages);
-	if (!load_cache(url)) {//map file will close after finish of block
-		MapFile map_file;
-		if (!map_file.open(url.c_str(), fsize))
-			return false;		
-		const gchar *idxdatabuffer=map_file.begin();
+    bool OffsetIndex::load(const std::string& url, gulong wc, gulong fsize)
+    {
+        wordcount=wc;
+        gulong npages=(wc-1)/ENTR_PER_PAGE+2;
+        wordoffset.resize(npages);
+        if (!load_cache(url)) {//map file will close after finish of block
+            MapFile map_file;
+            if (!map_file.open(url.c_str(), fsize))
+                return false;		
+            const gchar *idxdatabuffer=map_file.begin();
 
-		const gchar *p1 = idxdatabuffer;
-		gulong index_size;
-		guint32 j=0;
-		for (guint32 i=0; i<wc; i++) {
-			index_size=strlen(p1) +1 + 2*sizeof(guint32);
-			if (i % ENTR_PER_PAGE==0) {
-				wordoffset[j]=p1-idxdatabuffer;
-				++j;
-			}
-			p1 += index_size;
-		}
-		wordoffset[j]=p1-idxdatabuffer;
-		if (!save_cache(url))
-			fprintf(stderr, "cache update failed\n");
-	}
+            const gchar *p1 = idxdatabuffer;
+            gulong index_size;
+            guint32 j=0;
+            for (guint32 i=0; i<wc; i++) {
+                index_size=strlen(p1) +1 + 2*sizeof(guint32);
+                if (i % ENTR_PER_PAGE==0) {
+                    wordoffset[j]=p1-idxdatabuffer;
+                    ++j;
+                }
+                p1 += index_size;
+            }
+            wordoffset[j]=p1-idxdatabuffer;
+            if (!save_cache(url))
+                fprintf(stderr, "cache update failed\n");
+        }
 
-	if (!(idxfile = fopen(url.c_str(), "rb"))) {
-		wordoffset.resize(0);
-		return false;
-	}
+        if (!(idxfile = fopen(url.c_str(), "rb"))) {
+            wordoffset.resize(0);
+            return false;
+        }
 
-	first.assign(0, read_first_on_page_key(0));
-	last.assign(wordoffset.size()-2, read_first_on_page_key(wordoffset.size()-2));
-	middle.assign((wordoffset.size()-2)/2, read_first_on_page_key((wordoffset.size()-2)/2));
-	real_last.assign(wc-1, get_key(wc-1));
+        first.assign(0, read_first_on_page_key(0));
+        last.assign(wordoffset.size()-2, read_first_on_page_key(wordoffset.size()-2));
+        middle.assign((wordoffset.size()-2)/2, read_first_on_page_key((wordoffset.size()-2)/2));
+        real_last.assign(wc-1, get_key(wc-1));
 
-	return true;
-}
+        return true;
+    }
 
-inline gulong offset_index::load_page(glong page_idx)
-{
-	gulong nentr=ENTR_PER_PAGE;
-	if (page_idx==glong(wordoffset.size()-2))
-		if ((nentr=wordcount%ENTR_PER_PAGE)==0)
-			nentr=ENTR_PER_PAGE;
+    inline gulong OffsetIndex::load_page(glong page_idx)
+    {
+        gulong nentr=ENTR_PER_PAGE;
+        if (page_idx==glong(wordoffset.size()-2))
+            if ((nentr=wordcount%ENTR_PER_PAGE)==0)
+                nentr=ENTR_PER_PAGE;
 	
 
-	if (page_idx!=page.idx) {
-		page_data.resize(wordoffset[page_idx+1]-wordoffset[page_idx]);
-		fseek(idxfile, wordoffset[page_idx], SEEK_SET);
-		fread(&page_data[0], 1, page_data.size(), idxfile);
-		page.fill(&page_data[0], nentr, page_idx);
-	}
+        if (page_idx!=page.idx) {
+            page_data.resize(wordoffset[page_idx+1]-wordoffset[page_idx]);
+            fseek(idxfile, wordoffset[page_idx], SEEK_SET);
+            fread(&page_data[0], 1, page_data.size(), idxfile);
+            page.fill(&page_data[0], nentr, page_idx);
+        }
 
-	return nentr;
-}
+        return nentr;
+    }
 
-const gchar *offset_index::get_key(glong idx)
-{
-	load_page(idx/ENTR_PER_PAGE);
-	glong idx_in_page=idx%ENTR_PER_PAGE;
-	wordentry_offset=page.entries[idx_in_page].off;
-	wordentry_size=page.entries[idx_in_page].size;
+    const gchar *OffsetIndex::get_key(glong idx)
+    {
+        load_page(idx/ENTR_PER_PAGE);
+        glong idx_in_page=idx%ENTR_PER_PAGE;
+        wordentry_offset=page.entries[idx_in_page].off;
+        wordentry_size=page.entries[idx_in_page].size;
 
-	return page.entries[idx_in_page].keystr;
-}
+        return page.entries[idx_in_page].keystr;
+    }
 
-void offset_index::get_data(glong idx)
-{
-	get_key(idx);
-}
+    bool OffsetIndex::lookup(const char *str, glong &idx)
+    {
+        bool bFound=false;
+        glong iFrom;
+        glong iTo=wordoffset.size()-2;
+        gint cmpint;
+        glong iThisIndex;
+        if (stardict_strcmp(str, first.keystr.c_str())<0) {
+            idx = 0;
+            return false;
+        } else if (stardict_strcmp(str, real_last.keystr.c_str()) >0) {
+            idx = INVALID_INDEX;
+            return false;
+        } else {
+            iFrom=0;
+            iThisIndex=0;
+            while (iFrom<=iTo) {
+                iThisIndex=(iFrom+iTo)/2;
+                cmpint = stardict_strcmp(str, get_first_on_page_key(iThisIndex));
+                if (cmpint>0)
+                    iFrom=iThisIndex+1;
+                else if (cmpint<0)
+                    iTo=iThisIndex-1;
+                else {	
+                    bFound=true;
+                    break;
+                }
+            }
+            if (!bFound)
+                idx = iTo;    //prev
+            else
+                idx = iThisIndex;		
+        }
+        if (!bFound) {
+            gulong netr=load_page(idx);
+            iFrom=1; // Needn't search the first word anymore.
+            iTo=netr-1;
+            iThisIndex=0;
+            while (iFrom<=iTo) {
+                iThisIndex=(iFrom+iTo)/2;
+                cmpint = stardict_strcmp(str, page.entries[iThisIndex].keystr);
+                if (cmpint>0)
+                    iFrom=iThisIndex+1;
+                else if (cmpint<0)
+                    iTo=iThisIndex-1;
+                else {
+                    bFound=true;
+                    break;
+                }
+            }
+            idx*=ENTR_PER_PAGE;
+            if (!bFound)
+                idx += iFrom;    //next
+            else
+                idx += iThisIndex;
+        } else {
+            idx*=ENTR_PER_PAGE;
+        }
+        return bFound;
+    }
 
-const gchar *offset_index::get_key_and_data(glong idx)
-{
-	return get_key(idx);
-}
-
-bool offset_index::lookup(const char *str, glong &idx)
-{
-	bool bFound=false;
-	glong iFrom;
-	glong iTo=wordoffset.size()-2;
-	gint cmpint;
-	glong iThisIndex;
-	if (stardict_strcmp(str, first.keystr.c_str())<0) {
-		idx = 0;
-		return false;
-	} else if (stardict_strcmp(str, real_last.keystr.c_str()) >0) {
-		idx = INVALID_INDEX;
-		return false;
-	} else {
-		iFrom=0;
-		iThisIndex=0;
-		while (iFrom<=iTo) {
-			iThisIndex=(iFrom+iTo)/2;
-			cmpint = stardict_strcmp(str, get_first_on_page_key(iThisIndex));
-			if (cmpint>0)
-				iFrom=iThisIndex+1;
-			else if (cmpint<0)
-				iTo=iThisIndex-1;
-			else {	
-				bFound=true;
-				break;
-			}
-		}
-		if (!bFound)
-			idx = iTo;    //prev
-		else
-			idx = iThisIndex;		
-	}
-	if (!bFound) {
-		gulong netr=load_page(idx);
-		iFrom=1; // Needn't search the first word anymore.
-		iTo=netr-1;
-		iThisIndex=0;
-		while (iFrom<=iTo) {
-			iThisIndex=(iFrom+iTo)/2;
-			cmpint = stardict_strcmp(str, page.entries[iThisIndex].keystr);
-			if (cmpint>0)
-				iFrom=iThisIndex+1;
-			else if (cmpint<0)
-				iTo=iThisIndex-1;
-			else {
-				bFound=true;
-				break;
-			}
-		}
-		idx*=ENTR_PER_PAGE;
-		if (!bFound)
-			idx += iFrom;    //next
-		else
-			idx += iThisIndex;
-	} else {
-		idx*=ENTR_PER_PAGE;
-	}
-	return bFound;
-}
-
-wordlist_index::~wordlist_index()
-{	
-	g_free(idxdatabuf);
-}
-
-bool wordlist_index::load(const std::string& url, gulong wc, gulong fsize)
-{
-	gzFile in = gzopen(url.c_str(), "rb");
-	if (in == NULL)	
-		return false;	
+    bool WordListIndex::load(const std::string& url, gulong wc, gulong fsize)
+    {
+        gzFile in = gzopen(url.c_str(), "rb");
+        if (in == nullptr)	
+            return false;	
 		
-	idxdatabuf = (gchar *)g_malloc(fsize);
+        idxdatabuf = (gchar *)g_malloc(fsize);
 		
-	const int len = gzread(in, idxdatabuf, fsize);
-	gzclose(in);
-	if (len < 0)
-		return false;
+        const int len = gzread(in, idxdatabuf, fsize);
+        gzclose(in);
+        if (len < 0)
+            return false;
 
-	if (gulong(len) != fsize)
-		return false;
+        if (gulong(len) != fsize)
+            return false;
 
-  wordlist.resize(wc+1);
-	gchar *p1 = idxdatabuf;
-  guint32 i;
-  for (i=0; i<wc; i++) {
-		wordlist[i] = p1;
-    p1 += strlen(p1) +1 + 2*sizeof(guint32);
-	}
-	wordlist[wc] = p1;
+        wordlist.resize(wc+1);
+        gchar *p1 = idxdatabuf;
+        guint32 i;
+        for (i=0; i<wc; i++) {
+            wordlist[i] = p1;
+            p1 += strlen(p1) +1 + 2*sizeof(guint32);
+        }
+        wordlist[wc] = p1;
 
-	return true;
-}
+        return true;
+    }
 
-const gchar *wordlist_index::get_key(glong idx)
-{
-	return wordlist[idx];
-}
+    void WordListIndex::get_data(glong idx)
+    {
+        gchar *p1 = wordlist[idx]+strlen(wordlist[idx])+sizeof(gchar);
+        wordentry_offset = g_ntohl(get_uint32(p1));
+        p1 += sizeof(guint32);
+        wordentry_size = g_ntohl(get_uint32(p1));
+    }
 
-void wordlist_index::get_data(glong idx)
-{
-	gchar *p1 = wordlist[idx]+strlen(wordlist[idx])+sizeof(gchar);
-	wordentry_offset = g_ntohl(get_uint32(p1));
-	p1 += sizeof(guint32);
-	wordentry_size = g_ntohl(get_uint32(p1));
-}
+    bool WordListIndex::lookup(const char *str, glong &idx)
+    {
+        bool bFound=false;
+        glong iTo=wordlist.size()-2;
 
-const gchar *wordlist_index::get_key_and_data(glong idx)
-{
-	get_data(idx);
-	return get_key(idx);
-}
-
-bool wordlist_index::lookup(const char *str, glong &idx)
-{
-	bool bFound=false;
-	glong iTo=wordlist.size()-2;
-
-	if (stardict_strcmp(str, get_key(0))<0) {
-		idx = 0;
-	} else if (stardict_strcmp(str, get_key(iTo)) >0) {
-		idx = INVALID_INDEX;
-	} else {
-		glong iThisIndex=0;
-		glong iFrom=0;
-		gint cmpint;
-		while (iFrom<=iTo) {
-			iThisIndex=(iFrom+iTo)/2;
-			cmpint = stardict_strcmp(str, get_key(iThisIndex));
-			if (cmpint>0)
-				iFrom=iThisIndex+1;
-			else if (cmpint<0)
-				iTo=iThisIndex-1;
-			else {
-				bFound=true;
-				break;
-			}
-		}
-	if (!bFound)
-		idx = iFrom;    //next
-	else
-		idx = iThisIndex;		
-  }
-  return bFound;
+        if (stardict_strcmp(str, get_key(0))<0) {
+            idx = 0;
+        } else if (stardict_strcmp(str, get_key(iTo)) >0) {
+            idx = INVALID_INDEX;
+        } else {
+            glong iThisIndex=0;
+            glong iFrom=0;
+            gint cmpint;
+            while (iFrom<=iTo) {
+                iThisIndex=(iFrom+iTo)/2;
+                cmpint = stardict_strcmp(str, get_key(iThisIndex));
+                if (cmpint>0)
+                    iFrom=iThisIndex+1;
+                else if (cmpint<0)
+                    iTo=iThisIndex-1;
+                else {
+                    bFound=true;
+                    break;
+                }
+            }
+            if (!bFound)
+                idx = iFrom;    //next
+            else
+                idx = iThisIndex;	
+        }
+        return bFound;
+    }
 }
 
 //===================================================================
@@ -863,10 +837,10 @@ bool Dict::load(const std::string& ifofilename)
 	fullfilename.replace(fullfilename.length()-sizeof("ifo")+1, sizeof("ifo")-1, "idx.gz");
 	
 	if (g_file_test(fullfilename.c_str(), G_FILE_TEST_EXISTS)) {
-		idx_file.reset(new wordlist_index);
+		idx_file.reset(new WordListIndex);
 	} else {
 		fullfilename.erase(fullfilename.length()-sizeof(".gz")+1, sizeof(".gz")-1);
-		idx_file.reset(new offset_index);
+		idx_file.reset(new OffsetIndex);
 	}
 
 	if (!idx_file->load(fullfilename, wordcount, idxfilesize))
@@ -884,8 +858,6 @@ bool Dict::load_ifofile(const std::string& ifofilename, gulong &idxfilesize)
 	if (dict_info.wordcount==0)
 		return false;
 
-	
-
 	ifo_file_name=dict_info.ifo_file_name;
 	wordcount=dict_info.wordcount;
 	bookname=dict_info.bookname;
@@ -899,28 +871,21 @@ bool Dict::load_ifofile(const std::string& ifofilename, gulong &idxfilesize)
 
 bool Dict::LookupWithRule(GPatternSpec *pspec, glong *aIndex, int iBuffLen)
 {
-	int iIndexCount=0;
+	int iIndexCount = 0;
   
-  for(guint32 i=0; i<narticles() && iIndexCount<iBuffLen-1; i++)
-    if (g_pattern_match_string(pspec, get_key(i)))        
-			aIndex[iIndexCount++]=i;
+    for (guint32 i=0; i < narticles() && iIndexCount < (iBuffLen - 1); i++)
+        if (g_pattern_match_string(pspec, get_key(i)))        
+			aIndex[iIndexCount++] = i;
             
-    aIndex[iIndexCount]= -1; // -1 is the end.	
+    aIndex[iIndexCount] = -1; // -1 is the end.	
 	
-  return (iIndexCount>0);
-}
-
-//===================================================================
-Libs::Libs(progress_func_t f)
-{
-	progress_func=f;
-	iMaxFuzzyDistance  = MAX_FUZZY_DISTANCE; //need to read from cfg.
+  return iIndexCount > 0;
 }
 
 Libs::~Libs()
-{	
-	for (std::vector<Dict *>::iterator p=oLib.begin(); p!=oLib.end(); ++p)
-		delete *p;
+{
+	for (Dict *p : oLib)
+		delete p;
 }
 
 void Libs::load_dict(const std::string& url)
@@ -932,81 +897,54 @@ void Libs::load_dict(const std::string& url)
 		delete lib;
 }
 
-class DictLoader {
-public:
-	DictLoader(Libs& lib_): lib(lib_) {}
-	void operator()(const std::string& url, bool disable) { 
-		if (!disable)
-			lib.load_dict(url); 
-	}
-private:
-	Libs& lib;
-};
-
 void Libs::load(const strlist_t& dicts_dirs,
 		const strlist_t& order_list, 
 		const strlist_t& disable_list)
 {
 	for_each_file(dicts_dirs, ".ifo", order_list, disable_list, 
-		      DictLoader(*this));
+                  [this](const std::string& url, bool disable) -> void {
+                      if (!disable)
+                          load_dict(url);                       
+                  });
 }
 
-class DictReLoader {
-public:
-	DictReLoader(std::vector<Dict *> &p, std::vector<Dict *> &f,
-							 Libs& lib_) : prev(p), future(f), lib(lib_)
-	{
-	}
-	void operator()(const std::string& url, bool disable) { 
-		if (!disable) {
-			Dict *dict=find(url);
-			if (dict)
-				future.push_back(dict);
-			else
-				lib.load_dict(url); 
-		}
-	}
-private:
-	std::vector<Dict *> &prev;
-	std::vector<Dict *> &future;
-	Libs& lib;
-
-	Dict *find(const std::string& url) {
-		std::vector<Dict *>::iterator it;
-		for (it=prev.begin(); it!=prev.end(); ++it)
-			if ((*it)->ifofilename()==url)
-				break;
-		if (it!=prev.end()) {
-			Dict *res=*it;
-			prev.erase(it);
-			return res;
-		}
-		return NULL;
-	}
-};
-
 void Libs::reload(const strlist_t& dicts_dirs, 
-									const strlist_t& order_list, 
-									const strlist_t& disable_list)
+                  const strlist_t& order_list, 
+                  const strlist_t& disable_list)
 {
 	std::vector<Dict *> prev(oLib);
 	oLib.clear();
+
 	for_each_file(dicts_dirs, ".ifo", order_list, disable_list, 
-								DictReLoader(prev, oLib, *this));
-	for (std::vector<Dict *>::iterator it=prev.begin(); it!=prev.end(); ++it)
-		delete *it;
+                  [&prev, this](const std::string& url, bool disable) -> void {                      
+                      if (!disable) {
+                          auto it = prev.begin();
+                          for (; it != prev.end(); ++it)
+                              if ((*it)->ifofilename() == url)
+                                  break;
+                          if (it != prev.end()) {
+                              Dict *res = *it;
+                              prev.erase(it);
+                              oLib.push_back(res);
+                          } else
+                              load_dict(url); 
+                      }
+                  });
+
+	for (Dict *p : prev)
+		delete p;
 }
 	
 const gchar *Libs::poGetCurrentWord(glong * iCurrent)
 {
-  const gchar *poCurrentWord = NULL;
+  const gchar *poCurrentWord = nullptr;
   const gchar *word;
   for (std::vector<Dict *>::size_type iLib=0; iLib<oLib.size(); iLib++) {
     if (iCurrent[iLib]==INVALID_INDEX)
       continue;
     if ( iCurrent[iLib]>=narticles(iLib) || iCurrent[iLib]<0)
       continue;
-    if ( poCurrentWord == NULL ) {
+    if ( poCurrentWord == nullptr ) {
       poCurrentWord = poGetWord(iCurrent[iLib],iLib);
     } else {
       word = poGetWord(iCurrent[iLib],iLib);
@@ -1018,24 +956,23 @@ const gchar *Libs::poGetCurrentWord(glong * iCurrent)
   return poCurrentWord;
 }
 
-const gchar *
-Libs::poGetNextWord(const gchar *sWord, glong *iCurrent)
+const gchar *Libs::poGetNextWord(const gchar *sWord, glong *iCurrent)
 {
 	// the input can be:
 	// (word,iCurrent),read word,write iNext to iCurrent,and return next word. used by TopWin::NextCallback();
-	// (NULL,iCurrent),read iCurrent,write iNext to iCurrent,and return next word. used by AppCore::ListWords();
-	const gchar *poCurrentWord = NULL;
-	std::vector<Dict *>::size_type iCurrentLib=0;
+	// (nullptr,iCurrent),read iCurrent,write iNext to iCurrent,and return next word. used by AppCore::ListWords();
+	const gchar *poCurrentWord = nullptr;
+    size_t iCurrentLib = 0;
 	const gchar *word;
 
-	for (std::vector<Dict *>::size_type iLib=0;iLib<oLib.size();iLib++) {
+	for (size_t iLib = 0; iLib < oLib.size(); ++iLib) {
 		if (sWord)
 			oLib[iLib]->Lookup(sWord, iCurrent[iLib]);
 		if (iCurrent[iLib]==INVALID_INDEX)
 			continue;
 		if (iCurrent[iLib]>=narticles(iLib) || iCurrent[iLib]<0)
 			continue;
-		if (poCurrentWord == NULL ) {
+		if (poCurrentWord == nullptr ) {
 			poCurrentWord = poGetWord(iCurrent[iLib],iLib);
 			iCurrentLib = iLib;
 		}	else {
@@ -1069,7 +1006,7 @@ const gchar *
 Libs::poGetPreWord(glong * iCurrent)
 {
 	// used by TopWin::PreviousCallback(); the iCurrent is cached by AppCore::TopWinWordChange();
-	const gchar *poCurrentWord = NULL;
+	const gchar *poCurrentWord = nullptr;
 	std::vector<Dict *>::size_type iCurrentLib=0;
 	const gchar *word;
 
@@ -1080,7 +1017,7 @@ Libs::poGetPreWord(glong * iCurrent)
 			if ( iCurrent[iLib]>narticles(iLib) || iCurrent[iLib]<=0)
 				continue;
 		}
-		if ( poCurrentWord == NULL ) {
+		if ( poCurrentWord == nullptr ) {
 			poCurrentWord = poGetWord(iCurrent[iLib]-1,iLib);
 			iCurrentLib = iLib;
 		} else {
@@ -1113,7 +1050,7 @@ Libs::poGetPreWord(glong * iCurrent)
 bool Libs::LookupSimilarWord(const gchar* sWord, glong & iWordIndex, int iLib)
 {
 	glong iIndex;
-  bool bFound=false;
+    bool bFound = false;
 	gchar *casestr;
 
 	if (!bFound) {
@@ -1152,14 +1089,14 @@ bool Libs::LookupSimilarWord(const gchar* sWord, glong & iWordIndex, int iLib)
   if (bIsPureEnglish(sWord)) {		
 		// If not Found , try other status of sWord.
 		int iWordLen=strlen(sWord);
-    bool isupcase;
+        bool isupcase;
 		
 		gchar *sNewWord = (gchar *)g_malloc(iWordLen + 1);
 
 		//cut one char "s" or "d"
 		if(!bFound && iWordLen>1) {
-      isupcase = sWord[iWordLen-1]=='S' || !strncmp(&sWord[iWordLen-2],"ED",2);
-      if (isupcase || sWord[iWordLen-1]=='s' || !strncmp(&sWord[iWordLen-2],"ed",2)) {
+            isupcase = sWord[iWordLen-1]=='S' || !strncmp(&sWord[iWordLen-2],"ED",2);
+            if (isupcase || sWord[iWordLen-1]=='s' || !strncmp(&sWord[iWordLen-2],"ed",2)) {
 				strcpy(sNewWord,sWord);
 				sNewWord[iWordLen-1]='\0'; // cut "s" or "d"
 				if (oLib[iLib]->Lookup(sNewWord, iIndex))
@@ -1443,44 +1380,21 @@ bool Libs::LookupSimilarWord(const gchar* sWord, glong & iWordIndex, int iLib)
 
 bool Libs::SimpleLookupWord(const gchar* sWord, glong & iWordIndex, int iLib)
 {
-  bool bFound = oLib[iLib]->Lookup(sWord, iWordIndex);
+    bool bFound = oLib[iLib]->Lookup(sWord, iWordIndex);
 	if (!bFound)
 		bFound = LookupSimilarWord(sWord, iWordIndex, iLib);
 	return bFound;
 }
 
-struct Fuzzystruct {
-	char * pMatchWord;
-	int iMatchWordDistance;
-};
-
-inline bool operator<(const Fuzzystruct & lh, const Fuzzystruct & rh) {
-  if (lh.iMatchWordDistance!=rh.iMatchWordDistance)
-    return lh.iMatchWordDistance<rh.iMatchWordDistance;
-
-  if (lh.pMatchWord && rh.pMatchWord)
-    return stardict_strcmp(lh.pMatchWord, rh.pMatchWord)<0;
-  
-  return false;
-}
-
-static inline void unicode_strdown(gunichar *str)
-{
-	while (*str) {
-		*str=g_unichar_tolower(*str);
-		++str;
-	}
-}
-
 bool Libs::LookupWithFuzzy(const gchar *sWord, gchar *reslist[], gint reslist_size)
 {
   if (sWord[0] == '\0')
-    return false;
+      return false;
 
-	Fuzzystruct oFuzzystruct[reslist_size];       
+  Fuzzystruct oFuzzystruct[reslist_size];       
 
-  for (int i=0; i<reslist_size; i++) {
-    oFuzzystruct[i].pMatchWord = NULL;
+  for (int i = 0; i < reslist_size; i++) {
+    oFuzzystruct[i].pMatchWord = nullptr;
     oFuzzystruct[i].iMatchWordDistance = iMaxFuzzyDistance;
   }
   int iMaxDistance = iMaxFuzzyDistance;
@@ -1494,75 +1408,79 @@ bool Libs::LookupWithFuzzy(const gchar *sWord, gchar *reslist[], gint reslist_si
   glong ucs4_str2_len;
 
   ucs4_str2 = g_utf8_to_ucs4_fast(sWord, -1, &ucs4_str2_len);
-	unicode_strdown(ucs4_str2);
+  unicode_strdown(ucs4_str2);
 
-  for (std::vector<Dict *>::size_type iLib=0; iLib<oLib.size(); iLib++) {
+  for (size_t iLib = 0; iLib < oLib.size(); ++iLib) {
     if (progress_func)
-      progress_func();
+        progress_func();
 
     //if (stardict_strcmp(sWord, poGetWord(0,iLib))>=0 && stardict_strcmp(sWord, poGetWord(narticles(iLib)-1,iLib))<=0) {
       //there are Chinese dicts and English dicts...
-    if (TRUE) {
-      const int iwords = narticles(iLib);
-      for (int index=0; index<iwords; index++) {
-				sCheck = poGetWord(index,iLib);
-				// tolower and skip too long or too short words
-				iCheckWordLen = g_utf8_strlen(sCheck, -1);
-				if (iCheckWordLen-ucs4_str2_len>=iMaxDistance || 
-						ucs4_str2_len-iCheckWordLen>=iMaxDistance)
-					continue;
-				ucs4_str1 = g_utf8_to_ucs4_fast(sCheck, -1, NULL);
-				if (iCheckWordLen > ucs4_str2_len)
-					ucs4_str1[ucs4_str2_len]=0;
-				unicode_strdown(ucs4_str1);				
 
-				iDistance = oEditDistance.CalEditDistance(ucs4_str1, ucs4_str2, iMaxDistance);
-				g_free(ucs4_str1);
-				if (iDistance<iMaxDistance && iDistance < ucs4_str2_len) {
-					// when ucs4_str2_len=1,2 we need less fuzzy.
-					Found = true;
-					bool bAlreadyInList = false;
-					int iMaxDistanceAt=0;
-					for (int j=0; j<reslist_size; j++) {
-						if (oFuzzystruct[j].pMatchWord && 
-								strcmp(oFuzzystruct[j].pMatchWord,sCheck)==0 ) {//already in list
-							bAlreadyInList = true;
-							break;
-						}
-						//find the position,it will certainly be found (include the first time) as iMaxDistance is set by last time.
-						if (oFuzzystruct[j].iMatchWordDistance == iMaxDistance ) {
-							iMaxDistanceAt = j;
-						}
-					}
-					if (!bAlreadyInList) {
-						if (oFuzzystruct[iMaxDistanceAt].pMatchWord)
-							g_free(oFuzzystruct[iMaxDistanceAt].pMatchWord);
-						oFuzzystruct[iMaxDistanceAt].pMatchWord = g_strdup(sCheck);
-						oFuzzystruct[iMaxDistanceAt].iMatchWordDistance = iDistance;
-						// calc new iMaxDistance
-						iMaxDistance = iDistance;
-						for (int j=0; j<reslist_size; j++) {
-							if (oFuzzystruct[j].iMatchWordDistance > iMaxDistance)
-								iMaxDistance = oFuzzystruct[j].iMatchWordDistance;
-						} // calc new iMaxDistance
-					}   // add to list
-				}   // find one
-      }   // each word
-    }   // ok for search
+    const int iwords = narticles(iLib);
+    for (int index=0; index<iwords; index++) {
+        sCheck = poGetWord(index,iLib);
+        // tolower and skip too long or too short words
+        iCheckWordLen = g_utf8_strlen(sCheck, -1);
+        if (iCheckWordLen-ucs4_str2_len>=iMaxDistance || 
+            ucs4_str2_len-iCheckWordLen>=iMaxDistance)
+            continue;
+        ucs4_str1 = g_utf8_to_ucs4_fast(sCheck, -1, nullptr);
+        if (iCheckWordLen > ucs4_str2_len)
+            ucs4_str1[ucs4_str2_len]=0;
+        unicode_strdown(ucs4_str1);				
+
+        iDistance = oEditDistance.CalEditDistance(ucs4_str1, ucs4_str2, iMaxDistance);
+        g_free(ucs4_str1);
+        if (iDistance<iMaxDistance && iDistance < ucs4_str2_len) {
+            // when ucs4_str2_len=1,2 we need less fuzzy.
+            Found = true;
+            bool bAlreadyInList = false;
+            int iMaxDistanceAt=0;
+            for (int j=0; j<reslist_size; j++) {
+                if (oFuzzystruct[j].pMatchWord && 
+                    strcmp(oFuzzystruct[j].pMatchWord,sCheck)==0 ) {//already in list
+                    bAlreadyInList = true;
+                    break;
+                }
+                //find the position,it will certainly be found (include the first time) as iMaxDistance is set by last time.
+                if (oFuzzystruct[j].iMatchWordDistance == iMaxDistance ) {
+                    iMaxDistanceAt = j;
+                }
+            }
+            if (!bAlreadyInList) {
+                if (oFuzzystruct[iMaxDistanceAt].pMatchWord)
+                    g_free(oFuzzystruct[iMaxDistanceAt].pMatchWord);
+                oFuzzystruct[iMaxDistanceAt].pMatchWord = g_strdup(sCheck);
+                oFuzzystruct[iMaxDistanceAt].iMatchWordDistance = iDistance;
+                // calc new iMaxDistance
+                iMaxDistance = iDistance;
+                for (int j=0; j<reslist_size; j++) {
+                    if (oFuzzystruct[j].iMatchWordDistance > iMaxDistance)
+                        iMaxDistance = oFuzzystruct[j].iMatchWordDistance;
+                } // calc new iMaxDistance
+            }   // add to list
+        }   // find one
+    }   // each word
+
   }   // each lib
   g_free(ucs4_str2);
 	
   if (Found)// sort with distance
-    std::sort(oFuzzystruct, oFuzzystruct+reslist_size);
+      std::sort(oFuzzystruct, oFuzzystruct + reslist_size, [](const Fuzzystruct& lh, const Fuzzystruct& rh) -> bool {
+              if (lh.iMatchWordDistance!=rh.iMatchWordDistance)
+                  return lh.iMatchWordDistance<rh.iMatchWordDistance;
+
+              if (lh.pMatchWord && rh.pMatchWord)
+                  return stardict_strcmp(lh.pMatchWord, rh.pMatchWord)<0;
+  
+              return false;
+          });
 	
-	for (gint i=0; i<reslist_size; ++i)
-    reslist[i]=oFuzzystruct[i].pMatchWord;
+  for (gint i = 0; i < reslist_size; ++i)
+      reslist[i] = oFuzzystruct[i].pMatchWord;
 	
   return Found;
-}
-
-inline bool less_for_compare(const char *lh, const char *rh) {
-  return stardict_strcmp(lh, rh)<0;
 }
 
 gint Libs::LookupWithRule(const gchar *word, gchar **ppMatchWord)
@@ -1595,7 +1513,9 @@ gint Libs::LookupWithRule(const gchar *word, gchar **ppMatchWord)
   g_pattern_spec_free(pspec);
 	
   if (iMatchCount)// sort it.
-    std::sort(ppMatchWord, ppMatchWord+iMatchCount, less_for_compare); 
+      std::sort(ppMatchWord, ppMatchWord+iMatchCount, [](const char *lh, const char *rh) -> bool {
+              return stardict_strcmp(lh, rh)<0;
+          }); 
 	
   return iMatchCount;
 }
@@ -1642,7 +1562,7 @@ bool Libs::LookupData(const gchar *sWord, std::vector<gchar *> *reslist)
 		return false;
 
 	guint32 max_size =0;
-	gchar *origin_data = NULL;
+	gchar *origin_data = nullptr;
 	for (std::vector<Dict *>::size_type i=0; i<oLib.size(); ++i) {
 		if (!oLib[i]->containSearchData())
 			continue;
@@ -1664,11 +1584,11 @@ bool Libs::LookupData(const gchar *sWord, std::vector<gchar *> *reslist)
 	g_free(origin_data);
 
 	std::vector<Dict *>::size_type i;
-	for (i=0; i<oLib.size(); ++i)
+	for (i = 0; i < oLib.size(); ++i)
 		if (!reslist[i].empty())
 			break;
 			
-	return i!=oLib.size();
+	return i != oLib.size();
 }
 
 /**************************************************/
