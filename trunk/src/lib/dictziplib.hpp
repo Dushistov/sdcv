@@ -1,5 +1,4 @@
-#ifndef __DICT_ZIP_LIB_H__
-#define __DICT_ZIP_LIB_H__
+#pragma once
 
 #include <ctime>
 #include <string>
@@ -54,4 +53,3 @@ private:
 	int read_header(const std::string &filename, int computeCRC);
 };
 
-#endif//!__DICT_ZIP_LIB_H__
