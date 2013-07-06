@@ -67,7 +67,7 @@ static std::string xdxf2text(const char *p)
 			res+="";
 		else if (name=="k") {
 			const char *begin=next;
-			if ((next=strstr(begin, "</k>"))!=NULL)
+			if ((next=strstr(begin, "</k>"))!=nullptr)
 				next+=sizeof("</k>")-1-1;
 			else
 				next=begin;
@@ -171,7 +171,7 @@ void Library::SimpleLookup(const string &str, TSearchResultList& res_list)
 {	
 	glong ind;
 	res_list.reserve(ndicts());
-	for (gint idict=0; idict<ndicts(); ++idict)
+	for (gint idict = 0; idict < ndicts(); ++idict)
 		if (SimpleLookupWord(str.c_str(), ind, idict))
 			res_list.push_back(
 				TSearchResult(dict_name(idict), 
@@ -199,11 +199,11 @@ void Library::LookupWithRule(const string &str, TSearchResultList& res_list)
 {
 	std::vector<gchar *> match_res((MAX_MATCH_ITEM_PER_LIB) * ndicts());
 
-	gint nfound=Libs::LookupWithRule(str.c_str(), &match_res[0]);
+	const gint nfound = Libs::LookupWithRule(str.c_str(), &match_res[0]);
 	if (!nfound)
 		return;
 
-	for (gint i=0; i<nfound; ++i) {
+	for (gint i = 0; i < nfound; ++i) {
 		SimpleLookup(match_res[i], res_list);
 		g_free(match_res[i]);
 	}
@@ -214,8 +214,8 @@ void Library::LookupData(const string &str, TSearchResultList& res_list)
 	std::vector<std::vector<gchar *> > drl(ndicts());
 	if (!Libs::LookupData(str.c_str(), &drl[0]))
 		return;
-	for (int idict=0; idict<ndicts(); ++idict)
-		for (std::vector<gchar *>::size_type j=0; j<drl[idict].size(); ++j) {
+	for (int idict = 0; idict < ndicts(); ++idict)
+		for (std::vector<gchar *>::size_type j=0; j < drl[idict].size(); ++j) {
 			SimpleLookup(drl[idict][j], res_list);
 			g_free(drl[idict][j]);
 		}
@@ -237,51 +237,52 @@ void Library::print_search_result(FILE *out, const TSearchResult & res)
 		utf8_output ? res.exp.c_str() : loc_exp.c_str()); 
 }
 
-class sdcv_pager {
-public:
-	sdcv_pager(bool ignore_env=false) {
-		output=stdout;
-		if (ignore_env)
-			return;
-		const gchar *pager=g_getenv("SDCV_PAGER");
-		if (pager && (output=popen(pager, "w"))==NULL) {
-			perror(_("popen failed"));
-			output=stdout;
-		}
-	}
-	~sdcv_pager() {
-		if (output!=stdout)
-			fclose(output);
-	}
-	FILE *get_stream() { return output; }
-private:
-	FILE *output;
-};
+namespace {
+    class sdcv_pager {
+    public:
+        sdcv_pager(bool ignore_env=false) {
+            output = stdout;
+            if (ignore_env)
+                return;
+            const gchar *pager = g_getenv("SDCV_PAGER");
+            if (pager && (output = popen(pager, "w")) == nullptr) {
+                perror(_("popen failed"));
+                output = stdout;
+            }
+        }
+        sdcv_pager(const sdcv_pager&) = delete;
+        sdcv_pager& operator=(const sdcv_pager&) = delete;
+        ~sdcv_pager() {
+            if (output != stdout)
+                fclose(output);
+        }
+        FILE *get_stream() { return output; }
+    private:
+        FILE *output;
+    };
+}
 
-bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
+bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 {
-	if (NULL==loc_str)
+	if (nullptr==loc_str)
 		return true;
 
 	std::string query;
 
-	
 	analyze_query(loc_str, query);
 	if (!query.empty())
 		io.add_to_history(query.c_str());
-	
-
 
 	gsize bytes_read;
 	gsize bytes_written;
-	GError *err=NULL;
-	char *str=NULL;
+	GError *err = nullptr;
+	char *str = nullptr;
 	if (!utf8_input)
-		str=g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, &err);
+		str = g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, &err);
 	else
-		str=g_strdup(loc_str);
+		str = g_strdup(loc_str);
 
-	if (NULL==str) {
+	if (nullptr==str) {
 		fprintf(stderr, _("Can not convert %s to utf8.\n"), loc_str);
 		fprintf(stderr, "%s\n", err->message);
 		g_error_free(err);
@@ -290,10 +291,8 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 
 	if (str[0]=='\0')
 		return true;
-
   
 	TSearchResultList res_list;
-
 
 	switch (analyze_query(str, query)) {
 	case qtFUZZY:
@@ -318,20 +317,19 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 		/* try to be more clever, if there are
 		   one or zero results per dictionary show all
 		*/
-		bool show_all_results=true;
+		bool show_all_results = true;
 		typedef std::map< string, int, std::less<string> > DictResMap;
 		if (!force) {
 			DictResMap res_per_dict;
-			for(TSearchResultList::iterator ptr=res_list.begin(); ptr!=res_list.end(); ++ptr){
-				std::pair<DictResMap::iterator, DictResMap::iterator> r = 
-					res_per_dict.equal_range(ptr->bookname);
+			for (const TSearchResult& search_res : res_list) {
+				auto r = res_per_dict.equal_range(search_res.bookname);
 				DictResMap tmp(r.first, r.second);
 				if (tmp.empty()) //there are no yet such bookname in map
-					res_per_dict.insert(DictResMap::value_type(ptr->bookname, 1));
+					res_per_dict.insert(DictResMap::value_type(search_res.bookname, 1));
 				else {
 					++((tmp.begin())->second);
-					if (tmp.begin()->second>1) {
-						show_all_results=false;
+					if (tmp.begin()->second > 1) {
+						show_all_results = false;
 						break;
 					}
 				}
@@ -341,25 +339,24 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 		if (!show_all_results && !force) {
 			printf(_("Found %zu items, similar to %s.\n"), res_list.size(), 
 			       utf8_output ? str : utf8_to_locale_ign_err(str).c_str());
-			for (size_t i=0; i<res_list.size(); ++i) {
-				string loc_bookname, loc_def;
-				loc_bookname=utf8_to_locale_ign_err(res_list[i].bookname);
-				loc_def=utf8_to_locale_ign_err(res_list[i].def);
+			for (size_t i = 0; i < res_list.size(); ++i) {
+                const std::string loc_bookname = utf8_to_locale_ign_err(res_list[i].bookname);
+                const std::string loc_def = utf8_to_locale_ign_err(res_list[i].def);
 				printf("%zu)%s-->%s\n", i,
 				       utf8_output ?  res_list[i].bookname.c_str() : loc_bookname.c_str(),
 				       utf8_output ? res_list[i].def.c_str() : loc_def.c_str());
 			}
 			int choise;
-			std::auto_ptr<read_line> choice_readline(create_readline_object());
+			std::unique_ptr<IReadLine> choice_readline(create_readline_object());
 			for (;;) {
-				string str_choise;
+                std::string str_choise;
 				choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);
 				sscanf(str_choise.c_str(), "%d", &choise);
-				if (choise>=0 && choise<int(res_list.size())) { 
+				if (choise >= 0 && choise < int(res_list.size())) { 
 					sdcv_pager pager;
 					print_search_result(pager.get_stream(), res_list[choise]);
 					break;
-				} else if (choise==-1){
+				} else if (choise == -1){
 					break;
 				} else
 					printf(_("Invalid choice.\nIt must be from 0 to %zu or -1.\n"), 
@@ -369,8 +366,8 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 			sdcv_pager pager(force);
 			fprintf(pager.get_stream(), _("Found %zu items, similar to %s.\n"), 
 				res_list.size(), utf8_output ? str : utf8_to_locale_ign_err(str).c_str());
-			for (PSearchResult ptr=res_list.begin(); ptr!=res_list.end(); ++ptr)
-				print_search_result(pager.get_stream(), *ptr);
+			for (const TSearchResult& search_res : res_list)
+				print_search_result(pager.get_stream(), search_res);
 		}
     
 	} else {
