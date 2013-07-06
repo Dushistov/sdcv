@@ -35,11 +35,22 @@
 #include "readline.hpp"
 
 #ifndef WITH_READLINE
- 
+
+static bool stdio_getline(FILE *in, std::string & str)
+{
+  str.clear();
+  int ch;
+  while ((ch=fgetc(in))!=EOF && ch!='\n')
+    str+=ch;
+  if (EOF==ch)
+    return false;
+  return true;
+}
+
 class dummy_readline : public read_line {
 public:
 	bool read(const string& banner, string& line) {
-		printf(banner.c_str());
+		printf("%s", banner.c_str());
 		return stdio_getline(stdin, line);
 	}
 };
