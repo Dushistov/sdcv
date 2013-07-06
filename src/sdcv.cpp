@@ -91,9 +91,9 @@ int main(int argc, char *argv[])
 {
 	setlocale(LC_ALL, "");
 #if ENABLE_NLS
-	bindtextdomain(PACKAGE, LOCALEDIR);
-	textdomain (PACKAGE);
-#endif	 
+	bindtextdomain("sdcv", GETTEXT_TRANSLATIONS_PATH);
+	textdomain("sdcv");
+#endif
 
 	gboolean show_version = FALSE;
 	gboolean show_list_dicts = FALSE;

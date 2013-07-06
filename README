@@ -1,3 +1,12 @@
+* How to compile and install
+mkdir /tmp/build-sdcv
+cd /tmp/build-sdcv
+cmake path/to/source/code/of/sdcv
+make
+** to install type
+make install
+you can use "DESTDIR" variable to change installation path
+
 * Documentation
 See sdcv man page for usage description.
 
@@ -6,3 +15,6 @@ If you find bug reports it via email to dushistov at mail dot ru.
 Be sure to include the word "sdcv" somewhere in the "Subject:" field.
 
 
+* Notes to developer
+** make source code release
+make package_source
