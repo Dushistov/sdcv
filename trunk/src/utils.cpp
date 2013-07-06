@@ -32,16 +32,16 @@
 std::string utf8_to_locale_ign_err(const std::string& utf8_str)
 {
 	gsize bytes_read, bytes_written;
-	GError *err=NULL;
+	GError *err=nullptr;
 	std::string res;
   
 	const char * charset;
 	if (g_get_charset(&charset))
 		res=utf8_str;
 	else {
-		gchar *tmp=g_convert_with_fallback(utf8_str.c_str(), -1, charset, "UTF-8", NULL, 
+		gchar *tmp=g_convert_with_fallback(utf8_str.c_str(), -1, charset, "UTF-8", nullptr, 
 						   &bytes_read, &bytes_written, &err);
-		if (NULL==tmp){
+		if (nullptr==tmp){
 			fprintf(stderr, _("Can not convert %s to current locale.\n"), utf8_str.c_str());
 			fprintf(stderr, "%s\n", err->message);
 			g_error_free(err);
@@ -56,14 +56,14 @@ std::string utf8_to_locale_ign_err(const std::string& utf8_str)
 
 char *locale_to_utf8(const char *loc_str)
 {
-	if(NULL==loc_str)
-		return NULL;
+	if(nullptr==loc_str)
+		return nullptr;
 	gsize bytes_read;
 	gsize bytes_written;
-	GError *err=NULL;
-	gchar *str=NULL;
+	GError *err=nullptr;
+	gchar *str=nullptr;
 	str=g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, &err);
-	if(NULL==str){
+	if(nullptr==str){
 		fprintf(stderr, _("Can not convert %s to utf8.\n"), loc_str);
 		fprintf(stderr, "%s\n", err->message);
 		g_error_free(err);
