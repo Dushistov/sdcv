@@ -1,8 +1,11 @@
 #!/bin/sh
 
-cp -R stardict-test_dict-2.4.2 "${HOME}"/.stardict/dic
+PATH_TO_SDCV="$1"
+TESTS_DIR="$2"
+
+cp -R "${TESTS_DIR}/stardict-test_dict-2.4.2" "${HOME}"/.stardict/dic
 unset SDCV_PAGER
-RES=`../src/sdcv -n -u test_dict test | grep "test passed"`
+RES=`"$PATH_TO_SDCV" -n -u test_dict test | grep "test passed"`
 
 if [ -z "$RES" ]; then
 	echo "we didn't find in stardict-test_dict-2.4.2 "test" keyword, something wrong" >&2

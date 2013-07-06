@@ -3,7 +3,14 @@
 export LANG=ru_RU.KOI8-R
 unset SDCV_PAGER
 
-if ! ../src/sdcv -n --utf8-output man | tail -n -1 | iconv -f utf-8 -t utf-8 >/dev/null; then
+PATH_TO_SDCV="$1"
+
+if test ! -x "$PATH_TO_SDCV"; then
+    echo "Can not find sdcv binary $1" >&2
+    exit 1
+fi
+
+if ! "$PATH_TO_SDCV" -n --utf8-output man | tail -n -1 | iconv -f utf-8 -t utf-8 >/dev/null; then
 	echo "utf8 output didn't work" >&2
 	exit 1
 fi

@@ -1,6 +1,7 @@
 #!/bin/sh
 
-ndicts=`../src/sdcv -l | wc -l`
+PATH_TO_SDCV="$1"
+ndicts=`"$PATH_TO_SDCV" -l | wc -l`
 ndicts=$(($ndicts-1))
 ncom=`find /usr/share/stardict/dic -name "*.ifo" | wc -l`
 nspe=`find "${HOME}"/.stardict/dic -name "*.ifo" | wc -l`
@@ -10,3 +11,5 @@ if [ $nmy -ne $ndicts ]; then
 	echo "should be: $nmy, we have: $ndicts" >&2
 	exit 1
 fi
+
+exit 0

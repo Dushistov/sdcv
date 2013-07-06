@@ -1,6 +1,14 @@
 #!/bin/sh
+# check that in not-interactive mode sdcv not wait any input
 
-../src/sdcv -n >/dev/null 2>&1 &
+PATH_TO_SDCV="$1"
+
+if test ! -x "$PATH_TO_SDCV"; then
+    echo "Can not find sdcv binary $1" >&2
+    exit 1
+fi
+
+"$PATH_TO_SDCV" -n >/dev/null 2>&1 &
 PID=$!
 sleep 1
 
