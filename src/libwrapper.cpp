@@ -22,9 +22,11 @@
 #  include "config.h"
 #endif
 
-#include <glib/gi18n.h>
 #include <cstring>
 #include <map>
+#include <memory>
+
+#include <glib/gi18n.h>
 
 #include "utils.hpp"
 
@@ -348,25 +350,21 @@ bool Library::process_phrase(const char *loc_str, read_line &io, bool force)
 				       utf8_output ? res_list[i].def.c_str() : loc_def.c_str());
 			}
 			int choise;
+			std::auto_ptr<read_line> choice_readline(create_readline_object());
 			for (;;) {
 				string str_choise;
-				printf(_("Your choice[-1 to abort]: "));
-				
-				if(!stdio_getline(stdin, str_choise)){
-					putchar('\n');
-					exit(EXIT_SUCCESS);
-				}
+				choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);
 				sscanf(str_choise.c_str(), "%d", &choise);
 				if (choise>=0 && choise<int(res_list.size())) { 
 					sdcv_pager pager;
 					print_search_result(pager.get_stream(), res_list[choise]);
 					break;
-				} else if (choise==-1)
+				} else if (choise==-1){
 					break;
-				else
+				} else
 					printf(_("Invalid choice.\nIt must be from 0 to %zu or -1.\n"), 
 					       res_list.size()-1);
-			}		
+			}
 		} else {
 			sdcv_pager pager(force);
 			fprintf(pager.get_stream(), _("Found %zu items, similar to %s.\n"), 

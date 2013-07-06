@@ -53,7 +53,6 @@ namespace glib {
 }
 
 
-extern bool stdio_getline(FILE *in, std::string &str);
 extern char *locale_to_utf8(const char *locstr);
 extern std::string utf8_to_locale_ign_err(const std::string& utf8_str);
 

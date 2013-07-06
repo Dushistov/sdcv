@@ -29,17 +29,6 @@
 
 #include "utils.hpp"
 
-bool stdio_getline(FILE *in, std::string & str)
-{
-  str.clear();
-  int ch;
-  while((ch=fgetc(in))!=EOF && ch!='\n')
-    str+=ch;
-  if(EOF==ch)
-    return false;
-  return true;
-}
-
 std::string utf8_to_locale_ign_err(const std::string& utf8_str)
 {
 	gsize bytes_read, bytes_written;
