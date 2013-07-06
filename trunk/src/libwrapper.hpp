@@ -1,11 +1,10 @@
-#ifndef _LIBWRAPPER_HPP_
-#define _LIBWRAPPER_HPP_
+#pragma once
 
 #include <string>
 #include <vector>
 
 #include "file.hpp"
-#include "lib.h"
+#include "lib.hpp"
 #include "readline.hpp"
 
 using std::string;
@@ -24,8 +23,7 @@ struct TSearchResult {
 		}
 };
 
-typedef vector<TSearchResult> TSearchResultList;
-typedef TSearchResultList::iterator PSearchResult;
+typedef std::vector<TSearchResult> TSearchResultList;
 
 //this class is wrapper around Dicts class for easy use
 //of it
@@ -34,7 +32,7 @@ public:
 	Library(bool uinput, bool uoutput) : 
 		utf8_input(uinput), utf8_output(uoutput) {}
 
-	bool process_phrase(const char *loc_str, read_line &io, bool force=false);
+	bool process_phrase(const char *loc_str, IReadLine &io, bool force=false);
 private:
 	bool utf8_input, utf8_output;
 
@@ -45,4 +43,3 @@ private:
 	void print_search_result(FILE *out, const TSearchResult & res);
 };
 
-#endif//!_LIBWRAPPER_HPP_
