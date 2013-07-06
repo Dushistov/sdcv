@@ -43,7 +43,7 @@ void for_each_file(const List& dirs_list, const std::string& suff,
 	List::const_iterator it;
 	for (it=order_list.begin(); it!=order_list.end(); ++it) {
 		bool disable=std::find(disable_list.begin(), disable_list.end(),
-													 *it)!=disable_list.end();
+				       *it)!=disable_list.end();
 		f(*it, disable);
 	}
 	for (it=dirs_list.begin(); it!=dirs_list.end(); ++it)

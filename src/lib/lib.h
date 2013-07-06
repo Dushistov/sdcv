@@ -119,7 +119,7 @@ public:
 
 	glong narticles(int idict) { return oLib[idict]->narticles(); }
 	const std::string& dict_name(int idict) { return oLib[idict]->dict_name(); }
-	gint ndicts() { return oLib.size(); }
+	gint ndicts() const { return oLib.size(); }
 
 	const gchar * poGetWord(glong iIndex,int iLib) { 
 		return oLib[iLib]->get_key(iIndex); 
