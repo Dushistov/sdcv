@@ -27,12 +27,13 @@
 #include <cstdlib>
 #include <cstdio>
 #include <clocale>
-#include <glib.h>
-#include <glib/gi18n.h>
-#include <glib/gstdio.h>
 #include <string>
 #include <vector>
 #include <memory>
+
+#include <glib.h>
+#include <glib/gi18n.h>
+#include <glib/gstdio.h>
 
 #include "libwrapper.hpp"
 #include "readline.hpp"
