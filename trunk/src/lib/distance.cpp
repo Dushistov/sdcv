@@ -34,13 +34,11 @@ The Levenshtein distance algorithm has been used in:
 */
 
 
-#include <stdlib.h>
-#include <string.h>
-//#include <stdio.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "distance.h"
 
-#define OPTIMIZE_ED
 /*
 Cover transposition, in addition to deletion,
 insertion and substitution. This step is taken from:
@@ -54,19 +52,17 @@ Enhanced Dynamic Programming ASM Algorithm"
 /*Implementation of Levenshtein distance*/
 /****************************************/
 
-EditDistance::EditDistance()
+/*Gets the minimum of three values */
+static inline int minimum(const int a, const int b, const int c)
 {
-    currentelements = 2500; // It's enough for most conditions :-)
-    d = (int*)malloc(sizeof(int)*currentelements);
+    int min = a;
+    if ( b < min )
+        min = b;
+    if ( c < min )
+        min = c;
+    return min;
 }
 
-EditDistance::~EditDistance()
-{
-//    printf("size:%d\n",currentelements);
-    if (d) free(d);
-}
-
-#ifdef OPTIMIZE_ED
 int EditDistance::CalEditDistance(const gunichar *s,const gunichar *t,const int limit)
 /*Compute levenshtein distance between s and t, this is using QUICK algorithm*/
 {
@@ -92,7 +88,7 @@ int EditDistance::CalEditDistance(const gunichar *s,const gunichar *t,const int 
     {
         n--;m--;
     }
-    if ( m==0 || n==0 || d==(int*)0 )
+    if ( m==0 || n==0 || d==nullptr )
         return (m+n);
     if ( m < n )
     {
@@ -112,8 +108,8 @@ int EditDistance::CalEditDistance(const gunichar *s,const gunichar *t,const int 
     if ( m*n > currentelements )
     {
         currentelements = m*n*2;    // double the request
-        d = (int*)realloc(d,sizeof(int)*currentelements);
-        if ( (int*)0 == d )
+        d = static_cast<int*>(realloc(d, sizeof(int) * currentelements));
+        if ( nullptr == d )
             return (m+n);
     }
     // step 2, init matrix
@@ -156,48 +152,3 @@ int EditDistance::CalEditDistance(const gunichar *s,const gunichar *t,const int 
     // d(n-1,m-1)
     return d[n*m-1];
 }
-#else
-int EditDistance::CalEditDistance(const char *s,const char *t,const int limit)
-{
-    //Step 1
-    int k,i,j,n,m,cost;
-    n=strlen(s); 
-    m=strlen(t);
-    if( n!=0 && m!=0 && d!=(int*)0 )
-    {
-        m++;n++;
-        if ( m*n > currentelements )
-        {
-            currentelements = m*n*2;
-            d = (int*)realloc(d,sizeof(int)*currentelements);
-            if ( (int*)0 == d )
-                return (m+n);
-        }
-        //Step 2	
-        for(k=0;k<n;k++)
-            d[k]=k;
-        for(k=0;k<m;k++)
-            d[k*n]=k;
-        //Step 3 and 4	
-        for(i=1;i<n;i++)
-            for(j=1;j<m;j++)
-            {
-                //Step 5
-                if(s[i-1]==t[j-1])
-                    cost=0;
-                else
-                    cost=1;
-                //Step 6			 
-                d[j*n+i]=minimum(d[(j-1)*n+i]+1,d[j*n+i-1]+1,d[(j-1)*n+i-1]+cost);
-#ifdef COVER_TRANSPOSITION
-                if ( i>=2 && j>=2 && (d[j*n+i]-d[(j-2)*n+i-2]==2)
-                     && (s[i-2]==t[j-1]) && (s[i-1]==t[j-2]) )
-                    d[j*n+i]--;
-#endif        
-            }
-        return d[n*m-1];
-    }
-    else 
-        return (n+m);
-}
-#endif
