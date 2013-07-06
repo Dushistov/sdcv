@@ -1,5 +1,4 @@
-#ifndef _MAPFILE_HPP_
-#define _MAPFILE_HPP_
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #  include "config.h"
@@ -17,27 +16,20 @@
 
 class MapFile {
 public:
-  MapFile(void) : 
-		data(NULL)
-#ifdef HAVE_MMAP
-		, mmap_fd(-1)
-#elif defined(_WIN32)
-		,hFile(0),
-		hFileMap(0)
-#endif
-	{
-	}
-  ~MapFile();
-  bool open(const char *file_name, unsigned long file_size);
-  inline gchar *begin(void) { return data; }
+    MapFile() {}
+    ~MapFile();
+    MapFile(const MapFile&) = delete;
+    MapFile& operator=(const MapFile&) = delete;
+    bool open(const char *file_name, unsigned long file_size);
+    gchar *begin() { return data; }
 private:
-  char *data;
-  unsigned long size;
+    char *data = nullptr;
+    unsigned long size = 0ul;
 #ifdef HAVE_MMAP
-  int mmap_fd;
+    int mmap_fd = -1;
 #elif defined(_WIN32)
-  HANDLE hFile;
-  HANDLE hFileMap;
+    HANDLE hFile = 0;
+    HANDLE hFileMap = 0;
 #endif
 };
 
@@ -49,24 +41,24 @@ inline bool MapFile::open(const char *file_name, unsigned long file_size)
     //g_print("Open file %s failed!\n",fullfilename);
     return false;
   }
-  data = (gchar *)mmap( NULL, file_size, PROT_READ, MAP_SHARED, mmap_fd, 0);
+  data = (gchar *)mmap( nullptr, file_size, PROT_READ, MAP_SHARED, mmap_fd, 0);
   if ((void *)data == (void *)(-1)) {
     //g_print("mmap file %s failed!\n",idxfilename);
-    data=NULL;
+    data=nullptr;
     return false;
   }
 #elif defined( _WIN32)
-  hFile = CreateFile(file_name, GENERIC_READ, 0, NULL, OPEN_ALWAYS, 
+  hFile = CreateFile(file_name, GENERIC_READ, 0, nullptr, OPEN_ALWAYS, 
 		     FILE_ATTRIBUTE_NORMAL, 0);
-  hFileMap = CreateFileMapping(hFile, NULL, PAGE_READONLY, 0,  
-			       file_size, NULL);
+  hFileMap = CreateFileMapping(hFile, nullptr, PAGE_READONLY, 0,  
+			       file_size, nullptr);
   data = (gchar *)MapViewOfFile(hFileMap, FILE_MAP_READ, 0, 0, file_size);
 #else
   gsize read_len;
-  if (!g_file_get_contents(file_name, &data, &read_len, NULL))
+  if (!g_file_get_contents(file_name, &data, &read_len, nullptr))
     return false;
 
-  if (read_len!=file_size)
+  if (read_len != file_size)
     return false;		
 #endif
 
@@ -91,4 +83,3 @@ inline MapFile::~MapFile()
 #endif			
 }
 
-#endif//!_MAPFILE_HPP_
