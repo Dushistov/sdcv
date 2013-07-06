@@ -309,7 +309,7 @@ bool dictData::open(const std::string& fname, int computeCRC)
    for (j = 0; j < DICT_CACHE_SIZE; j++) {
 		 cache[j].chunk    = -1;
 		 cache[j].stamp    = -1;
-		 cache[j].inBuffer = NULL;
+		 cache[j].inBuffer = nullptr;
 		 cache[j].count    = 0;
    }
    
@@ -375,12 +375,12 @@ void dictData::read(char *buffer, unsigned long start, unsigned long size)
 	case DICT_DZIP:
 		if (!this->initialized) {
 			++this->initialized;
-			this->zStream.zalloc    = NULL;
-			this->zStream.zfree     = NULL;
-			this->zStream.opaque    = NULL;
+			this->zStream.zalloc    = nullptr;
+			this->zStream.zfree     = nullptr;
+			this->zStream.opaque    = nullptr;
 			this->zStream.next_in   = 0;
 			this->zStream.avail_in  = 0;
-			this->zStream.next_out  = NULL;
+			this->zStream.next_out  = nullptr;
 			this->zStream.avail_out = 0;
 			if (inflateInit2( &this->zStream, -15 ) != Z_OK) {
 				//err_internal( __FUNCTION__,
