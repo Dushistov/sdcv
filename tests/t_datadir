@@ -1,10 +1,13 @@
 #!/bin/sh
 
+PATH_TO_SDCV="$1"
+
 unset SDCV_PAGER
-have=`../src/sdcv --data-dir ./ -l | wc -l`
+have=`"$PATH_TO_SDCV" --data-dir /tmp/bugagaga -l | wc -l`
+#do not count header
 have=$(($have-1))
 ndicts=`find "${HOME}"/.stardict/dic -name "*.ifo" -print | wc -l`
-ndicts=$(($ndicts+1))
+#ndicts=$(($ndicts+1))
 if [ $have -ne $ndicts ]; then
 	ndicts=$(($ndicts-1))
 	echo "test failed: sdcv says: we have: $have, but really we have: $ndicts" >&2

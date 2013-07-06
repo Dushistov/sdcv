@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 {
 	setlocale(LC_ALL, "");
 #if ENABLE_NLS
-	bindtextdomain (PACKAGE, LOCALEDIR);
+	bindtextdomain(PACKAGE, LOCALEDIR);
 	textdomain (PACKAGE);
 #endif	 
 

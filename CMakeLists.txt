@@ -58,7 +58,7 @@ set(sdcv_SRCS
 gettext_make_target("lang"
   HIERARCHY "{1}/{2}/{3}/{4}.mo"
   KEYWORDS  "_"
-  DOMAIN    "sdcv-dom"
+  DOMAIN    "sdcv"
   STOCK_DIR ${gettext_stockDir}
   LANG_DIR  ${gettext_langDir}
   OUT_DIR   ${gettext_outDir}
@@ -108,3 +108,28 @@ target_link_libraries(sdcv
 set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "locale")
 
 include(CPack)
+
+option(BUILD_TESTS "Enable automatic testing" False)
+if (BUILD_TESTS)
+  find_program(SHELL_CMD NAMES sh bash
+    DOC "Shell scripts interpretator command")
+  message(STATUS "Build tests")
+  enable_testing()# Force "make test" to works
+
+  get_target_property(sdcv_path sdcv LOCATION)
+  message(STATUS "path ${sdcv_path}")
+  string(REGEX REPLACE "\\$\\(.*\\)" "\${CTEST_CONFIGURATION_TYPE}"
+    sdcv_path "${sdcv_path}")
+
+  macro(add_sdcv_shell_test test_name)
+    add_test(${test_name} "${SHELL_CMD}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/${test_name}" "${sdcv_path}" "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+  endmacro()
+
+  add_sdcv_shell_test(t_list)
+  add_sdcv_shell_test(t_use)
+  add_sdcv_shell_test(t_interactive)
+  add_sdcv_shell_test(t_utf8output)
+  add_sdcv_shell_test(t_utf8input)
+  add_sdcv_shell_test(t_datadir)
+
+endif ()
