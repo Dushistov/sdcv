@@ -1,5 +1,4 @@
-#ifndef _UTILS_HPP_
-#define _UTILS_HPP_
+#pragma once
 
 #include <glib.h>
 #include <string>
@@ -7,10 +6,12 @@
 template <typename T, typename unref_res_t, void (*unref_res)(unref_res_t *)>
 class ResourceWrapper {
 public:
-	ResourceWrapper(T *p = NULL) : p_(p) {}
+	ResourceWrapper(T *p = nullptr) : p_(p) {}
 	~ResourceWrapper() { free_resource(); }
+    ResourceWrapper(const ResourceWrapper&) = delete;
+    ResourceWrapper& operator=(const ResourceWrapper&) = delete;
 	T *operator->() const { return p_; }
-	bool operator!() const { return p_ == NULL; }
+	bool operator!() const { return p_ == nullptr; }
 
 	void reset(T *newp) {
 		if (p_ != newp) {
@@ -33,18 +34,18 @@ private:
 
 // Helper for enabling 'if (sp)'
 	struct Tester {
-            Tester() {}
-        private:
-            void operator delete(void*);
-        };
+        Tester() {}
+    private:
+        void operator delete(void*);
+    };
 public:
 	// enable 'if (sp)'
-        operator Tester*() const
-        {
-            if (!*this) return 0;
-            static Tester t;
-            return &t;
-        }
+    operator Tester*() const {
+        if (!*this)
+            return 0;
+        static Tester t;
+        return &t;
+    }
 };
 
 namespace glib {
@@ -56,4 +57,3 @@ namespace glib {
 extern char *locale_to_utf8(const char *locstr);
 extern std::string utf8_to_locale_ign_err(const std::string& utf8_str);
 
-#endif//!_UTILS_HPP_
