@@ -2,7 +2,6 @@
 # Copyright (C)
 # Zdenko Podobný <zdpo@mailbox.sk>, 2004, 2005.
 # Ivan Masár <helix84@centrum.sk>, 2007. 
-
 msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.3.2\n"
@@ -11,125 +10,145 @@ msgstr ""
 "PO-Revision-Date: 2007-09-11 00:22+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
+"Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/sdcv.cpp:127
-#, c-format
-msgid ""
-"Unknown option.\n"
-"Try '%s --help' for more information.\n"
+#: src/sdcv.cpp:108
+#, fuzzy
+msgid "display version information and exit"
+msgstr "-v, --version            zobrazí informácie o verzii a skončí\n"
+
+#: src/sdcv.cpp:110
+#, fuzzy
+msgid "display list of available dictionaries and exit"
 msgstr ""
-"Neznáma voľba.\n"
-"Skúste „%s --help“.\n"
+"-l, --list-dicts         zobrazí zoznam dostupných slovníkov a skončí\n"
 
-#: src/sdcv.cpp:134
-#, c-format
-msgid "Usage: %s [OPTIONS] words\n"
-msgstr "Použitie: %s [VOĽBY] slová\n"
+#: src/sdcv.cpp:112
+#, fuzzy
+msgid "for search use only dictionary with this bookname"
+msgstr "-u, --use-dict názov     použiť pre hľadanie iba zvolený slovník\n"
+
+#: src/sdcv.cpp:113
+msgid "bookname"
+msgstr ""
+
+#: src/sdcv.cpp:115
+msgid "for use in scripts"
+msgstr ""
+
+#: src/sdcv.cpp:117
+#, fuzzy
+msgid "output must be in utf8"
+msgstr "--utf8-output            výstup musí byť v utf8\n"
+
+#: src/sdcv.cpp:119
+#, fuzzy
+msgid "input of sdcv in utf8"
+msgstr "--utf8-input             vstup pre sdcv je v utf8\n"
+
+#: src/sdcv.cpp:121
+#, fuzzy
+msgid "use this directory as path to stardict data directory"
+msgstr ""
+"--data-dir path/to/dir   použiť tento priečinok ako cestu pre stardict "
+"dátový priečinok\n"
+
+#: src/sdcv.cpp:122
+msgid "path/to/dir"
+msgstr ""
+
+#: src/sdcv.cpp:129
+msgid " words"
+msgstr ""
 
 #: src/sdcv.cpp:135
 #, c-format
-msgid "-h, --help               display this help and exit\n"
-msgstr "-h, --help               zobrazí tento text a skončí\n"
-
-#: src/sdcv.cpp:136
-#, c-format
-msgid "-v, --version            display version information and exit\n"
-msgstr "-v, --version            zobrazí informácie o verzii a skončí\n"
-
-#: src/sdcv.cpp:137
-#, c-format
-msgid "-l, --list-dicts         display list of available dictionaries and exit\n"
-msgstr "-l, --list-dicts         zobrazí zoznam dostupných slovníkov a skončí\n"
-
-#: src/sdcv.cpp:138
-#, c-format
-msgid "-u, --use-dict bookname  for search use only dictionary with this bookname\n"
-msgstr "-u, --use-dict názov     použiť pre hľadanie iba zvolený slovník\n"
-
-#: src/sdcv.cpp:139
-#, c-format
-msgid "-n, --non-interactive    for use in scripts\n"
-msgstr "-n, --non-interactive    pre použitie v skriptoch\n"
-
-#: src/sdcv.cpp:140
-#, c-format
-msgid "--utf8-output            output must be in utf8\n"
-msgstr "--utf8-output            výstup musí byť v utf8\n"
+msgid "Invalid command line arguments: %s\n"
+msgstr ""
 
 #: src/sdcv.cpp:141
-#, c-format
-msgid "--utf8-input             input of sdcv in utf8\n"
-msgstr "--utf8-input             vstup pre sdcv je v utf8\n"
-
-#: src/sdcv.cpp:142
-#, c-format
-msgid "--data-dir path/to/dir   use this directory as path to stardict data directory\n"
-msgstr "--data-dir path/to/dir   použiť tento priečinok ako cestu pre stardict dátový priečinok\n"
-
-#: src/sdcv.cpp:148
 #, c-format
 msgid "Console version of Stardict, version %s\n"
 msgstr "Konzolová verzia StarDict, verzia %s\n"
 
-#: src/sdcv.cpp:169
+#: src/sdcv.cpp:170
 #, c-format
 msgid "Dictionary's name   Word count\n"
 msgstr "názov slovníka      počet slov\n"
 
-#: src/sdcv.cpp:191
+#: src/sdcv.cpp:192
 #, c-format
 msgid "g_mkdir failed: %s\n"
 msgstr "g_mkdir zlyhalo: %s\n"
 
-#: src/sdcv.cpp:207
+#: src/sdcv.cpp:208
 msgid "Enter word or phrase: "
 msgstr "Vložte slovo alebo frázu: "
 
-#: src/sdcv.cpp:215
+#: src/sdcv.cpp:216
 #, c-format
 msgid "There are no words/phrases to translate.\n"
 msgstr "Nie je čo preložiť.\n"
 
-#: src/libwrapper.cpp:246
+#: src/libwrapper.cpp:248
 msgid "popen failed"
 msgstr "popen zlyhalo"
 
-#: src/libwrapper.cpp:283
+#: src/libwrapper.cpp:285 src/utils.cpp:67
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "nie je možné konvertovať %s na utf8.\n"
 
-#: src/libwrapper.cpp:340 src/libwrapper.cpp:372
-#, c-format
-msgid "Found %d items, similar to %s.\n"
+#: src/libwrapper.cpp:342 src/libwrapper.cpp:370
+#, fuzzy, c-format
+msgid "Found %zu items, similar to %s.\n"
 msgstr "Nájdené %d položiek, podobných %s,\n"
 
-#: src/libwrapper.cpp:353
-#, fuzzy, c-format
+#: src/libwrapper.cpp:356
+#, fuzzy
 msgid "Your choice[-1 to abort]: "
 msgstr "Vaša voľba[-1 zruší]: "
 
-#: src/libwrapper.cpp:367
-#, c-format
+#: src/libwrapper.cpp:365
+#, fuzzy, c-format
 msgid ""
 "Invalid choice.\n"
-"It must be from 0 to %d or -1.\n"
+"It must be from 0 to %zu or -1.\n"
 msgstr ""
 "Neplatná voľba.\n"
 "Musí byť od 0 do %d alebo -1.\n"
 
-#: src/libwrapper.cpp:383
+#: src/libwrapper.cpp:381
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "Ľutujem, nič sa nepodobá na %s :(\n"
 
-#~ msgid "Can not convert %s to current locale.\n"
-#~ msgstr "Nie je možné konvertovať %s na aktuálne locale.\n"
+#: src/utils.cpp:45
+#, c-format
+msgid "Can not convert %s to current locale.\n"
+msgstr "Nie je možné konvertovať %s na aktuálne locale.\n"
+
+#~ msgid ""
+#~ "Unknown option.\n"
+#~ "Try '%s --help' for more information.\n"
+#~ msgstr ""
+#~ "Neznáma voľba.\n"
+#~ "Skúste „%s --help“.\n"
+
+#~ msgid "Usage: %s [OPTIONS] words\n"
+#~ msgstr "Použitie: %s [VOĽBY] slová\n"
+
+#~ msgid "-h, --help               display this help and exit\n"
+#~ msgstr "-h, --help               zobrazí tento text a skončí\n"
+
+#~ msgid "-n, --non-interactive    for use in scripts\n"
+#~ msgstr "-n, --non-interactive    pre použitie v skriptoch\n"
+
 #~ msgid "There is no dictionary with this bookname: %s.\n"
 #~ msgstr "Neexistuje slovník s takýmto názvom: %s.\n"
-
