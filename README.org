@@ -1,8 +1,13 @@
 * How to compile and install
+
 mkdir /tmp/build-sdcv
 cd /tmp/build-sdcv
 cmake path/to/source/code/of/sdcv
 make
+
+if you enable nls then you should type also
+make lang
+
 ** to install type
 make install
 you can use "DESTDIR" variable to change installation path
