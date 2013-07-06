@@ -209,8 +209,8 @@ void Library::LookupWithRule(const string &str, TSearchResultList& res_list)
 
 void Library::LookupData(const string &str, TSearchResultList& res_list)
 {
-	std::vector<gchar *> drl[ndicts()];
-	if (!Libs::LookupData(str.c_str(), drl))
+	std::vector<std::vector<gchar *> > drl(ndicts());
+	if (!Libs::LookupData(str.c_str(), &drl[0]))
 		return;
 	for (int idict=0; idict<ndicts(); ++idict)
 		for (std::vector<gchar *>::size_type j=0; j<drl[idict].size(); ++j) {

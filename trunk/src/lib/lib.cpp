@@ -750,12 +750,12 @@ bool wordlist_index::load(const std::string& url, gulong wc, gulong fsize)
 		
 	idxdatabuf = (gchar *)g_malloc(fsize);
 		
-	gulong len = gzread(in, idxdatabuf, fsize);
+	const int len = gzread(in, idxdatabuf, fsize);
 	gzclose(in);
 	if (len < 0)
 		return false;
 
-	if (len != fsize)
+	if (gulong(len) != fsize)
 		return false;
 
   wordlist.resize(wc+1);
