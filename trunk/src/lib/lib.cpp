@@ -38,6 +38,18 @@ static bool bIsPureEnglish(const gchar *str)
   return true;	
 }
 
+static inline guint32 get_uint32(const gchar *addr)
+{
+	guint32 result;
+	memcpy(&result, addr, sizeof(guint32));
+	return result;
+}
+
+static inline void set_uint32(gchar *addr, guint32 val)
+{
+	memcpy(addr, &val, sizeof(guint32));
+}
+
 static inline gint stardict_strcmp(const gchar *s1, const gchar *s2) 
 {
   gint a=g_ascii_strcasecmp(s1, s2);
@@ -242,7 +254,7 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
 				break;
       case 'W':
       case 'P':
-				sec_size = *reinterpret_cast<guint32 *>(p2);
+				sec_size = get_uint32(p2);
 				sec_size += sizeof(guint32);
 				memcpy(p1, p2, sec_size);
 				p1+=sec_size;
@@ -250,7 +262,7 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
 				break;
       default:
 				if (g_ascii_isupper(sametypesequence[i])) {
-					sec_size = *reinterpret_cast<guint32 *>(p2);
+					sec_size = get_uint32(p2);
 					sec_size += sizeof(guint32);
 				} else {
 					sec_size = strlen(p2)+1;
@@ -278,13 +290,13 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
       break;
     case 'W':
     case 'P':
-      *reinterpret_cast<guint32 *>(p1)=sec_size;
+	    set_uint32(p1, sec_size);
       p1 += sizeof(guint32);
       memcpy(p1, p2, sec_size);
       break;
     default:
       if (g_ascii_isupper(sametypesequence[sametypesequence_len-1])) {
-        *reinterpret_cast<guint32 *>(p1)=sec_size;
+	      set_uint32(p1, sec_size);
         p1 += sizeof(guint32);
         memcpy(p1, p2, sec_size);
       } else {
@@ -295,14 +307,14 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
       break;
     }
     g_free(origin_data);		
-    *reinterpret_cast<guint32 *>(data)=data_size;
+    set_uint32(data, data_size);
   } else {		
     data = (gchar *)g_malloc(idxitem_size + sizeof(guint32));
     if (dictfile)
       fread(data+sizeof(guint32), idxitem_size, 1, dictfile);		
     else
       dictdzfile->read(data+sizeof(guint32), idxitem_offset, idxitem_size);
-    *reinterpret_cast<guint32 *>(data)=idxitem_size+sizeof(guint32);
+    set_uint32(data, idxitem_size+sizeof(guint32));
   }	
   g_free(cache[cache_cur].data);
   
@@ -361,7 +373,7 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 				break;
 			default:
 				if (g_ascii_isupper(sametypesequence[i])) {
-					sec_size = *reinterpret_cast<guint32 *>(p);
+					sec_size = get_uint32(p);
 					sec_size += sizeof(guint32);
 				} else {
 					sec_size = strlen(p)+1;
@@ -411,7 +423,7 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 				break;
                         default:
                                 if (g_ascii_isupper(*p)) {
-                                        sec_size = *reinterpret_cast<guint32 *>(p);
+                                        sec_size = get_uint32(p);
 					sec_size += sizeof(guint32);
                                 } else {
                                         sec_size = strlen(p)+1;
@@ -496,9 +508,9 @@ void offset_index::page_t::fill(gchar *data, gint nent, glong idx_)
 		entries[i].keystr=p;
 		len=strlen(p);
 		p+=len+1;
-		entries[i].off=g_ntohl(*reinterpret_cast<guint32 *>(p));
+		entries[i].off=g_ntohl(get_uint32(p));
 		p+=sizeof(guint32);
-		entries[i].size=g_ntohl(*reinterpret_cast<guint32 *>(p));
+		entries[i].size=g_ntohl(get_uint32(p));
 		p+=sizeof(guint32);
 	}
 }
@@ -778,9 +790,9 @@ const gchar *wordlist_index::get_key(glong idx)
 void wordlist_index::get_data(glong idx)
 {
 	gchar *p1 = wordlist[idx]+strlen(wordlist[idx])+sizeof(gchar);
-	wordentry_offset = g_ntohl(*reinterpret_cast<guint32 *>(p1));
+	wordentry_offset = g_ntohl(get_uint32(p1));
 	p1 += sizeof(guint32);
-	wordentry_size = g_ntohl(*reinterpret_cast<guint32 *>(p1));
+	wordentry_size = g_ntohl(get_uint32(p1));
 }
 
 const gchar *wordlist_index::get_key_and_data(glong idx)
