@@ -11,8 +11,8 @@
 #include <glib/gstdio.h>
 
 #include "distance.hpp"
-#include "file.hpp"
 #include "mapfile.hpp"
+#include "utils.hpp"
 
 #include "stardict_lib.hpp"
 
