@@ -53,22 +53,6 @@ std::string utf8_to_locale_ign_err(const std::string& utf8_str)
 	return res;
 }
 
-char *locale_to_utf8(const char *loc_str)
-{
-	if (nullptr == loc_str)
-		return nullptr;
-	gsize bytes_read, bytes_written;
-    glib::Error err;
-	gchar *str = g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, get_addr(err));
-	if (nullptr == str){
-		fprintf(stderr, _("Can not convert %s to utf8.\n"), loc_str);
-		fprintf(stderr, "%s\n", err->message);
-		exit(EXIT_FAILURE);
-	}
-
-	return str;
-}
-
 static void __for_each_file(const std::string& dirname, const std::string& suff,
                             const std::list<std::string>& order_list, const std::list<std::string>& disable_list, 
                             const std::function<void (const std::string&, bool)>& f)

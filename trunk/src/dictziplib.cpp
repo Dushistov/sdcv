@@ -3,11 +3,11 @@
  * Copyright (C) 2003-2003 Hu Zheng <huzheng_001@163.com>
  * This file is a modify version of dictd-1.9.7's data.c
  *
- * data.c -- 
+ * data.c --
  * Created: Tue Jul 16 12:45:41 1996 by faith@dict.org
  * Revised: Sat Mar 30 10:46:06 2002 by faith@dict.org
  * Copyright 1996, 1997, 1998, 2000, 2002 Rickard E. Faith (faith@dict.org)
- * 
+ *
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -46,10 +46,10 @@
 
 #define BUFFERSIZE 10240
 
-/* 
+/*
  * Output buffer must be greater than or
  * equal to 110% of input buffer size, plus
- * 12 bytes. 
+ * 12 bytes.
 */
 #define OUT_BUFFER_SIZE 0xffffL
 
@@ -113,7 +113,7 @@
 #define DICT_DZIP       3
 
 
-int dictData::read_header(const std::string &fname, int computeCRC)
+int DictData::read_header(const std::string &fname, int computeCRC)
 {
 	FILE          *str;
 	int           id1, id2, si1, si2;
@@ -126,18 +126,19 @@ int dictData::read_header(const std::string &fname, int computeCRC)
 	unsigned long crc   = crc32( 0L, Z_NULL, 0 );
 	int           count;
 	unsigned long offset;
-	
+
 	if (!(str = fopen(fname.c_str(), "rb"))) {
 		//err_fatal_errno( __FUNCTION__,
 		//       "Cannot open data file \"%s\" for read\n", filename );
-	}	
+        return -1;
+	}
 
 	this->headerLength = GZ_XLEN - 1;
 	this->type         = DICT_UNKNOWN;
-   
+
 	id1                  = getc( str );
 	id2                  = getc( str );
-	
+
 	if (id1 != GZ_MAGIC1 || id2 != GZ_MAGIC2) {
 		this->type = DICT_TEXT;
 		fstat( fileno( str ), &sb );
@@ -157,7 +158,7 @@ int dictData::read_header(const std::string &fname, int computeCRC)
 		return 0;
 	}
 	this->type = DICT_GZIP;
-  
+
 	this->method       = getc( str );
 	this->flags        = getc( str );
 	this->mtime        = getc( str ) <<  0;
@@ -166,31 +167,31 @@ int dictData::read_header(const std::string &fname, int computeCRC)
 	this->mtime       |= getc( str ) << 24;
 	this->extraFlags   = getc( str );
 	this->os           = getc( str );
-  
+
 	if (this->flags & GZ_FEXTRA) {
 		extraLength          = getc( str ) << 0;
 		extraLength         |= getc( str ) << 8;
 		this->headerLength += extraLength + 2;
 		si1                  = getc( str );
 		si2                  = getc( str );
-    
+
 		if (si1 == GZ_RND_S1 || si2 == GZ_RND_S2) {
 			subLength            = getc( str ) << 0;
 			subLength           |= getc( str ) << 8;
 			this->version      = getc( str ) << 0;
 			this->version     |= getc( str ) << 8;
-			
+
 			if (this->version != 1) {
 				//err_internal( __FUNCTION__,
 				//	  "dzip header version %d not supported\n",
 				//	  this->version );
 			}
-			
+
 			this->chunkLength  = getc( str ) << 0;
 			this->chunkLength |= getc( str ) << 8;
 			this->chunkCount   = getc( str ) << 0;
 			this->chunkCount  |= getc( str ) << 8;
-			
+
 			if (this->chunkCount <= 0) {
 				fclose( str );
 				return 5;
@@ -206,19 +207,19 @@ int dictData::read_header(const std::string &fname, int computeCRC)
 			fseek( str, this->headerLength, SEEK_SET );
 		}
 	}
-	
+
 	if (this->flags & GZ_FNAME) { /* FIXME! Add checking against header len */
 		pt = buffer;
 		while ((c = getc( str )) && c != EOF)
 			*pt++ = c;
 		*pt = '\0';
-		
+
 		this->origFilename = buffer;
 		this->headerLength += this->origFilename.length() + 1;
 	} else {
 		this->origFilename = "";
 	}
-   
+
    if (this->flags & GZ_COMMENT) { /* FIXME! Add checking for header len */
       pt = buffer;
       while ((c = getc( str )) && c != EOF)
@@ -267,10 +268,9 @@ int dictData::read_header(const std::string &fname, int computeCRC)
    return 0;
 }
 
-bool dictData::open(const std::string& fname, int computeCRC)
+bool DictData::open(const std::string& fname, int computeCRC)
 {
 	struct stat sb;
-	int         j;
 	int fd;
 
 	this->initialized = 0;
@@ -280,13 +280,13 @@ bool dictData::open(const std::string& fname, int computeCRC)
 		//   "%s is not a regular file -- ignoring\n", fname );
 		return false;
 	}
-   
+
 	if (read_header(fname, computeCRC)) {
 		//err_fatal( __FUNCTION__,
 		// "\"%s\" not in text or dzip format\n", fname );
 		return false;
 	}
-   
+
 	if ((fd = ::open(fname.c_str(), O_RDONLY )) < 0) {
 		//err_fatal_errno( __FUNCTION__,
 		//       "Cannot open data file \"%s\"\n", fname );
@@ -299,27 +299,25 @@ bool dictData::open(const std::string& fname, int computeCRC)
    }
 
    this->size = sb.st_size;
-	 ::close(fd);
-	 if (!mapfile.open(fname.c_str(), size))
-		 return false;		
+   ::close(fd);
+   if (!mapfile.open(fname.c_str(), size))
+       return false;
 
-	 this->start=mapfile.begin();
+   this->start=mapfile.begin();
    this->end = this->start + this->size;
 
-   for (j = 0; j < DICT_CACHE_SIZE; j++) {
+   for (size_t j = 0; j < DICT_CACHE_SIZE; j++) {
 		 cache[j].chunk    = -1;
 		 cache[j].stamp    = -1;
 		 cache[j].inBuffer = nullptr;
 		 cache[j].count    = 0;
    }
-   
+
    return true;
 }
 
-void dictData::close()
+void DictData::close()
 {
-	int i;   
-	
 	if (this->chunks)
 		free(this->chunks);
 	if (this->offsets)
@@ -333,13 +331,13 @@ void dictData::close()
 	  }
 	}
 
-	for (i = 0; i < DICT_CACHE_SIZE; ++i){
+	for (size_t i = 0; i < DICT_CACHE_SIZE; ++i){
 		if (this -> cache [i].inBuffer)
 			free (this -> cache [i].inBuffer);
 	}
 }
 
-void dictData::read(char *buffer, unsigned long start, unsigned long size)
+void DictData::read(char *buffer, unsigned long start, unsigned long size)
 {
 	char          *pt;
 	unsigned long end;
@@ -348,19 +346,19 @@ void dictData::read(char *buffer, unsigned long start, unsigned long size)
 	char          outBuffer[OUT_BUFFER_SIZE];
 	int           firstChunk, lastChunk;
 	int           firstOffset, lastOffset;
-	int           i, j;
+	int           i;
 	int           found, target, lastStamp;
 	static int    stamp = 0;
-	
+
 	end  = start + size;
-	
+
 	//buffer = malloc( size + 1 );
-  
+
 	//PRINTF(DBG_UNZIP,
 	// ("dict_data_read( %p, %lu, %lu )\n",
 	//h, start, size ));
-	
-  
+
+
 	switch (this->type) {
 	case DICT_GZIP:
 		//err_fatal( __FUNCTION__,
@@ -398,12 +396,12 @@ void dictData::read(char *buffer, unsigned long start, unsigned long size)
 		//" lastChunk = %d, lastOffset = %d\n",
 		//start, end, firstChunk, firstOffset, lastChunk, lastOffset ));
 		for (pt = buffer, i = firstChunk; i <= lastChunk; i++) {
-			
+
 			/* Access cache */
 			found  = 0;
 			target = 0;
 			lastStamp = INT_MAX;
-			for (j = 0; j < DICT_CACHE_SIZE; j++) {
+			for (size_t j = 0; j < DICT_CACHE_SIZE; j++) {
 #if USE_CACHE
 				if (this->cache[j].chunk == i) {
 					found  = 1;
@@ -416,7 +414,7 @@ void dictData::read(char *buffer, unsigned long start, unsigned long size)
 					target = j;
 				}
 			}
-			
+
 			this->cache[target].stamp = ++stamp;
 			if (found) {
 				count = this->cache[target].count;
@@ -426,14 +424,14 @@ void dictData::read(char *buffer, unsigned long start, unsigned long size)
 				if (!this->cache[target].inBuffer)
 					this->cache[target].inBuffer = (char *)malloc( IN_BUFFER_SIZE );
 				inBuffer = this->cache[target].inBuffer;
-				
+
 				if (this->chunks[i] >= OUT_BUFFER_SIZE ) {
 					//err_internal( __FUNCTION__,
 					//    "this->chunks[%d] = %d >= %ld (OUT_BUFFER_SIZE)\n",
 					//  i, this->chunks[i], OUT_BUFFER_SIZE );
 				}
 				memcpy( outBuffer, this->start + this->offsets[i], this->chunks[i] );
-				
+
 				this->zStream.next_in   = (Bytef *)outBuffer;
 				this->zStream.avail_in  = this->chunks[i];
 				this->zStream.next_out  = (Bytef *)inBuffer;
@@ -446,12 +444,12 @@ void dictData::read(char *buffer, unsigned long start, unsigned long size)
 					//    "inflate did not flush (%d pending, %d avail)\n",
 					//  this->zStream.avail_in, this->zStream.avail_out );
 				}
-				
+
 				count = IN_BUFFER_SIZE - this->zStream.avail_out;
-				
+
 				this->cache[target].count = count;
 			}
-			
+
 			if (i == firstChunk) {
 				if (i == lastChunk) {
 					memcpy( pt, inBuffer + firstOffset, lastOffset-firstOffset);

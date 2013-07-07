@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glib.h>
+#include <cassert>
 #include <string>
 #include <list>
 #include <functional>
@@ -14,6 +15,10 @@ public:
     ResourceWrapper& operator=(const ResourceWrapper&) = delete;
 	T *operator->() const { return p_; }
 	bool operator!() const { return p_ == nullptr; }
+    const T& operator[](size_t idx) const {
+        assert(p_ != nullptr);
+        return p_[idx];
+    }
 
 	void reset(T *newp) {
 		if (p_ != newp) {
@@ -56,8 +61,6 @@ namespace glib {
 	typedef ResourceWrapper<GError, GError, g_error_free> Error;
 }
 
-
-extern char *locale_to_utf8(const char *locstr);
 extern std::string utf8_to_locale_ign_err(const std::string& utf8_str);
 
 extern void for_each_file(const std::list<std::string>& dirs_list, const std::string& suff,
