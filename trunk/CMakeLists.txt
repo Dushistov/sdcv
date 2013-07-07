@@ -47,7 +47,7 @@ set(sdcv_SRCS
   src/lib/dictziplib.cpp
   src/lib/dictziplib.hpp  
   src/lib/distance.cpp 
-  src/lib/distance.h
+  src/lib/distance.hpp
   src/lib/mapfile.hpp
   src/lib/file.hpp
   src/lib/file.cpp

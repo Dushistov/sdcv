@@ -10,7 +10,7 @@
 #include <zlib.h>
 #include <glib/gstdio.h>
 
-#include "distance.h"
+#include "distance.hpp"
 #include "file.hpp"
 #include "mapfile.hpp"
 
