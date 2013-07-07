@@ -1,4 +1,4 @@
-/* 
+/*
  * This file part of sdcv - console version of Stardict program
  * http://sdcv.sourceforge.net
  * Copyright (C) 2005-2006 Evgeniy <dushistov@mail.ru>
@@ -133,11 +133,11 @@ static std::string parse_data(const gchar *data, bool colorize_output)
 		return "";
 
 	std::string res;
-	guint32 data_size, sec_size=0;
+	guint32 data_size, sec_size = 0;
 	gchar *m_str;
-	const gchar *p=data;
-	data_size=*((guint32 *)p);
-	p+=sizeof(guint32);
+	const gchar *p = data;
+	data_size = get_uint32(p);
+	p += sizeof(guint32);
 	while (guint32(p - data)<data_size) {
 		switch (*p++) {
 		case 'm':
@@ -176,32 +176,31 @@ static std::string parse_data(const gchar *data, bool colorize_output)
 			break;
 		case 'y':
 			sec_size = strlen(p);
-			sec_size++;				
+			sec_size++;
 			break;
 		case 'W':
 		case 'P':
-			sec_size = *((guint32 *)p);
+			sec_size = get_uint32(p);
 			sec_size += sizeof(guint32);
 			break;
 		}
 		p += sec_size;
 	}
 
-  
+
 	return res;
 }
 
 void Library::SimpleLookup(const std::string &str, TSearchResultList& res_list)
-{	
+{
 	glong ind;
 	res_list.reserve(ndicts());
 	for (gint idict = 0; idict < ndicts(); ++idict)
 		if (SimpleLookupWord(str.c_str(), ind, idict))
 			res_list.push_back(
-				TSearchResult(dict_name(idict), 
+				TSearchResult(dict_name(idict),
                               poGetWord(ind, idict),
                               parse_data(poGetWordData(ind, idict), colorize_output_)));
-	
 }
 
 void Library::LookupWithFuzzy(const std::string &str, TSearchResultList& res_list)
@@ -211,9 +210,8 @@ void Library::LookupWithFuzzy(const std::string &str, TSearchResultList& res_lis
 	gchar *fuzzy_res[MAXFUZZY];
 	if (!Libs::LookupWithFuzzy(str.c_str(), fuzzy_res, MAXFUZZY))
 		return;
-	
-	for (gchar **p=fuzzy_res, **end=fuzzy_res+MAXFUZZY; 
-	     p!=end && *p; ++p) {
+
+	for (gchar **p = fuzzy_res, **end = (fuzzy_res + MAXFUZZY); p != end && *p; ++p) {
 		SimpleLookup(*p, res_list);
 		g_free(*p);
 	}
@@ -224,7 +222,7 @@ void Library::LookupWithRule(const std::string &str, TSearchResultList& res_list
 	std::vector<gchar *> match_res((MAX_MATCH_ITEM_PER_LIB) * ndicts());
 
 	const gint nfound = Libs::LookupWithRule(str.c_str(), &match_res[0]);
-	if (!nfound)
+	if (nfound == 0)
 		return;
 
 	for (gint i = 0; i < nfound; ++i) {
@@ -265,7 +263,7 @@ void Library::print_search_result(FILE *out, const TSearchResult & res)
             colorize_output_ ? SEARCH_TERM_VISFMT : "",
             utf8_output_ ? res.def.c_str() : loc_def.c_str(),
             colorize_output_ ? ESC_END : "",
-            utf8_output_ ? res.exp.c_str() : loc_exp.c_str()); 
+            utf8_output_ ? res.exp.c_str() : loc_exp.c_str());
 }
 
 namespace {
@@ -322,7 +320,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 
 	if (str[0]=='\0')
 		return true;
-  
+
 	TSearchResultList res_list;
 
 	switch (analyze_query(str, query)) {
@@ -344,7 +342,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		/*nothing*/;
 	}
 
-	if (!res_list.empty()) {    
+	if (!res_list.empty()) {
 		/* try to be more clever, if there are
 		   one or zero results per dictionary show all
 		*/
@@ -368,7 +366,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		}//if (!force)
 
 		if (!show_all_results && !force) {
-			printf(_("Found %zu items, similar to %s.\n"), res_list.size(), 
+			printf(_("Found %zu items, similar to %s.\n"), res_list.size(),
 			       utf8_output_ ? str : utf8_to_locale_ign_err(str).c_str());
 			for (size_t i = 0; i < res_list.size(); ++i) {
                 const std::string loc_bookname = utf8_to_locale_ign_err(res_list[i].bookname);
@@ -387,29 +385,29 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
                 std::string str_choise;
 				choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);
 				sscanf(str_choise.c_str(), "%d", &choise);
-				if (choise >= 0 && choise < int(res_list.size())) { 
+				if (choise >= 0 && choise < int(res_list.size())) {
 					sdcv_pager pager;
 					print_search_result(pager.get_stream(), res_list[choise]);
 					break;
 				} else if (choise == -1){
 					break;
 				} else
-					printf(_("Invalid choice.\nIt must be from 0 to %zu or -1.\n"), 
+					printf(_("Invalid choice.\nIt must be from 0 to %zu or -1.\n"),
 					       res_list.size()-1);
 			}
 		} else {
 			sdcv_pager pager(force);
-			fprintf(pager.get_stream(), _("Found %zu items, similar to %s.\n"), 
+			fprintf(pager.get_stream(), _("Found %zu items, similar to %s.\n"),
 				res_list.size(), utf8_output_ ? str : utf8_to_locale_ign_err(str).c_str());
 			for (const TSearchResult& search_res : res_list)
 				print_search_result(pager.get_stream(), search_res);
 		}
-    
+
 	} else {
 		std::string loc_str;
 		if (!utf8_output_)
 			loc_str = utf8_to_locale_ign_err(str);
-    
+
 		printf(_("Nothing similar to %s, sorry :(\n"), utf8_output_ ? str : loc_str.c_str());
 	}
 	g_free(str);
