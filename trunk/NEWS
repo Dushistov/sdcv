@@ -1,4 +1,10 @@
 Version 0.5
+- add option to colorize output
+- Roman Imankulov's patch to better use of readline
+- Fix build with modern compilers
+- Fix work on CPU with align issues, like ARM and SPARC (thanks to Michal Čihař )
+- Migrate to C++11 and CMake (so at now archive with code 180K->54K)
+- Update Russian translation
 
 Version 0.4.3
 - fix build problems with gcc 4.x
