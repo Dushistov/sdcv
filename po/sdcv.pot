@@ -23,93 +23,97 @@ msgstr ""
 msgid "display list of available dictionaries and exit"
 msgstr ""
 
-#: src/sdcv.cpp:80
+#: src/sdcv.cpp:84
 msgid "for search use only dictionary with this bookname"
 msgstr ""
 
-#: src/sdcv.cpp:81
+#: src/sdcv.cpp:85
 msgid "bookname"
 msgstr ""
 
-#: src/sdcv.cpp:83
+#: src/sdcv.cpp:87
 msgid "for use in scripts"
 msgstr ""
 
-#: src/sdcv.cpp:85
+#: src/sdcv.cpp:89
 msgid "output must be in utf8"
 msgstr ""
 
-#: src/sdcv.cpp:87
+#: src/sdcv.cpp:91
 msgid "input of sdcv in utf8"
 msgstr ""
 
-#: src/sdcv.cpp:89
+#: src/sdcv.cpp:93
 msgid "use this directory as path to stardict data directory"
 msgstr ""
 
-#: src/sdcv.cpp:90
+#: src/sdcv.cpp:94
 msgid "path/to/dir"
 msgstr ""
 
-#: src/sdcv.cpp:97
+#: src/sdcv.cpp:96
+msgid "colorize the output"
+msgstr ""
+
+#: src/sdcv.cpp:101
 msgid " words"
 msgstr ""
 
-#: src/sdcv.cpp:103
+#: src/sdcv.cpp:107
 #, c-format
 msgid "Invalid command line arguments: %s\n"
 msgstr ""
 
-#: src/sdcv.cpp:109
+#: src/sdcv.cpp:113
 #, c-format
 msgid "Console version of Stardict, version %s\n"
 msgstr ""
 
-#: src/sdcv.cpp:135
+#: src/sdcv.cpp:139
 #, c-format
 msgid "Dictionary's name   Word count\n"
 msgstr ""
 
-#: src/sdcv.cpp:170
+#: src/sdcv.cpp:174
 #, c-format
 msgid "g_mkdir failed: %s\n"
 msgstr ""
 
-#: src/sdcv.cpp:185
+#: src/sdcv.cpp:189
 msgid "Enter word or phrase: "
 msgstr ""
 
-#: src/sdcv.cpp:193
+#: src/sdcv.cpp:197
 #, c-format
 msgid "There are no words/phrases to translate.\n"
 msgstr ""
 
-#: src/libwrapper.cpp:249
+#: src/libwrapper.cpp:280
 msgid "popen failed"
 msgstr ""
 
-#: src/libwrapper.cpp:286 src/utils.cpp:67
+#: src/libwrapper.cpp:317 src/utils.cpp:67
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr ""
 
-#: src/libwrapper.cpp:340 src/libwrapper.cpp:367
+#: src/libwrapper.cpp:371 src/libwrapper.cpp:402
 #, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr ""
 
-#: src/libwrapper.cpp:353
+#: src/libwrapper.cpp:388
 msgid "Your choice[-1 to abort]: "
 msgstr ""
 
-#: src/libwrapper.cpp:362
+#: src/libwrapper.cpp:397
 #, c-format
 msgid ""
 "Invalid choice.\n"
 "It must be from 0 to %zu or -1.\n"
 msgstr ""
 
-#: src/libwrapper.cpp:378
+#: src/libwrapper.cpp:413
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr ""
