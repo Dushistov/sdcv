@@ -56,7 +56,7 @@ public:
 protected:
 	std::string sametypesequence;
 	FILE *dictfile = nullptr;
-	std::unique_ptr<dictData> dictdzfile;
+	std::unique_ptr<DictData> dictdzfile;
 private:
 	cacheItem cache[WORDDATA_CACHE_NUM];
 	gint cache_cur = 0;	

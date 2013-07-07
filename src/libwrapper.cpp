@@ -304,26 +304,25 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 
 	gsize bytes_read;
 	gsize bytes_written;
-	GError *err = nullptr;
-	char *str = nullptr;
+    glib::Error err;
+    glib::CharStr str;
 	if (!utf8_input_)
-		str = g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, &err);
+		str.reset(g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, get_addr(err)));
 	else
-		str = g_strdup(loc_str);
+		str.reset(g_strdup(loc_str));
 
-	if (nullptr == str) {
+	if (nullptr == get_impl(str)) {
 		fprintf(stderr, _("Can not convert %s to utf8.\n"), loc_str);
 		fprintf(stderr, "%s\n", err->message);
-		g_error_free(err);
 		return false;
 	}
 
-	if (str[0]=='\0')
+	if (str[0] == '\0')
 		return true;
 
 	TSearchResultList res_list;
 
-	switch (analyze_query(str, query)) {
+	switch (analyze_query(get_impl(str), query)) {
 	case qtFUZZY:
 		LookupWithFuzzy(query, res_list);
 		break;
@@ -331,9 +330,9 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		LookupWithRule(query, res_list);
 		break;
 	case qtSIMPLE:
-		SimpleLookup(str, res_list);
+		SimpleLookup(get_impl(str), res_list);
 		if (res_list.empty())
-			LookupWithFuzzy(str, res_list);
+			LookupWithFuzzy(get_impl(str), res_list);
 		break;
 	case qtDATA:
 		LookupData(query, res_list);
@@ -367,7 +366,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 
 		if (!show_all_results && !force) {
 			printf(_("Found %zu items, similar to %s.\n"), res_list.size(),
-			       utf8_output_ ? str : utf8_to_locale_ign_err(str).c_str());
+			       utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
 			for (size_t i = 0; i < res_list.size(); ++i) {
                 const std::string loc_bookname = utf8_to_locale_ign_err(res_list[i].bookname);
                 const std::string loc_def = utf8_to_locale_ign_err(res_list[i].def);
@@ -398,7 +397,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		} else {
 			sdcv_pager pager(force);
 			fprintf(pager.get_stream(), _("Found %zu items, similar to %s.\n"),
-				res_list.size(), utf8_output_ ? str : utf8_to_locale_ign_err(str).c_str());
+                    res_list.size(), utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
 			for (const TSearchResult& search_res : res_list)
 				print_search_result(pager.get_stream(), search_res);
 		}
@@ -406,11 +405,10 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 	} else {
 		std::string loc_str;
 		if (!utf8_output_)
-			loc_str = utf8_to_locale_ign_err(str);
+			loc_str = utf8_to_locale_ign_err(get_impl(str));
 
-		printf(_("Nothing similar to %s, sorry :(\n"), utf8_output_ ? str : loc_str.c_str());
+		printf(_("Nothing similar to %s, sorry :(\n"), utf8_output_ ? get_impl(str) : loc_str.c_str());
 	}
-	g_free(str);
 
 	return true;
 }

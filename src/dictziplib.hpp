@@ -6,22 +6,22 @@
 
 #include "mapfile.hpp"
 
-
-#define DICT_CACHE_SIZE 5
-
-struct dictCache {
+struct DictCache {
 	int           chunk;
 	char          *inBuffer;
 	int           stamp;
 	int           count;
 };
 
-struct dictData {
-	dictData() {}
+class DictData {
+public:
+    static const size_t DICT_CACHE_SIZE =  5;
+
+	DictData() {}
+	~DictData() { close(); }
 	bool open(const std::string& filename, int computeCRC);
 	void close();
 	void read(char *buffer, unsigned long start, unsigned long size);
-	~dictData() { close(); }
 private:
 	const char    *start;	/* start of mmap'd area */
 	const char    *end;		/* end of mmap'd area */
@@ -47,7 +47,7 @@ private:
 	unsigned long crc;
 	unsigned long length;
 	unsigned long compressedLength;
-	dictCache     cache[DICT_CACHE_SIZE];
+	DictCache     cache[DICT_CACHE_SIZE];
 	MapFile mapfile;
 
 	int read_header(const std::string &filename, int computeCRC);
