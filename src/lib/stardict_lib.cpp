@@ -14,7 +14,7 @@
 #include "file.hpp"
 #include "mapfile.hpp"
 
-#include "lib.hpp"
+#include "stardict_lib.hpp"
 
 // Notice: read src/tools/DICTFILE_FORMAT for the dictionary 
 // file's format information!
@@ -45,7 +45,7 @@ namespace {
 
     static inline gint stardict_strcmp(const gchar *s1, const gchar *s2) 
     {
-        gint a=g_ascii_strcasecmp(s1, s2);
+        const gint a = g_ascii_strcasecmp(s1, s2);
         if (a == 0)
             return strcmp(s1, s2);
         else

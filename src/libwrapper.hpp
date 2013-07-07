@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "file.hpp"
-#include "lib.hpp"
+#include "stardict_lib.hpp"
 #include "readline.hpp"
 
 //this structure is wrapper and it need for unification
