@@ -42,7 +42,6 @@ static const char ESC_GREEN[] = "\033[0;32m";
 static const char *SEARCH_TERM_VISFMT = ESC_BOLD;
 static const char *NAME_OF_DICT_VISFMT = ESC_BLUE;
 static const char *TRANSCRIPTION_VISFMT = ESC_BOLD;
-static const char *DEF_COLOR_VISFMT = ESC_BLUE;
 static const char *EXAMPLE_VISFMT = ESC_LIGHT_GRAY;
 static const char *KREF_VISFMT = ESC_BOLD;
 static const char *ABR_VISFMT = ESC_GREEN;

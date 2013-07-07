@@ -16,6 +16,16 @@
 
 #include "stardict_lib.hpp"
 
+
+#define TO_STR2(xstr) #xstr
+#define TO_STR1(xstr) TO_STR2(xstr)
+
+#define THROW_IF_ERROR(expr) do {                                   \
+        assert((expr));                                             \
+        if (!(expr))                                                \
+        throw std::runtime_error(#expr " not true at " __FILE__ ": " TO_STR1(__LINE__));  \
+    } while (false)
+
 // Notice: read src/tools/DICTFILE_FORMAT for the dictionary
 // file's format information!
 
@@ -182,12 +192,13 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
 
   gchar *data;
   if (!sametypesequence.empty()) {
-    gchar *origin_data = (gchar *)g_malloc(idxitem_size);
+      glib::CharStr origin_data((gchar *)g_malloc(idxitem_size));
 
-    if (dictfile)
-      fread(origin_data, idxitem_size, 1, dictfile);
-    else
-      dictdzfile->read(origin_data, idxitem_offset, idxitem_size);
+      if (dictfile) {
+          const size_t nitems = fread(get_impl(origin_data), idxitem_size, 1, dictfile);
+          THROW_IF_ERROR(nitems == 1);
+      } else
+          dictdzfile->read(get_impl(origin_data), idxitem_offset, idxitem_size);
 
     guint32 data_size;
     gint sametypesequence_len = sametypesequence.length();
@@ -218,7 +229,7 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
     data = (gchar *)g_malloc(data_size);
     gchar *p1,*p2;
     p1 = data + sizeof(guint32);
-    p2 = origin_data;
+    p2 = get_impl(origin_data);
     guint32 sec_size;
     //copy the head items.
     for (int i=0; i<sametypesequence_len-1; i++) {
@@ -258,7 +269,7 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
       }
     }
     //calculate the last item 's size.
-    sec_size = idxitem_size - (p2-origin_data);
+    sec_size = idxitem_size - (p2-get_impl(origin_data));
     *p1=sametypesequence[sametypesequence_len-1];
     p1+=sizeof(gchar);
     switch (sametypesequence[sametypesequence_len-1]) {
@@ -290,13 +301,13 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
       }
       break;
     }
-    g_free(origin_data);
     set_uint32(data, data_size);
   } else {
     data = (gchar *)g_malloc(idxitem_size + sizeof(guint32));
-    if (dictfile)
-      fread(data+sizeof(guint32), idxitem_size, 1, dictfile);
-    else
+    if (dictfile) {
+      const size_t nitems = fread(data+sizeof(guint32), idxitem_size, 1, dictfile);
+      THROW_IF_ERROR(nitems == 1);
+    } else
       dictdzfile->read(data+sizeof(guint32), idxitem_offset, idxitem_size);
     set_uint32(data, idxitem_size+sizeof(guint32));
   }
@@ -318,9 +329,10 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 
 	if (dictfile)
 		fseek(dictfile, idxitem_offset, SEEK_SET);
-	if (dictfile)
-		fread(origin_data, idxitem_size, 1, dictfile);
-	else
+	if (dictfile) {
+		const size_t nitems = fread(origin_data, idxitem_size, 1, dictfile);
+        THROW_IF_ERROR(nitems == 1);
+	} else
 		dictdzfile->read(origin_data, idxitem_offset, idxitem_size);
 	gchar *p = origin_data;
 	guint32 sec_size;
@@ -504,10 +516,11 @@ namespace {
     inline const gchar *OffsetIndex::read_first_on_page_key(glong page_idx)
     {
         fseek(idxfile, wordoffset[page_idx], SEEK_SET);
-        guint32 page_size=wordoffset[page_idx+1]-wordoffset[page_idx];
-        fread(wordentry_buf,
-              std::min(sizeof(wordentry_buf), static_cast<size_t>(page_size)),
-              1, idxfile);
+        guint32 page_size = wordoffset[page_idx + 1] - wordoffset[page_idx];
+        const size_t nitems = fread(wordentry_buf,
+                                    std::min(sizeof(wordentry_buf), static_cast<size_t>(page_size)),
+                                    1, idxfile);
+        THROW_IF_ERROR(nitems == 1);
         //TODO: check returned values, deal with word entry that strlen>255.
         return wordentry_buf;
     }
@@ -631,16 +644,18 @@ namespace {
 
     inline gulong OffsetIndex::load_page(glong page_idx)
     {
-        gulong nentr=ENTR_PER_PAGE;
-        if (page_idx==glong(wordoffset.size()-2))
-            if ((nentr=wordcount%ENTR_PER_PAGE)==0)
-                nentr=ENTR_PER_PAGE;
+        gulong nentr = ENTR_PER_PAGE;
+        if (page_idx == glong(wordoffset.size()-2))
+            if ((nentr = (wordcount % ENTR_PER_PAGE)) == 0)
+                nentr = ENTR_PER_PAGE;
 
 
-        if (page_idx!=page.idx) {
+        if (page_idx != page.idx) {
             page_data.resize(wordoffset[page_idx+1]-wordoffset[page_idx]);
             fseek(idxfile, wordoffset[page_idx], SEEK_SET);
-            fread(&page_data[0], 1, page_data.size(), idxfile);
+            const size_t nitems = fread(&page_data[0], 1, page_data.size(), idxfile);
+            THROW_IF_ERROR(nitems == page_data.size());
+            
             page.fill(&page_data[0], nentr, page_idx);
         }
 
@@ -691,29 +706,29 @@ namespace {
                 idx = iThisIndex;
         }
         if (!bFound) {
-            gulong netr=load_page(idx);
-            iFrom=1; // Needn't search the first word anymore.
-            iTo=netr-1;
-            iThisIndex=0;
-            while (iFrom<=iTo) {
-                iThisIndex=(iFrom+iTo)/2;
+            gulong netr = load_page(idx);
+            iFrom = 1; // Needn't search the first word anymore.
+            iTo = netr-1;
+            iThisIndex = 0;
+            while (iFrom <= iTo) {
+                iThisIndex = (iFrom + iTo) / 2;
                 cmpint = stardict_strcmp(str, page.entries[iThisIndex].keystr);
-                if (cmpint>0)
-                    iFrom=iThisIndex+1;
-                else if (cmpint<0)
-                    iTo=iThisIndex-1;
+                if (cmpint > 0)
+                    iFrom = iThisIndex+1;
+                else if (cmpint < 0)
+                    iTo = iThisIndex-1;
                 else {
-                    bFound=true;
+                    bFound = true;
                     break;
                 }
             }
-            idx*=ENTR_PER_PAGE;
+            idx *= ENTR_PER_PAGE;
             if (!bFound)
                 idx += iFrom;    //next
             else
                 idx += iThisIndex;
         } else {
-            idx*=ENTR_PER_PAGE;
+            idx *= ENTR_PER_PAGE;
         }
         return bFound;
     }
