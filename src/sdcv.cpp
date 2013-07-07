@@ -59,7 +59,10 @@ int main(int argc, char *argv[])
 {
 	setlocale(LC_ALL, "");
 #if ENABLE_NLS
-	bindtextdomain("sdcv", GETTEXT_TRANSLATIONS_PATH);
+	bindtextdomain("sdcv",
+                   //"./locale"//< for testing
+                   GETTEXT_TRANSLATIONS_PATH//< should be
+        );
 	textdomain("sdcv");
 #endif
 
@@ -71,7 +74,7 @@ int main(int argc, char *argv[])
 	gboolean utf8_input = FALSE;
 	glib::CharStr opt_data_dir;
 
-	GOptionEntry entries[] = {
+	const GOptionEntry entries[] = {
 		{"version", 'v', 0, G_OPTION_ARG_NONE, &show_version, 
 		 _("display version information and exit"), nullptr },
 		{"list-dicts", 'l', 0, G_OPTION_ARG_NONE, &show_list_dicts, 
@@ -92,18 +95,16 @@ int main(int argc, char *argv[])
 	};
 
 	glib::Error error;
-	GOptionContext *context;
-
-	 context = g_option_context_new(_(" words"));
-	 g_option_context_set_help_enabled(context, TRUE);
-	 g_option_context_add_main_entries(context, entries, nullptr);
-	 const gboolean parse_res = g_option_context_parse(context, &argc, &argv, get_addr(error));
-	 g_option_context_free(context);
-	 if (!parse_res) {
-		 fprintf(stderr, _("Invalid command line arguments: %s\n"),
-			 error->message);		 
-		 return EXIT_FAILURE;
-	 }
+	GOptionContext *context = g_option_context_new(_(" words"));
+    g_option_context_set_help_enabled(context, TRUE);
+    g_option_context_add_main_entries(context, entries, nullptr);
+    const gboolean parse_res = g_option_context_parse(context, &argc, &argv, get_addr(error));
+    g_option_context_free(context);
+    if (!parse_res) {
+        fprintf(stderr, _("Invalid command line arguments: %s\n"),
+                error->message);		 
+        return EXIT_FAILURE;
+    }
 
 	 if (show_version) {
 		printf(_("Console version of Stardict, version %s\n"), gVersion);

@@ -3,10 +3,9 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: sdcv 0.5\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
 "POT-Creation-Date: 2008-09-24 10:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -16,101 +15,101 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/sdcv.cpp:108
+#: src/sdcv.cpp:76
 msgid "display version information and exit"
 msgstr ""
 
-#: src/sdcv.cpp:110
+#: src/sdcv.cpp:78
 msgid "display list of available dictionaries and exit"
 msgstr ""
 
-#: src/sdcv.cpp:112
+#: src/sdcv.cpp:80
 msgid "for search use only dictionary with this bookname"
 msgstr ""
 
-#: src/sdcv.cpp:113
+#: src/sdcv.cpp:81
 msgid "bookname"
 msgstr ""
 
-#: src/sdcv.cpp:115
+#: src/sdcv.cpp:83
 msgid "for use in scripts"
 msgstr ""
 
-#: src/sdcv.cpp:117
+#: src/sdcv.cpp:85
 msgid "output must be in utf8"
 msgstr ""
 
-#: src/sdcv.cpp:119
+#: src/sdcv.cpp:87
 msgid "input of sdcv in utf8"
 msgstr ""
 
-#: src/sdcv.cpp:121
+#: src/sdcv.cpp:89
 msgid "use this directory as path to stardict data directory"
 msgstr ""
 
-#: src/sdcv.cpp:122
+#: src/sdcv.cpp:90
 msgid "path/to/dir"
 msgstr ""
 
-#: src/sdcv.cpp:129
+#: src/sdcv.cpp:97
 msgid " words"
 msgstr ""
 
-#: src/sdcv.cpp:135
+#: src/sdcv.cpp:103
 #, c-format
 msgid "Invalid command line arguments: %s\n"
 msgstr ""
 
-#: src/sdcv.cpp:141
+#: src/sdcv.cpp:109
 #, c-format
 msgid "Console version of Stardict, version %s\n"
 msgstr ""
 
-#: src/sdcv.cpp:170
+#: src/sdcv.cpp:135
 #, c-format
 msgid "Dictionary's name   Word count\n"
 msgstr ""
 
-#: src/sdcv.cpp:192
+#: src/sdcv.cpp:170
 #, c-format
 msgid "g_mkdir failed: %s\n"
 msgstr ""
 
-#: src/sdcv.cpp:208
+#: src/sdcv.cpp:185
 msgid "Enter word or phrase: "
 msgstr ""
 
-#: src/sdcv.cpp:216
+#: src/sdcv.cpp:193
 #, c-format
 msgid "There are no words/phrases to translate.\n"
 msgstr ""
 
-#: src/libwrapper.cpp:248
+#: src/libwrapper.cpp:249
 msgid "popen failed"
 msgstr ""
 
-#: src/libwrapper.cpp:285 src/utils.cpp:67
+#: src/libwrapper.cpp:286 src/utils.cpp:67
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr ""
 
-#: src/libwrapper.cpp:342 src/libwrapper.cpp:370
+#: src/libwrapper.cpp:340 src/libwrapper.cpp:367
 #, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr ""
 
-#: src/libwrapper.cpp:356
+#: src/libwrapper.cpp:353
 msgid "Your choice[-1 to abort]: "
 msgstr ""
 
-#: src/libwrapper.cpp:365
+#: src/libwrapper.cpp:362
 #, c-format
 msgid ""
 "Invalid choice.\n"
 "It must be from 0 to %zu or -1.\n"
 msgstr ""
 
-#: src/libwrapper.cpp:381
+#: src/libwrapper.cpp:378
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr ""
