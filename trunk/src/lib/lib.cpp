@@ -43,18 +43,6 @@ namespace {
         return true;	
     }
 
-    static inline guint32 get_uint32(const gchar *addr)
-    {
-        guint32 result;
-        memcpy(&result, addr, sizeof(guint32));
-        return result;
-    }
-
-    static inline void set_uint32(gchar *addr, guint32 val)
-    {
-        memcpy(addr, &val, sizeof(guint32));
-    }
-
     static inline gint stardict_strcmp(const gchar *s1, const gchar *s2) 
     {
         gint a=g_ascii_strcasecmp(s1, s2);
@@ -82,11 +70,14 @@ bool DictInfo::load_from_ifo_file(const std::string& ifofilename,
   if (!g_file_get_contents(ifofilename.c_str(), &buffer, nullptr, nullptr))
     return false;
   
-#define TREEDICT_MAGIC_DATA "StarDict's treedict ifo file\nversion=2.4.2\n"
-#define DICT_MAGIC_DATA "StarDict's dict ifo file\nversion=2.4.2\n"
+  static const char TREEDICT_MAGIC_DATA[] = "StarDict's treedict ifo file";
+  static const char DICT_MAGIC_DATA[] = "StarDict's dict ifo file";
 
   const gchar *magic_data = istreedict ? TREEDICT_MAGIC_DATA : DICT_MAGIC_DATA;
-  if (!g_str_has_prefix(buffer, magic_data)) {
+  static const unsigned char utf8_bom[] = { 0xEF, 0xBB, 0xBF, '\0'};
+  if (!g_str_has_prefix(
+          g_str_has_prefix(buffer, (const gchar *)(utf8_bom)) ? buffer + 3 : buffer,
+          magic_data)) {
     g_free(buffer);
     return false;
   }
@@ -808,7 +799,6 @@ namespace {
     }
 }
 
-//===================================================================
 bool Dict::load(const std::string& ifofilename)
 {	
 	gulong idxfilesize;
