@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
 	gboolean utf8_output = FALSE;
 	gboolean utf8_input = FALSE;
 	glib::CharStr opt_data_dir;
+    gboolean colorize = FALSE;
 
 	const GOptionEntry entries[] = {
 		{"version", 'v', 0, G_OPTION_ARG_NONE, &show_version, 
@@ -91,6 +92,8 @@ int main(int argc, char *argv[])
 		{"data-dir", '2', 0, G_OPTION_ARG_STRING, get_addr(opt_data_dir), 
 		 _("use this directory as path to stardict data directory"),
 		 _("path/to/dir")},
+		{"color", 'c', 0, G_OPTION_ARG_NONE, &colorize, 
+		 _("colorize the output"), nullptr },
 		{ nullptr },
 	};
 
@@ -139,7 +142,7 @@ int main(int argc, char *argv[])
                       disable_list, [](const std::string& filename, bool) -> void {
                           		DictInfo dict_info;
                                 if (dict_info.load_from_ifo_file(filename, false)) {
-                                    const string bookname = utf8_to_locale_ign_err(dict_info.bookname);
+                                    const std::string bookname = utf8_to_locale_ign_err(dict_info.bookname);
                                     printf("%s    %d\n", bookname.c_str(), dict_info.wordcount);
                                 }
                       });
@@ -166,12 +169,12 @@ int main(int argc, char *argv[])
                       });
 	}
 
-	const string conf_dir = string(g_get_home_dir())+G_DIR_SEPARATOR+".stardict";
-	if (g_mkdir(conf_dir.c_str(), S_IRWXU)==-1 && errno!=EEXIST)
+	const std::string conf_dir = std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".stardict";
+	if (g_mkdir(conf_dir.c_str(), S_IRWXU) == -1 && errno!=EEXIST)
 		fprintf(stderr, _("g_mkdir failed: %s\n"), strerror(errno));
 
   
-	Library lib(utf8_input, utf8_output);
+	Library lib(utf8_input, utf8_output, colorize);
 	strlist_t empty_list;
 	lib.load(dicts_dir_list, empty_list, disable_list);
 
@@ -182,7 +185,7 @@ int main(int argc, char *argv[])
 				return EXIT_FAILURE;
 	} else if (!non_interactive) {
 
-		string phrase;
+        std::string phrase;
 		while (io->read(_("Enter word or phrase: "), phrase)) {
 			if (!lib.process_phrase(phrase.c_str(), *io))
 				return EXIT_FAILURE;
