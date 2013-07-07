@@ -42,15 +42,15 @@ set(sdcv_SRCS
   src/utils.cpp 
   src/utils.hpp
 
-  src/lib/lib.cpp
-  src/lib/lib.hpp
-  src/lib/dictziplib.cpp
-  src/lib/dictziplib.hpp  
-  src/lib/distance.cpp 
-  src/lib/distance.hpp
-  src/lib/mapfile.hpp
-  src/lib/file.hpp
-  src/lib/file.cpp
+  src/stardict_lib.cpp
+  src/stardict_lib.hpp
+  src/dictziplib.cpp
+  src/dictziplib.hpp  
+  src/distance.cpp 
+  src/distance.hpp
+  src/mapfile.hpp
+  src/file.hpp
+  src/file.cpp
 )
 
 if (ENABLE_NLS)
