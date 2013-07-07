@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdio>
+#include <cstring>
 #include <list>
 #include <memory>
 #include <string>
@@ -11,6 +12,19 @@
 
 const int MAX_MATCH_ITEM_PER_LIB=100;
 const int MAX_FUZZY_DISTANCE= 3; // at most MAX_FUZZY_DISTANCE-1 differences allowed when find similar words
+
+inline guint32 get_uint32(const gchar *addr)
+{
+    guint32 result;
+    memcpy(&result, addr, sizeof(guint32));
+    return result;
+}
+
+inline void set_uint32(gchar *addr, guint32 val)
+{
+    memcpy(addr, &val, sizeof(guint32));
+}
+
 
 struct cacheItem {
 	guint32 offset;
