@@ -49,8 +49,6 @@ set(sdcv_SRCS
   src/distance.cpp 
   src/distance.hpp
   src/mapfile.hpp
-  src/file.hpp
-  src/file.cpp
 )
 
 if (ENABLE_NLS)

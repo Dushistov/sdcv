@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 
-#include "file.hpp"
 #include "stardict_lib.hpp"
 #include "readline.hpp"
 
