@@ -37,7 +37,7 @@ The Levenshtein distance algorithm has been used in:
 #include <cstdlib>
 #include <cstring>
 
-#include "distance.h"
+#include "distance.hpp"
 
 /*
 Cover transposition, in addition to deletion,
