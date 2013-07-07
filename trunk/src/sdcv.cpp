@@ -55,8 +55,7 @@ namespace glib {
 	typedef ResourceWrapper<gchar *, gchar *, free_str_array> StrArr;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) try {
 	setlocale(LC_ALL, "");
 #if ENABLE_NLS
 	bindtextdomain("sdcv",
@@ -197,4 +196,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, _("There are no words/phrases to translate.\n"));
     
 	return EXIT_SUCCESS;
+} catch (const std::exception& ex) {
+    fprintf(stderr, "Internal error: %s\n", ex.what());
+    exit(EXIT_FAILURE);
 }
