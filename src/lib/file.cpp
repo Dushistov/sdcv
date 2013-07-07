@@ -5,7 +5,7 @@
 #include "file.hpp"
 
 static void __for_each_file(const std::string& dirname, const std::string& suff,
-                            const List& order_list, const List& disable_list, 
+                            const std::list<std::string>& order_list, const std::list<std::string>& disable_list, 
                             const std::function<void (const std::string&, bool)>& f)
 {
 	GDir *dir = g_dir_open(dirname.c_str(), 0, nullptr);	
@@ -30,8 +30,8 @@ static void __for_each_file(const std::string& dirname, const std::string& suff,
 }
 
 
-void for_each_file(const List& dirs_list, const std::string& suff,
-                   const List& order_list, const List& disable_list, 
+void for_each_file(const std::list<std::string>& dirs_list, const std::string& suff,
+                   const std::list<std::string>& order_list, const std::list<std::string>& disable_list, 
                    const std::function<void (const std::string&, bool)>& f)
 {
 	for (const std::string & item : order_list) {

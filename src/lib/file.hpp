@@ -4,9 +4,7 @@
 #include <string>
 #include <functional>
 
-typedef std::list<std::string> List;
-
-extern void for_each_file(const List& dirs_list, const std::string& suff,
-                          const List& order_list, const List& disable_list, 
+extern void for_each_file(const std::list<std::string>& dirs_list, const std::string& suff,
+                          const std::list<std::string>& order_list, const std::list<std::string>& disable_list, 
                           const std::function<void (const std::string&, bool)>& f);
 

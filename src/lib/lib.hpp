@@ -111,8 +111,6 @@ private:
 	bool load_ifofile(const std::string& ifofilename, gulong &idxfilesize);
 };
 
-typedef std::list<std::string> strlist_t;
-
 class Libs {
 public:
 	Libs(std::function<void(void)> f = std::function<void(void)>()) {
@@ -124,12 +122,12 @@ public:
     Libs& operator=(const Libs&) = delete;
 
 	void load_dict(const std::string& url);
-	void load(const strlist_t& dicts_dirs, 
-		  const strlist_t& order_list, 
-		  const strlist_t& disable_list);
-	void reload(const strlist_t& dicts_dirs, 
-		    const strlist_t& order_list, 
-		    const strlist_t& disable_list);
+	void load(const std::list<std::string>& dicts_dirs, 
+		  const std::list<std::string>& order_list, 
+		  const std::list<std::string>& disable_list);
+	void reload(const std::list<std::string>& dicts_dirs, 
+		    const std::list<std::string>& order_list, 
+		    const std::list<std::string>& disable_list);
 
 	glong narticles(int idict) const { return oLib[idict]->narticles(); }
 	const std::string& dict_name(int idict) const { return oLib[idict]->dict_name(); }
