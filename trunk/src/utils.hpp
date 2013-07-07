@@ -21,12 +21,13 @@ public:
 	}
 
 	friend inline T *get_impl(const ResourceWrapper& rw) {
-		return rw.p_; 
+		return rw.p_;
 	}
 
 	friend inline T **get_addr(ResourceWrapper& rw) {
-		return &rw.p_; 
+		return &rw.p_;
 	}
+
 private:
 	T *p_;
 
@@ -56,4 +57,3 @@ namespace glib {
 
 extern char *locale_to_utf8(const char *locstr);
 extern std::string utf8_to_locale_ign_err(const std::string& utf8_str);
-

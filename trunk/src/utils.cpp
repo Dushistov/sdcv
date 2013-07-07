@@ -1,4 +1,4 @@
-/* 
+/*
  * This file part of sdcv - console version of Stardict program
  * http://sdcv.sourceforge.net
  * Copyright (C) 2005-2006 Evgeniy <dushistov@mail.ru>
@@ -31,24 +31,22 @@
 
 std::string utf8_to_locale_ign_err(const std::string& utf8_str)
 {
-	gsize bytes_read, bytes_written;
-	GError *err=nullptr;
 	std::string res;
-  
-	const char * charset;
+
+	const char *charset;
 	if (g_get_charset(&charset))
-		res=utf8_str;
+		res = utf8_str;
 	else {
-		gchar *tmp=g_convert_with_fallback(utf8_str.c_str(), -1, charset, "UTF-8", nullptr, 
-						   &bytes_read, &bytes_written, &err);
-		if (nullptr==tmp){
+        gsize bytes_read, bytes_written;
+        glib::Error err;
+        glib::CharStr tmp(g_convert_with_fallback(utf8_str.c_str(), -1, charset, "UTF-8", nullptr,
+                                                  &bytes_read, &bytes_written, get_addr(err)));
+		if (nullptr == get_impl(tmp)){
 			fprintf(stderr, _("Can not convert %s to current locale.\n"), utf8_str.c_str());
 			fprintf(stderr, "%s\n", err->message);
-			g_error_free(err);
 			exit(EXIT_FAILURE);
 		}
-		res=tmp;
-		g_free(tmp);
+		res = get_impl(tmp);
 	}
 
 	return res;
@@ -56,20 +54,16 @@ std::string utf8_to_locale_ign_err(const std::string& utf8_str)
 
 char *locale_to_utf8(const char *loc_str)
 {
-	if(nullptr==loc_str)
+	if (nullptr == loc_str)
 		return nullptr;
-	gsize bytes_read;
-	gsize bytes_written;
-	GError *err=nullptr;
-	gchar *str=nullptr;
-	str=g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, &err);
-	if(nullptr==str){
+	gsize bytes_read, bytes_written;
+    glib::Error err;
+	gchar *str = g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, get_addr(err));
+	if (nullptr == str){
 		fprintf(stderr, _("Can not convert %s to utf8.\n"), loc_str);
 		fprintf(stderr, "%s\n", err->message);
-		g_error_free(err);
 		exit(EXIT_FAILURE);
 	}
 
 	return str;
 }
-
