@@ -482,7 +482,7 @@ namespace {
         const gchar *get_first_on_page_key(glong page_idx);
         bool load_cache(const std::string& url);
         bool save_cache(const std::string& url);
-        static strlist_t get_cache_variant(const std::string& url);
+        static std::list<std::string> get_cache_variant(const std::string& url);
     };
 
     const char *OffsetIndex::CACHE_MAGIC = "StarDict's Cache, Version: 0.1";
@@ -548,7 +548,7 @@ namespace {
 
     bool OffsetIndex::load_cache(const std::string& url)
     {
-        const strlist_t vars = get_cache_variant(url);
+        const std::list<std::string> vars = get_cache_variant(url);
 
         for (const std::string& item : vars) {
             struct ::stat idxstat, cachestat;
@@ -570,9 +570,9 @@ namespace {
         return false;
     }
 
-    strlist_t OffsetIndex::get_cache_variant(const std::string& url)
+    std::list<std::string> OffsetIndex::get_cache_variant(const std::string& url)
     {
-        strlist_t res = {url + ".oft"};
+        std::list<std::string> res = {url + ".oft"};
         if (!g_file_test(g_get_user_cache_dir(), G_FILE_TEST_EXISTS) &&
             g_mkdir(g_get_user_cache_dir(), 0700)==-1)
             return res;
@@ -593,7 +593,7 @@ namespace {
 
     bool OffsetIndex::save_cache(const std::string& url)
     {
-        const strlist_t vars = get_cache_variant(url);
+        const std::list<std::string> vars = get_cache_variant(url);
         for (const std::string&  item : vars) {
             FILE *out=fopen(item.c_str(), "wb");
             if (!out)
@@ -897,9 +897,9 @@ void Libs::load_dict(const std::string& url)
 		delete lib;
 }
 
-void Libs::load(const strlist_t& dicts_dirs,
-		const strlist_t& order_list, 
-		const strlist_t& disable_list)
+void Libs::load(const std::list<std::string>& dicts_dirs,
+		const std::list<std::string>& order_list, 
+		const std::list<std::string>& disable_list)
 {
 	for_each_file(dicts_dirs, ".ifo", order_list, disable_list, 
                   [this](const std::string& url, bool disable) -> void {
@@ -908,9 +908,9 @@ void Libs::load(const strlist_t& dicts_dirs,
                   });
 }
 
-void Libs::reload(const strlist_t& dicts_dirs, 
-                  const strlist_t& order_list, 
-                  const strlist_t& disable_list)
+void Libs::reload(const std::list<std::string>& dicts_dirs, 
+                  const std::list<std::string>& order_list, 
+                  const std::list<std::string>& disable_list)
 {
 	std::vector<Dict *> prev(oLib);
 	oLib.clear();

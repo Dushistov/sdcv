@@ -130,14 +130,14 @@ int main(int argc, char *argv[])
 	if (!homedir)
 		homedir = g_get_home_dir ();
 
-	const strlist_t dicts_dir_list = {
+	const std::list<std::string> dicts_dir_list = {
         std::string(homedir) + G_DIR_SEPARATOR + ".stardict" + G_DIR_SEPARATOR + "dic",
         data_dir
     };
 
 	if (show_list_dicts) {
 		printf(_("Dictionary's name   Word count\n"));
-		strlist_t order_list, disable_list;
+		std::list<std::string> order_list, disable_list;
 		for_each_file(dicts_dir_list, ".ifo",  order_list, 
                       disable_list, [](const std::string& filename, bool) -> void {
                           		DictInfo dict_info;
@@ -150,10 +150,10 @@ int main(int argc, char *argv[])
 		return EXIT_SUCCESS;
 	}
 
-	strlist_t disable_list;
+	std::list<std::string> disable_list;
   
 	if (use_dict_list) {
-		strlist_t empty_list;
+		std::list<std::string> empty_list;
 
 		for_each_file(dicts_dir_list, ".ifo", empty_list, empty_list,
                       [&disable_list, &use_dict_list](const std::string& filename, bool) -> void {
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 
   
 	Library lib(utf8_input, utf8_output, colorize);
-	strlist_t empty_list;
+	std::list<std::string> empty_list;
 	lib.load(dicts_dir_list, empty_list, disable_list);
 
 	std::unique_ptr<IReadLine> io(create_readline_object());
