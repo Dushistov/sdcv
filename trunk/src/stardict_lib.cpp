@@ -2,6 +2,7 @@
 #  include "config.h"
 #endif
 
+#include <stdexcept>
 #include <algorithm>
 #include <cstring>
 #include <cctype>
