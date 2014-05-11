@@ -385,6 +385,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 				sscanf(str_choise.c_str(), "%d", &choise);
 				if (choise >= 0 && choise < int(res_list.size())) {
 					sdcv_pager pager;
+                    io.add_to_history(res_list[choise].def.c_str());
 					print_search_result(pager.get_stream(), res_list[choise]);
 					break;
 				} else if (choise == -1){
