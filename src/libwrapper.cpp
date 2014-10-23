@@ -63,6 +63,9 @@ static std::string xdxf2text(const char *p, bool colorize_output)
 			} else if (g_str_has_prefix(p, "&quot;")) {
 				res += "\"";
 				p += 5;
+                       } else if (g_str_has_prefix(p, "&apos;")) {
+                               res += "\'";
+                               p += 5;
 			} else
 				res += *p;
 			continue;
