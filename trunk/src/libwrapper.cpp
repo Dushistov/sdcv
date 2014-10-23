@@ -176,6 +176,7 @@ static std::string parse_data(const gchar *data, bool colorize_output)
 			}
 			sec_size++;
 			break;
+        case 'k':
 		case 'y':
 			sec_size = strlen(p);
 			sec_size++;
