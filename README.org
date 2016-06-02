@@ -1,15 +1,20 @@
+#+OPTIONS: ^:nil
+[[https://github.com/Dushistov/sdcv/blob/master/LICENSE][https://img.shields.io/badge/license-GPL%202-brightgreen.svg]]
 * How to compile and install
-
+#+BEGIN_SRC sh
 mkdir /tmp/build-sdcv
 cd /tmp/build-sdcv
 cmake path/to/source/code/of/sdcv
 make
-
+#+END_SRC
 if you enable nls then you should type also
+#+BEGIN_SRC sh
 make lang
-
+#+END_SRC
 ** to install type
+#+BEGIN_SRC sh
 make install
+#+END_SRC
 you can use "DESTDIR" variable to change installation path
 
 * Documentation
@@ -22,4 +27,6 @@ Be sure to include the word "sdcv" somewhere in the "Subject:" field.
 
 * Notes to developer
 ** make source code release
+#+BEGIN_SRC sh
 make package_source
+#+END_SRC
