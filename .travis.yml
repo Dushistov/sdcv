@@ -5,8 +5,7 @@
 
 sudo: false
 
-language:
-  - cpp
+language: cpp
 
 matrix:
   include:
@@ -30,8 +29,6 @@ matrix:
         apt:
           sources:
           - ubuntu-toolchain-r-test
-          - kalakris-cmake
-          - ubuntu-sdk-team
           - llvm-toolchain-precise-3.5
           packages:
           - clang-3.5
