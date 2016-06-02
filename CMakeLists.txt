@@ -13,6 +13,8 @@ endif(${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} LESS 2.8)
 cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 cmake_policy(VERSION 2.8)
 
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/compiler.cmake")
+
 set(ZLIB_FIND_REQUIRED True)
 include(FindZLIB)
 
@@ -28,7 +30,7 @@ endif()
 find_path(READLINE_INCLUDE_DIR readline/readline.h)
 find_library(READLINE_LIBRARY NAMES readline) 
 if (READLINE_INCLUDE_DIR AND READLINE_LIBRARY)
-  set(WITH_READLINE TRUE)
+  set(WITH_READLINE True)
 endif ()
 
 option(ENABLE_NLS "Enable NLS support" True)
@@ -99,7 +101,7 @@ set(CPACK_PACKAGE_VERSION_PATCH "0-beta4")
 set(sdcv_VERSION
 	"${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
 
-add_definitions(-DVERSION="${sdcv_VERSION}" -DHAVE_CONFIG_H "-std=c++11")
+add_definitions(-DVERSION="${sdcv_VERSION}" -DHAVE_CONFIG_H)
 
 add_executable(sdcv ${sdcv_SRCS})
 
@@ -109,17 +111,17 @@ target_link_libraries(sdcv
   ${READLINE_LIBRARY}
 )
 if (ENABLE_NLS)
-set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "locale")
+  set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "locale")
 endif ()
 
 include(CPack)
 
-INSTALL(TARGETS sdcv DESTINATION "bin")
-INSTALL(FILES doc/sdcv.1 DESTINATION "share/man/man1")
-INSTALL(FILES doc/uk/sdcv.1 DESTINATION "share/man/uk/man1")
+install(TARGETS sdcv DESTINATION "bin")
+install(FILES doc/sdcv.1 DESTINATION "share/man/man1")
+install(FILES doc/uk/sdcv.1 DESTINATION "share/man/uk/man1")
 
 if (ENABLE_NLS)
-  INSTALL(DIRECTORY "${gettext_outDir}" DESTINATION "share")
+  install(DIRECTORY "${gettext_outDir}" DESTINATION "share")
 endif ()
 
 option(BUILD_TESTS "Enable automatic testing" False)
