@@ -1,8 +1,11 @@
 #!/bin/sh
 
+set -e
+
 PATH_TO_SDCV="$1"
 TESTS_DIR="$2"
 
+mkdir -p "${HOME}"/.stardict/dic
 cp -R "${TESTS_DIR}/stardict-test_dict-2.4.2" "${HOME}"/.stardict/dic
 unset SDCV_PAGER
 RES=`"$PATH_TO_SDCV" -n -u test_dict test | grep "test passed"`
