@@ -125,19 +125,16 @@ if (ENABLE_NLS)
 endif ()
 
 option(BUILD_TESTS "Enable automatic testing" False)
+
 if (BUILD_TESTS)
   find_program(SHELL_CMD NAMES sh bash
     DOC "Shell scripts interpretator command")
   message(STATUS "Build tests")
   enable_testing()# Force "make test" to works
 
-  get_target_property(sdcv_path sdcv LOCATION)
-  message(STATUS "path ${sdcv_path}")
-  string(REGEX REPLACE "\\$\\(.*\\)" "\${CTEST_CONFIGURATION_TYPE}"
-    sdcv_path "${sdcv_path}")
-
   macro(add_sdcv_shell_test test_name)
-    add_test(${test_name} "${SHELL_CMD}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/${test_name}" "${sdcv_path}" "${CMAKE_CURRENT_SOURCE_DIR}/tests")
+    add_test(NAME ${test_name}
+      COMMAND "${SHELL_CMD}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/${test_name}" $<TARGET_FILE:sdcv> "${CMAKE_CURRENT_SOURCE_DIR}/tests")
   endmacro()
 
   add_sdcv_shell_test(t_list)

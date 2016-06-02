@@ -1,0 +1,34 @@
+#
+# Available repositories are listed here:
+# https://github.com/travis-ci/apt-source-whitelist/blob/master/ubuntu.json
+#
+
+sudo: false
+
+language:
+  - cpp
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - kalakris-cmake
+    - ubuntu-sdk-team
+    packages:
+    - g++-4.8
+    - cmake
+    - libglib2.0-dev
+
+env:
+- COMPILER_VERSION=4.8
+
+before_script:
+  - mkdir build
+  - cd build
+  - CC=$CC-${COMPILER_VERSION} CXX=$CXX-${COMPILER_VERSION} cmake -DBUILD_TESTS=True ..
+  - cd ..
+
+script:
+  - cd build
+  - make -k -j2 VERBOSE=1
+  - ctest --output-on-failure
