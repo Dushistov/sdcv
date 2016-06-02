@@ -7,7 +7,7 @@ cd /tmp/build-sdcv
 cmake path/to/source/code/of/sdcv
 make
 #+END_SRC
-if you enable nls then you should type also
+if you enable nls then you should also type
 #+BEGIN_SRC sh
 make lang
 #+END_SRC
