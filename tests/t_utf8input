@@ -1,9 +1,12 @@
 #!/bin/sh
-# This test is dirty hack: if you want try it
-# make sure that you have not small Russian dictionary, like mueller 7 GPL
-# or replace человек by something else
+
+set -e
 
 PATH_TO_SDCV="$1"
+TESTS_DIR="$2"
+
+mkdir -p "${HOME}"/.stardict/dic
+cp -R "${TESTS_DIR}/rus-eng-stardict-2.4.2" "${HOME}"/.stardict/dic/
 
 unset SDCV_PAGER
 export LANG=ru_RU.KOI8-R

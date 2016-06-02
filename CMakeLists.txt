@@ -144,4 +144,4 @@ if (BUILD_TESTS)
   add_sdcv_shell_test(t_utf8input)
   add_sdcv_shell_test(t_datadir)
 
-endif ()
+endif (BUILD_TESTS)
