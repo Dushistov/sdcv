@@ -26,7 +26,7 @@ impl DictionaryData for SimpleDictionaryData {
 
 impl SimpleDictionaryData {
     pub fn new(data_file_name: &Path) ->Result<SimpleDictionaryData, String> {
-        let mut file = try!(File::open(data_file_name).map_err(|err| err.to_string()));
+        let file = try!(File::open(data_file_name).map_err(|err| err.to_string()));
         Result::Ok(SimpleDictionaryData{data_file : file})
     }
 }

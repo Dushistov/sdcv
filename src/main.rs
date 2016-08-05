@@ -2,10 +2,13 @@ extern crate getopts;
 extern crate gettext;
 extern crate ini;
 extern crate byteorder;
+extern crate libc;
+extern crate flate2;
 
 mod core;
 mod index;
 mod data;
+mod mem_mapped_file;
 use core::Dictionary;
 
 use std::env;
@@ -20,7 +23,7 @@ struct Library {
 }
 
 impl Library {
-    fn new(dict_dirs: &Vec<String>, dict_order_names: &Vec<String>, dict_disable_names: &Vec<String>) -> Result<Library, String> {
+    fn new(dict_dirs: &[&Path], dict_order_names: &[String], dict_disable_names: &[String]) -> Result<Library, String> {
         let dicts = vec![Dictionary::new(Path::new("/home/evgeniy/.stardict/dic/stardict-Mueller7accentGPL-2.4.2/Mueller7accentGPL.ifo")).unwrap()];
         Ok(Library{dicts: dicts})
     }
@@ -56,7 +59,7 @@ fn main() {
         print_usage(&program, opts);
         return;
     }
-    let dict_dirs: Vec<String> = vec![];
+    let dict_dirs = vec![Path::new("/tmp")];
     let dict_order_names: Vec<String> = vec![];
     let dict_disable_names: Vec<String> = vec![];
     let mut library = Library::new(&dict_dirs, &dict_order_names, &dict_disable_names).unwrap();

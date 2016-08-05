@@ -2,6 +2,12 @@ use std::str::from_utf8;
 use std::cmp::Ordering;
 use std::io::Cursor;
 use byteorder::{NetworkEndian, ReadBytesExt};
+use mem_mapped_file::MemMappedFile;
+use std::path::Path;
+use std::fs::File;
+use std::io::Read;
+use flate2::read::GzDecoder;
+use std::error::Error;
 
 pub trait DictionaryIndex {
     fn get_key(&self, idx: usize) -> (&str, u64, usize);
@@ -94,16 +100,16 @@ fn stardict_str_order(s1: &str, s2: &str) -> Ordering {
     }
 }
 
-fn get_key_by_offset(content: &Vec<u8>, key_pos: usize) -> (&str, u64, usize) {
+fn get_key_by_offset(content: &[u8], key_pos: usize) -> (&str, u64, usize) {
     let key = &content[key_pos..];
     let end_of_key = key.iter().position(|&x| x == b'\0').unwrap() + key_pos;
-    let mut reader = Cursor::new(&content[end_of_key + 1..]);    
+    let mut reader = Cursor::new(&content[end_of_key + 1..]);
     let offset = reader.read_u32::<NetworkEndian>().unwrap() as u64;
     let length = reader.read_u32::<NetworkEndian>().unwrap() as usize;
     (from_utf8(&content[key_pos..end_of_key]).unwrap(), offset, length)
 }
 
-impl  DictionaryIndex for  MemoryDictionaryIndex  {
+impl  DictionaryIndex for MemoryDictionaryIndex  {
     fn get_key(&self, idx: usize) -> (&str, u64, usize) {
         let key_pos = self.wordlist[idx];
         get_key_by_offset(&self.idx_content, key_pos)
@@ -125,32 +131,78 @@ impl  DictionaryIndex for  MemoryDictionaryIndex  {
     }
 }
 
-impl  MemoryDictionaryIndex  {
-    pub fn new(expected_wordcount : usize, idx_content : Vec<u8>) -> Result<MemoryDictionaryIndex, String> {
-        const PADDING_LENGTH: usize = 8;
-        let mut wordlist = vec![];
-        wordlist.reserve(expected_wordcount);
-        {
-            let mut slice = &idx_content[0..];
-            let mut pos : usize = 0;
-            while let Some(idx) = slice.iter().position(|&x| x == b'\0') {
-                let (head, tail) = slice.split_at(idx);
-                try!(from_utf8(head).map_err(|err| "invalid utf-8 in key".to_string()));
-                wordlist.push(pos);
-                pos += head.len() + PADDING_LENGTH + 1;
-                // +1 to skip over the NUL
-                if tail.len() > PADDING_LENGTH + 1 {
-                    slice = &tail[PADDING_LENGTH + 1..];
-                } else {
-                    break;
-                }
+fn get_offsets_of_phrases_in_index(expected_wordcount: usize, idx_content: &[u8]) -> Result<Vec<usize>, String> {
+    const PADDING_LENGTH: usize = 8;
+    let mut wordlist = vec![];
+    wordlist.reserve(expected_wordcount);
+    {
+        let mut slice = idx_content;
+        let mut pos : usize = 0;
+        while let Some(idx) = slice.iter().position(|&x| x == b'\0') {
+            let (head, tail) = slice.split_at(idx);
+            try!(from_utf8(head).map_err(|err| "invalid utf-8 in key".to_string()));
+            wordlist.push(pos);
+            pos += head.len() + PADDING_LENGTH + 1;
+            // +1 to skip over the NUL
+            if tail.len() > PADDING_LENGTH + 1 {
+                slice = &tail[PADDING_LENGTH + 1..];
+            } else {
+                break;
             }
         }
-        if wordlist.len() != expected_wordcount {
-            Result::Err(format!("Expect words in index {}, got {} words", expected_wordcount, wordlist.len()))
-        } else {
-            Result::Ok(MemoryDictionaryIndex {idx_content: idx_content, wordlist : wordlist})
+    }
+    if wordlist.len() != expected_wordcount {
+        Result::Err(format!("Expect words in index {}, got {} words", expected_wordcount, wordlist.len()))
+    } else {
+        Result::Ok(wordlist)
+    }
+}
+
+impl MemoryDictionaryIndex {
+    pub fn new_from_vec(expected_wordcount: usize, idx_content: Vec<u8>) -> Result<MemoryDictionaryIndex, String> {
+        let wordlist = try!(get_offsets_of_phrases_in_index(expected_wordcount, idx_content.as_slice()));
+        Result::Ok(MemoryDictionaryIndex {idx_content: idx_content, wordlist: wordlist})
+    }
+
+    pub fn new_from_gzip(expected_wordcount: usize, idx_gz_file_path: &Path) -> Result<MemoryDictionaryIndex, String> {
+        let mut idx_file = try!(File::open(idx_gz_file_path).map_err(|err| err.description().to_string()));
+        let mut gzip_decoder = try!(GzDecoder::new(idx_file).map_err(|err| err.description().to_string()));
+        let mut idx_content = Vec::<u8>::new();
+        if let Result::Err(err) = gzip_decoder.read_to_end(&mut idx_content) {
+            return Result::Err(format!("Can not read index file: {}", err.description()));
         }
+        let wordlist = try!(get_offsets_of_phrases_in_index(expected_wordcount, idx_content.as_slice()));
+        Result::Ok(MemoryDictionaryIndex {idx_content: idx_content, wordlist: wordlist})
+    }
+}
+
+pub struct DiskDictionaryIndex {
+    file_map: MemMappedFile,
+    wordlist: Vec<usize>,
+}
+
+impl DictionaryIndex for DiskDictionaryIndex {
+    fn get_key(&self, idx: usize) -> (&str, u64, usize) {
+        let key_pos = self.wordlist[idx];
+        let idx_content = self.file_map.get_chunk(0, self.file_map.len()).unwrap();
+        get_key_by_offset(idx_content, key_pos)
+    }
+    fn count(&self) -> usize { self.wordlist.len() }
+
+    fn find(&self, key: &str) -> Result<usize, usize> {
+        let idx_content = self.file_map.get_chunk(0, self.file_map.len()).unwrap();
+        self.wordlist.binary_search_by(
+            |probe| stardict_str_order(get_key_by_offset(idx_content, *probe).0, key)
+        )
+    }
+}
+
+impl DiskDictionaryIndex {
+    pub fn new(expected_wordcount: usize, idx_file_path: &Path) -> Result<DiskDictionaryIndex, String> {
+        let file_map = try!(MemMappedFile::new(idx_file_path));
+        let whole_map = try!(file_map.get_chunk(0, file_map.len()));
+        let wordlist = try!(get_offsets_of_phrases_in_index(expected_wordcount, whole_map));
+        Ok(DiskDictionaryIndex{file_map: file_map, wordlist: wordlist})
     }
 }
 
@@ -165,14 +217,14 @@ mod test {
     use std::io::BufReader;
     use std::io::BufRead;
     use std::collections::HashSet;
-
+    
     #[test]
     fn index_memory_open() {
         let idx_file_name = Path::new("tests/stardict-test_dict-2.4.2/test_dict.idx");
         let mut file = File::open(idx_file_name).unwrap();
         let mut idx_content = Vec::<u8>::new();
         file.read_to_end(&mut idx_content).unwrap();
-        let mut index = MemoryDictionaryIndex::new(1, idx_content).unwrap();
+        let mut index = MemoryDictionaryIndex::new_from_vec(1, idx_content).unwrap();
         assert_eq!(1_usize, index.count());
         assert_eq!("test", index.get_key(0).0);
 
@@ -181,8 +233,13 @@ mod test {
         let mut idx_content = Vec::<u8>::new();
         file.read_to_end(&mut idx_content).unwrap();
         let index_size = 1671704_usize;
-        let mut index = MemoryDictionaryIndex::new(index_size, idx_content).unwrap();
-        assert_eq!(index_size, index.count());
+        let mut mem_index = MemoryDictionaryIndex::new_from_vec(index_size, idx_content).unwrap();
+        assert_eq!(index_size, mem_index.count());
+        let mut disk_index = DiskDictionaryIndex::new(index_size, idx_file_name).unwrap();
+        assert_eq!(index_size, disk_index.count());
+        let mut gz_mem_index = MemoryDictionaryIndex::new_from_gzip(index_size,
+                                                                    Path::new("tests/words_dic/stardict-words-2.4.2/words.idx.gz")).unwrap();
+        assert_eq!(index_size, gz_mem_index.count());
         {
             let mut counter: usize = 0;
             let f = File::open("tests/words_dic/words.dummy").unwrap();
@@ -193,13 +250,15 @@ mod test {
                 dic_words.insert(l);
             }
             for i in 0..index.count() {
-                let (key, _, _) = index.get_key(i);
-                if !dic_words.contains(key) {
-                    panic!("no '{}'(len {}) idx {} in dic_words", key, key.len(), i);
-                }
-                match index.find(key) {
-                    Err(idx) => panic!("we search '{}', and not found err({})", key, idx),
-                    Ok(idx) => assert_eq!(idx, i),
+                for index in [&mem_index as &DictionaryIndex, &disk_index as &DictionaryIndex, &gz_mem_index as &DictionaryIndex].iter() {
+                    let (key, _, _) = index.get_key(i);
+                    if !dic_words.contains(key) {
+                        panic!("no '{}'(len {}) idx {} in dic_words", key, key.len(), i);
+                    }
+                    match index.find(key) {
+                        Err(idx) => panic!("we search '{}', and not found err({})", key, idx),
+                        Ok(idx) => assert_eq!(idx, i),
+                    }
                 }
             }
         }
@@ -217,7 +276,7 @@ mod test {
     #[test]
     fn index_stardict_strcmp_big() {
         let mut exp_res_list = vec![];
-        {            
+        {
             let f = File::open("tests/stardict_strcmp_test_data_cmp_exp.txt").unwrap();
             let mut file = BufReader::new(&f);
             for line in file.lines() {
@@ -226,7 +285,7 @@ mod test {
                 exp_res_list.push(exp_res);
             }
         }
-        
+
         let f = File::open("tests/stardict_strcmp_test_data.txt").unwrap();
         let mut file = BufReader::new(&f);
         let mut prev_line : String = "".to_string();

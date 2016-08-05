@@ -6,6 +6,7 @@ use std::path::PathBuf;
 use std::error::Error;
 use index::DictionaryIndex;
 use index::MemoryDictionaryIndex;
+use index::DiskDictionaryIndex;
 use data::DictionaryData;
 use data::SimpleDictionaryData;
 
@@ -37,7 +38,7 @@ impl Dictionary {
                 &ifo_content[0..]
             };
 
-        let DICT_MAGIC_DATA = "StarDict's dict ifo file";
+        static DICT_MAGIC_DATA: &'static str = "StarDict's dict ifo file";
         if !content.starts_with(DICT_MAGIC_DATA) {
             return Result::Err("ifo magic not match".to_string());
         }
@@ -55,15 +56,11 @@ impl Dictionary {
         let idx_path_gz = dict_dir.join(basename.to_string() + ".idx.gz");
         let mut index: Box<DictionaryIndex>;
         if idx_path.exists() && idx_path.is_file() {
-            let mut idx_file = try!(File::open(idx_path).map_err(|err| err.description().to_string()));
-            let mut idx_content = Vec::<u8>::new();
-            if let Result::Err(err) = idx_file.read_to_end(&mut idx_content) {
-                return Result::Err(format!("Can not read index file: {}", err.description()));
-            }
-            let mem_dict = try!(MemoryDictionaryIndex::new(wordcount, idx_content));
-            index = Box::new(mem_dict);
+            let disk_dict = try!(DiskDictionaryIndex::new(wordcount, &idx_path));
+            index = Box::new(disk_dict);
         } else if idx_path_gz.exists() && idx_path_gz.is_file() {
-            return Result::Err("reading idx.gz not implemented".to_string());
+            let mem_dict = try!(MemoryDictionaryIndex::new_from_gzip(wordcount, &idx_path_gz));
+            index = Box::new(mem_dict);
         } else {
             return Result::Err(format!("no index file for {}", ifo_file_name.to_str().unwrap()));
         }
