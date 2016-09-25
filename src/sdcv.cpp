@@ -30,6 +30,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -151,6 +152,7 @@ int main(int argc, char *argv[]) try {
     }
 
     std::list<std::string> disable_list;
+    std::list<std::string> order_list, bookname_list;
 
     if (use_dict_list) {
         std::list<std::string> empty_list;
@@ -167,6 +169,35 @@ int main(int argc, char *argv[]) try {
                                   return;
                           disable_list.push_back(dict_info.ifo_file_name);
                       });
+
+        // add bookname to list
+        gchar **p = get_impl(use_dict_list);
+        while (*p) {
+            bookname_list.push_back(*p);
+            ++p;
+        }
+    } else {
+        FILE *ordering_file;
+        char bookname[1024];
+        if ((ordering_file = fopen((std::string(homedir)+G_DIR_SEPARATOR+".sdcv_ordering").c_str(), "r"))) {
+            while (fgets(bookname, 1023, ordering_file))
+                bookname_list.push_back(bookname);
+            fclose(ordering_file);
+        }
+    }
+
+    // translation from bookname to filename
+    for (std::list<std::string>::const_iterator bookname=bookname_list.begin(); 
+         bookname!=bookname_list.end(); ++bookname) {
+        std::list<std::string> empty_list;
+        for_each_file(dicts_dir_list, ".ifo", empty_list, empty_list,
+                      [&order_list, &bookname](const std::string &filename, bool) -> void {
+                          DictInfo dict_info;
+                          if (dict_info.load_from_ifo_file(filename, false) &&
+                              bookname->compare(0, dict_info.bookname.size(), dict_info.bookname) == 0 &&
+                              std::find(order_list.begin(), order_list.end(), filename)==order_list.end())
+                              order_list.push_back(filename);
+                      });
     }
 
     const std::string conf_dir = std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".stardict";
@@ -174,8 +205,7 @@ int main(int argc, char *argv[]) try {
         fprintf(stderr, _("g_mkdir failed: %s\n"), strerror(errno));
 
     Library lib(utf8_input, utf8_output, colorize);
-    std::list<std::string> empty_list;
-    lib.load(dicts_dir_list, empty_list, disable_list);
+    lib.load(dicts_dir_list, order_list, disable_list);
 
     std::unique_ptr<IReadLine> io(create_readline_object());
     if (optind < argc) {
