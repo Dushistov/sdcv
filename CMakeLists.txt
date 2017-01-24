@@ -84,6 +84,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
 include_directories(
 	${ZLIB_INCLUDE_DIR}
 	${GLIB2_INCLUDE_DIRS}
+	${READLINE_INCLUDE_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/src/lib
 	${CMAKE_CURRENT_BINARY_DIR}
 )
