@@ -48,7 +48,7 @@ namespace {
 
     class dummy_readline : public IReadLine {
     public:
-        bool read(const string& banner, string& line) override {
+        bool read(const std::string &banner, std::string &line) override {
             printf("%s", banner.c_str());
             return stdio_getline(stdin, line);
         }
