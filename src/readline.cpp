@@ -34,18 +34,19 @@
 
 #include "readline.hpp"
 
+bool stdio_getline(FILE *in, std::string & str)
+{
+    assert(in != nullptr);
+    str.clear();
+    int ch;
+    while ((ch=fgetc(in)) != EOF && ch != '\n')
+        str += ch;
+
+    return EOF != ch;
+}
+
 #ifndef WITH_READLINE
 namespace {
-    static bool stdio_getline(FILE *in, std::string & str)
-    {
-        str.clear();
-        int ch;
-        while ((ch=fgetc(in)) != EOF && ch != '\n')
-            str += ch;
-
-        return EOF != ch;
-    }
-
     class dummy_readline : public IReadLine {
     public:
         bool read(const string& banner, string& line) override {
