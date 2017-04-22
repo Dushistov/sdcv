@@ -1,4 +1,4 @@
-/* 
+/*
  * This file part of sdcv - console version of Stardict program
  * http://sdcv.sourceforge.net
  * Copyright (C) 2003-2006 Evgeniy <dushistov@mail.ru>
@@ -30,6 +30,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <map>
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -54,8 +56,10 @@ static void free_str_array(gchar **arr)
 }
 namespace glib
 {
-typedef ResourceWrapper<gchar *, gchar *, free_str_array> StrArr;
+    using StrArr = ResourceWrapper<gchar *, gchar *, free_str_array>;
 }
+
+static void list_dicts(const std::list<std::string> &dicts_dir_list);
 
 int main(int argc, char *argv[]) try {
     setlocale(LC_ALL, "");
@@ -95,7 +99,7 @@ int main(int argc, char *argv[]) try {
           _("path/to/dir") },
         { "color", 'c', 0, G_OPTION_ARG_NONE, &colorize,
           _("colorize the output"), nullptr },
-        { nullptr },
+        {},
     };
 
     glib::Error error;
@@ -136,52 +140,67 @@ int main(int argc, char *argv[]) try {
     };
 
     if (show_list_dicts) {
-        printf(_("Dictionary's name   Word count\n"));
-        std::list<std::string> order_list, disable_list;
-        for_each_file(dicts_dir_list, ".ifo", order_list,
-                      disable_list, [](const std::string &filename, bool) -> void {
-                          DictInfo dict_info;
-                          if (dict_info.load_from_ifo_file(filename, false)) {
-                              const std::string bookname = utf8_to_locale_ign_err(dict_info.bookname);
-                              printf("%s    %d\n", bookname.c_str(), dict_info.wordcount);
-                          }
-                      });
-
+        list_dicts(dicts_dir_list);
         return EXIT_SUCCESS;
     }
 
     std::list<std::string> disable_list;
 
+    std::map<std::string, std::string> bookname_to_ifo;
+    for_each_file(dicts_dir_list, ".ifo", std::list<std::string>(), std::list<std::string>(),
+                  [&bookname_to_ifo](const std::string &fname, bool) {
+                      DictInfo dict_info;
+                      const bool load_ok = dict_info.load_from_ifo_file(fname, false);
+                      if (!load_ok)
+                          return;
+                      bookname_to_ifo[dict_info.bookname] = dict_info.ifo_file_name;
+                  });
+
+    std::list<std::string> order_list;
     if (use_dict_list) {
-        std::list<std::string> empty_list;
+        for (auto &&x : bookname_to_ifo) {
+            gchar **p = get_impl(use_dict_list);
+            for (; *p != nullptr; ++p)
+                if (x.first.compare(*p) == 0) {
+                    break;
+                }
+            if (*p == nullptr) {
+                disable_list.push_back(x.second);
+            }
+        }
 
-        for_each_file(dicts_dir_list, ".ifo", empty_list, empty_list,
-                      [&disable_list, &use_dict_list](const std::string &filename, bool) -> void {
-                          DictInfo dict_info;
-                          const bool load_ok = dict_info.load_from_ifo_file(filename, false);
-                          if (!load_ok)
-                              return;
-
-                          for (gchar **p = get_impl(use_dict_list); *p != nullptr; ++p)
-                              if (strcmp(*p, dict_info.bookname.c_str()) == 0)
-                                  return;
-                          disable_list.push_back(dict_info.ifo_file_name);
-                      });
+        // add bookname to list
+        gchar **p = get_impl(use_dict_list);
+        while (*p) {
+            order_list.push_back(bookname_to_ifo.at(*p));
+            ++p;
+        }
+    } else {
+        const std::string odering_cfg_file = std::string(homedir) + G_DIR_SEPARATOR_S ".sdcv_ordering";
+        FILE *ordering_file = fopen(odering_cfg_file.c_str(), "r");
+        if (ordering_file != nullptr) {
+            std::string line;
+            while (stdio_getline(ordering_file, line)) {
+                order_list.push_back(bookname_to_ifo.at(line));
+            }
+            fclose(ordering_file);
+        }
     }
 
     const std::string conf_dir = std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".stardict";
-    if (g_mkdir(conf_dir.c_str(), S_IRWXU) == -1 && errno != EEXIST)
+    if (g_mkdir(conf_dir.c_str(), S_IRWXU) == -1 && errno != EEXIST) {
         fprintf(stderr, _("g_mkdir failed: %s\n"), strerror(errno));
+    }
 
     Library lib(utf8_input, utf8_output, colorize);
-    std::list<std::string> empty_list;
-    lib.load(dicts_dir_list, empty_list, disable_list);
+    lib.load(dicts_dir_list, order_list, disable_list);
 
     std::unique_ptr<IReadLine> io(create_readline_object());
     if (optind < argc) {
         for (int i = optind; i < argc; ++i)
-            if (!lib.process_phrase(argv[i], *io, non_interactive))
+            if (!lib.process_phrase(argv[i], *io, non_interactive)) {
                 return EXIT_FAILURE;
+            }
     } else if (!non_interactive) {
 
         std::string phrase;
@@ -199,4 +218,19 @@ int main(int argc, char *argv[]) try {
 } catch (const std::exception &ex) {
     fprintf(stderr, "Internal error: %s\n", ex.what());
     exit(EXIT_FAILURE);
+}
+
+static void list_dicts(const std::list<std::string> &dicts_dir_list)
+{
+    printf(_("Dictionary's name   Word count\n"));
+    std::list<std::string> order_list, disable_list;
+    for_each_file(dicts_dir_list, ".ifo", order_list,
+                  disable_list, [](const std::string &filename, bool) -> void {
+                      DictInfo dict_info;
+                      if (dict_info.load_from_ifo_file(filename, false)) {
+                          const std::string bookname = utf8_to_locale_ign_err(dict_info.bookname);
+                          printf("%s    %d\n", bookname.c_str(), dict_info.wordcount);
+                      }
+                  });
+
 }

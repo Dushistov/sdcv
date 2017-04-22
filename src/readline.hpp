@@ -11,4 +11,4 @@ public:
 
 extern std::string sdcv_readline;
 extern IReadLine *create_readline_object();
-
+extern bool stdio_getline(FILE *in, std::string &str);
