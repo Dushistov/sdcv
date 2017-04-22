@@ -909,33 +909,6 @@ void Libs::load(const std::list<std::string>& dicts_dirs,
                   });
 }
 
-void Libs::reload(const std::list<std::string>& dicts_dirs,
-                  const std::list<std::string>& order_list,
-                  const std::list<std::string>& disable_list)
-{
-	std::vector<Dict *> prev(oLib);
-	oLib.clear();
-
-	for_each_file(dicts_dirs, ".ifo", order_list, disable_list,
-                  [&prev, this](const std::string& url, bool disable) -> void {
-                      if (!disable) {
-                          auto it = prev.begin();
-                          for (; it != prev.end(); ++it)
-                              if ((*it)->ifofilename() == url)
-                                  break;
-                          if (it != prev.end()) {
-                              Dict *res = *it;
-                              prev.erase(it);
-                              oLib.push_back(res);
-                          } else
-                              load_dict(url);
-                      }
-                  });
-
-	for (Dict *p : prev)
-		delete p;
-}
-
 const gchar *Libs::poGetCurrentWord(glong * iCurrent)
 {
   const gchar *poCurrentWord = nullptr;

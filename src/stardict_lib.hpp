@@ -139,10 +139,6 @@ public:
 	void load(const std::list<std::string>& dicts_dirs, 
 		  const std::list<std::string>& order_list, 
 		  const std::list<std::string>& disable_list);
-	void reload(const std::list<std::string>& dicts_dirs, 
-		    const std::list<std::string>& order_list, 
-		    const std::list<std::string>& disable_list);
-
 	glong narticles(int idict) const { return oLib[idict]->narticles(); }
 	const std::string& dict_name(int idict) const { return oLib[idict]->dict_name(); }
 	gint ndicts() const { return oLib.size(); }
