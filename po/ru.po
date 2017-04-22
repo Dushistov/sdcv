@@ -19,11 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/sdcv.cpp:80
+#: src/sdcv.cpp:76
 msgid "display version information and exit"
 msgstr "показать номер версии и завершить работу"
 
-#: src/sdcv.cpp:82
+#: src/sdcv.cpp:78
 msgid "display list of available dictionaries and exit"
 msgstr "показать список доступных словарей и завершить работу"
 
