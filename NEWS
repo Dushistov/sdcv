@@ -1,3 +1,8 @@
+Version 0.5.1
+ Fix usage of SDCV_PAGER by Anton Yuzhaninov
+ Fix build without readline<
+ specify dictionary order by -u switches or ~/.sdcv_ordering by Cong Gu
+
 Version 0.5
 - add option to colorize output
 - Roman Imankulov's patch to better use of readline
