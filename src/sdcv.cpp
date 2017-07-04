@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) try {
                   });
 
     std::list<std::string> order_list;
-    if (use_dict_list) {
+    if (use_dict_list != nullptr) {
         for (auto &&x : bookname_to_ifo) {
             gchar **p = get_impl(use_dict_list);
             for (; *p != nullptr; ++p)

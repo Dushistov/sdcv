@@ -89,7 +89,6 @@ bool DictInfo::load_from_ifo_file(const std::string& ifofilename,
   if (!g_str_has_prefix(
           g_str_has_prefix(get_impl(buffer), (const gchar *)(utf8_bom)) ? get_impl(buffer) + 3 : get_impl(buffer),
           magic_data)) {
-    g_free(buffer);
     return false;
   }
 
