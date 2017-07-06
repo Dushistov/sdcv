@@ -811,49 +811,44 @@ namespace {
     }
 }
 
-bool SynFile::load(const std::string& url, gulong wc) {
-	struct stat stat_buf;
-	if(!stat(url.c_str(), &stat_buf)) {
-		MapFile syn;
-		if(!syn.open(url.c_str(), stat_buf.st_size))
-			return false;
-		const gchar *current = syn.begin();
-		for(unsigned long i = 0; i < wc; i++) {
-			// each entry in a syn-file is:
-			// - 0-terminated string
-			// 4-byte index into .dict file in network byte order
-			gchar *lower_string = g_utf8_casefold(current, -1);
-			std::string synonym(lower_string);
-			g_free(lower_string);
-			current += synonym.length()+1;
-			unsigned int idx = * reinterpret_cast<const unsigned int*>(current);
-			idx = g_ntohl(idx);
-			current += sizeof(idx);
-			synonyms[synonym] = idx;
-		}
-		return true;
-	} else {
-		return false;
-	}
+bool SynFile::load(const std::string &url, gulong wc)
+{
+    struct stat stat_buf;
+    if (!stat(url.c_str(), &stat_buf)) {
+        MapFile syn;
+        if (!syn.open(url.c_str(), stat_buf.st_size))
+            return false;
+        const gchar *current = syn.begin();
+        for (unsigned long i = 0; i < wc; i++) {
+            // each entry in a syn-file is:
+            // - 0-terminated string
+            // 4-byte index into .dict file in network byte order
+            glib::CharStr lower_string{g_utf8_casefold(current, -1)};
+            std::string synonym{get_impl(lower_string)};
+            current += synonym.length() + 1;
+            const guint32 idx = g_ntohl(get_uint32(current));
+            current += sizeof(idx);
+            synonyms[synonym] = idx;
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
-bool SynFile::lookup(const char *str, glong &idx) {
-	gchar *lower_string = g_utf8_casefold(str, -1);
-	auto it = synonyms.find(lower_string);
-	if(it != synonyms.end()) {
-		g_free(lower_string);
-		idx = it->second;
-		return true;
-	}
-	g_free(lower_string);
-	return false;
+bool SynFile::lookup(const char *str, glong &idx)
+{
+    glib::CharStr lower_string{g_utf8_casefold(str, -1)};
+    auto it = synonyms.find(get_impl(lower_string));
+    if (it != synonyms.end()) {
+        idx = it->second;
+        return true;
+    }
+    return false;
 }
 
 bool Dict::Lookup(const char *str, glong &idx) {
-	if(syn_file->lookup(str, idx)) {
-		return true;
-	}
-	return idx_file->lookup(str, idx);
+	return syn_file->lookup(str, idx) || idx_file->lookup(str, idx);
 }
 
 bool Dict::load(const std::string& ifofilename)
