@@ -99,10 +99,8 @@ bool DictInfo::load_from_ifo_file(const std::string& ifofilename,
     return false;  
 
   gchar *p3 = strchr(p2 + sizeof("\nwordcount=") - 1, '\n');
-  gchar *tmpstr = (gchar *)g_memdup(p2+sizeof("\nwordcount=")-1, p3-(p2+sizeof("\nwordcount=")-1)+1);
-  tmpstr[p3-(p2+sizeof("\nwordcount=")-1)] = '\0';
-  wordcount = atol(tmpstr);
-  g_free(tmpstr);
+
+  wordcount = atol(std::string(p2+sizeof("\nwordcount=")-1, p3-(p2+sizeof("\nwordcount=")-1)).c_str());
 
   if (istreedict) {
     p2 = strstr(p1,"\ntdxfilesize=");
@@ -110,10 +108,9 @@ bool DictInfo::load_from_ifo_file(const std::string& ifofilename,
       return false;
 
     p3 = strchr(p2+ sizeof("\ntdxfilesize=")-1,'\n');
-    tmpstr = (gchar *)g_memdup(p2+sizeof("\ntdxfilesize=")-1, p3-(p2+sizeof("\ntdxfilesize=")-1)+1);
-    tmpstr[p3-(p2+sizeof("\ntdxfilesize=")-1)] = '\0';
-    index_file_size = atol(tmpstr);
-    g_free(tmpstr);
+
+    index_file_size = atol(std::string(p2+sizeof("\ntdxfilesize=")-1, p3-(p2+sizeof("\ntdxfilesize=")-1)).c_str());
+
   } else {
 
     p2 = strstr(p1,"\nidxfilesize=");
@@ -121,10 +118,7 @@ bool DictInfo::load_from_ifo_file(const std::string& ifofilename,
       return false;
 
     p3 = strchr(p2+ sizeof("\nidxfilesize=")-1,'\n');
-    tmpstr = (gchar *)g_memdup(p2+sizeof("\nidxfilesize=")-1, p3-(p2+sizeof("\nidxfilesize=")-1)+1);
-    tmpstr[p3-(p2+sizeof("\nidxfilesize=")-1)] = '\0';
-    index_file_size = atol(tmpstr);
-    g_free(tmpstr);
+    index_file_size = atol(std::string(p2+sizeof("\nidxfilesize=")-1, p3-(p2+sizeof("\nidxfilesize=")-1)).c_str());
   }
 
   p2 = strstr(p1,"\nbookname=");
