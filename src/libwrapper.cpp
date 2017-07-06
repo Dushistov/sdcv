@@ -413,7 +413,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		if (!utf8_output_)
 			loc_str = utf8_to_locale_ign_err(get_impl(str));
 
-		printf(_("Nothing similar to %s, sorry :(\n"), utf8_output_ ? get_impl(str) : loc_str.c_str());
+		fprintf(stderr, _("Nothing similar to %s, sorry :(\n"), utf8_output_ ? get_impl(str) : loc_str.c_str());
 	}
 
 	return true;
