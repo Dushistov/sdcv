@@ -178,6 +178,14 @@ bool DictInfo::load_from_ifo_file(const std::string& ifofilename,
     sametypesequence.assign(p2, p3-p2);
   }
 
+  p2 = strstr(p1,"\nsynwordcount=");
+  syn_wordcount = 0;
+  if (p2) {
+    p2+=sizeof("\nsynwordcount=")-1;
+    p3 = strchr(p2, '\n');
+    syn_wordcount = atol(std::string(p2, p3-p2).c_str());
+  }
+
   return true;
 }
 
@@ -809,6 +817,51 @@ namespace {
     }
 }
 
+bool SynFile::load(const std::string& url, gulong wc) {
+	struct stat stat_buf;
+	if(!stat(url.c_str(), &stat_buf)) {
+		MapFile syn;
+		if(!syn.open(url.c_str(), stat_buf.st_size))
+			return false;
+		const gchar *current = syn.begin();
+		for(unsigned long i = 0; i < wc; i++) {
+			// each entry in a syn-file is:
+			// - 0-terminated string
+			// 4-byte index into .dict file in network byte order
+			gchar *lower_string = g_utf8_casefold(current, -1);
+			std::string synonym(lower_string);
+			g_free(lower_string);
+			current += synonym.length()+1;
+			unsigned int idx = * reinterpret_cast<const unsigned int*>(current);
+			idx = g_ntohl(idx);
+			current += sizeof(idx);
+			synonyms[synonym] = idx;
+		}
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool SynFile::lookup(const char *str, glong &idx) {
+	gchar *lower_string = g_utf8_casefold(str, -1);
+	auto it = synonyms.find(lower_string);
+	if(it != synonyms.end()) {
+		g_free(lower_string);
+		idx = it->second;
+		return true;
+	}
+	g_free(lower_string);
+	return false;
+}
+
+bool Dict::Lookup(const char *str, glong &idx) {
+	if(syn_file->lookup(str, idx)) {
+		return true;
+	}
+	return idx_file->lookup(str, idx);
+}
+
 bool Dict::load(const std::string& ifofilename)
 {
 	gulong idxfilesize;
@@ -846,6 +899,11 @@ bool Dict::load(const std::string& ifofilename)
 	if (!idx_file->load(fullfilename, wordcount, idxfilesize))
 		return false;
 
+	fullfilename=ifofilename;
+	fullfilename.replace(fullfilename.length()-sizeof("ifo")+1, sizeof("ifo")-1, "syn");
+	syn_file.reset(new SynFile);
+	syn_file->load(fullfilename, syn_wordcount);
+
 	//g_print("bookname: %s , wordcount %lu\n", bookname.c_str(), narticles());
 	return true;
 }
@@ -860,6 +918,7 @@ bool Dict::load_ifofile(const std::string& ifofilename, gulong &idxfilesize)
 
 	ifo_file_name=dict_info.ifo_file_name;
 	wordcount=dict_info.wordcount;
+	syn_wordcount=dict_info.syn_wordcount;
 	bookname=dict_info.bookname;
 
 	idxfilesize=dict_info.index_file_size;

@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <map>
 
 #include "dictziplib.hpp"
 
@@ -66,6 +67,7 @@ private:
 struct DictInfo {
 	std::string ifo_file_name;
 	guint32 wordcount;
+	guint32 syn_wordcount;
 	std::string bookname;
 	std::string author;
 	std::string email;
@@ -73,6 +75,7 @@ struct DictInfo {
 	std::string date;
 	std::string description;
 	guint32 index_file_size;
+	guint32 syn_file_size;
 	std::string sametypesequence;
 
 	bool load_from_ifo_file(const std::string& ifofilename, bool istreedict);
@@ -89,6 +92,14 @@ public:
 	virtual void get_data(glong idx) = 0;
 	virtual const gchar *get_key_and_data(glong idx) = 0;
 	virtual bool lookup(const char *str, glong &idx) = 0;
+};
+
+class SynFile {
+public:
+	bool load(const std::string& url, gulong wc);
+	bool lookup(const char *str, glong &idx);
+private:
+	std::map<std::string, gulong> synonyms;
 };
 
 class Dict : public DictBase {
@@ -112,15 +123,17 @@ public:
         *offset = idx_file->wordentry_offset;
         *size = idx_file->wordentry_size;
     }
-	bool Lookup(const char *str, glong &idx) { return idx_file->lookup(str, idx); }
+	bool Lookup(const char *str, glong &idx);
 
 	bool LookupWithRule(GPatternSpec *pspec, glong *aIndex, int iBuffLen);
 private:	
 	std::string ifo_file_name;
 	gulong wordcount;
+	gulong syn_wordcount;
 	std::string bookname;
 
 	std::unique_ptr<IIndexFile> idx_file;
+  	std::unique_ptr<SynFile> syn_file;
 	
 	bool load_ifofile(const std::string& ifofilename, gulong &idxfilesize);
 };
