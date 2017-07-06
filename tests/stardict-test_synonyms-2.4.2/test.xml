@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<stardict xmlns:xi="http://www.w3.org/2003/XInclude">
+  <info>
+    <version>2.4.2</version>
+    <bookname>Test synonyms</bookname>
+    <author></author>
+    <email></email>
+    <website></website>
+    <description></description>
+    <date></date>
+    <dicttype></dicttype>
+  </info>
+  <article><key>test</key><synonym>foo</synonym><synonym>bar</synonym>
+  <definition type="m">
+    <![CDATA[result of test]]>
+  </definition>
+  </article>
+</stardict>
