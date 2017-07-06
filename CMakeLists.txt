@@ -144,6 +144,7 @@ if (BUILD_TESTS)
 
   add_sdcv_shell_test(t_list)
   add_sdcv_shell_test(t_use)
+  add_sdcv_shell_test(t_synonyms)
   add_sdcv_shell_test(t_interactive)
   add_sdcv_shell_test(t_utf8output)
   add_sdcv_shell_test(t_utf8input)

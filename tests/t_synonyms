@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+SDCV="$1"
+TEST_DIR="$2"
+
+unset SDCV_PAGER
+test_word() {
+    WORD=$1
+    RES=$($SDCV -n --data-dir "$TEST_DIR" -u "Test synonyms" $WORD | grep result)
+    if [ "result of test" != "$RES" ]; then
+	echo "synonym for $WORD should be 'result of test' but was '$RES'"
+	exit 1
+    fi
+}
+
+test_word foo
+test_word bar
+test_word test
+
+exit 0
