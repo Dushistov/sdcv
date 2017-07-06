@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glib.h>
+#include <cstddef>
 #include <cassert>
 #include <string>
 #include <list>
@@ -27,11 +28,11 @@ public:
 		}
 	}
 
-    friend inline bool operator==(const ResourceWrapper& lhs, nullptr_t) noexcept {
+    friend inline bool operator==(const ResourceWrapper& lhs, std::nullptr_t) noexcept {
         return !lhs.p_;
     }
 
-    friend inline bool operator!=(const ResourceWrapper& lhs, nullptr_t) noexcept {
+    friend inline bool operator!=(const ResourceWrapper& lhs, std::nullptr_t) noexcept {
         return !!lhs.p_;
     }
 
