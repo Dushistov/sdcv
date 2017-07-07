@@ -78,6 +78,7 @@ int main(int argc, char *argv[]) try {
     gboolean utf8_output = FALSE;
     gboolean utf8_input = FALSE;
     glib::CharStr opt_data_dir;
+    gboolean only_data_dir = FALSE;
     gboolean colorize = FALSE;
 
     const GOptionEntry entries[] = {
@@ -97,6 +98,8 @@ int main(int argc, char *argv[]) try {
         { "data-dir", '2', 0, G_OPTION_ARG_STRING, get_addr(opt_data_dir),
           _("use this directory as path to stardict data directory"),
           _("path/to/dir") },
+        { "only-data-dir", 'x', 0, G_OPTION_ARG_NONE, &only_data_dir,
+          _("only use the dictionaries in data-dir, do not search in user and system directories"), nullptr },
         { "color", 'c', 0, G_OPTION_ARG_NONE, &colorize,
           _("colorize the output"), nullptr },
         {},
@@ -122,10 +125,12 @@ int main(int argc, char *argv[]) try {
     const gchar *stardict_data_dir = g_getenv("STARDICT_DATA_DIR");
     std::string data_dir;
     if (!opt_data_dir) {
+      if (!only_data_dir) {
         if (stardict_data_dir)
             data_dir = stardict_data_dir;
         else
             data_dir = "/usr/share/stardict/dic";
+      }
     } else {
         data_dir = get_impl(opt_data_dir);
     }
@@ -134,11 +139,10 @@ int main(int argc, char *argv[]) try {
     if (!homedir)
         homedir = g_get_home_dir();
 
-    const std::list<std::string> dicts_dir_list = {
-        std::string(homedir) + G_DIR_SEPARATOR + ".stardict" + G_DIR_SEPARATOR + "dic",
-        data_dir
-    };
-
+    std::list<std::string> dicts_dir_list;
+    if(!only_data_dir)
+      dicts_dir_list.push_back(std::string(homedir) + G_DIR_SEPARATOR + ".stardict" + G_DIR_SEPARATOR + "dic");
+    dicts_dir_list.push_back(data_dir);
     if (show_list_dicts) {
         list_dicts(dicts_dir_list);
         return EXIT_SUCCESS;
