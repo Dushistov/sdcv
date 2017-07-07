@@ -439,7 +439,7 @@ namespace {
             if (idxfile)
                 fclose(idxfile);
         }
-        bool load(const std::string& url, gulong wc, gulong fsize) override;
+        bool load(const std::string& url, gulong wc, gulong fsize, bool verbose) override;
         const gchar *get_key(glong idx) override;
         void get_data(glong idx) override { get_key(idx); }
         const gchar *get_key_and_data(glong idx) override {
@@ -481,7 +481,7 @@ namespace {
         const gchar *read_first_on_page_key(glong page_idx);
         const gchar *get_first_on_page_key(glong page_idx);
         bool load_cache(const std::string& url);
-        bool save_cache(const std::string& url);
+        bool save_cache(const std::string& url, bool verbose);
         static std::list<std::string> get_cache_variant(const std::string& url);
     };
 
@@ -492,7 +492,7 @@ namespace {
     public:
         WordListIndex() : idxdatabuf(nullptr)	{}
         ~WordListIndex() { g_free(idxdatabuf); }
-        bool load(const std::string& url, gulong wc, gulong fsize) override;
+        bool load(const std::string& url, gulong wc, gulong fsize, bool verbose) override;
         const gchar *get_key(glong idx) override { return wordlist[idx]; }
         void get_data(glong idx) override;
         const gchar *get_key_and_data(glong idx) override {
@@ -592,7 +592,7 @@ namespace {
         return res;
     }
 
-    bool OffsetIndex::save_cache(const std::string& url)
+    bool OffsetIndex::save_cache(const std::string& url, bool verbose)
     {
         const std::list<std::string> vars = get_cache_variant(url);
         for (const std::string&  item : vars) {
@@ -604,13 +604,15 @@ namespace {
             if (fwrite(&wordoffset[0], sizeof(wordoffset[0]), wordoffset.size(), out)!=wordoffset.size())
                 continue;
             fclose(out);
-            printf("save to cache %s\n", url.c_str());
+            if(verbose) {
+              printf("save to cache %s\n", url.c_str());
+            }
             return true;
         }
         return false;
     }
 
-    bool OffsetIndex::load(const std::string& url, gulong wc, gulong fsize)
+    bool OffsetIndex::load(const std::string& url, gulong wc, gulong fsize, bool verbose)
     {
         wordcount=wc;
         gulong npages=(wc-1)/ENTR_PER_PAGE+2;
@@ -633,7 +635,7 @@ namespace {
                 p1 += index_size;
             }
             wordoffset[j]=p1-idxdatabuffer;
-            if (!save_cache(url))
+            if (!save_cache(url, verbose))
                 fprintf(stderr, "cache update failed\n");
         }
 
@@ -741,7 +743,7 @@ namespace {
         return bFound;
     }
 
-    bool WordListIndex::load(const std::string& url, gulong wc, gulong fsize)
+    bool WordListIndex::load(const std::string& url, gulong wc, gulong fsize, bool verbose)
     {
         gzFile in = gzopen(url.c_str(), "rb");
         if (in == nullptr)
@@ -856,7 +858,7 @@ bool Dict::Lookup(const char *str, glong &idx) {
 	return idx_file->lookup(str, idx);
 }
 
-bool Dict::load(const std::string& ifofilename)
+bool Dict::load(const std::string& ifofilename, bool verbose)
 {
 	gulong idxfilesize;
 	if (!load_ifofile(ifofilename, idxfilesize))
@@ -890,7 +892,7 @@ bool Dict::load(const std::string& ifofilename)
 		idx_file.reset(new OffsetIndex);
 	}
 
-	if (!idx_file->load(fullfilename, wordcount, idxfilesize))
+	if (!idx_file->load(fullfilename, wordcount, idxfilesize, verbose))
 		return false;
 
 	fullfilename=ifofilename;
@@ -944,7 +946,7 @@ Libs::~Libs()
 void Libs::load_dict(const std::string& url)
 {
 	Dict *lib=new Dict;
-	if (lib->load(url))
+	if (lib->load(url, verbose_))
 		oLib.push_back(lib);
 	else
 		delete lib;

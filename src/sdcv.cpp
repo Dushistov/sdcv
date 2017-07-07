@@ -59,7 +59,7 @@ namespace glib
     using StrArr = ResourceWrapper<gchar *, gchar *, free_str_array>;
 }
 
-static void list_dicts(const std::list<std::string> &dicts_dir_list);
+static void list_dicts(const std::list<std::string> &dicts_dir_list, bool use_json);
 
 int main(int argc, char *argv[]) try {
     setlocale(LC_ALL, "");
@@ -75,6 +75,7 @@ int main(int argc, char *argv[]) try {
     gboolean show_list_dicts = FALSE;
     glib::StrArr use_dict_list;
     gboolean non_interactive = FALSE;
+    gboolean json_output = FALSE;
     gboolean utf8_output = FALSE;
     gboolean utf8_input = FALSE;
     glib::CharStr opt_data_dir;
@@ -91,6 +92,8 @@ int main(int argc, char *argv[]) try {
           _("bookname") },
         { "non-interactive", 'n', 0, G_OPTION_ARG_NONE, &non_interactive,
           _("for use in scripts"), nullptr },
+        { "json-output", 'j', 0, G_OPTION_ARG_NONE, &json_output,
+          _("print the result formatted as JSON."), nullptr },
         { "utf8-output", '0', 0, G_OPTION_ARG_NONE, &utf8_output,
           _("output must be in utf8"), nullptr },
         { "utf8-input", '1', 0, G_OPTION_ARG_NONE, &utf8_input,
@@ -144,7 +147,7 @@ int main(int argc, char *argv[]) try {
       dicts_dir_list.push_back(std::string(homedir) + G_DIR_SEPARATOR + ".stardict" + G_DIR_SEPARATOR + "dic");
     dicts_dir_list.push_back(data_dir);
     if (show_list_dicts) {
-        list_dicts(dicts_dir_list);
+        list_dicts(dicts_dir_list, json_output);
         return EXIT_SUCCESS;
     }
 
@@ -196,7 +199,7 @@ int main(int argc, char *argv[]) try {
         fprintf(stderr, _("g_mkdir failed: %s\n"), strerror(errno));
     }
 
-    Library lib(utf8_input, utf8_output, colorize);
+    Library lib(utf8_input, utf8_output, colorize, json_output);
     lib.load(dicts_dir_list, order_list, disable_list);
 
     std::unique_ptr<IReadLine> io(create_readline_object());
@@ -209,7 +212,7 @@ int main(int argc, char *argv[]) try {
 
         std::string phrase;
         while (io->read(_("Enter word or phrase: "), phrase)) {
-            if (!lib.process_phrase(phrase.c_str(), *io))
+          if (!lib.process_phrase(phrase.c_str(), *io))
                 return EXIT_FAILURE;
             phrase.clear();
         }
@@ -224,17 +227,32 @@ int main(int argc, char *argv[]) try {
     exit(EXIT_FAILURE);
 }
 
-static void list_dicts(const std::list<std::string> &dicts_dir_list)
+static void list_dicts(const std::list<std::string> &dicts_dir_list, bool use_json)
 {
+  bool first_entry = true;
+  if(!use_json)
     printf(_("Dictionary's name   Word count\n"));
-    std::list<std::string> order_list, disable_list;
-    for_each_file(dicts_dir_list, ".ifo", order_list,
-                  disable_list, [](const std::string &filename, bool) -> void {
-                      DictInfo dict_info;
-                      if (dict_info.load_from_ifo_file(filename, false)) {
-                          const std::string bookname = utf8_to_locale_ign_err(dict_info.bookname);
-                          printf("%s    %d\n", bookname.c_str(), dict_info.wordcount);
+  else
+    fputc('[', stdout);
+  std::list<std::string> order_list, disable_list;
+  for_each_file(dicts_dir_list, ".ifo", order_list,
+                disable_list, [use_json, &first_entry](const std::string &filename, bool) -> void {
+                  DictInfo dict_info;
+                  if (dict_info.load_from_ifo_file(filename, false)) {
+                    const std::string bookname = utf8_to_locale_ign_err(dict_info.bookname);
+                    if(use_json) {
+                      if(first_entry) {
+                        first_entry=false;
+                      } else {
+                        fputc(',', stdout); // comma between entries
                       }
-                  });
+                      printf("{\"name\": \"%s\", \"wordcount\": \"%d\"}", json_escape_string(bookname).c_str(), dict_info.wordcount);
+                    } else {
+                      printf("%s    %d\n", bookname.c_str(), dict_info.wordcount);
+                    }
+                  }
+                });
+  if(use_json)
+    fputs("]\n", stdout);
 
 }
