@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+SDCV="$1"
+TEST_DIR="$2"
+
+unset SDCV_PAGER
+unset STARDICT_DATA_DIR
+
+DICTS=$($SDCV -x -n -l --data-dir "$TEST_DIR" | tail -n +2 | wc -l)
+# the expected result:
+ACTUAL_DICTS=$(find "$TEST_DIR" -name "*.ifo" | wc -l)
+if [ $DICTS -ne $ACTUAL_DICTS ]; then
+   echo "number of dictionaries in $TEST_DIR should be $ACTUAL_DICTS but was $DICTS according to sdcv"
+   exit 1
+fi
+
+exit 0

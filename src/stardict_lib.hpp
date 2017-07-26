@@ -87,7 +87,7 @@ public:
 	guint32 wordentry_size;  
 
 	virtual ~IIndexFile() {}
-	virtual bool load(const std::string& url, gulong wc, gulong fsize) = 0;
+	virtual bool load(const std::string& url, gulong wc, gulong fsize, bool verbose) = 0;
 	virtual const gchar *get_key(glong idx) = 0;
 	virtual void get_data(glong idx) = 0;
 	virtual const gchar *get_key_and_data(glong idx) = 0;
@@ -105,9 +105,9 @@ private:
 class Dict : public DictBase {
 public:
 	Dict() {}
-    Dict(const Dict&) = delete;
-    Dict& operator=(const Dict&) = delete;
-	bool load(const std::string& ifofilename);
+	Dict(const Dict&) = delete;
+	Dict& operator=(const Dict&) = delete;
+	bool load(const std::string& ifofilename, bool verbose);
 
 	gulong narticles() const { return wordcount; }
 	const std::string& dict_name() const { return bookname; }
@@ -141,12 +141,13 @@ private:
 class Libs {
 public:
 	Libs(std::function<void(void)> f = std::function<void(void)>()) {
-        progress_func = f;
-        iMaxFuzzyDistance  = MAX_FUZZY_DISTANCE; //need to read from cfg.
-    }
+		progress_func = f;
+		iMaxFuzzyDistance  = MAX_FUZZY_DISTANCE; //need to read from cfg.
+	}
+	void setVerbose(bool verbose) { verbose_ = verbose; }
 	~Libs();
-    Libs(const Libs&) = delete;
-    Libs& operator=(const Libs&) = delete;
+	Libs(const Libs&) = delete;
+	Libs& operator=(const Libs&) = delete;
 
 	void load_dict(const std::string& url);
 	void load(const std::list<std::string>& dicts_dirs, 
@@ -180,7 +181,8 @@ public:
 private:
 	std::vector<Dict *> oLib; // word Libs.
 	int iMaxFuzzyDistance;
-    std::function<void(void)> progress_func;
+	std::function<void(void)> progress_func;
+	bool verbose_;
 };
 
 

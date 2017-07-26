@@ -248,7 +248,7 @@ void Library::LookupData(const std::string &str, TSearchResultList& res_list)
 		}
 }
 
-void Library::print_search_result(FILE *out, const TSearchResult & res)
+void Library::print_search_result(FILE *out, const TSearchResult & res, bool &first_result)
 {
 	std::string loc_bookname, loc_def, loc_exp;
 
@@ -257,18 +257,30 @@ void Library::print_search_result(FILE *out, const TSearchResult & res)
 		loc_def = utf8_to_locale_ign_err(res.def);
 		loc_exp = utf8_to_locale_ign_err(res.exp);
 	}
+        if(json_) {
+          if(!first_result) {
+            fputs(",", out);
+          } else {
+            first_result=false;
+          }
+          fprintf(out,"{\"dict\": \"%s\",\"word\":\"%s\",\"definition\":\"%s\"}",
+                  json_escape_string(res.bookname).c_str(),
+                  json_escape_string(res.def).c_str(),
+                  json_escape_string(res.exp).c_str());
 
-	fprintf(out,
-            "-->%s%s%s\n"
-            "-->%s%s%s\n"
-            "%s\n\n",
-            colorize_output_ ? NAME_OF_DICT_VISFMT : "",
-            utf8_output_ ? res.bookname.c_str() : loc_bookname.c_str(),
-            colorize_output_ ? ESC_END : "",
-            colorize_output_ ? SEARCH_TERM_VISFMT : "",
-            utf8_output_ ? res.def.c_str() : loc_def.c_str(),
-            colorize_output_ ? ESC_END : "",
-            utf8_output_ ? res.exp.c_str() : loc_exp.c_str());
+        } else {
+          fprintf(out,
+                  "-->%s%s%s\n"
+                  "-->%s%s%s\n"
+                  "%s\n\n",
+                  colorize_output_ ? NAME_OF_DICT_VISFMT : "",
+                  utf8_output_ ? res.bookname.c_str() : loc_bookname.c_str(),
+                  colorize_output_ ? ESC_END : "",
+                  colorize_output_ ? SEARCH_TERM_VISFMT : "",
+                  utf8_output_ ? res.def.c_str() : loc_def.c_str(),
+                  colorize_output_ ? ESC_END : "",
+                  utf8_output_ ? res.exp.c_str() : loc_exp.c_str());
+        }
 }
 
 namespace {
@@ -346,6 +358,11 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		/*nothing*/;
 	}
 
+	sdcv_pager pager(force);
+	bool first_result = true;
+	if(json_) {
+	  fputc('[', pager.get_stream());
+	}
 	if (!res_list.empty()) {
 		/* try to be more clever, if there are
 		   one or zero results per dictionary show all
@@ -370,8 +387,9 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		}//if (!force)
 
 		if (!show_all_results && !force) {
-			printf(_("Found %zu items, similar to %s.\n"), res_list.size(),
-			       utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
+                  if(!json_)
+                    printf(_("Found %zu items, similar to %s.\n"), res_list.size(),
+                           utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
 			for (size_t i = 0; i < res_list.size(); ++i) {
                 const std::string loc_bookname = utf8_to_locale_ign_err(res_list[i].bookname);
                 const std::string loc_def = utf8_to_locale_ign_err(res_list[i].def);
@@ -390,9 +408,8 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 				choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);
 				sscanf(str_choise.c_str(), "%d", &choise);
 				if (choise >= 0 && choise < int(res_list.size())) {
-					sdcv_pager pager;
                     io.add_to_history(res_list[choise].def.c_str());
-					print_search_result(pager.get_stream(), res_list[choise]);
+					print_search_result(pager.get_stream(), res_list[choise], first_result);
 					break;
 				} else if (choise == -1){
 					break;
@@ -401,20 +418,24 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 					       res_list.size()-1);
 			}
 		} else {
-			sdcv_pager pager(force);
-			fprintf(pager.get_stream(), _("Found %zu items, similar to %s.\n"),
-                    res_list.size(), utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
-			for (const TSearchResult& search_res : res_list)
-				print_search_result(pager.get_stream(), search_res);
+                  for (const TSearchResult& search_res : res_list) {
+                    if(!json_)
+                      fprintf(pager.get_stream(), _("Found %zu items, similar to %s.\n"),
+                              res_list.size(), utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
+                    print_search_result(pager.get_stream(), search_res, first_result);
+                  }
 		}
 
 	} else {
 		std::string loc_str;
 		if (!utf8_output_)
 			loc_str = utf8_to_locale_ign_err(get_impl(str));
-
-		printf(_("Nothing similar to %s, sorry :(\n"), utf8_output_ ? get_impl(str) : loc_str.c_str());
+                if(!json_)
+                  printf(_("Nothing similar to %s, sorry :(\n"), utf8_output_ ? get_impl(str) : loc_str.c_str());
 	}
 
+        if(json_) {
+          fputs("]\n", pager.get_stream());
+        }
 	return true;
 }
