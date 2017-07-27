@@ -407,16 +407,17 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 			std::unique_ptr<IReadLine> choice_readline(create_readline_object());
 			for (;;) {
                 std::string str_choise;
-				choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);
+				choice_readline->read(_("Your choice[empty to abort]: "), str_choise);
 				sscanf(str_choise.c_str(), "%d", &choise);
 				if (choise >= 0 && choise < int(res_list.size())) {
                     io.add_to_history(res_list[choise].def.c_str());
 					print_search_result(pager.get_stream(), res_list[choise], first_result);
 					break;
-				} else if (choise == -1){
+				} else if (str_choise.empty()) {
+					printf("\n");
 					break;
 				} else
-					printf(_("Invalid choice.\nIt must be from 0 to %zu or -1.\n"),
+					printf(_("Invalid choice.\nIt must be from 0 to %zu or empty.\n"),
 					       res_list.size()-1);
 			}
 		} else {
