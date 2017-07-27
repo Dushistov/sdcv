@@ -142,8 +142,10 @@ static std::string parse_data(const gchar *data, bool colorize_output)
 	p += sizeof(guint32);
 	while (guint32(p - data)<data_size) {
 		switch (*p++) {
-		case 'm':
-		case 'l': //need more work...
+		case 'h': // HTML data
+		case 'w': // WikiMedia markup data
+		case 'm': // plain text, utf-8
+		case 'l': // not utf-8, some other locale encoding, discouraged, need more work...
 			sec_size = strlen(p);
 			if (sec_size) {
 				res+="\n";
@@ -153,8 +155,8 @@ static std::string parse_data(const gchar *data, bool colorize_output)
 			}
 			sec_size++;
 			break;
-		case 'g':
-		case 'x':
+		case 'g': // pango markup data
+		case 'x': // xdxf
 			sec_size = strlen(p);
 			if (sec_size) {
 				res+="\n";
@@ -164,7 +166,7 @@ static std::string parse_data(const gchar *data, bool colorize_output)
 			}
 			sec_size++;
 			break;
-		case 't':
+		case 't': // english phonetic string
 			sec_size = strlen(p);
 			if(sec_size){
 				res += "\n";
@@ -176,15 +178,15 @@ static std::string parse_data(const gchar *data, bool colorize_output)
 			}
 			sec_size++;
 			break;
-        case 'k':
-		case 'y':
+		case 'k': // KingSoft PowerWord data
+		case 'y': // chinese YinBiao or japanese kana, utf-8
 			sec_size = strlen(p);
             if (sec_size)
                 res += std::string(p, sec_size);
 			sec_size++;
 			break;
-		case 'W':
-		case 'P':
+		case 'W': // wav file
+		case 'P': // picture data
 			sec_size = get_uint32(p);
 			sec_size += sizeof(guint32);
 			break;
