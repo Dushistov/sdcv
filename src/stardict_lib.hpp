@@ -145,6 +145,7 @@ public:
 		iMaxFuzzyDistance  = MAX_FUZZY_DISTANCE; //need to read from cfg.
 	}
 	void setVerbose(bool verbose) { verbose_ = verbose; }
+	void setFuzzy(bool fuzzy) { fuzzy_ = fuzzy; }
 	~Libs();
 	Libs(const Libs&) = delete;
 	Libs& operator=(const Libs&) = delete;
@@ -178,6 +179,8 @@ public:
 	bool LookupWithFuzzy(const gchar *sWord, gchar *reslist[], gint reslist_size);
 	gint LookupWithRule(const gchar *sWord, gchar *reslist[]);
 	bool LookupData(const gchar *sWord, std::vector<gchar *> *reslist);
+protected:
+    	bool fuzzy_;
 private:
 	std::vector<Dict *> oLib; // word Libs.
 	int iMaxFuzzyDistance;
