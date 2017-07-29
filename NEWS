@@ -1,5 +1,6 @@
 Version X
 Synonyms index support (.syn files) by Peter <craven@gmx.net>
+Add support of json output by Peter <craven@gmx.net>
 
 Version 0.5.1
  Fix usage of SDCV_PAGER by Anton Yuzhaninov
