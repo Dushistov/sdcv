@@ -1404,7 +1404,7 @@ bool Libs::LookupSimilarWord(const gchar* sWord, glong & iWordIndex, int iLib)
 bool Libs::SimpleLookupWord(const gchar* sWord, glong & iWordIndex, int iLib)
 {
     bool bFound = oLib[iLib]->Lookup(sWord, iWordIndex);
-	if (!bFound)
+	if (!bFound && fuzzy_)
 		bFound = LookupSimilarWord(sWord, iWordIndex, iLib);
 	return bFound;
 }

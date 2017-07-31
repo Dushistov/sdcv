@@ -9,82 +9,92 @@ sdcv \- console version of StarDict program
 [list of words]
 .SH DESCRIPTION
 .I sdcv 
-is simple, cross-platform text-base utility 
-for work with dictionaries in StarDict's format.
-The word from "list of words" may be string 
-with leading '/' for using  Fuzzy search algorithm, 
-with leading '|' for using full-text search,
-string may contain '?' and '*' for using regexp search.
-It work in interactive and not interactive mode. 
+is a simple, cross-platform text-based utility
+for working with dictionaries in StarDict format.
+Each word from "list of words" may be a string
+with a leading '/' for using a Fuzzy search algorithm,
+with a leading '|' for using full-text search,
+and the string may contain '?' and '*' for regexp search.
+It works in interactive and non-interactive mode.
 To exit from interactive mode press Ctrl+D. 
 In interactive mode, 
 if sdcv was compiled with readline library support,
-you can use UP and DOWN keys to work through history.
+you can use the UP and DOWN keys to cycle through history.
 .SH OPTIONS
 .TP 8
 .B "\-h  \-\-help"
-display help message and exit
+Display help message and exit
 .TP 8
 .B "\-v \-\-verbose"
-display version and exit
+Display version and exit
 .TP 8
 .B "\-l \-\-list\-dicts" 
-display list of available dictionaries and exit
+Display list of available dictionaries and exit
 .TP 8
 .B "\-u \-\-use\-dict filename"
-for search use only dictionary with this bookname
+For search use only dictionary with this bookname
 .TP 8
 .B "\-n \-\-non\-interactive"
-for use in scripts
+For use in scripts
+.TP 8
+.B "\-x \-\-only\-data\-dir"
+For use in scripts: only use the dictionaries in data-dir, do not search in user and system directories
+.TP 8
+.B "\-e \-\-exact\-search" 
+Do not fuzzy-search for similar words, only return exact matches
+.TP 8
+.B "\-j \-\-json"
+Print the results of list-dicts and searches as json, not as plain text.
+For use in automatically processing the results of a dictionary lookup.
 .TP 8
 .B "\-\-utf8\-output"
-Force sdcv not use conversation to locale charset, output in utf8
+Force sdcv to not convert to locale charset, output in utf8
 .TP 8
 .B "\-\-utf8\-input"
-Force sdcv not use conversation from locale charset, suppose that
-input in utf8
+Force sdcv to not convert from locale charset, assume that
+input is in utf8
 .TP 8
 .B "\-\-data\-dir path/to/directory" 
-Use this directory as path to stardict data directory. This is mean that
-sdcv search dictionaries in data-dir/dic directory.
+Use this directory as the path to the stardict data directory. This means that
+sdcv searches for dictionaries in data-dir/dic directory.
 .TP 8
 .B "\-\-color" 
-Use ANSI escape code for colorize sdcv output
+Use ANSI escape codes for colorizing sdcv output (does not work with json output).
 .SH FILES
 .TP 
-/usr/share/stardict/dic 
+/usr/share/stardict/dic
 .TP
 $(HOME)/.stardict/dic
 
-Place, where sdcv expect to find dictionaries.
-Instead of /usr/share/stardict/dic you can use everything
-that you want, just set STARDICT_DATA_DIR environment variable.
+Place where sdcv expects to find dictionaries.
+Instead of /usr/share/stardict/dic you can use any directory
+you want, just set the STARDICT_DATA_DIR environment variable.
 For example, if you have dictionaries in /mnt/data/stardict-dicts/dic,
 set STARDICT_DATA_DIR to /mnt/data/stardict-dicts.
 .TP
 $(HOME)/.sdcv_history
 
-This file include last  $(SDCV_HISTSIZE) words, which you seek with sdcv. 
-SDCV use this file only if it was compiled with readline library support.
+This file includes the last $(SDCV_HISTSIZE) words, which you sought with sdcv.
+SDCV uses this file only if it was compiled with readline library support.
 .TP
 $(HOME)/.sdcv_ordering
 
 This is a text file containing one dictionary bookname per line.
-It specify in which order results of search should be shown.
+It specifies in which order the results of a search should be shown.
 .SH ENVIRONMENT 
 Environment Variables Used By \fIsdcv\fR:
 .TP 20
 .B STARDICT_DATA_DIR
-If set, sdcv use this variable as data directory, this is mean that sdcv
-search dictionaries in $\fBSTARDICT_DATA_DIR\fR\\dic
+If set, sdcv uses this variable as the data directory, this means that sdcv
+searches dictionaries in $\fBSTARDICT_DATA_DIR\fR\\dic
 .TP 20
 .B SDCV_HISTSIZE
-If set, sdcv wrote in $(HOME)/.sdcv_history only last $(SDCV_HISTSIZE) words, 
-which you seek using sdcv. If it is not set, then last 2000 words saved in $(HOME)/.sdcv_history.
+If set, sdcv writes in $(HOME)/.sdcv_history the last $(SDCV_HISTSIZE) words, 
+which you look up using sdcv. If it is not set, then the last 2000 words are saved in $(HOME)/.sdcv_history.
 .TP 20
 .B SDCV_PAGER
-If SDCV_PAGER is set, its value is used as the  name of the program
-to use to display the dictionary's article.
+If SDCV_PAGER is set, its value is used as the name of the program
+to use to display the dictionary article.
 .SH BUGS
 Email bug reports to dushistov at mail dot ru. Be sure to include the word
 "sdcv" somewhere in the "Subject:" field.

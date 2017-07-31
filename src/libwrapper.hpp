@@ -25,9 +25,10 @@ typedef std::vector<TSearchResult> TSearchResultList;
 //of it
 class Library : public Libs {
 public:
-	Library(bool uinput, bool uoutput, bool colorize_output, bool use_json)
+	Library(bool uinput, bool uoutput, bool colorize_output, bool use_json, bool no_fuzzy)
 	: utf8_input_(uinput), utf8_output_(uoutput), colorize_output_(colorize_output), json_(use_json) {
           setVerbose(!use_json);
+          setFuzzy(!no_fuzzy);
         }
 
 	bool process_phrase(const char *loc_str, IReadLine &io, bool force = false);

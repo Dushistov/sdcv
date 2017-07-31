@@ -350,7 +350,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		break;
 	case qtSIMPLE:
 		SimpleLookup(get_impl(str), res_list);
-		if (res_list.empty())
+		if (res_list.empty() && fuzzy_)
 			LookupWithFuzzy(get_impl(str), res_list);
 		break;
 	case qtDATA:

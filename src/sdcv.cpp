@@ -76,6 +76,7 @@ int main(int argc, char *argv[]) try {
     glib::StrArr use_dict_list;
     gboolean non_interactive = FALSE;
     gboolean json_output = FALSE;
+    gboolean no_fuzzy = FALSE;
     gboolean utf8_output = FALSE;
     gboolean utf8_input = FALSE;
     glib::CharStr opt_data_dir;
@@ -94,6 +95,8 @@ int main(int argc, char *argv[]) try {
           _("for use in scripts"), nullptr },
         { "json-output", 'j', 0, G_OPTION_ARG_NONE, &json_output,
           _("print the result formatted as JSON."), nullptr },
+        { "exact-search", 'e', 0, G_OPTION_ARG_NONE, &no_fuzzy,
+          _("do not fuzzy-search for similar words, only return exact matches."), nullptr },
         { "utf8-output", '0', 0, G_OPTION_ARG_NONE, &utf8_output,
           _("output must be in utf8"), nullptr },
         { "utf8-input", '1', 0, G_OPTION_ARG_NONE, &utf8_input,
@@ -199,7 +202,7 @@ int main(int argc, char *argv[]) try {
         fprintf(stderr, _("g_mkdir failed: %s\n"), strerror(errno));
     }
 
-    Library lib(utf8_input, utf8_output, colorize, json_output);
+    Library lib(utf8_input, utf8_output, colorize, json_output, no_fuzzy);
     lib.load(dicts_dir_list, order_list, disable_list);
 
     std::unique_ptr<IReadLine> io(create_readline_object());

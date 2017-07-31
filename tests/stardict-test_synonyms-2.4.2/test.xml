@@ -15,4 +15,9 @@
     <![CDATA[result of test]]>
   </definition>
   </article>
+  <article><key>testawordy</key>
+  <definition type="m">
+    <![CDATA[word that ends in y to test with fuzzy search in -ied]]>
+  </definition>
+  </article>
 </stardict>

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+SDCV="$1"
+TEST_DIR="$2"
+
+unset SDCV_PAGER
+
+test_word() {
+    WORD=$1
+    EXPECTED=$2
+    TAG=$3
+    RES=$($SDCV -e -n --data-dir "$TEST_DIR" -u "Test synonyms" $WORD | grep "$TAG")
+    if [ "$EXPECTED" != "$RES" ]; then
+	echo "synonym for $WORD should be '$EXPECTED' but was '$RES'"
+	exit 1
+    fi
+}
+
+test_word testawordies "Nothing similar to testawordies, sorry :(" "Nothing similar"
+test_word testawordy "word that ends in y to test with fuzzy search in -ied" "fuzzy"
+
+exit 0
