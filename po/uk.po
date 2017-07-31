@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.3\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2008-09-24 10:54+0200\n"
+"POT-Creation-Date: 2017-07-31 19:18+0200\n"
 "PO-Revision-Date: 2004-12-14 17:54+0300\n"
 "Last-Translator:  <dubyk@lsl.lviv.ua>\n"
 "Language-Team: Ukrainian <dubyk@lsl.lviv.ua>\n"
@@ -19,106 +19,26 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/sdcv.cpp:108
-#, fuzzy
-msgid "display version information and exit"
-msgstr "-v, --version            показати номер версії і завершити роботу\n"
-
-#: src/sdcv.cpp:110
-#, fuzzy
-msgid "display list of available dictionaries and exit"
-msgstr ""
-"-l, --list-dicts         показати список доступних словників і завершити "
-"роботу\n"
-
-#: src/sdcv.cpp:112
-#, fuzzy
-msgid "for search use only dictionary with this bookname"
-msgstr ""
-"-u, --use-dict ім`я словника  для пошуку використовувати лише цей словник\n"
-
-#: src/sdcv.cpp:113
-msgid "bookname"
-msgstr ""
-
-#: src/sdcv.cpp:115
-msgid "for use in scripts"
-msgstr ""
-
-#: src/sdcv.cpp:117
-#, fuzzy
-msgid "output must be in utf8"
-msgstr "--utf8-output            вивід програми повинен бути в utf8\n"
-
-#: src/sdcv.cpp:119
-#, fuzzy
-msgid "input of sdcv in utf8"
-msgstr "--utf8-input             ввід програми в utf8\n"
-
-#: src/sdcv.cpp:121
-#, fuzzy
-msgid "use this directory as path to stardict data directory"
-msgstr ""
-"--data-dir тека    використовувати цю теку як шлях до stardict data "
-"directory\n"
-
-#: src/sdcv.cpp:122
-msgid "path/to/dir"
-msgstr ""
-
-#: src/sdcv.cpp:129
-msgid " words"
-msgstr ""
-
-#: src/sdcv.cpp:135
-#, c-format
-msgid "Invalid command line arguments: %s\n"
-msgstr ""
-
-#: src/sdcv.cpp:141
-#, c-format
-msgid "Console version of Stardict, version %s\n"
-msgstr "Консольна версія Зоряного словника [Stardict], номер версії %s\n"
-
-#: src/sdcv.cpp:170
-#, fuzzy, c-format
-msgid "Dictionary's name   Word count\n"
-msgstr "назва словника     кількість слів\n"
-
-#: src/sdcv.cpp:192
-#, c-format
-msgid "g_mkdir failed: %s\n"
-msgstr ""
-
-#: src/sdcv.cpp:208
-msgid "Enter word or phrase: "
-msgstr "ВведЁть слово або фразу: "
-
-#: src/sdcv.cpp:216
-#, c-format
-msgid "There are no words/phrases to translate.\n"
-msgstr "Не задано слова/фрази для перекладу.\n"
-
-#: src/libwrapper.cpp:248
+#: ../src/libwrapper.cpp:297
 msgid "popen failed"
 msgstr ""
 
-#: src/libwrapper.cpp:285 src/utils.cpp:67
+#: ../src/libwrapper.cpp:334
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "Не можу перетворити %s у utf8.\n"
 
-#: src/libwrapper.cpp:342 src/libwrapper.cpp:370
+#: ../src/libwrapper.cpp:393 ../src/libwrapper.cpp:425
 #, fuzzy, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr "Знайдено %d слів, схожих на %s.\n"
 
-#: src/libwrapper.cpp:356
+#: ../src/libwrapper.cpp:410
 #, fuzzy
 msgid "Your choice[-1 to abort]: "
 msgstr "Ваш вибір: "
 
-#: src/libwrapper.cpp:365
+#: ../src/libwrapper.cpp:419
 #, fuzzy, c-format
 msgid ""
 "Invalid choice.\n"
@@ -127,12 +47,110 @@ msgstr ""
 "Неправильний вибір.\n"
 "Повинно бути від 0 до %d.\n"
 
-#: src/libwrapper.cpp:381
+#: ../src/libwrapper.cpp:436
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "Нічого схожого на %s, даруйте :(\n"
 
-#: src/utils.cpp:45
+#: ../src/sdcv.cpp:88
+#, fuzzy
+msgid "display version information and exit"
+msgstr "-v, --version            показати номер версії і завершити роботу\n"
+
+#: ../src/sdcv.cpp:90
+#, fuzzy
+msgid "display list of available dictionaries and exit"
+msgstr ""
+"-l, --list-dicts         показати список доступних словників і завершити "
+"роботу\n"
+
+#: ../src/sdcv.cpp:92
+#, fuzzy
+msgid "for search use only dictionary with this bookname"
+msgstr ""
+"-u, --use-dict ім`я словника  для пошуку використовувати лише цей словник\n"
+
+#: ../src/sdcv.cpp:93
+msgid "bookname"
+msgstr ""
+
+#: ../src/sdcv.cpp:95
+msgid "for use in scripts"
+msgstr ""
+
+#: ../src/sdcv.cpp:97
+msgid "print the result formatted as JSON."
+msgstr ""
+
+#: ../src/sdcv.cpp:99
+msgid "do not fuzzy-search for similar words, only return exact matches."
+msgstr ""
+
+#: ../src/sdcv.cpp:101
+#, fuzzy
+msgid "output must be in utf8"
+msgstr "--utf8-output            вивід програми повинен бути в utf8\n"
+
+#: ../src/sdcv.cpp:103
+#, fuzzy
+msgid "input of sdcv in utf8"
+msgstr "--utf8-input             ввід програми в utf8\n"
+
+#: ../src/sdcv.cpp:105
+#, fuzzy
+msgid "use this directory as path to stardict data directory"
+msgstr ""
+"--data-dir тека    використовувати цю теку як шлях до stardict data "
+"directory\n"
+
+#: ../src/sdcv.cpp:106
+msgid "path/to/dir"
+msgstr ""
+
+#: ../src/sdcv.cpp:108
+msgid ""
+"only use the dictionaries in data-dir, do not search in user and system "
+"directories"
+msgstr ""
+
+#: ../src/sdcv.cpp:110
+msgid "colorize the output"
+msgstr ""
+
+#: ../src/sdcv.cpp:115
+msgid " words"
+msgstr ""
+
+#: ../src/sdcv.cpp:121
+#, c-format
+msgid "Invalid command line arguments: %s\n"
+msgstr ""
+
+#: ../src/sdcv.cpp:127
+#, c-format
+msgid "Console version of Stardict, version %s\n"
+msgstr "Консольна версія Зоряного словника [Stardict], номер версії %s\n"
+
+#: ../src/sdcv.cpp:202
+#, c-format
+msgid "g_mkdir failed: %s\n"
+msgstr ""
+
+#: ../src/sdcv.cpp:217
+msgid "Enter word or phrase: "
+msgstr "ВведЁть слово або фразу: "
+
+#: ../src/sdcv.cpp:225
+#, c-format
+msgid "There are no words/phrases to translate.\n"
+msgstr "Не задано слова/фрази для перекладу.\n"
+
+#: ../src/sdcv.cpp:237
+#, fuzzy, c-format
+msgid "Dictionary's name   Word count\n"
+msgstr "назва словника     кількість слів\n"
+
+#: ../src/utils.cpp:48
 #, c-format
 msgid "Can not convert %s to current locale.\n"
 msgstr "Не можу перетворити %s у локальне кодування.\n"
