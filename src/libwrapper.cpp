@@ -286,12 +286,13 @@ void Library::print_search_result(FILE *out, const TSearchResult & res, bool &fi
 }
 
 namespace {
-    class sdcv_pager {
+    class sdcv_pager final {
     public:
-        sdcv_pager(bool ignore_env = false) {
+        explicit sdcv_pager(bool ignore_env = false) {
             output = stdout;
-            if (ignore_env)
+            if (ignore_env) {
                 return;
+            }
             const gchar *pager = g_getenv("SDCV_PAGER");
             if (pager && (output = popen(pager, "w")) == nullptr) {
                 perror(_("popen failed"));
@@ -301,8 +302,9 @@ namespace {
         sdcv_pager(const sdcv_pager&) = delete;
         sdcv_pager& operator=(const sdcv_pager&) = delete;
         ~sdcv_pager() {
-            if (output != stdout)
+            if (output != stdout) {
                 pclose(output);
+            }
         }
         FILE *get_stream() { return output; }
     private:
@@ -360,10 +362,9 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		/*nothing*/;
 	}
 
-	sdcv_pager pager(force);
 	bool first_result = true;
-	if(json_) {
-	  fputc('[', pager.get_stream());
+	if (json_) {
+        fputc('[', stdout);
 	}
 	if (!res_list.empty()) {
 		/* try to be more clever, if there are
@@ -389,9 +390,10 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 		}//if (!force)
 
 		if (!show_all_results && !force) {
-                  if(!json_)
-                    printf(_("Found %zu items, similar to %s.\n"), res_list.size(),
-                           utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
+            if (!json_) {
+                printf(_("Found %zu items, similar to %s.\n"), res_list.size(),
+                       utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
+            }
 			for (size_t i = 0; i < res_list.size(); ++i) {
                 const std::string loc_bookname = utf8_to_locale_ign_err(res_list[i].bookname);
                 const std::string loc_def = utf8_to_locale_ign_err(res_list[i].def);
@@ -410,6 +412,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 				choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);
 				sscanf(str_choise.c_str(), "%d", &choise);
 				if (choise >= 0 && choise < int(res_list.size())) {
+                    sdcv_pager pager;
                     io.add_to_history(res_list[choise].def.c_str());
 					print_search_result(pager.get_stream(), res_list[choise], first_result);
 					break;
@@ -420,12 +423,14 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 					       res_list.size()-1);
 			}
 		} else {
-                  for (const TSearchResult& search_res : res_list) {
-                    if(!json_)
-                      fprintf(pager.get_stream(), _("Found %zu items, similar to %s.\n"),
-                              res_list.size(), utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
-                    print_search_result(pager.get_stream(), search_res, first_result);
-                  }
+            sdcv_pager pager(force || json_);
+            if (!json_) {
+                fprintf(pager.get_stream(), _("Found %zu items, similar to %s.\n"),
+                        res_list.size(), utf8_output_ ? get_impl(str) : utf8_to_locale_ign_err(get_impl(str)).c_str());
+            }
+            for (const TSearchResult& search_res : res_list) {
+                print_search_result(pager.get_stream(), search_res, first_result);
+            }
 		}
 
 	} else {
@@ -436,8 +441,8 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
                   printf(_("Nothing similar to %s, sorry :(\n"), utf8_output_ ? get_impl(str) : loc_str.c_str());
 	}
 
-        if(json_) {
-          fputs("]\n", pager.get_stream());
-        }
+    if (json_) {
+        fputs("]\n", stdout);
+    }
 	return true;
 }
