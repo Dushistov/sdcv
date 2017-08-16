@@ -1,6 +1,9 @@
-Version X
+Version 0.5.2
 Synonyms index support (.syn files) by Peter <craven@gmx.net>
-Add support of json output by Peter <craven@gmx.net>
+Add support of json output by Peter <craven@gmx.net> (--json-output)
+Add -e for exact searches (no fuzzy matches) by Peter <craven@gmx.net>
+Fix build with clang 3.4.1
+fix FSF address in license by Tomáš Čech <sleep_walker@suse.com>
 
 Version 0.5.1
  Fix usage of SDCV_PAGER by Anton Yuzhaninov

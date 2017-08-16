@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.3\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2017-07-31 19:18+0200\n"
+"POT-Creation-Date: 2017-08-16 09:52+0300\n"
 "PO-Revision-Date: 2004-12-14 17:54+0300\n"
 "Last-Translator:  <dubyk@lsl.lviv.ua>\n"
 "Language-Team: Ukrainian <dubyk@lsl.lviv.ua>\n"
@@ -19,26 +19,26 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/libwrapper.cpp:297
+#: ../src/libwrapper.cpp:300
 msgid "popen failed"
 msgstr ""
 
-#: ../src/libwrapper.cpp:334
+#: ../src/libwrapper.cpp:340
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "Не можу перетворити %s у utf8.\n"
 
-#: ../src/libwrapper.cpp:393 ../src/libwrapper.cpp:425
+#: ../src/libwrapper.cpp:398 ../src/libwrapper.cpp:432
 #, fuzzy, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr "Знайдено %d слів, схожих на %s.\n"
 
-#: ../src/libwrapper.cpp:410
+#: ../src/libwrapper.cpp:416
 #, fuzzy
 msgid "Your choice[-1 to abort]: "
 msgstr "Ваш вибір: "
 
-#: ../src/libwrapper.cpp:419
+#: ../src/libwrapper.cpp:426
 #, fuzzy, c-format
 msgid ""
 "Invalid choice.\n"
@@ -47,7 +47,7 @@ msgstr ""
 "Неправильний вибір.\n"
 "Повинно бути від 0 до %d.\n"
 
-#: ../src/libwrapper.cpp:436
+#: ../src/libwrapper.cpp:445
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "Нічого схожого на %s, даруйте :(\n"
@@ -79,11 +79,11 @@ msgid "for use in scripts"
 msgstr ""
 
 #: ../src/sdcv.cpp:97
-msgid "print the result formatted as JSON."
+msgid "print the result formatted as JSON"
 msgstr ""
 
 #: ../src/sdcv.cpp:99
-msgid "do not fuzzy-search for similar words, only return exact matches."
+msgid "do not fuzzy-search for similar words, only return exact matches"
 msgstr ""
 
 #: ../src/sdcv.cpp:101

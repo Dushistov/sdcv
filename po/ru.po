@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.5\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2017-07-31 19:18+0200\n"
-"PO-Revision-Date: 2013-07-07 18:49+0400\n"
+"POT-Creation-Date: 2017-08-16 09:52+0300\n"
+"PO-Revision-Date: 2017-08-16 10:05+0300\n"
 "Last-Translator: Evgeniy Dushistov <dushistov@mail.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "Language: ru\n"
@@ -19,25 +19,25 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/libwrapper.cpp:297
+#: ../src/libwrapper.cpp:300
 msgid "popen failed"
 msgstr "функция popen завершилась с ошибкой"
 
-#: ../src/libwrapper.cpp:334
+#: ../src/libwrapper.cpp:340
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "Не могу преобразовать %s в utf8.\n"
 
-#: ../src/libwrapper.cpp:393 ../src/libwrapper.cpp:425
+#: ../src/libwrapper.cpp:398 ../src/libwrapper.cpp:432
 #, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr "Найдено %zu слов, похожих на %s.\n"
 
-#: ../src/libwrapper.cpp:410
+#: ../src/libwrapper.cpp:416
 msgid "Your choice[-1 to abort]: "
 msgstr "Ваш выбор[-1 - отмена]: "
 
-#: ../src/libwrapper.cpp:419
+#: ../src/libwrapper.cpp:426
 #, c-format
 msgid ""
 "Invalid choice.\n"
@@ -46,7 +46,7 @@ msgstr ""
 "Неправильный выбор.\n"
 "Должно быть от 0 до %zu или -1.\n"
 
-#: ../src/libwrapper.cpp:436
+#: ../src/libwrapper.cpp:445
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "Ничего похожего на %s, извините :(\n"
@@ -72,12 +72,12 @@ msgid "for use in scripts"
 msgstr "для использования в скриптах"
 
 #: ../src/sdcv.cpp:97
-msgid "print the result formatted as JSON."
-msgstr ""
+msgid "print the result formatted as JSON"
+msgstr "выдать результат в JSON формате"
 
 #: ../src/sdcv.cpp:99
-msgid "do not fuzzy-search for similar words, only return exact matches."
-msgstr ""
+msgid "do not fuzzy-search for similar words, only return exact matches"
+msgstr "не использовать нечеткий поиск похожих слов, вернуть только точные совпадения"
 
 #: ../src/sdcv.cpp:101
 msgid "output must be in utf8"
@@ -100,7 +100,7 @@ msgstr "путь/до/директории"
 msgid ""
 "only use the dictionaries in data-dir, do not search in user and system "
 "directories"
-msgstr ""
+msgstr "использовать словари только из data-dir, не искать в пользовательских и системных каталогах"
 
 #: ../src/sdcv.cpp:110
 msgid "colorize the output"

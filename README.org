@@ -25,9 +25,16 @@ See sdcv man page for usage description.
 If you find bug reports it via email to dushistov at mail dot ru. 
 Be sure to include the word "sdcv" somewhere in the "Subject:" field.
 
-
 * Notes to developer
 ** make source code release
 #+BEGIN_SRC sh
 make package_source
+#+END_SRC
+** update translation
+#+BEGIN_SRC sh
+cd po
+xgettext -k_ ../src/*.cpp -o new.pot
+msgmerge -U sdcv.pot new.pot
+rm new.pot
+for i in `ls *.po`; do msgmerge -U $i sdcv.pot; done
 #+END_SRC

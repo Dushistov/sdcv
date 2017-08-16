@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.3.2\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2017-07-31 19:18+0200\n"
+"POT-Creation-Date: 2017-08-16 09:52+0300\n"
 "PO-Revision-Date: 2007-09-11 00:22+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -18,26 +18,26 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/libwrapper.cpp:297
+#: ../src/libwrapper.cpp:300
 msgid "popen failed"
 msgstr "popen zlyhalo"
 
-#: ../src/libwrapper.cpp:334
+#: ../src/libwrapper.cpp:340
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "nie je možné konvertovať %s na utf8.\n"
 
-#: ../src/libwrapper.cpp:393 ../src/libwrapper.cpp:425
+#: ../src/libwrapper.cpp:398 ../src/libwrapper.cpp:432
 #, fuzzy, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr "Nájdené %d položiek, podobných %s,\n"
 
-#: ../src/libwrapper.cpp:410
+#: ../src/libwrapper.cpp:416
 #, fuzzy
 msgid "Your choice[-1 to abort]: "
 msgstr "Vaša voľba[-1 zruší]: "
 
-#: ../src/libwrapper.cpp:419
+#: ../src/libwrapper.cpp:426
 #, fuzzy, c-format
 msgid ""
 "Invalid choice.\n"
@@ -46,7 +46,7 @@ msgstr ""
 "Neplatná voľba.\n"
 "Musí byť od 0 do %d alebo -1.\n"
 
-#: ../src/libwrapper.cpp:436
+#: ../src/libwrapper.cpp:445
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "Ľutujem, nič sa nepodobá na %s :(\n"
@@ -76,11 +76,11 @@ msgid "for use in scripts"
 msgstr ""
 
 #: ../src/sdcv.cpp:97
-msgid "print the result formatted as JSON."
+msgid "print the result formatted as JSON"
 msgstr ""
 
 #: ../src/sdcv.cpp:99
-msgid "do not fuzzy-search for similar words, only return exact matches."
+msgid "do not fuzzy-search for similar words, only return exact matches"
 msgstr ""
 
 #: ../src/sdcv.cpp:101

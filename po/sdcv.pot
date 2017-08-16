@@ -7,40 +7,41 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.5\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2017-07-31 19:22+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2017-08-16 09:52+0300\n"
+"PO-Revision-Date: 2017-08-16 10:01+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/libwrapper.cpp:297
+#: ../src/libwrapper.cpp:300
 msgid "popen failed"
 msgstr ""
 
-#: ../src/libwrapper.cpp:334
+#: ../src/libwrapper.cpp:340
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr ""
 
-#: ../src/libwrapper.cpp:393 ../src/libwrapper.cpp:425
+#: ../src/libwrapper.cpp:398 ../src/libwrapper.cpp:432
 #, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr ""
 
-#: ../src/libwrapper.cpp:410
+#: ../src/libwrapper.cpp:416
 msgid "Your choice[-1 to abort]: "
 msgstr ""
 
-#: ../src/libwrapper.cpp:419
+#: ../src/libwrapper.cpp:426
 #, c-format
 msgid ""
 "Invalid choice.\n"
 "It must be from 0 to %zu or -1.\n"
 msgstr ""
 
-#: ../src/libwrapper.cpp:436
+#: ../src/libwrapper.cpp:445
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr ""
@@ -66,11 +67,11 @@ msgid "for use in scripts"
 msgstr ""
 
 #: ../src/sdcv.cpp:97
-msgid "print the result formatted as JSON."
+msgid "print the result formatted as JSON"
 msgstr ""
 
 #: ../src/sdcv.cpp:99
-msgid "do not fuzzy-search for similar words, only return exact matches."
+msgid "do not fuzzy-search for similar words, only return exact matches"
 msgstr ""
 
 #: ../src/sdcv.cpp:101

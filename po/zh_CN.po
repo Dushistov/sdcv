@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.3\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2017-07-31 19:18+0200\n"
+"POT-Creation-Date: 2017-08-16 09:52+0300\n"
 "PO-Revision-Date: 2005-1-17 00:58+0800\n"
 "Last-Translator: Cai Qian <caiqian@gnome.org>\n"
 "Language-Team: Simplified Chinese\n"
@@ -15,26 +15,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/libwrapper.cpp:297
+#: ../src/libwrapper.cpp:300
 msgid "popen failed"
 msgstr ""
 
-#: ../src/libwrapper.cpp:334
+#: ../src/libwrapper.cpp:340
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "无法将 %s 转换为 UTF-8。\n"
 
-#: ../src/libwrapper.cpp:393 ../src/libwrapper.cpp:425
+#: ../src/libwrapper.cpp:398 ../src/libwrapper.cpp:432
 #, fuzzy, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr "发现 %d 条记录和 %s 相似。\n"
 
-#: ../src/libwrapper.cpp:410
+#: ../src/libwrapper.cpp:416
 #, fuzzy
 msgid "Your choice[-1 to abort]: "
 msgstr "您的选择为："
 
-#: ../src/libwrapper.cpp:419
+#: ../src/libwrapper.cpp:426
 #, fuzzy, c-format
 msgid ""
 "Invalid choice.\n"
@@ -43,7 +43,7 @@ msgstr ""
 "无效的选择。\n"
 "必须是 0 到 %d。\n"
 
-#: ../src/libwrapper.cpp:436
+#: ../src/libwrapper.cpp:445
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "对不起，没有发现和 %s 相似的 :(\n"
@@ -72,11 +72,11 @@ msgid "for use in scripts"
 msgstr ""
 
 #: ../src/sdcv.cpp:97
-msgid "print the result formatted as JSON."
+msgid "print the result formatted as JSON"
 msgstr ""
 
 #: ../src/sdcv.cpp:99
-msgid "do not fuzzy-search for similar words, only return exact matches."
+msgid "do not fuzzy-search for similar words, only return exact matches"
 msgstr ""
 
 #: ../src/sdcv.cpp:101
