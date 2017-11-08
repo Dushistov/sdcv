@@ -12,14 +12,14 @@ test_json() {
     PARAMS="$1"
     EXPECTED=$(echo "$2" | jq 'sort')
     RESULT=$($SDCV $PARAMS | jq 'sort')
-    if [ "$EXPECTED" != "$RESULT"]; then
+    if [ "$EXPECTED" != "$RESULT" ]; then
         echo "expected $EXPECTED but got $RESULT"
         exit 1
     fi
 }
 
-test_json "-x -j -l -n --data-dir \"$TEST_DIR\"" "[{\"name\": \"Test synonyms\", \"wordcount\": \"1\"},{\"name\": \"Sample 1 test dictionary\", \"wordcount\": \"1\"},{\"name\": \"test_dict\", \"wordcount\": \"1\"}]"
-test_json "-x -j -n --data-dir \"$TEST_DIR\" foo" "[{\"dict\": \"Test synonyms\",\"word\":\"test\",\"definition\":\"\nresult of test\"}]"
-test_json "-x -j -n --data-dir \"$TEST_DIR\" foobarbaaz" "[]"
+test_json "-x -j -l -n --data-dir $TEST_DIR" "[{\"name\": \"Test synonyms\", \"wordcount\": \"2\"},{\"name\": \"Sample 1 test dictionary\", \"wordcount\": \"1\"},{\"name\": \"test_dict\", \"wordcount\": \"1\"}]"
+test_json "-x -j -n --data-dir $TEST_DIR foo" "[{\"dict\": \"Test synonyms\",\"word\":\"test\",\"definition\":\"\\\nresult of test\"}]"
+test_json "-x -j -n --data-dir $TEST_DIR foobarbaaz" "[]"
 
 exit 0
