@@ -491,7 +491,8 @@ private:
     static std::list<std::string> get_cache_variant(const std::string &url);
 };
 
-const char *OffsetIndex::CACHE_MAGIC = "StarDict's Cache, Version: 0.1";
+const char *OffsetIndex::CACHE_MAGIC = "StarDict's Cache, Version: 0.2";
+#define CACHE_MAGIC_BYTES 0x51a4d1c1
 
 class WordListIndex : public IIndexFile
 {
@@ -573,7 +574,11 @@ bool OffsetIndex::load_cache(const std::string &url)
             continue;
         if (strncmp(mf.begin(), CACHE_MAGIC, strlen(CACHE_MAGIC)) != 0)
             continue;
-        memcpy(&wordoffset[0], mf.begin() + strlen(CACHE_MAGIC), wordoffset.size() * sizeof(wordoffset[0]));
+        guint32 tmp;
+        memcpy(&tmp, mf.begin() + strlen(CACHE_MAGIC), sizeof(tmp));
+        if (tmp != CACHE_MAGIC_BYTES)
+            continue;
+        memcpy(&wordoffset[0], mf.begin() + strlen(CACHE_MAGIC) + sizeof(guint32), wordoffset.size() * sizeof(wordoffset[0]));
         return true;
     }
 
@@ -605,9 +610,12 @@ bool OffsetIndex::save_cache(const std::string &url, bool verbose)
     const std::list<std::string> vars = get_cache_variant(url);
     for (const std::string &item : vars) {
         FILE *out = fopen(item.c_str(), "wb");
+        guint32 magic = CACHE_MAGIC_BYTES;
         if (!out)
             continue;
         if (fwrite(CACHE_MAGIC, 1, strlen(CACHE_MAGIC), out) != strlen(CACHE_MAGIC))
+            continue;
+        if (fwrite(&magic, 1, sizeof(magic), out) != sizeof(magic))
             continue;
         if (fwrite(&wordoffset[0], sizeof(wordoffset[0]), wordoffset.size(), out) != wordoffset.size())
             continue;
