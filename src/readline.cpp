@@ -70,13 +70,15 @@ public:
     {
         rl_readline_name = "sdcv";
         using_history();
-        const std::string histname = std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history";
+        const gchar *hist_file_str = g_getenv("SDCV_HISTFILE");
+        const std::string histname = hist_file_str ? std::string(hist_file_str) : (std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history");
         read_history(histname.c_str());
     }
 
     ~real_readline()
     {
-        const std::string histname = std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history";
+        const gchar *hist_file_str = g_getenv("SDCV_HISTFILE");
+        const std::string histname = hist_file_str ? std::string(hist_file_str) : (std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history");
         write_history(histname.c_str());
         const gchar *hist_size_str = g_getenv("SDCV_HISTSIZE");
         int hist_size;
