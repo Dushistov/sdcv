@@ -89,8 +89,11 @@ If set, sdcv uses this variable as the data directory, this means that sdcv
 searches dictionaries in $\fBSTARDICT_DATA_DIR\fR\\dic
 .TP 20
 .B SDCV_HISTSIZE
-If set, sdcv writes in $(HOME)/.sdcv_history the last $(SDCV_HISTSIZE) words, 
+If set, sdcv writes in $(HOME)/.sdcv_history (or $(SDCV_HISTFILE)) the last $(SDCV_HISTSIZE) words, 
 which you look up using sdcv. If it is not set, then the last 2000 words are saved in $(HOME)/.sdcv_history.
+.TP 20
+.B SDCV_HISTFILE
+If set, sdcv writes it's history to $(SDCV_HISTFILE). If it is not set, then the default $(HOME)/.sdcv_history path will be used.
 .TP 20
 .B SDCV_PAGER
 If SDCV_PAGER is set, its value is used as the name of the program
