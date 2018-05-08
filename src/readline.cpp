@@ -62,6 +62,16 @@ public:
 
 namespace
 {
+std::string get_hist_file_path()
+{
+    const gchar *hist_file_str = g_getenv("SDCV_HISTFILE");
+
+    if (hist_file_str != nullptr)
+        return std::string(hist_file_str);
+    else
+        return std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history";
+}
+
 class real_readline : public IReadLine
 {
 
@@ -70,13 +80,13 @@ public:
     {
         rl_readline_name = "sdcv";
         using_history();
-        const std::string histname = std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history";
+        const std::string histname = get_hist_file_path();
         read_history(histname.c_str());
     }
 
     ~real_readline()
     {
-        const std::string histname = std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history";
+        const std::string histname = get_hist_file_path();
         write_history(histname.c_str());
         const gchar *hist_size_str = g_getenv("SDCV_HISTSIZE");
         int hist_size;
