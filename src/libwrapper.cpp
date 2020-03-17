@@ -316,10 +316,10 @@ private:
 };
 }
 
-bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
+search_result Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 {
     if (nullptr == loc_str)
-        return true;
+        return SEARCH_SUCCESS;
 
     std::string query;
 
@@ -330,6 +330,7 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
     gsize bytes_read;
     gsize bytes_written;
     glib::Error err;
+	search_result rval = SEARCH_SUCCESS;
     glib::CharStr str;
     if (!utf8_input_)
         str.reset(g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, get_addr(err)));
@@ -339,11 +340,11 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
     if (nullptr == get_impl(str)) {
         fprintf(stderr, _("Can not convert %s to utf8.\n"), loc_str);
         fprintf(stderr, "%s\n", err->message);
-        return false;
+        return SEARCH_FAILURE;
     }
 
     if (str[0] == '\0')
-        return true;
+        return SEARCH_SUCCESS;
 
     TSearchResultList res_list;
 
@@ -443,10 +444,11 @@ bool Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
             loc_str = utf8_to_locale_ign_err(get_impl(str));
         if (!json_)
             printf(_("Nothing similar to %s, sorry :(\n"), utf8_output_ ? get_impl(str) : loc_str.c_str());
+		rval = SEARCH_NO_RESULT;
     }
 
     if (json_) {
         fputs("]\n", stdout);
     }
-    return true;
+    return rval;
 }
