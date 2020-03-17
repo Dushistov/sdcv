@@ -207,15 +207,16 @@ int main(int argc, char *argv[]) try {
 
     std::unique_ptr<IReadLine> io(create_readline_object());
     if (optind < argc) {
+		search_result rval = SEARCH_SUCCESS;
         for (int i = optind; i < argc; ++i)
-            if (!lib.process_phrase(argv[i], *io, non_interactive)) {
-                return EXIT_FAILURE;
+            if ((rval = lib.process_phrase(argv[i], *io, non_interactive)) != SEARCH_SUCCESS) {
+                return rval;
             }
     } else if (!non_interactive) {
 
         std::string phrase;
         while (io->read(_("Enter word or phrase: "), phrase)) {
-            if (!lib.process_phrase(phrase.c_str(), *io))
+            if (lib.process_phrase(phrase.c_str(), *io) == SEARCH_FAILURE)
                 return EXIT_FAILURE;
             phrase.clear();
         }

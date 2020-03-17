@@ -23,6 +23,13 @@ struct TSearchResult {
 
 typedef std::vector<TSearchResult> TSearchResultList;
 
+//possible return values for Library.process_phase()
+enum search_result {
+	SEARCH_SUCCESS = 0,
+	SEARCH_FAILURE,
+	SEARCH_NO_RESULT
+};
+
 //this class is wrapper around Dicts class for easy use
 //of it
 class Library : public Libs
@@ -38,7 +45,7 @@ public:
         setFuzzy(!no_fuzzy);
     }
 
-    bool process_phrase(const char *loc_str, IReadLine &io, bool force = false);
+    search_result process_phrase(const char *loc_str, IReadLine &io, bool force = false);
 
 private:
     bool utf8_input_;
