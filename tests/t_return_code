@@ -1,0 +1,22 @@
+#!/bin/sh
+
+SDCV="$1"
+TEST_DIR="$2"
+
+unset SDCV_PAGER
+
+test_return_code() {
+    WORD=$1
+    EXPECTED=$2
+    $SDCV -e -n --data-dir "$TEST_DIR" -u "Test synonyms" $WORD > /dev/null
+    RC=$?
+    if [ $RC -ne $EXPECTED ]; then
+        echo "Return code for $WORD should be '$EXPECTED' but was '$RC'"
+        exit 1
+    fi
+}
+
+test_return_code testawordy 0
+test_return_code testawordies 2
+
+exit 0
