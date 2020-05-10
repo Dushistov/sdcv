@@ -4,9 +4,8 @@ set -e
 
 PATH_TO_SDCV="$1"
 TESTS_DIR="$2"
-
-mkdir -p "${HOME}"/.stardict/dic
-cp -R "${TESTS_DIR}/rus-eng-stardict-2.4.2" "${HOME}"/.stardict/dic/
+mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}"/stardict/dic
+cp -R "${TESTS_DIR}/rus-eng-stardict-2.4.2" "${XDG_DATA_HOME:-$HOME/.local/share}"/stardict/dic/
 
 unset SDCV_PAGER
 export LANG=ru_RU.KOI8-R

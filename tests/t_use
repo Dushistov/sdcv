@@ -5,8 +5,8 @@ set -e
 PATH_TO_SDCV="$1"
 TESTS_DIR="$2"
 
-mkdir -p "${HOME}"/.stardict/dic
-cp -R "${TESTS_DIR}/stardict-test_dict-2.4.2" "${HOME}"/.stardict/dic
+mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}"/stardict/dic
+cp -R "${TESTS_DIR}/stardict-test_dict-2.4.2" "${XDG_DATA_HOME:-$HOME/.local/share}"/stardict/dic
 unset SDCV_PAGER
 RES=`"$PATH_TO_SDCV" -n -u test_dict test | grep "test passed"`
 
@@ -15,6 +15,6 @@ if [ -z "$RES" ]; then
 	exit 1
 fi
 
-rm -fr "${HOME}"/.stardict/dic/stardict-test_dict-2.4.2
+rm -fr "${XDG_DATA_HOME:-$HOME/.local/share}"/stardict/dic/stardict-test_dict-2.4.2
 
 exit 0

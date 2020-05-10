@@ -69,7 +69,7 @@ std::string get_hist_file_path()
     if (hist_file_str != nullptr)
         return std::string(hist_file_str);
     else
-        return std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history";
+        return std::string(g_get_user_data_dir()) + G_DIR_SEPARATOR + "sdcv_history";
 }
 
 class real_readline : public IReadLine

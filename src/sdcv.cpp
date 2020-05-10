@@ -141,13 +141,9 @@ int main(int argc, char *argv[]) try {
         data_dir = get_impl(opt_data_dir);
     }
 
-    const char *homedir = g_getenv("HOME");
-    if (!homedir)
-        homedir = g_get_home_dir();
-
     std::list<std::string> dicts_dir_list;
     if (!only_data_dir)
-        dicts_dir_list.push_back(std::string(homedir) + G_DIR_SEPARATOR + ".stardict" + G_DIR_SEPARATOR + "dic");
+        dicts_dir_list.push_back(std::string(g_get_user_data_dir()) + G_DIR_SEPARATOR + "stardict" + G_DIR_SEPARATOR + "dic");
     dicts_dir_list.push_back(data_dir);
     if (show_list_dicts) {
         list_dicts(dicts_dir_list, json_output);
@@ -186,7 +182,7 @@ int main(int argc, char *argv[]) try {
             ++p;
         }
     } else {
-        const std::string odering_cfg_file = std::string(homedir) + G_DIR_SEPARATOR_S ".sdcv_ordering";
+        const std::string odering_cfg_file = std::string(g_get_user_config_dir()) + G_DIR_SEPARATOR_S "sdcv_ordering";
         FILE *ordering_file = fopen(odering_cfg_file.c_str(), "r");
         if (ordering_file != nullptr) {
             std::string line;
@@ -197,7 +193,7 @@ int main(int argc, char *argv[]) try {
         }
     }
 
-    const std::string conf_dir = std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".stardict";
+    const std::string conf_dir = std::string(g_get_user_data_dir()) + G_DIR_SEPARATOR + "stardict";
     if (g_mkdir(conf_dir.c_str(), S_IRWXU) == -1 && errno != EEXIST) {
         fprintf(stderr, _("g_mkdir failed: %s\n"), strerror(errno));
     }
