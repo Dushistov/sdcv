@@ -4,7 +4,7 @@ PATH_TO_SDCV="$1"
 ndicts=`"$PATH_TO_SDCV" -l | wc -l`
 ndicts=$(($ndicts-1))
 ncom=`find /usr/share/stardict/dic -name "*.ifo" | wc -l`
-nspe=`find "${HOME}"/.stardict/dic -name "*.ifo" | wc -l`
+nspe=`find "${XDG_DATA_HOME:-$HOME/.local/share}"/stardict/dic -name "*.ifo" | wc -l`
 nmy=$(($ncom+$nspe))
 
 if [ $nmy -ne $ndicts ]; then

@@ -6,7 +6,7 @@ unset SDCV_PAGER
 have=`"$PATH_TO_SDCV" --data-dir /tmp/bugagaga -l | wc -l`
 #do not count header
 have=$(($have-1))
-ndicts=`find "${HOME}"/.stardict/dic -name "*.ifo" -print | wc -l`
+ndicts=`find "${XDG_DATA_HOME:-$HOME/.local/share}"/stardict/dic -name "*.ifo" -print | wc -l`
 #ndicts=$(($ndicts+1))
 if [ $have -ne $ndicts ]; then
 	ndicts=$(($ndicts-1))

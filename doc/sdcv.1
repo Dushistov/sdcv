@@ -64,7 +64,7 @@ Use ANSI escape codes for colorizing sdcv output (does not work with json output
 .TP 
 /usr/share/stardict/dic
 .TP
-$(HOME)/.stardict/dic
+$(XDG_DATA_HOME)/stardict/dic
 
 Place where sdcv expects to find dictionaries.
 Instead of /usr/share/stardict/dic you can use any directory
@@ -72,12 +72,12 @@ you want, just set the STARDICT_DATA_DIR environment variable.
 For example, if you have dictionaries in /mnt/data/stardict-dicts/dic,
 set STARDICT_DATA_DIR to /mnt/data/stardict-dicts.
 .TP
-$(HOME)/.sdcv_history
+$(XDG_DATA_HOME)/sdcv_history
 
 This file includes the last $(SDCV_HISTSIZE) words, which you sought with sdcv.
 SDCV uses this file only if it was compiled with readline library support.
 .TP
-$(HOME)/.sdcv_ordering
+$(XDG_CONFIG_HOME)/sdcv_ordering
 
 This is a text file containing one dictionary bookname per line.
 It specifies in which order the results of a search should be shown.
@@ -89,11 +89,11 @@ If set, sdcv uses this variable as the data directory, this means that sdcv
 searches dictionaries in $\fBSTARDICT_DATA_DIR\fR/dic
 .TP 20
 .B SDCV_HISTSIZE
-If set, sdcv writes in $(HOME)/.sdcv_history (or $(SDCV_HISTFILE)) the last $(SDCV_HISTSIZE) words, 
-which you look up using sdcv. If it is not set, then the last 2000 words are saved in $(HOME)/.sdcv_history.
+If set, sdcv writes in $(XDG_DATA_HOME)/sdcv_history (or $(SDCV_HISTFILE)) the last $(SDCV_HISTSIZE) words,
+which you look up using sdcv. If it is not set, then the last 2000 words are saved in $(XDG_DATA_HOME)/sdcv_history.
 .TP 20
 .B SDCV_HISTFILE
-If set, sdcv writes it's history to $(SDCV_HISTFILE). If it is not set, then the default $(HOME)/.sdcv_history path will be used.
+If set, sdcv writes it's history to $(SDCV_HISTFILE). If it is not set, then the default $(XDG_DATA_HOME)/sdcv_history path will be used.
 .TP 20
 .B SDCV_PAGER
 If SDCV_PAGER is set, its value is used as the name of the program
