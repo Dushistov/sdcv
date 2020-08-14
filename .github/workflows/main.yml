@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: '00 02 */4 * *'
+env:
+  RUST_BACKTRACE: 1
+jobs:
+  tests:
+    name: Run tests
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - uses: jwlawson/actions-setup-cmake@v1.0
+        with:
+          cmake-version: '3.5.1'
+          github-api-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check versions
+        run: |
+          set -e
+          cmake --version
+          gcc --version
+          echo "end of versions checking"
+        shell: bash
+      - name: Run tests
+        run: |
+          set -e
+          cd $GITHUB_WORKSPACE
+          mkdir build
+          cd build
+          cmake -DBUILD_TESTS=True ..
+          make -k -j2 VERBOSE=1
+          ctest --output-on-failure
+        shell: bash
