@@ -314,7 +314,7 @@ public:
 private:
     FILE *output;
 };
-}
+} // namespace
 
 search_result Library::process_phrase(const char *loc_str, IReadLine &io, bool force)
 {
@@ -330,7 +330,7 @@ search_result Library::process_phrase(const char *loc_str, IReadLine &io, bool f
     gsize bytes_read;
     gsize bytes_written;
     glib::Error err;
-	search_result rval = SEARCH_SUCCESS;
+    search_result rval = SEARCH_SUCCESS;
     glib::CharStr str;
     if (!utf8_input_)
         str.reset(g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, get_addr(err)));
@@ -444,7 +444,7 @@ search_result Library::process_phrase(const char *loc_str, IReadLine &io, bool f
             loc_str = utf8_to_locale_ign_err(get_impl(str));
         if (!json_)
             printf(_("Nothing similar to %s, sorry :(\n"), utf8_output_ ? get_impl(str) : loc_str.c_str());
-		rval = SEARCH_NO_RESULT;
+        rval = SEARCH_NO_RESULT;
     }
 
     if (json_) {

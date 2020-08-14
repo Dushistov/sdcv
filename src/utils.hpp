@@ -68,7 +68,7 @@ namespace glib
 {
 typedef ResourceWrapper<gchar, void, g_free> CharStr;
 typedef ResourceWrapper<GError, GError, g_error_free> Error;
-}
+} // namespace glib
 
 extern std::string utf8_to_locale_ign_err(const std::string &utf8_str);
 

@@ -71,7 +71,7 @@ static void unicode_strdown(gunichar *str)
         ++str;
     }
 }
-}
+} // namespace
 
 bool DictInfo::load_from_ifo_file(const std::string &ifofilename,
                                   bool istreedict)
@@ -334,6 +334,7 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 
     if (dictfile)
         fseek(dictfile, idxitem_offset, SEEK_SET);
+    THROW_IF_ERROR(origin_data != nullptr);
     if (dictfile) {
         const size_t nitems = fread(origin_data, idxitem_size, 1, dictfile);
         THROW_IF_ERROR(nitems == 1);
@@ -758,7 +759,7 @@ bool OffsetIndex::lookup(const char *str, glong &idx)
     return bFound;
 }
 
-bool WordListIndex::load(const std::string &url, gulong wc, gulong fsize, bool verbose)
+bool WordListIndex::load(const std::string &url, gulong wc, gulong fsize, bool)
 {
     gzFile in = gzopen(url.c_str(), "rb");
     if (in == nullptr)
@@ -826,7 +827,7 @@ bool WordListIndex::lookup(const char *str, glong &idx)
     }
     return bFound;
 }
-}
+} // namespace
 
 bool SynFile::load(const std::string &url, gulong wc)
 {

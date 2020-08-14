@@ -1,24 +1,14 @@
 project(sdcv)
 
-# Older versions have a different signature for CMAKE_MINIMUM_REQUIRED,
-# check it manually just to make sure
-if (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} LESS 2.8)
-  message(FATAL_ERROR "${PROJECT_NAME} requires at least CMake v2.8."
-		" You are running v${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}."
-		" Please upgrade." )
-endif(${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} LESS 2.8)
-
-# If we get this far, use the modern signature.  This will also cause newer
-# CMake versions to try to be backwards-compatible with the desired version
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
-cmake_policy(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_policy(VERSION 3.5)
 
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/compiler.cmake")
 
 set(ZLIB_FIND_REQUIRED True)
 include(FindZLIB)
 
-set(GLIB2_REQ "'glib-2.0 >= 2.6.1'")
+set(GLIB2_REQ "'glib-2.0 >= 2.36'")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindGLIB2.cmake")
 
