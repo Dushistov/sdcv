@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.4.2\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2017-08-16 09:52+0300\n"
+"POT-Creation-Date: 2020-08-14 12:58+0300\n"
 "PO-Revision-Date: 2013-06-12 14:11+0800\n"
 "Last-Translator: Wei-Lun Chao <bluebat@member.fsf.org>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -22,21 +22,21 @@ msgstr ""
 msgid "popen failed"
 msgstr "popen 失敗"
 
-#: ../src/libwrapper.cpp:340
+#: ../src/libwrapper.cpp:341
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "無法將 %s 轉換為 UTF-8。\n"
 
-#: ../src/libwrapper.cpp:398 ../src/libwrapper.cpp:432
+#: ../src/libwrapper.cpp:399 ../src/libwrapper.cpp:433
 #, fuzzy, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr "找到 %d 項紀錄和 %s 相似。\n"
 
-#: ../src/libwrapper.cpp:416
+#: ../src/libwrapper.cpp:417
 msgid "Your choice[-1 to abort]: "
 msgstr "您的選擇是[-1 表示放棄]："
 
-#: ../src/libwrapper.cpp:426
+#: ../src/libwrapper.cpp:427
 #, fuzzy, c-format
 msgid ""
 "Invalid choice.\n"
@@ -45,100 +45,100 @@ msgstr ""
 "無效的選擇。\n"
 "必須是 0 到 %d 之間或 -1。\n"
 
-#: ../src/libwrapper.cpp:445
+#: ../src/libwrapper.cpp:446
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "抱歉，沒有和 %s 相似者 :(\n"
 
-#: ../src/sdcv.cpp:88
+#: ../src/sdcv.cpp:89
 #, fuzzy
 msgid "display version information and exit"
 msgstr "-v, --version            顯示版本資訊並離開\n"
 
-#: ../src/sdcv.cpp:90
+#: ../src/sdcv.cpp:91
 #, fuzzy
 msgid "display list of available dictionaries and exit"
 msgstr "-l, --list-dicts         顯示可用的字典清單並離開\n"
 
-#: ../src/sdcv.cpp:92
+#: ../src/sdcv.cpp:93
 #, fuzzy
 msgid "for search use only dictionary with this bookname"
 msgstr "-u, --use-dict 字典名    只使用指定的字典進行單字搜尋\n"
 
-#: ../src/sdcv.cpp:93
+#: ../src/sdcv.cpp:94
 msgid "bookname"
 msgstr ""
 
-#: ../src/sdcv.cpp:95
+#: ../src/sdcv.cpp:96
 msgid "for use in scripts"
 msgstr ""
 
-#: ../src/sdcv.cpp:97
+#: ../src/sdcv.cpp:98
 msgid "print the result formatted as JSON"
 msgstr ""
 
-#: ../src/sdcv.cpp:99
+#: ../src/sdcv.cpp:100
 msgid "do not fuzzy-search for similar words, only return exact matches"
 msgstr ""
 
-#: ../src/sdcv.cpp:101
+#: ../src/sdcv.cpp:102
 #, fuzzy
 msgid "output must be in utf8"
 msgstr "--utf8-output            輸出必須是 UTF-8\n"
 
-#: ../src/sdcv.cpp:103
+#: ../src/sdcv.cpp:104
 #, fuzzy
 msgid "input of sdcv in utf8"
 msgstr "--utf8-input             sdcv 的輸入為 UTF-8\n"
 
-#: ../src/sdcv.cpp:105
+#: ../src/sdcv.cpp:106
 #, fuzzy
 msgid "use this directory as path to stardict data directory"
 msgstr "--data-dir 目錄路徑      指定 Stardict 資料所在目錄的路徑\n"
 
-#: ../src/sdcv.cpp:106
+#: ../src/sdcv.cpp:107
 msgid "path/to/dir"
 msgstr ""
 
-#: ../src/sdcv.cpp:108
+#: ../src/sdcv.cpp:109
 msgid ""
 "only use the dictionaries in data-dir, do not search in user and system "
 "directories"
 msgstr ""
 
-#: ../src/sdcv.cpp:110
+#: ../src/sdcv.cpp:111
 msgid "colorize the output"
 msgstr ""
 
-#: ../src/sdcv.cpp:115
+#: ../src/sdcv.cpp:116
 msgid " words"
 msgstr ""
 
-#: ../src/sdcv.cpp:121
+#: ../src/sdcv.cpp:122
 #, c-format
 msgid "Invalid command line arguments: %s\n"
 msgstr ""
 
-#: ../src/sdcv.cpp:127
+#: ../src/sdcv.cpp:128
 #, c-format
 msgid "Console version of Stardict, version %s\n"
 msgstr "Stardict 的主控臺版本，版本為 %s\n"
 
-#: ../src/sdcv.cpp:202
+#: ../src/sdcv.cpp:206
 #, c-format
 msgid "g_mkdir failed: %s\n"
 msgstr "g_mkdir 失敗：%s\n"
 
-#: ../src/sdcv.cpp:217
+#: ../src/sdcv.cpp:222
 msgid "Enter word or phrase: "
 msgstr "請輸入單字或片語："
 
-#: ../src/sdcv.cpp:225
+#: ../src/sdcv.cpp:230
 #, c-format
 msgid "There are no words/phrases to translate.\n"
 msgstr "沒有可供翻譯的單字或片語。\n"
 
-#: ../src/sdcv.cpp:237
+#: ../src/sdcv.cpp:242
 #, c-format
 msgid "Dictionary's name   Word count\n"
 msgstr "字典名稱            單字數量\n"

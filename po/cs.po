@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.4.2\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2017-08-16 09:52+0300\n"
+"POT-Creation-Date: 2020-08-14 12:58+0300\n"
 "PO-Revision-Date: 2008-09-24 10:42+0200\n"
 "Last-Translator: Michal Čihař <michal@cihar.com>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -20,21 +20,21 @@ msgstr ""
 msgid "popen failed"
 msgstr "popen selhalo"
 
-#: ../src/libwrapper.cpp:340
+#: ../src/libwrapper.cpp:341
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "Nepodařilo se převést %s do utf8.\n"
 
-#: ../src/libwrapper.cpp:398 ../src/libwrapper.cpp:432
+#: ../src/libwrapper.cpp:399 ../src/libwrapper.cpp:433
 #, fuzzy, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr "Nalezeno %d záznamů podobných %s.\n"
 
-#: ../src/libwrapper.cpp:416
+#: ../src/libwrapper.cpp:417
 msgid "Your choice[-1 to abort]: "
 msgstr "Vaše volba [-1 pro ukončení]: "
 
-#: ../src/libwrapper.cpp:426
+#: ../src/libwrapper.cpp:427
 #, fuzzy, c-format
 msgid ""
 "Invalid choice.\n"
@@ -43,102 +43,102 @@ msgstr ""
 "Chybná volba.\n"
 "Musí být mezi 0 a %d nebo -1.\n"
 
-#: ../src/libwrapper.cpp:445
+#: ../src/libwrapper.cpp:446
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "Nic podobného %s nenalezeno, promiň :(\n"
 
-#: ../src/sdcv.cpp:88
+#: ../src/sdcv.cpp:89
 #, fuzzy
 msgid "display version information and exit"
 msgstr "-v, --version            zobrazí informace o verzi a skončí\n"
 
-#: ../src/sdcv.cpp:90
+#: ../src/sdcv.cpp:91
 #, fuzzy
 msgid "display list of available dictionaries and exit"
 msgstr "-l, --list-dicts         zobrazí seznam dostupných slovníků a skončí\n"
 
-#: ../src/sdcv.cpp:92
+#: ../src/sdcv.cpp:93
 #, fuzzy
 msgid "for search use only dictionary with this bookname"
 msgstr "-u, --use-dict jméno     vyhledávat jen v zadaném slovníku\n"
 
-#: ../src/sdcv.cpp:93
+#: ../src/sdcv.cpp:94
 msgid "bookname"
 msgstr ""
 
-#: ../src/sdcv.cpp:95
+#: ../src/sdcv.cpp:96
 msgid "for use in scripts"
 msgstr ""
 
-#: ../src/sdcv.cpp:97
+#: ../src/sdcv.cpp:98
 msgid "print the result formatted as JSON"
 msgstr ""
 
-#: ../src/sdcv.cpp:99
+#: ../src/sdcv.cpp:100
 msgid "do not fuzzy-search for similar words, only return exact matches"
 msgstr ""
 
-#: ../src/sdcv.cpp:101
+#: ../src/sdcv.cpp:102
 #, fuzzy
 msgid "output must be in utf8"
 msgstr "--utf8-output            výstup musí být v utf8\n"
 
-#: ../src/sdcv.cpp:103
+#: ../src/sdcv.cpp:104
 #, fuzzy
 msgid "input of sdcv in utf8"
 msgstr "--utf8-input             vstup musí být v utf8\n"
 
-#: ../src/sdcv.cpp:105
+#: ../src/sdcv.cpp:106
 #, fuzzy
 msgid "use this directory as path to stardict data directory"
 msgstr ""
 "--data-dir cesta/někam   použít tento adresář jako cestu ke slovníkům "
 "stardict\n"
 
-#: ../src/sdcv.cpp:106
+#: ../src/sdcv.cpp:107
 msgid "path/to/dir"
 msgstr ""
 
-#: ../src/sdcv.cpp:108
+#: ../src/sdcv.cpp:109
 msgid ""
 "only use the dictionaries in data-dir, do not search in user and system "
 "directories"
 msgstr ""
 
-#: ../src/sdcv.cpp:110
+#: ../src/sdcv.cpp:111
 msgid "colorize the output"
 msgstr ""
 
-#: ../src/sdcv.cpp:115
+#: ../src/sdcv.cpp:116
 msgid " words"
 msgstr ""
 
-#: ../src/sdcv.cpp:121
+#: ../src/sdcv.cpp:122
 #, c-format
 msgid "Invalid command line arguments: %s\n"
 msgstr ""
 
-#: ../src/sdcv.cpp:127
+#: ../src/sdcv.cpp:128
 #, c-format
 msgid "Console version of Stardict, version %s\n"
 msgstr "Konzolová verze Stardictu, verze %s\n"
 
-#: ../src/sdcv.cpp:202
+#: ../src/sdcv.cpp:206
 #, c-format
 msgid "g_mkdir failed: %s\n"
 msgstr "g_mkdir selhalo: %s\n"
 
-#: ../src/sdcv.cpp:217
+#: ../src/sdcv.cpp:222
 msgid "Enter word or phrase: "
 msgstr "Zadejte slovo nebo frázi: "
 
-#: ../src/sdcv.cpp:225
+#: ../src/sdcv.cpp:230
 #, c-format
 msgid "There are no words/phrases to translate.\n"
 msgstr "Nebyla zadáno nic k přeložení.\n"
 
-#: ../src/sdcv.cpp:237
+#: ../src/sdcv.cpp:242
 #, c-format
 msgid "Dictionary's name   Word count\n"
 msgstr "Jméno slovníku      Počet slov\n"

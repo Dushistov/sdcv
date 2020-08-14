@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sdcv 0.5\n"
 "Report-Msgid-Bugs-To: dushistov@mail.ru\n"
-"POT-Creation-Date: 2017-08-16 09:52+0300\n"
+"POT-Creation-Date: 2020-08-14 12:58+0300\n"
 "PO-Revision-Date: 2017-08-16 10:05+0300\n"
 "Last-Translator: Evgeniy Dushistov <dushistov@mail.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -23,21 +23,21 @@ msgstr ""
 msgid "popen failed"
 msgstr "функция popen завершилась с ошибкой"
 
-#: ../src/libwrapper.cpp:340
+#: ../src/libwrapper.cpp:341
 #, c-format
 msgid "Can not convert %s to utf8.\n"
 msgstr "Не могу преобразовать %s в utf8.\n"
 
-#: ../src/libwrapper.cpp:398 ../src/libwrapper.cpp:432
+#: ../src/libwrapper.cpp:399 ../src/libwrapper.cpp:433
 #, c-format
 msgid "Found %zu items, similar to %s.\n"
 msgstr "Найдено %zu слов, похожих на %s.\n"
 
-#: ../src/libwrapper.cpp:416
+#: ../src/libwrapper.cpp:417
 msgid "Your choice[-1 to abort]: "
 msgstr "Ваш выбор[-1 - отмена]: "
 
-#: ../src/libwrapper.cpp:426
+#: ../src/libwrapper.cpp:427
 #, c-format
 msgid ""
 "Invalid choice.\n"
@@ -46,95 +46,98 @@ msgstr ""
 "Неправильный выбор.\n"
 "Должно быть от 0 до %zu или -1.\n"
 
-#: ../src/libwrapper.cpp:445
+#: ../src/libwrapper.cpp:446
 #, c-format
 msgid "Nothing similar to %s, sorry :(\n"
 msgstr "Ничего похожего на %s, извините :(\n"
 
-#: ../src/sdcv.cpp:88
+#: ../src/sdcv.cpp:89
 msgid "display version information and exit"
 msgstr "показать номер версии и завершить работу"
 
-#: ../src/sdcv.cpp:90
+#: ../src/sdcv.cpp:91
 msgid "display list of available dictionaries and exit"
 msgstr "показать список доступных словарей и завершить работу"
 
-#: ../src/sdcv.cpp:92
+#: ../src/sdcv.cpp:93
 msgid "for search use only dictionary with this bookname"
 msgstr "для поиска использовать только этот словарь с таким именем"
 
-#: ../src/sdcv.cpp:93
+#: ../src/sdcv.cpp:94
 msgid "bookname"
 msgstr "имя_словаря"
 
-#: ../src/sdcv.cpp:95
+#: ../src/sdcv.cpp:96
 msgid "for use in scripts"
 msgstr "для использования в скриптах"
 
-#: ../src/sdcv.cpp:97
+#: ../src/sdcv.cpp:98
 msgid "print the result formatted as JSON"
 msgstr "выдать результат в JSON формате"
 
-#: ../src/sdcv.cpp:99
+#: ../src/sdcv.cpp:100
 msgid "do not fuzzy-search for similar words, only return exact matches"
-msgstr "не использовать нечеткий поиск похожих слов, вернуть только точные совпадения"
+msgstr ""
+"не использовать нечеткий поиск похожих слов, вернуть только точные совпадения"
 
-#: ../src/sdcv.cpp:101
+#: ../src/sdcv.cpp:102
 msgid "output must be in utf8"
 msgstr "вывод программы должен быть в utf8"
 
-#: ../src/sdcv.cpp:103
+#: ../src/sdcv.cpp:104
 msgid "input of sdcv in utf8"
 msgstr "ввод программы в utf8"
 
-#: ../src/sdcv.cpp:105
+#: ../src/sdcv.cpp:106
 msgid "use this directory as path to stardict data directory"
 msgstr ""
 "использовать эту директорию в качестве пути к \"stardict data\" директории"
 
-#: ../src/sdcv.cpp:106
+#: ../src/sdcv.cpp:107
 msgid "path/to/dir"
 msgstr "путь/до/директории"
 
-#: ../src/sdcv.cpp:108
+#: ../src/sdcv.cpp:109
 msgid ""
 "only use the dictionaries in data-dir, do not search in user and system "
 "directories"
-msgstr "использовать словари только из data-dir, не искать в пользовательских и системных каталогах"
+msgstr ""
+"использовать словари только из data-dir, не искать в пользовательских и "
+"системных каталогах"
 
-#: ../src/sdcv.cpp:110
+#: ../src/sdcv.cpp:111
 msgid "colorize the output"
 msgstr "раскрашивать вывод в разные цвета"
 
-#: ../src/sdcv.cpp:115
+#: ../src/sdcv.cpp:116
 msgid " words"
 msgstr "слова"
 
-#: ../src/sdcv.cpp:121
+#: ../src/sdcv.cpp:122
 #, c-format
 msgid "Invalid command line arguments: %s\n"
 msgstr "Неправильный аргумент командой строки: %s\n"
 
-#: ../src/sdcv.cpp:127
+#: ../src/sdcv.cpp:128
 #, c-format
 msgid "Console version of Stardict, version %s\n"
 msgstr "Консольная версия StarDict, версия %s\n"
 
-#: ../src/sdcv.cpp:202
+#: ../src/sdcv.cpp:206
 #, c-format
 msgid "g_mkdir failed: %s\n"
 msgstr "g_mkdir завершился с ошибкой: %s\n"
 
-#: ../src/sdcv.cpp:217
+#: ../src/sdcv.cpp:222
 msgid "Enter word or phrase: "
 msgstr "Введите слово или фразу: "
 
-#: ../src/sdcv.cpp:225
+#: ../src/sdcv.cpp:230
 #, c-format
 msgid "There are no words/phrases to translate.\n"
 msgstr "Не задано слова/фразы для перевода.\n"
 
-#: ../src/sdcv.cpp:237
+#: ../src/sdcv.cpp:242
 #, c-format
 msgid "Dictionary's name   Word count\n"
 msgstr "Название словаря     Количество слов\n"

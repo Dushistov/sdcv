@@ -22,7 +22,8 @@ you can use "DESTDIR" variable to change installation path
 See sdcv man page for usage description.
 
 * Bugs
-If you find bug reports it via email to dushistov at mail dot ru. 
+To report bugs use https://github.com/Dushistov/sdcv/issues ,
+if it is not possible you can report it via email to dushistov at mail dot ru.
 Be sure to include the word "sdcv" somewhere in the "Subject:" field.
 
 * Notes to developer
