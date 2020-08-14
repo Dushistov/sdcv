@@ -57,7 +57,7 @@ public:
         return stdio_getline(stdin, line);
     }
 };
-}
+} // namespace
 #else
 
 namespace
@@ -72,7 +72,7 @@ std::string get_hist_file_path()
     const std::string hist_file_path = std::string(g_get_home_dir()) + G_DIR_SEPARATOR + ".sdcv_history";
     if (g_file_test(hist_file_path.c_str(), G_FILE_TEST_IS_REGULAR))
         return hist_file_path;
-    
+
     return std::string(g_get_user_data_dir()) + G_DIR_SEPARATOR + "sdcv_history";
 }
 
@@ -116,7 +116,7 @@ public:
         add_history(phrase.c_str());
     }
 };
-}
+} // namespace
 #endif //WITH_READLINE
 
 IReadLine *create_readline_object()

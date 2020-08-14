@@ -25,9 +25,9 @@ typedef std::vector<TSearchResult> TSearchResultList;
 
 //possible return values for Library.process_phase()
 enum search_result {
-	SEARCH_SUCCESS = 0,
-	SEARCH_FAILURE,
-	SEARCH_NO_RESULT
+    SEARCH_SUCCESS = 0,
+    SEARCH_FAILURE,
+    SEARCH_NO_RESULT
 };
 
 //this class is wrapper around Dicts class for easy use

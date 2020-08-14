@@ -53,7 +53,7 @@ static void free_str_array(gchar **arr)
         g_free(*p);
     g_free(arr);
 }
-}
+} // namespace
 namespace glib
 {
 using StrArr = ResourceWrapper<gchar *, gchar *, free_str_array>;
@@ -61,13 +61,14 @@ using StrArr = ResourceWrapper<gchar *, gchar *, free_str_array>;
 
 static void list_dicts(const std::list<std::string> &dicts_dir_list, bool use_json);
 
-int main(int argc, char *argv[]) try {
+int main(int argc, char *argv[])
+try {
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
     bindtextdomain("sdcv",
                    //"./locale"//< for testing
                    GETTEXT_TRANSLATIONS_PATH //< should be
-                   );
+    );
     textdomain("sdcv");
 #endif
 
@@ -210,7 +211,7 @@ int main(int argc, char *argv[]) try {
 
     std::unique_ptr<IReadLine> io(create_readline_object());
     if (optind < argc) {
-		search_result rval = SEARCH_SUCCESS;
+        search_result rval = SEARCH_SUCCESS;
         for (int i = optind; i < argc; ++i)
             if ((rval = lib.process_phrase(argv[i], *io, non_interactive)) != SEARCH_SUCCESS) {
                 return rval;

@@ -71,7 +71,7 @@ static void unicode_strdown(gunichar *str)
         ++str;
     }
 }
-}
+} // namespace
 
 bool DictInfo::load_from_ifo_file(const std::string &ifofilename,
                                   bool istreedict)
@@ -826,7 +826,7 @@ bool WordListIndex::lookup(const char *str, glong &idx)
     }
     return bFound;
 }
-}
+} // namespace
 
 bool SynFile::load(const std::string &url, gulong wc)
 {
