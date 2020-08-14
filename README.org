@@ -1,5 +1,5 @@
 #+OPTIONS: ^:nil
-[[https://travis-ci.org/Dushistov/sdcv][https://travis-ci.org/Dushistov/sdcv.svg?branch=master]]
+[[https://github.com/Dushistov/sdcv/actions?query=workflow%3ACI+branch%3Amaster][https://github.com/Dushistov/sdcv/workflows/CI/badge.svg]]
 [[https://github.com/Dushistov/sdcv/blob/master/LICENSE][https://img.shields.io/badge/license-GPL%202-brightgreen.svg]]
 * How to compile and install
 #+BEGIN_SRC sh
