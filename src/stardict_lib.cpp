@@ -758,7 +758,7 @@ bool OffsetIndex::lookup(const char *str, glong &idx)
     return bFound;
 }
 
-bool WordListIndex::load(const std::string &url, gulong wc, gulong fsize, bool verbose)
+bool WordListIndex::load(const std::string &url, gulong wc, gulong fsize, bool)
 {
     gzFile in = gzopen(url.c_str(), "rb");
     if (in == nullptr)
