@@ -334,6 +334,7 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 
     if (dictfile)
         fseek(dictfile, idxitem_offset, SEEK_SET);
+    THROW_IF_ERROR(origin_data != nullptr);
     if (dictfile) {
         const size_t nitems = fread(origin_data, idxitem_size, 1, dictfile);
         THROW_IF_ERROR(nitems == 1);
