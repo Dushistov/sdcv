@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-      - uses: jwlawson/actions-setup-cmake@v1.0
+      - uses: jwlawson/actions-setup-cmake@v1.4
         with:
           cmake-version: '3.5.1'
           github-api-token: ${{ secrets.GITHUB_TOKEN }}
