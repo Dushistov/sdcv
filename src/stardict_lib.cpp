@@ -874,6 +874,7 @@ bool SynFile::lookup(const char *str, glong &idx)
 {
     bool bFound = false;
     glong iTo = synlist.size() - 2;
+    if (iTo <0) return false;
 
     if (stardict_strcmp(str, get_key(0)) < 0) {
         idx = 0;
