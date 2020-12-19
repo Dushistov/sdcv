@@ -897,8 +897,10 @@ bool SynFile::lookup(const char *str, glong &idx)
         }
         if (!bFound)
             idx = iFrom; //next
-        else
-            idx = iThisIndex;
+        else {
+            const gchar *key = get_key(iThisIndex);
+            idx = g_ntohl(get_uint32(key+strlen(key)+1));
+        }
     }
     return bFound;
 }
