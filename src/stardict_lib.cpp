@@ -833,21 +833,37 @@ bool SynFile::load(const std::string &url, gulong wc)
 {
     struct stat stat_buf;
     if (!stat(url.c_str(), &stat_buf)) {
-        MapFile syn;
-        if (!syn.open(url.c_str(), stat_buf.st_size))
+
+        FILE *in = fopen(url.c_str(), "rb");
+        if (!in)
             return false;
-        const gchar *current = syn.begin();
+
+        fseek(in, 0, SEEK_END);
+        gulong fsize = ftell(in);
+        fseek(in, 0, SEEK_SET);
+        syndatabuf = (gchar *)g_malloc(fsize);
+
+        const int len = fread(syndatabuf, 1, fsize, in);
+        fclose(in);
+        if (len < 0)
+            return false;
+
+        if (gulong(len) != fsize)
+            return false;
+
+        synlist.resize(wc + 1);
+        gchar *p1 = syndatabuf;
+
         for (unsigned long i = 0; i < wc; i++) {
             // each entry in a syn-file is:
             // - 0-terminated string
             // 4-byte index into .dict file in network byte order
-            glib::CharStr lower_string{ g_utf8_casefold(current, -1) };
-            std::string synonym{ get_impl(lower_string) };
-            current += synonym.length() + 1;
-            const guint32 idx = g_ntohl(get_uint32(current));
-            current += sizeof(idx);
-            synonyms[synonym] = idx;
+
+            synlist[i] = p1;
+            p1 += strlen(p1) + 1 + 4;
         }
+        synlist[wc] = p1;
+
         return true;
     } else {
         return false;
@@ -856,13 +872,35 @@ bool SynFile::load(const std::string &url, gulong wc)
 
 bool SynFile::lookup(const char *str, glong &idx)
 {
-    glib::CharStr lower_string{ g_utf8_casefold(str, -1) };
-    auto it = synonyms.find(get_impl(lower_string));
-    if (it != synonyms.end()) {
-        idx = it->second;
-        return true;
+    bool bFound = false;
+    glong iTo = synlist.size() - 2;
+
+    if (stardict_strcmp(str, get_key(0)) < 0) {
+        idx = 0;
+    } else if (stardict_strcmp(str, get_key(iTo)) > 0) {
+        idx = INVALID_INDEX;
+    } else {
+        glong iThisIndex = 0;
+        glong iFrom = 0;
+        gint cmpint;
+        while (iFrom <= iTo) {
+            iThisIndex = (iFrom + iTo) / 2;
+            cmpint = stardict_strcmp(str, get_key(iThisIndex));
+            if (cmpint > 0)
+                iFrom = iThisIndex + 1;
+            else if (cmpint < 0)
+                iTo = iThisIndex - 1;
+            else {
+                bFound = true;
+                break;
+            }
+        }
+        if (!bFound)
+            idx = iFrom; //next
+        else
+            idx = iThisIndex;
     }
-    return false;
+    return bFound;
 }
 
 bool Dict::Lookup(const char *str, glong &idx)
