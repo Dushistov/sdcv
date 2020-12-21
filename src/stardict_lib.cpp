@@ -831,19 +831,14 @@ bool WordListIndex::lookup(const char *str, glong &idx)
 
 bool SynFile::load(const std::string &url, gulong wc)
 {
-
     struct stat stat_buf;
     if (!stat(url.c_str(), &stat_buf)) {
 
-        MapFile syn;
-        if (!syn.open(url.c_str(), stat_buf.st_size))
+        if (!synfile.open(url.c_str(), stat_buf.st_size))
             return false;
 
-        syndatabuf = (gchar *)g_malloc(stat_buf.st_size);
-        memcpy(syndatabuf, syn.begin(),  stat_buf.st_size);
-
         synlist.resize(wc + 1);
-        gchar *p1 = syndatabuf;
+        gchar *p1 = synfile.begin();
 
         for (unsigned long i = 0; i < wc; i++) {
             // each entry in a syn-file is:

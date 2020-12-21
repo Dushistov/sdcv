@@ -102,17 +102,14 @@ public:
 class SynFile
 {
 public:
-    SynFile()
-        : syndatabuf(nullptr)
-    {
-    }
-    ~SynFile() { g_free(syndatabuf); }
+    SynFile() {}
+    ~SynFile() {}
     bool load(const std::string &url, gulong wc);
     bool lookup(const char *str, glong &idx);
     const gchar *get_key(glong idx) { return synlist[idx]; }
 
 private:
-    gchar *syndatabuf;
+    MapFile synfile;
     std::vector<gchar *> synlist;
 };
 
