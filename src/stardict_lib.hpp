@@ -102,11 +102,15 @@ public:
 class SynFile
 {
 public:
+    SynFile() {}
+    ~SynFile() {}
     bool load(const std::string &url, gulong wc);
     bool lookup(const char *str, glong &idx);
+    const gchar *get_key(glong idx) { return synlist[idx]; }
 
 private:
-    std::map<std::string, gulong> synonyms;
+    MapFile synfile;
+    std::vector<gchar *> synlist;
 };
 
 class Dict : public DictBase
