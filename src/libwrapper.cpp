@@ -332,17 +332,10 @@ search_result Library::process_phrase(const char *loc_str, IReadLine &io, bool f
     glib::Error err;
     search_result rval = SEARCH_SUCCESS;
     glib::CharStr str;
-    // Glib already runs CLI arguments through g_locale_to_utf8
-    if (g_get_charset(nullptr)) {
-        // Current locale is UTF-8
+    if (!utf8_input_)
+        str.reset(g_locale_to_utf8(loc_str, -1, &bytes_read, &bytes_written, get_addr(err)));
+    else
         str.reset(g_strdup(loc_str));
-    } else {
-        if (!utf8_input_) {
-            str.reset(g_strdup(loc_str));
-        } else {
-            str.reset(g_locale_from_utf8(loc_str, -1, &bytes_read, &bytes_written, get_addr(err)));
-        }
-    }
 
     if (nullptr == get_impl(str)) {
         fprintf(stderr, _("Can not convert %s to utf8.\n"), loc_str);
