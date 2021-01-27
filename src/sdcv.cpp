@@ -83,6 +83,7 @@ try {
     glib::CharStr opt_data_dir;
     gboolean only_data_dir = FALSE;
     gboolean colorize = FALSE;
+    glib::StrArr word_list;
 
     const GOptionEntry entries[] = {
         { "version", 'v', 0, G_OPTION_ARG_NONE, &show_version,
@@ -109,11 +110,13 @@ try {
           _("only use the dictionaries in data-dir, do not search in user and system directories"), nullptr },
         { "color", 'c', 0, G_OPTION_ARG_NONE, &colorize,
           _("colorize the output"), nullptr },
+        { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, get_addr(word_list),
+          _("search terms"), _(" words") },
         {},
     };
 
     glib::Error error;
-    GOptionContext *context = g_option_context_new(_(" words"));
+    GOptionContext *context = g_option_context_new(nullptr);
     g_option_context_set_help_enabled(context, TRUE);
     g_option_context_add_main_entries(context, entries, nullptr);
     const gboolean parse_res = g_option_context_parse(context, &argc, &argv, get_addr(error));
@@ -210,12 +213,14 @@ try {
     lib.load(dicts_dir_list, order_list, disable_list);
 
     std::unique_ptr<IReadLine> io(create_readline_object());
-    if (optind < argc) {
+    if (word_list != nullptr) {
         search_result rval = SEARCH_SUCCESS;
-        for (int i = optind; i < argc; ++i)
-            if ((rval = lib.process_phrase(argv[i], *io, non_interactive)) != SEARCH_SUCCESS) {
+        gchar **p = get_impl(word_list);
+        while (*p) {
+            if ((rval = lib.process_phrase(*p++, *io, non_interactive)) != SEARCH_SUCCESS) {
                 return rval;
             }
+        }
     } else if (!non_interactive) {
 
         std::string phrase;
