@@ -97,6 +97,8 @@ try {
           _("for use in scripts"), nullptr },
         { "json-output", 'j', 0, G_OPTION_ARG_NONE, &json_output,
           _("print the result formatted as JSON"), nullptr },
+        { "json", 'j', 0, G_OPTION_ARG_NONE, &json_output,
+          _("print the result formatted as JSON"), nullptr },
         { "exact-search", 'e', 0, G_OPTION_ARG_NONE, &no_fuzzy,
           _("do not fuzzy-search for similar words, only return exact matches"), nullptr },
         { "utf8-output", '0', 0, G_OPTION_ARG_NONE, &utf8_output,
