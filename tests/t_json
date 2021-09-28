@@ -22,4 +22,7 @@ test_json '[{"name": "Test synonyms", "wordcount": "2"},{"name": "Sample 1 test 
 test_json '[{"dict": "Test synonyms","word":"test","definition":"\u000aresult of test"}]' -x -j -n --data-dir "$TEST_DIR" foo
 test_json '[]' -x -j -n --data-dir "$TEST_DIR" foobarbaaz
 
+# Test multiple searches, with the first failing.
+test_json '[][{"dict": "Test synonyms","word":"test","definition":"\u000aresult of test"}]' -x -j -n --data-dir "$TEST_DIR" foobarbaaz foo
+
 exit 0
