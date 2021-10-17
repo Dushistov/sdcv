@@ -219,12 +219,15 @@ try {
         search_result rval = SEARCH_SUCCESS;
         gchar **p = get_impl(word_list);
         while (*p) {
-            if ((rval = lib.process_phrase(*p++, *io, non_interactive)) != SEARCH_SUCCESS) {
-                return rval;
-            }
+            search_result this_rval = lib.process_phrase(*p++, *io, non_interactive);
+            // If we encounter any error, save it but continue through the word
+            // list to check all requested words.
+            if (rval == SEARCH_SUCCESS)
+                rval = this_rval;
         }
+        if (rval != SEARCH_SUCCESS)
+            return rval;
     } else if (!non_interactive) {
-
         std::string phrase;
         while (io->read(_("Enter word or phrase: "), phrase)) {
             if (lib.process_phrase(phrase.c_str(), *io) == SEARCH_FAILURE)
