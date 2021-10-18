@@ -6,6 +6,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -96,7 +97,11 @@ public:
     virtual const gchar *get_key(glong idx) = 0;
     virtual void get_data(glong idx) = 0;
     virtual const gchar *get_key_and_data(glong idx) = 0;
-    virtual bool lookup(const char *str, glong &idx) = 0;
+    virtual bool lookup(const char *str, std::set<glong> &idxs, glong &next_idx) = 0;
+    virtual bool lookup(const char *str, std::set<glong> &idxs) {
+        glong unused_next_idx;
+        return lookup(str, idxs, unused_next_idx);
+    };
 };
 
 class SynFile
@@ -105,7 +110,8 @@ public:
     SynFile() {}
     ~SynFile() {}
     bool load(const std::string &url, gulong wc);
-    bool lookup(const char *str, glong &idx);
+    bool lookup(const char *str, std::set<glong> &idxs, glong &next_idx);
+    bool lookup(const char *str, std::set<glong> &idxs);
     const gchar *get_key(glong idx) { return synlist[idx]; }
 
 private:
@@ -137,7 +143,11 @@ public:
         *offset = idx_file->wordentry_offset;
         *size = idx_file->wordentry_size;
     }
-    bool Lookup(const char *str, glong &idx);
+    bool Lookup(const char *str, std::set<glong> &idxs, glong &next_idx);
+    bool Lookup(const char *str, std::set<glong> &idxs) {
+        glong unused_next_idx;
+        return Lookup(str, idxs, unused_next_idx);
+    }
 
     bool LookupWithRule(GPatternSpec *pspec, glong *aIndex, int iBuffLen);
 
@@ -188,12 +198,12 @@ public:
     const gchar *poGetCurrentWord(glong *iCurrent);
     const gchar *poGetNextWord(const gchar *word, glong *iCurrent);
     const gchar *poGetPreWord(glong *iCurrent);
-    bool LookupWord(const gchar *sWord, glong &iWordIndex, int iLib)
+    bool LookupWord(const gchar *sWord, std::set<glong> &iWordIndices, int iLib)
     {
-        return oLib[iLib]->Lookup(sWord, iWordIndex);
+        return oLib[iLib]->Lookup(sWord, iWordIndices);
     }
-    bool LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib);
-    bool SimpleLookupWord(const gchar *sWord, glong &iWordIndex, int iLib);
+    bool LookupSimilarWord(const gchar *sWord, std::set<glong> &iWordIndices, int iLib);
+    bool SimpleLookupWord(const gchar *sWord, std::set<glong> &iWordIndices, int iLib);
 
     bool LookupWithFuzzy(const gchar *sWord, gchar *reslist[], gint reslist_size);
     gint LookupWithRule(const gchar *sWord, gchar *reslist[]);

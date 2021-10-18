@@ -199,14 +199,18 @@ static std::string parse_data(const gchar *data, bool colorize_output)
 
 void Library::SimpleLookup(const std::string &str, TSearchResultList &res_list)
 {
-    glong ind;
+    std::set<glong> wordIdxs;
     res_list.reserve(ndicts());
-    for (gint idict = 0; idict < ndicts(); ++idict)
-        if (SimpleLookupWord(str.c_str(), ind, idict))
-            res_list.push_back(
-                TSearchResult(dict_name(idict),
-                              poGetWord(ind, idict),
-                              parse_data(poGetWordData(ind, idict), colorize_output_)));
+    for (gint idict = 0; idict < ndicts(); ++idict) {
+        wordIdxs.clear();
+        if (SimpleLookupWord(str.c_str(), wordIdxs, idict))
+            for (auto &wordIdx : wordIdxs)
+                res_list.push_back(
+                    TSearchResult(dict_name(idict),
+                                  poGetWord(wordIdx, idict),
+                                  parse_data(poGetWordData(wordIdx, idict),
+                                             colorize_output_)));
+    }
 }
 
 void Library::LookupWithFuzzy(const std::string &str, TSearchResultList &res_list)

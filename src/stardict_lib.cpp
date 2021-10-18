@@ -450,7 +450,7 @@ public:
     {
         return get_key(idx);
     }
-    bool lookup(const char *str, glong &idx) override;
+    bool lookup(const char *str, std::set<glong> &idxs, glong &next_idx) override;
 
 private:
     static const gint ENTR_PER_PAGE = 32;
@@ -511,7 +511,7 @@ public:
         get_data(idx);
         return get_key(idx);
     }
-    bool lookup(const char *str, glong &idx) override;
+    bool lookup(const char *str, std::set<glong> &idxs, glong &next_idx) override;
 
 private:
     gchar *idxdatabuf;
@@ -698,47 +698,52 @@ const gchar *OffsetIndex::get_key(glong idx)
     return page.entries[idx_in_page].keystr;
 }
 
-bool OffsetIndex::lookup(const char *str, glong &idx)
+bool OffsetIndex::lookup(const char *str, std::set<glong> &idxs, glong &next_idx)
 {
     bool bFound = false;
-    glong iFrom;
-    glong iTo = wordoffset.size() - 2;
-    gint cmpint;
-    glong iThisIndex;
+
     if (stardict_strcmp(str, first.keystr.c_str()) < 0) {
-        idx = 0;
+        next_idx = 0;
         return false;
     } else if (stardict_strcmp(str, real_last.keystr.c_str()) > 0) {
-        idx = INVALID_INDEX;
+        next_idx = INVALID_INDEX;
         return false;
-    } else {
-        iFrom = 0;
-        iThisIndex = 0;
-        while (iFrom <= iTo) {
-            iThisIndex = (iFrom + iTo) / 2;
-            cmpint = stardict_strcmp(str, get_first_on_page_key(iThisIndex));
-            if (cmpint > 0)
-                iFrom = iThisIndex + 1;
-            else if (cmpint < 0)
-                iTo = iThisIndex - 1;
-            else {
-                bFound = true;
-                break;
-            }
-        }
-        if (!bFound)
-            idx = iTo; //prev
-        else
-            idx = iThisIndex;
     }
-    if (!bFound) {
-        gulong netr = load_page(idx);
-        iFrom = 1; // Needn't search the first word anymore.
+
+    // Search for the first page where the word is likely to be located.
+    glong iFrom = 0, iTo = wordoffset.size() - 2;
+    glong iPage = 0, iThisIndex = 0;
+    while (iFrom <= iTo) {
+        iThisIndex = (iFrom + iTo) / 2;
+        glong cmpint = stardict_strcmp(str, get_first_on_page_key(iThisIndex));
+        if (cmpint > 0)
+            iFrom = iThisIndex + 1;
+        else if (cmpint < 0)
+            iTo = iThisIndex - 1;
+        else {
+            bFound = true;
+            break;
+        }
+    }
+
+    if (bFound) {
+        // We can use this found index (even though it might not be the first)
+        // because we will search backwards later and catch any entries on
+        // previous pages.
+        iPage = iThisIndex;
+        iThisIndex = 0; // first item in the page
+    } else {
+        iPage = iTo; // prev
+        // Not found at the start of a page, so search within the page that
+        // should contain it. Binary search here is slightly overkill (we're
+        // searching at most ENTR_PER_PAGE = 32 elements) but this way next_idx
+        // is treated the same as other Lookup methods.
+        gulong netr = load_page(iPage);
+        iFrom = 0;
         iTo = netr - 1;
-        iThisIndex = 0;
         while (iFrom <= iTo) {
             iThisIndex = (iFrom + iTo) / 2;
-            cmpint = stardict_strcmp(str, page.entries[iThisIndex].keystr);
+            glong cmpint = stardict_strcmp(str, page.entries[iThisIndex].keystr);
             if (cmpint > 0)
                 iFrom = iThisIndex + 1;
             else if (cmpint < 0)
@@ -748,13 +753,21 @@ bool OffsetIndex::lookup(const char *str, glong &idx)
                 break;
             }
         }
-        idx *= ENTR_PER_PAGE;
-        if (!bFound)
-            idx += iFrom; //next
-        else
-            idx += iThisIndex;
-    } else {
-        idx *= ENTR_PER_PAGE;
+    }
+
+    if (!bFound)
+        next_idx = iPage*ENTR_PER_PAGE + iFrom; // next
+    else {
+        // Convert the found in-page index to the dict index.
+        iThisIndex = iPage*ENTR_PER_PAGE + iThisIndex;
+        // In order to return all idxs that match the search string, walk
+        // linearly behind and ahead of the found index.
+        glong iHeadIndex = iThisIndex - 1; // do not include iThisIndex
+        while (iHeadIndex >= 0 && stardict_strcmp(str, get_key(iHeadIndex)) == 0)
+            idxs.insert(iHeadIndex--);
+        do // no need to double-check iThisIndex -- we know it's a match already
+            idxs.insert(iThisIndex++);
+        while (iThisIndex <= real_last.idx && stardict_strcmp(str, get_key(iThisIndex)) == 0);
     }
     return bFound;
 }
@@ -795,18 +808,18 @@ void WordListIndex::get_data(glong idx)
     wordentry_size = g_ntohl(get_uint32(p1));
 }
 
-bool WordListIndex::lookup(const char *str, glong &idx)
+bool WordListIndex::lookup(const char *str, std::set<glong> &idxs, glong &next_idx)
 {
     bool bFound = false;
-    glong iTo = wordlist.size() - 2;
+    glong iLast = wordlist.size() - 2;
 
     if (stardict_strcmp(str, get_key(0)) < 0) {
-        idx = 0;
-    } else if (stardict_strcmp(str, get_key(iTo)) > 0) {
-        idx = INVALID_INDEX;
+        next_idx = 0;
+    } else if (stardict_strcmp(str, get_key(iLast)) > 0) {
+        next_idx = INVALID_INDEX;
     } else {
         glong iThisIndex = 0;
-        glong iFrom = 0;
+        glong iFrom = 0, iTo = iLast;
         gint cmpint;
         while (iFrom <= iTo) {
             iThisIndex = (iFrom + iTo) / 2;
@@ -821,9 +834,17 @@ bool WordListIndex::lookup(const char *str, glong &idx)
             }
         }
         if (!bFound)
-            idx = iFrom; //next
-        else
-            idx = iThisIndex;
+            next_idx = iFrom; //next
+        else {
+            // In order to return all idxs that match the search string, walk
+            // linearly behind and ahead of the found index.
+            glong iHeadIndex = iThisIndex - 1; // do not include iThisIndex
+            while (iHeadIndex >= 0 && stardict_strcmp(str, get_key(iHeadIndex)) == 0)
+                idxs.insert(iHeadIndex--);
+            do // no need to double-check iThisIndex -- we know it's a match already
+                idxs.insert(iThisIndex++);
+            while (iThisIndex <= iLast && stardict_strcmp(str, get_key(iThisIndex)) == 0);
+        }
     }
     return bFound;
 }
@@ -856,19 +877,20 @@ bool SynFile::load(const std::string &url, gulong wc)
     }
 }
 
-bool SynFile::lookup(const char *str, glong &idx)
+bool SynFile::lookup(const char *str, std::set<glong> &idxs, glong &next_idx)
 {
     bool bFound = false;
-    glong iTo = synlist.size() - 2;
-    if (iTo <0) return false;
+    glong iLast = synlist.size() - 2;
+    if (iLast < 0)
+        return false;
 
     if (stardict_strcmp(str, get_key(0)) < 0) {
-        idx = 0;
-    } else if (stardict_strcmp(str, get_key(iTo)) > 0) {
-        idx = INVALID_INDEX;
+        next_idx = 0;
+    } else if (stardict_strcmp(str, get_key(iLast)) > 0) {
+        next_idx = INVALID_INDEX;
     } else {
         glong iThisIndex = 0;
-        glong iFrom = 0;
+        glong iFrom = 0, iTo = iLast;
         gint cmpint;
         while (iFrom <= iTo) {
             iThisIndex = (iFrom + iTo) / 2;
@@ -883,18 +905,31 @@ bool SynFile::lookup(const char *str, glong &idx)
             }
         }
         if (!bFound)
-            idx = iFrom; //next
+            next_idx = iFrom; //next
         else {
-            const gchar *key = get_key(iThisIndex);
-            idx = g_ntohl(get_uint32(key+strlen(key)+1));
+            // In order to return all idxs that match the search string, walk
+            // linearly behind and ahead of the found index.
+            glong iHeadIndex = iThisIndex - 1; // do not include iThisIndex
+            while (iHeadIndex >= 0 && stardict_strcmp(str, get_key(iHeadIndex)) == 0) {
+                const gchar *key = get_key(iHeadIndex--);
+                idxs.insert(g_ntohl(get_uint32(key+strlen(key)+1)));
+            }
+            do {
+                // no need to double-check iThisIndex -- we know it's a match already
+                const gchar *key = get_key(iThisIndex++);
+                idxs.insert(g_ntohl(get_uint32(key+strlen(key)+1)));
+            } while (iThisIndex <= iLast && stardict_strcmp(str, get_key(iThisIndex)) == 0);
         }
     }
     return bFound;
 }
 
-bool Dict::Lookup(const char *str, glong &idx)
+bool Dict::Lookup(const char *str, std::set<glong> &idxs, glong &next_idx)
 {
-    return syn_file->lookup(str, idx) || idx_file->lookup(str, idx);
+    bool found = false;
+    found |= syn_file->lookup(str, idxs, next_idx);
+    found |= idx_file->lookup(str, idxs, next_idx);
+    return found;
 }
 
 bool Dict::load(const std::string &ifofilename, bool verbose)
@@ -1032,9 +1067,25 @@ const gchar *Libs::poGetNextWord(const gchar *sWord, glong *iCurrent)
     size_t iCurrentLib = 0;
     const gchar *word;
 
+    glong nextWordIdx = 0;
+    std::set<glong> wordIndices;
+
     for (size_t iLib = 0; iLib < oLib.size(); ++iLib) {
-        if (sWord)
-            oLib[iLib]->Lookup(sWord, iCurrent[iLib]);
+        wordIndices.clear();
+        if (sWord) {
+            if (oLib[iLib]->Lookup(sWord, wordIndices, nextWordIdx)) {
+                // In order to progress over words which have multiple entries,
+                // pick the smallest index larger than iCurrent.
+                for (auto &wordIdx : wordIndices) {
+                    if (wordIdx > iCurrent[iLib]) {
+                        iCurrent[iLib] = wordIdx;
+                        break;
+                    }
+                }
+            } else {
+                iCurrent[iLib] = nextWordIdx;
+            }
+        }
         if (iCurrent[iLib] == INVALID_INDEX)
             continue;
         if (iCurrent[iLib] >= narticles(iLib) || iCurrent[iLib] < 0)
@@ -1113,9 +1164,8 @@ Libs::poGetPreWord(glong *iCurrent)
     return poCurrentWord;
 }
 
-bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
+bool Libs::LookupSimilarWord(const gchar *sWord, std::set<glong> &iWordIndices, int iLib)
 {
-    glong iIndex;
     bool bFound = false;
     gchar *casestr;
 
@@ -1123,7 +1173,7 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
         // to lower case.
         casestr = g_utf8_strdown(sWord, -1);
         if (strcmp(casestr, sWord)) {
-            if (oLib[iLib]->Lookup(casestr, iIndex))
+            if (oLib[iLib]->Lookup(casestr, iWordIndices))
                 bFound = true;
         }
         g_free(casestr);
@@ -1131,7 +1181,7 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
         if (!bFound) {
             casestr = g_utf8_strup(sWord, -1);
             if (strcmp(casestr, sWord)) {
-                if (oLib[iLib]->Lookup(casestr, iIndex))
+                if (oLib[iLib]->Lookup(casestr, iWordIndices))
                     bFound = true;
             }
             g_free(casestr);
@@ -1145,7 +1195,7 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
             g_free(firstchar);
             g_free(nextchar);
             if (strcmp(casestr, sWord)) {
-                if (oLib[iLib]->Lookup(casestr, iIndex))
+                if (oLib[iLib]->Lookup(casestr, iWordIndices))
                     bFound = true;
             }
             g_free(casestr);
@@ -1165,12 +1215,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
             if (isupcase || sWord[iWordLen - 1] == 's' || !strncmp(&sWord[iWordLen - 2], "ed", 2)) {
                 strcpy(sNewWord, sWord);
                 sNewWord[iWordLen - 1] = '\0'; // cut "s" or "d"
-                if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                     bFound = true;
                 else if (isupcase || g_ascii_isupper(sWord[0])) {
                     casestr = g_ascii_strdown(sNewWord, -1);
                     if (strcmp(casestr, sNewWord)) {
-                        if (oLib[iLib]->Lookup(casestr, iIndex))
+                        if (oLib[iLib]->Lookup(casestr, iWordIndices))
                             bFound = true;
                     }
                     g_free(casestr);
@@ -1188,13 +1238,13 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
                     && !bIsVowel(sNewWord[iWordLen - 4]) && bIsVowel(sNewWord[iWordLen - 5])) { //doubled
 
                     sNewWord[iWordLen - 3] = '\0';
-                    if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                    if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                         bFound = true;
                     else {
                         if (isupcase || g_ascii_isupper(sWord[0])) {
                             casestr = g_ascii_strdown(sNewWord, -1);
                             if (strcmp(casestr, sNewWord)) {
-                                if (oLib[iLib]->Lookup(casestr, iIndex))
+                                if (oLib[iLib]->Lookup(casestr, iWordIndices))
                                     bFound = true;
                             }
                             g_free(casestr);
@@ -1204,12 +1254,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
                     }
                 }
                 if (!bFound) {
-                    if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                    if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                         bFound = true;
                     else if (isupcase || g_ascii_isupper(sWord[0])) {
                         casestr = g_ascii_strdown(sNewWord, -1);
                         if (strcmp(casestr, sNewWord)) {
-                            if (oLib[iLib]->Lookup(casestr, iIndex))
+                            if (oLib[iLib]->Lookup(casestr, iWordIndices))
                                 bFound = true;
                         }
                         g_free(casestr);
@@ -1227,13 +1277,13 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
                 if (iWordLen > 6 && (sNewWord[iWordLen - 4] == sNewWord[iWordLen - 5])
                     && !bIsVowel(sNewWord[iWordLen - 5]) && bIsVowel(sNewWord[iWordLen - 6])) { //doubled
                     sNewWord[iWordLen - 4] = '\0';
-                    if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                    if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                         bFound = true;
                     else {
                         if (isupcase || g_ascii_isupper(sWord[0])) {
                             casestr = g_ascii_strdown(sNewWord, -1);
                             if (strcmp(casestr, sNewWord)) {
-                                if (oLib[iLib]->Lookup(casestr, iIndex))
+                                if (oLib[iLib]->Lookup(casestr, iWordIndices))
                                     bFound = true;
                             }
                             g_free(casestr);
@@ -1243,12 +1293,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
                     }
                 }
                 if (!bFound) {
-                    if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                    if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                         bFound = true;
                     else if (isupcase || g_ascii_isupper(sWord[0])) {
                         casestr = g_ascii_strdown(sNewWord, -1);
                         if (strcmp(casestr, sNewWord)) {
-                            if (oLib[iLib]->Lookup(casestr, iIndex))
+                            if (oLib[iLib]->Lookup(casestr, iWordIndices))
                                 bFound = true;
                         }
                         g_free(casestr);
@@ -1259,12 +1309,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
                         strcat(sNewWord, "E"); // add a char "E"
                     else
                         strcat(sNewWord, "e"); // add a char "e"
-                    if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                    if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                         bFound = true;
                     else if (isupcase || g_ascii_isupper(sWord[0])) {
                         casestr = g_ascii_strdown(sNewWord, -1);
                         if (strcmp(casestr, sNewWord)) {
-                            if (oLib[iLib]->Lookup(casestr, iIndex))
+                            if (oLib[iLib]->Lookup(casestr, iWordIndices))
                                 bFound = true;
                         }
                         g_free(casestr);
@@ -1279,12 +1329,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
             if (isupcase || (!strncmp(&sWord[iWordLen - 2], "es", 2) && (sWord[iWordLen - 3] == 's' || sWord[iWordLen - 3] == 'x' || sWord[iWordLen - 3] == 'o' || (iWordLen > 4 && sWord[iWordLen - 3] == 'h' && (sWord[iWordLen - 4] == 'c' || sWord[iWordLen - 4] == 's'))))) {
                 strcpy(sNewWord, sWord);
                 sNewWord[iWordLen - 2] = '\0';
-                if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                     bFound = true;
                 else if (isupcase || g_ascii_isupper(sWord[0])) {
                     casestr = g_ascii_strdown(sNewWord, -1);
                     if (strcmp(casestr, sNewWord)) {
-                        if (oLib[iLib]->Lookup(casestr, iIndex))
+                        if (oLib[iLib]->Lookup(casestr, iWordIndices))
                             bFound = true;
                     }
                     g_free(casestr);
@@ -1301,13 +1351,13 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
                 if (iWordLen > 5 && (sNewWord[iWordLen - 3] == sNewWord[iWordLen - 4])
                     && !bIsVowel(sNewWord[iWordLen - 4]) && bIsVowel(sNewWord[iWordLen - 5])) { //doubled
                     sNewWord[iWordLen - 3] = '\0';
-                    if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                    if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                         bFound = true;
                     else {
                         if (isupcase || g_ascii_isupper(sWord[0])) {
                             casestr = g_ascii_strdown(sNewWord, -1);
                             if (strcmp(casestr, sNewWord)) {
-                                if (oLib[iLib]->Lookup(casestr, iIndex))
+                                if (oLib[iLib]->Lookup(casestr, iWordIndices))
                                     bFound = true;
                             }
                             g_free(casestr);
@@ -1317,12 +1367,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
                     }
                 }
                 if (!bFound) {
-                    if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                    if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                         bFound = true;
                     else if (isupcase || g_ascii_isupper(sWord[0])) {
                         casestr = g_ascii_strdown(sNewWord, -1);
                         if (strcmp(casestr, sNewWord)) {
-                            if (oLib[iLib]->Lookup(casestr, iIndex))
+                            if (oLib[iLib]->Lookup(casestr, iWordIndices))
                                 bFound = true;
                         }
                         g_free(casestr);
@@ -1341,12 +1391,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
                     strcat(sNewWord, "Y"); // add a char "Y"
                 else
                     strcat(sNewWord, "y"); // add a char "y"
-                if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                     bFound = true;
                 else if (isupcase || g_ascii_isupper(sWord[0])) {
                     casestr = g_ascii_strdown(sNewWord, -1);
                     if (strcmp(casestr, sNewWord)) {
-                        if (oLib[iLib]->Lookup(casestr, iIndex))
+                        if (oLib[iLib]->Lookup(casestr, iWordIndices))
                             bFound = true;
                     }
                     g_free(casestr);
@@ -1364,12 +1414,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
                     strcat(sNewWord, "Y"); // add a char "Y"
                 else
                     strcat(sNewWord, "y"); // add a char "y"
-                if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                     bFound = true;
                 else if (isupcase || g_ascii_isupper(sWord[0])) {
                     casestr = g_ascii_strdown(sNewWord, -1);
                     if (strcmp(casestr, sNewWord)) {
-                        if (oLib[iLib]->Lookup(casestr, iIndex))
+                        if (oLib[iLib]->Lookup(casestr, iWordIndices))
                             bFound = true;
                     }
                     g_free(casestr);
@@ -1383,12 +1433,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
             if (isupcase || (!strncmp(&sWord[iWordLen - 2], "er", 2))) {
                 strcpy(sNewWord, sWord);
                 sNewWord[iWordLen - 2] = '\0';
-                if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                     bFound = true;
                 else if (isupcase || g_ascii_isupper(sWord[0])) {
                     casestr = g_ascii_strdown(sNewWord, -1);
                     if (strcmp(casestr, sNewWord)) {
-                        if (oLib[iLib]->Lookup(casestr, iIndex))
+                        if (oLib[iLib]->Lookup(casestr, iWordIndices))
                             bFound = true;
                     }
                     g_free(casestr);
@@ -1402,12 +1452,12 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
             if (isupcase || (!strncmp(&sWord[iWordLen - 3], "est", 3))) {
                 strcpy(sNewWord, sWord);
                 sNewWord[iWordLen - 3] = '\0';
-                if (oLib[iLib]->Lookup(sNewWord, iIndex))
+                if (oLib[iLib]->Lookup(sNewWord, iWordIndices))
                     bFound = true;
                 else if (isupcase || g_ascii_isupper(sWord[0])) {
                     casestr = g_ascii_strdown(sNewWord, -1);
                     if (strcmp(casestr, sNewWord)) {
-                        if (oLib[iLib]->Lookup(casestr, iIndex))
+                        if (oLib[iLib]->Lookup(casestr, iWordIndices))
                             bFound = true;
                     }
                     g_free(casestr);
@@ -1417,24 +1467,21 @@ bool Libs::LookupSimilarWord(const gchar *sWord, glong &iWordIndex, int iLib)
 
         g_free(sNewWord);
     }
-
-    if (bFound)
-        iWordIndex = iIndex;
 #if 0
-	else {
-		//don't change iWordIndex here.
-		//when LookupSimilarWord all failed too, we want to use the old LookupWord index to list words.
-		//iWordIndex = INVALID_INDEX;
-	}
+    else {
+        //don't change iWordIndex here.
+        //when LookupSimilarWord all failed too, we want to use the old LookupWord index to list words.
+        //iWordIndex = INVALID_INDEX;
+    }
 #endif
     return bFound;
 }
 
-bool Libs::SimpleLookupWord(const gchar *sWord, glong &iWordIndex, int iLib)
+bool Libs::SimpleLookupWord(const gchar *sWord, std::set<glong> &iWordIndices, int iLib)
 {
-    bool bFound = oLib[iLib]->Lookup(sWord, iWordIndex);
+    bool bFound = oLib[iLib]->Lookup(sWord, iWordIndices);
     if (!bFound && fuzzy_)
-        bFound = LookupSimilarWord(sWord, iWordIndex, iLib);
+        bFound = LookupSimilarWord(sWord, iWordIndices, iLib);
     return bFound;
 }
 
