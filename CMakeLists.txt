@@ -143,5 +143,6 @@ if (BUILD_TESTS)
   add_sdcv_shell_test(t_utf8input)
   add_sdcv_shell_test(t_datadir)
   add_sdcv_shell_test(t_return_code)
+  add_sdcv_shell_test(t_multiple_results)
 
 endif (BUILD_TESTS)

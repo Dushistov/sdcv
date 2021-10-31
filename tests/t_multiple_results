@@ -1,0 +1,67 @@
+#!/bin/sh
+
+set -e
+
+SDCV="$1"
+TEST_DIR="$2"
+
+unset SDCV_PAGER
+unset STARDICT_DATA_DIR
+
+test_json() {
+    word="$1"
+    jq_cmp="$2"
+    result="$("$SDCV" --data-dir "$TEST_DIR" -exjn "$word" | sed 's|\\n|\\u000a|g')"
+    cmp_result="$(echo "$result" | jq "$jq_cmp")"
+    if [ "$cmp_result" != "true" ]; then
+        echo "expected '$jq_cmp' to return true, but $result didn't"
+        exit 1
+    fi
+}
+
+# Basic two-result search for the same headword.
+test_json bark \
+    '. == [
+        {"dict":"Test multiple results","word":"bark","definition":"\u000aThe harsh sound made by a dog."},
+        {"dict":"Test multiple results","word":"bark","definition":"\u000aThe tough outer covering of trees and other woody plants."}
+    ]'
+
+# Multi-result search where one word exists as both a synyonym and a separate
+# headword. This ensures that if there is a matching synyonym we don't skip the
+# regular search.
+test_json cat \
+    '. == [
+        {"dict":"Test multiple results","word":"cat","definition":"\u000aA cute animal which (rarely) barks."},
+        {"dict":"Test multiple results","word":"lion","definition":"\u000aA larger cat which might bite your head off."},
+        {"dict":"Test multiple results","word":"panther","definition":"\u000aI know very little about panthers, sorry."}
+    ]'
+
+# Many-result search for a word that matches 120 distinct headwords.
+test_json many_headwords 'length == 120'
+test_json many_headwords 'all(.word == "many_headwords")'
+test_json many_headwords \
+    'to_entries | map(.value.definition == "\u000aDefinition for [many_headwords] entry #\(.key+1) (same headword).") | all'
+
+# Many-result search for 120 words that have the same synonym.
+test_json many_synonyms 'length == 120'
+test_json many_synonyms \
+    'to_entries | map(.value.word == "many_synonyms-\(.key+101)") | all'
+test_json many_synonyms \
+    'to_entries | map(.value.definition == "\u000aDefinition for [many_synonyms-\(.key+101)] (same synonym).") | all'
+
+# Ensure that we don't return more than one result even if a word can be
+# resolved in more than one way.
+#
+# Most well-formed dictionaries don't have entries like this (it basically
+# requires you to have a dictionary where there is a synonym that is identical
+# to a word's headword or multiple identical synyonym entries).
+#
+# This entry was created by creating extra synonyms with different names then
+# modifying the .syn file manually.
+test_json many_resolution_paths \
+    '. == [
+        {"dict":"Test multiple results","word":"many_resolution_paths",
+         "definition":"\u000aDefinition for [many_resolution_paths] headword (same word, multiple synonym entries)."}
+    ]'
+
+exit 0
