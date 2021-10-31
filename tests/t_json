@@ -18,7 +18,10 @@ test_json() {
     fi
 }
 
-test_json '[{"name": "Test synonyms", "wordcount": "2"},{"name": "Sample 1 test dictionary", "wordcount": "1"},{"name": "test_dict", "wordcount": "1"}]' -x -j -l -n --data-dir "$TEST_DIR"
+test_json '[{"name": "Test synonyms", "wordcount": "2"},
+            {"name": "Test multiple results", "wordcount": "246"},
+            {"name": "Sample 1 test dictionary", "wordcount": "1"},
+            {"name": "test_dict", "wordcount": "1"}]' -x -j -l -n --data-dir "$TEST_DIR"
 test_json '[{"dict": "Test synonyms","word":"test","definition":"\u000aresult of test"}]' -x -j -n --data-dir "$TEST_DIR" foo
 test_json '[]' -x -j -n --data-dir "$TEST_DIR" foobarbaaz
 
