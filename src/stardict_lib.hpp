@@ -195,9 +195,6 @@ public:
             return nullptr;
         return oLib[iLib]->get_data(iIndex);
     }
-    const gchar *poGetCurrentWord(glong *iCurrent);
-    const gchar *poGetNextWord(const gchar *word, glong *iCurrent);
-    const gchar *poGetPreWord(glong *iCurrent);
     bool LookupWord(const gchar *sWord, std::set<glong> &iWordIndices, int iLib)
     {
         return oLib[iLib]->Lookup(sWord, iWordIndices);
