@@ -7,6 +7,7 @@
 #ifdef HAVE_MMAP
 #include <fcntl.h>
 #include <sys/mman.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #endif
 #ifdef _WIN32
@@ -43,6 +44,13 @@ inline bool MapFile::open(const char *file_name, unsigned long file_size)
         // g_print("Open file %s failed!\n",fullfilename);
         return false;
     }
+    struct stat st;
+    if (fstat(mmap_fd, &st) == -1 || st.st_size < 0 || (st.st_size == 0 && S_ISREG(st.st_mode))
+        || sizeof(st.st_size) > sizeof(file_size) || static_cast<unsigned long>(st.st_size) != file_size) {
+        close(mmap_fd);
+        return false;
+    }
+
     data = (gchar *)mmap(nullptr, file_size, PROT_READ, MAP_SHARED, mmap_fd, 0);
     if ((void *)data == (void *)(-1)) {
         // g_print("mmap file %s failed!\n",idxfilename);
