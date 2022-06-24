@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+
+PATH_TO_SDCV="$1"
+TEST_DIR="$2"
+
+unset SDCV_PAGER
+
+RES=$("$PATH_TO_SDCV" -n -x --data-dir="$TEST_DIR/not-unix-newlines-ifo" -l | tail -n 1)
+if [ "$RES" == "Russian-English Dictionary (ru-en)    415144" ]; then
+  exit 0
+else
+  echo "test failed, unexpected result: $RES" >&2
+  exit 1
+fi

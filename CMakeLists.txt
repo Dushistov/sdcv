@@ -148,5 +148,6 @@ if (BUILD_TESTS)
   add_sdcv_shell_test(t_datadir)
   add_sdcv_shell_test(t_return_code)
   add_sdcv_shell_test(t_multiple_results)
+  add_sdcv_shell_test(t_newlines_in_ifo)
 
 endif (BUILD_TESTS)

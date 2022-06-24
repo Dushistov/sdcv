@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cstring>
+#include <map>
 #include <stdexcept>
 
 #include <glib/gstdio.h>
@@ -78,108 +79,93 @@ bool DictInfo::load_from_ifo_file(const std::string &ifofilename,
 {
     ifo_file_name = ifofilename;
     glib::CharStr buffer;
-    if (!g_file_get_contents(ifofilename.c_str(), get_addr(buffer), nullptr, nullptr))
+    gsize length = 0;
+    if (!g_file_get_contents(ifofilename.c_str(), get_addr(buffer), &length, nullptr)) {
+        fprintf(stderr, "Can not read from %s\n", ifofilename.c_str());
         return false;
+    }
 
     static const char TREEDICT_MAGIC_DATA[] = "StarDict's treedict ifo file";
     static const char DICT_MAGIC_DATA[] = "StarDict's dict ifo file";
 
     const gchar *magic_data = istreedict ? TREEDICT_MAGIC_DATA : DICT_MAGIC_DATA;
-    static const unsigned char utf8_bom[] = { 0xEF, 0xBB, 0xBF, '\0' };
-    if (!g_str_has_prefix(
-            g_str_has_prefix(get_impl(buffer), (const gchar *)(utf8_bom)) ? get_impl(buffer) + 3 : get_impl(buffer),
-            magic_data)) {
+    static const gchar utf8_bom[] = { (gchar)0xEF, (gchar)0xBB, (gchar)0xBF, '\0' };
+
+    const gchar *p = get_impl(buffer);
+    const gchar *end = p + length;
+
+    if (g_str_has_prefix(p, utf8_bom)) {
+        p += strlen(utf8_bom);
+    }
+    if (!g_str_has_prefix(p, magic_data)) {
+        fprintf(stderr, "No magic header(%s) in ifo file\n", magic_data);
         return false;
     }
+    p += strlen(magic_data);
 
-    gchar *p1 = get_impl(buffer) + strlen(magic_data) - 1;
+    std::map<std::string, std::string> key_value_map;
+    while (p != end) {
+        auto key_it = std::find_if(p, end, [](gchar ch) { return !g_ascii_isspace(ch); });
+        if (key_it == end) {
+            break;
+        }
+        auto eq_it = std::find(key_it, end, gchar('='));
+        if (eq_it == end) {
+            fprintf(stderr, "Invalid part of ifo (no '=') here: %s\n", key_it);
+            return false;
+        }
+        auto val_it = std::find_if(eq_it + 1, end, [](gchar ch) { return !g_ascii_isspace(ch); });
+        if (val_it == end) {
+            key_value_map.insert(std::make_pair(std::string(key_it, eq_it), std::string()));
+            break;
+        }
 
-    gchar *p2 = strstr(p1, "\nwordcount=");
-    if (p2 == nullptr)
-        return false;
+        auto line_end_it = std::find_if(val_it, end, [](gchar ch) { return ch == '\r' || ch == '\n'; });
+        key_value_map.insert(std::make_pair(std::string(key_it, eq_it), std::string(val_it, line_end_it)));
+        if (line_end_it == end)
+            break;
+        p = line_end_it + 1;
+    }
 
-    gchar *p3 = strchr(p2 + sizeof("\nwordcount=") - 1, '\n');
+    std::map<std::string, std::string>::const_iterator it;
+#define FIND_KEY(_key_)                                            \
+    it = key_value_map.find(_key_);                                \
+    if (it == key_value_map.end()) {                               \
+        fprintf(stderr, "Can not find '%s' in ifo file\n", _key_); \
+        return false;                                              \
+    }
 
-    wordcount = atol(std::string(p2 + sizeof("\nwordcount=") - 1, p3 - (p2 + sizeof("\nwordcount=") - 1)).c_str());
+    FIND_KEY("wordcount")
+    wordcount = atol(it->second.c_str());
 
     if (istreedict) {
-        p2 = strstr(p1, "\ntdxfilesize=");
-        if (p2 == nullptr)
-            return false;
-
-        p3 = strchr(p2 + sizeof("\ntdxfilesize=") - 1, '\n');
-
-        index_file_size = atol(std::string(p2 + sizeof("\ntdxfilesize=") - 1, p3 - (p2 + sizeof("\ntdxfilesize=") - 1)).c_str());
-
+        FIND_KEY("tdxfilesize")
+        index_file_size = atol(it->second.c_str());
     } else {
+        FIND_KEY("idxfilesize")
+        index_file_size = atol(it->second.c_str());
+    }
+    FIND_KEY("bookname")
+    bookname = it->second;
 
-        p2 = strstr(p1, "\nidxfilesize=");
-        if (p2 == nullptr)
-            return false;
-
-        p3 = strchr(p2 + sizeof("\nidxfilesize=") - 1, '\n');
-        index_file_size = atol(std::string(p2 + sizeof("\nidxfilesize=") - 1, p3 - (p2 + sizeof("\nidxfilesize=") - 1)).c_str());
+#define SET_IF_EXISTS(_key_)         \
+    it = key_value_map.find(#_key_); \
+    if (it != key_value_map.end()) { \
+        _key_ = it->second;          \
     }
 
-    p2 = strstr(p1, "\nbookname=");
-
-    if (p2 == nullptr)
-        return false;
-
-    p2 = p2 + sizeof("\nbookname=") - 1;
-    p3 = strchr(p2, '\n');
-    bookname.assign(p2, p3 - p2);
-
-    p2 = strstr(p1, "\nauthor=");
-    if (p2) {
-        p2 = p2 + sizeof("\nauthor=") - 1;
-        p3 = strchr(p2, '\n');
-        author.assign(p2, p3 - p2);
-    }
-
-    p2 = strstr(p1, "\nemail=");
-    if (p2) {
-        p2 = p2 + sizeof("\nemail=") - 1;
-        p3 = strchr(p2, '\n');
-        email.assign(p2, p3 - p2);
-    }
-
-    p2 = strstr(p1, "\nwebsite=");
-    if (p2) {
-        p2 = p2 + sizeof("\nwebsite=") - 1;
-        p3 = strchr(p2, '\n');
-        website.assign(p2, p3 - p2);
-    }
-
-    p2 = strstr(p1, "\ndate=");
-    if (p2) {
-        p2 = p2 + sizeof("\ndate=") - 1;
-        p3 = strchr(p2, '\n');
-        date.assign(p2, p3 - p2);
-    }
-
-    p2 = strstr(p1, "\ndescription=");
-    if (p2) {
-        p2 = p2 + sizeof("\ndescription=") - 1;
-        p3 = strchr(p2, '\n');
-        description.assign(p2, p3 - p2);
-    }
-
-    p2 = strstr(p1, "\nsametypesequence=");
-    if (p2) {
-        p2 += sizeof("\nsametypesequence=") - 1;
-        p3 = strchr(p2, '\n');
-        sametypesequence.assign(p2, p3 - p2);
-    }
-
-    p2 = strstr(p1, "\nsynwordcount=");
+    SET_IF_EXISTS(author)
+    SET_IF_EXISTS(email)
+    SET_IF_EXISTS(website)
+    SET_IF_EXISTS(date)
+    SET_IF_EXISTS(description)
+    SET_IF_EXISTS(sametypesequence)
     syn_wordcount = 0;
-    if (p2) {
-        p2 += sizeof("\nsynwordcount=") - 1;
-        p3 = strchr(p2, '\n');
-        syn_wordcount = atol(std::string(p2, p3 - p2).c_str());
-    }
-
+    it = key_value_map.find("synwordcount");
+    if (it != key_value_map.end())
+        syn_wordcount = atol(it->second.c_str());
+#undef FIND_KEY
+#undef SET_IF_EXISTS
     return true;
 }
 
