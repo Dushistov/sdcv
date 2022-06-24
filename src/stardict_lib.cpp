@@ -989,7 +989,7 @@ bool Dict::LookupWithRule(GPatternSpec *pspec, glong *aIndex, int iBuffLen)
     int iIndexCount = 0;
 
     for (guint32 i = 0; i < narticles() && iIndexCount < (iBuffLen - 1); i++)
-        if (g_pattern_spec_match_string(pspec, get_key(i)))
+        if (g_pattern_match_string(pspec, get_key(i)))
             aIndex[iIndexCount++] = i;
 
     aIndex[iIndexCount] = -1; // -1 is the end.
