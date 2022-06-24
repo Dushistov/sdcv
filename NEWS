@@ -1,3 +1,10 @@
+Version 0.5.4
+    - Use binary search for synonyms
+    - Various improvments in work with synonyms
+    - Added --json (same as --json-output) to match man
+    - Show all matched result
+    - More robust parsing of ifo file
+    - Prevent crash if file size of files not matched expecting one for .oft files
 Version 0.5.3
   - Use single quotes around JSON data to reduce need for escaping
   - Store integer magic in cache file
@@ -36,7 +43,7 @@ Version 0.4.2
 * Russian translation update
 
 Version 0.4.1
-* Recreate cache if idx file was modified 
+* Recreate cache if idx file was modified
 * Abbility to use pager(SDCV_PAGER)
 * Add Chinese (traditional)  translation
 * Add  Ukrainian translation
