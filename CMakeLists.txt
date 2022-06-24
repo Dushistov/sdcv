@@ -3,6 +3,10 @@ project(sdcv)
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 cmake_policy(VERSION 3.5)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_EXTENSIONS False)
+
 include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/compiler.cmake")
 
 set(ZLIB_FIND_REQUIRED True)
