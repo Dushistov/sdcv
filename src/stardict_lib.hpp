@@ -1,10 +1,8 @@
 #pragma once
 
-#include <cstdio>
 #include <cstring>
 #include <functional>
 #include <list>
-#include <map>
 #include <memory>
 #include <set>
 #include <string>
@@ -30,7 +28,7 @@ inline void set_uint32(gchar *addr, guint32 val)
 struct cacheItem {
     guint32 offset;
     gchar *data;
-    //write code here to make it inline
+    // write code here to make it inline
     cacheItem() { data = nullptr; }
     ~cacheItem() { g_free(data); }
 };
@@ -68,7 +66,7 @@ private:
     gint cache_cur = 0;
 };
 
-//this structure contain all information about dictionary
+// this structure contain all information about dictionary
 struct DictInfo {
     std::string ifo_file_name;
     guint32 wordcount;
@@ -98,7 +96,8 @@ public:
     virtual void get_data(glong idx) = 0;
     virtual const gchar *get_key_and_data(glong idx) = 0;
     virtual bool lookup(const char *str, std::set<glong> &idxs, glong &next_idx) = 0;
-    virtual bool lookup(const char *str, std::set<glong> &idxs) {
+    virtual bool lookup(const char *str, std::set<glong> &idxs)
+    {
         glong unused_next_idx;
         return lookup(str, idxs, unused_next_idx);
     };
@@ -144,7 +143,8 @@ public:
         *size = idx_file->wordentry_size;
     }
     bool Lookup(const char *str, std::set<glong> &idxs, glong &next_idx);
-    bool Lookup(const char *str, std::set<glong> &idxs) {
+    bool Lookup(const char *str, std::set<glong> &idxs)
+    {
         glong unused_next_idx;
         return Lookup(str, idxs, unused_next_idx);
     }
@@ -169,7 +169,7 @@ public:
     Libs(std::function<void(void)> f = std::function<void(void)>())
     {
         progress_func = f;
-        iMaxFuzzyDistance = MAX_FUZZY_DISTANCE; //need to read from cfg.
+        iMaxFuzzyDistance = MAX_FUZZY_DISTANCE; // need to read from cfg.
     }
     void setVerbose(bool verbose) { verbose_ = verbose; }
     void setFuzzy(bool fuzzy) { fuzzy_ = fuzzy; }
