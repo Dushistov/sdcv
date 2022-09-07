@@ -1,6 +1,9 @@
 #+OPTIONS: ^:nil
 [[https://github.com/Dushistov/sdcv/actions?query=workflow%3ACI+branch%3Amaster][https://github.com/Dushistov/sdcv/workflows/CI/badge.svg]]
 [[https://github.com/Dushistov/sdcv/blob/master/LICENSE][https://img.shields.io/badge/license-GPL%202-brightgreen.svg]]
+
+* sdcv
+*sdcv* is a simple, cross-platform, text-based utility for working with dictionaries in [[http://stardict-4.sourceforge.net/][StarDict]] format.
 * How to compile and install
 #+BEGIN_SRC sh
 mkdir /tmp/build-sdcv
