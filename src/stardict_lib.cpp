@@ -429,7 +429,7 @@ public:
         if (idxfile)
             fclose(idxfile);
     }
-    bool load(const std::string &url, gulong wc, gulong fsize, bool verbose) override;
+    bool load(const std::string &url, gulong wc, off_t fsize, bool verbose) override;
     const gchar *get_key(glong idx) override;
     void get_data(glong idx) override { get_key(idx); }
     const gchar *get_key_and_data(glong idx) override
@@ -489,7 +489,7 @@ public:
     {
     }
     ~WordListIndex() { g_free(idxdatabuf); }
-    bool load(const std::string &url, gulong wc, gulong fsize, bool verbose) override;
+    bool load(const std::string &url, gulong wc, off_t fsize, bool verbose) override;
     const gchar *get_key(glong idx) override { return wordlist[idx]; }
     void get_data(glong idx) override;
     const gchar *get_key_and_data(glong idx) override
@@ -615,7 +615,7 @@ bool OffsetIndex::save_cache(const std::string &url, bool verbose)
     return false;
 }
 
-bool OffsetIndex::load(const std::string &url, gulong wc, gulong fsize, bool verbose)
+bool OffsetIndex::load(const std::string &url, gulong wc, off_t fsize, bool verbose)
 {
     wordcount = wc;
     gulong npages = (wc - 1) / ENTR_PER_PAGE + 2;
@@ -758,7 +758,7 @@ bool OffsetIndex::lookup(const char *str, std::set<glong> &idxs, glong &next_idx
     return bFound;
 }
 
-bool WordListIndex::load(const std::string &url, gulong wc, gulong fsize, bool)
+bool WordListIndex::load(const std::string &url, gulong wc, off_t fsize, bool)
 {
     gzFile in = gzopen(url.c_str(), "rb");
     if (in == nullptr)
@@ -771,7 +771,7 @@ bool WordListIndex::load(const std::string &url, gulong wc, gulong fsize, bool)
     if (len < 0)
         return false;
 
-    if (gulong(len) != fsize)
+    if (static_cast<off_t>(len) != fsize)
         return false;
 
     wordlist.resize(wc + 1);
@@ -920,7 +920,7 @@ bool Dict::Lookup(const char *str, std::set<glong> &idxs, glong &next_idx)
 
 bool Dict::load(const std::string &ifofilename, bool verbose)
 {
-    gulong idxfilesize;
+    off_t idxfilesize;
     if (!load_ifofile(ifofilename, idxfilesize))
         return false;
 
@@ -964,7 +964,7 @@ bool Dict::load(const std::string &ifofilename, bool verbose)
     return true;
 }
 
-bool Dict::load_ifofile(const std::string &ifofilename, gulong &idxfilesize)
+bool Dict::load_ifofile(const std::string &ifofilename, off_t &idxfilesize)
 {
     DictInfo dict_info;
     if (!dict_info.load_from_ifo_file(ifofilename, false))

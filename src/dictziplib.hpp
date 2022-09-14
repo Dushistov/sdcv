@@ -27,7 +27,7 @@ public:
 private:
     const char *start; /* start of mmap'd area */
     const char *end; /* end of mmap'd area */
-    unsigned long size; /* size of mmap */
+    off_t size; /* size of mmap */
 
     int type;
     z_stream zStream;
@@ -47,7 +47,7 @@ private:
     std::string origFilename;
     std::string comment;
     unsigned long crc;
-    unsigned long length;
+    off_t length;
     unsigned long compressedLength;
     DictCache cache[DICT_CACHE_SIZE];
     MapFile mapfile;

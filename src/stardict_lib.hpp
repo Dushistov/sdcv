@@ -77,8 +77,8 @@ struct DictInfo {
     std::string website;
     std::string date;
     std::string description;
-    guint32 index_file_size;
-    guint32 syn_file_size;
+    off_t index_file_size;
+    off_t syn_file_size;
     std::string sametypesequence;
 
     bool load_from_ifo_file(const std::string &ifofilename, bool istreedict);
@@ -91,7 +91,7 @@ public:
     guint32 wordentry_size;
 
     virtual ~IIndexFile() {}
-    virtual bool load(const std::string &url, gulong wc, gulong fsize, bool verbose) = 0;
+    virtual bool load(const std::string &url, gulong wc, off_t fsize, bool verbose) = 0;
     virtual const gchar *get_key(glong idx) = 0;
     virtual void get_data(glong idx) = 0;
     virtual const gchar *get_key_and_data(glong idx) = 0;
@@ -160,7 +160,7 @@ private:
     std::unique_ptr<IIndexFile> idx_file;
     std::unique_ptr<SynFile> syn_file;
 
-    bool load_ifofile(const std::string &ifofilename, gulong &idxfilesize);
+    bool load_ifofile(const std::string &ifofilename, off_t &idxfilesize);
 };
 
 class Libs
