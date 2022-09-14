@@ -186,10 +186,11 @@ try {
         }
 
         // add bookname to list
-        gchar **p = get_impl(use_dict_list);
-        while (*p) {
-            order_list.push_back(bookname_to_ifo.at(*p));
-            ++p;
+        for (gchar **p = get_impl(use_dict_list); *p != nullptr; ++p) {
+            auto it = bookname_to_ifo.find(*p);
+            if (it != bookname_to_ifo.end()) {
+                order_list.push_back(it->second);
+            }
         }
     } else {
         std::string ordering_cfg_file = std::string(g_get_user_config_dir()) + G_DIR_SEPARATOR_S "sdcv_ordering";
@@ -201,7 +202,10 @@ try {
         if (ordering_file != nullptr) {
             std::string line;
             while (stdio_getline(ordering_file, line)) {
-                order_list.push_back(bookname_to_ifo.at(line));
+                auto it = bookname_to_ifo.find(line);
+                if (it != bookname_to_ifo.end()) {
+                    order_list.push_back(it->second);
+                }
             }
             fclose(ordering_file);
         }
