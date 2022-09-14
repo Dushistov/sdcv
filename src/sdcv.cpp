@@ -190,6 +190,8 @@ try {
             auto it = bookname_to_ifo.find(*p);
             if (it != bookname_to_ifo.end()) {
                 order_list.push_back(it->second);
+            } else {
+                fprintf(stderr, _("Unknown dictionary: %s\n"), *p);
             }
         }
     } else {
@@ -205,6 +207,8 @@ try {
                 auto it = bookname_to_ifo.find(line);
                 if (it != bookname_to_ifo.end()) {
                     order_list.push_back(it->second);
+                } else {
+                    fprintf(stderr, _("Unknown dictionary: %s\n"), line.c_str());
                 }
             }
             fclose(ordering_file);
