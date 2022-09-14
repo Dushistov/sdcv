@@ -22,13 +22,13 @@ public:
     ~MapFile();
     MapFile(const MapFile &) = delete;
     MapFile &operator=(const MapFile &) = delete;
-    bool open(const char *file_name, unsigned long file_size);
+    bool open(const char *file_name, off_t file_size);
     gchar *begin() { return data; }
 
 private:
     char *data = nullptr;
-    unsigned long size = 0ul;
 #ifdef HAVE_MMAP
+    size_t size = 0u;
     int mmap_fd = -1;
 #elif defined(_WIN32)
     HANDLE hFile = 0;
@@ -36,9 +36,8 @@ private:
 #endif
 };
 
-inline bool MapFile::open(const char *file_name, unsigned long file_size)
+inline bool MapFile::open(const char *file_name, off_t file_size)
 {
-    size = file_size;
 #ifdef HAVE_MMAP
     if ((mmap_fd = ::open(file_name, O_RDONLY)) < 0) {
         // g_print("Open file %s failed!\n",fullfilename);
@@ -46,14 +45,16 @@ inline bool MapFile::open(const char *file_name, unsigned long file_size)
     }
     struct stat st;
     if (fstat(mmap_fd, &st) == -1 || st.st_size < 0 || (st.st_size == 0 && S_ISREG(st.st_mode))
-        || sizeof(st.st_size) > sizeof(file_size) || static_cast<unsigned long>(st.st_size) != file_size) {
+        || st.st_size != file_size) {
         close(mmap_fd);
         return false;
     }
 
-    data = (gchar *)mmap(nullptr, file_size, PROT_READ, MAP_SHARED, mmap_fd, 0);
+    size = static_cast<size_t>(st.st_size);
+    data = (gchar *)mmap(nullptr, size, PROT_READ, MAP_SHARED, mmap_fd, 0);
     if ((void *)data == (void *)(-1)) {
         // g_print("mmap file %s failed!\n",idxfilename);
+        size = 0u;
         data = nullptr;
         return false;
     }
