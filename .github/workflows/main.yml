@@ -20,12 +20,13 @@ jobs:
       fail-fast: true
 
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-18.04, ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
       - uses: jwlawson/actions-setup-cmake@v1.4
+        if: matrix.os != 'ubuntu-latest'
         with:
           cmake-version: '3.5.1'
           github-api-token: ${{ secrets.GITHUB_TOKEN }}
