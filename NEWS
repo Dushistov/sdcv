@@ -1,3 +1,6 @@
+Version 0.5.5
+    - Avoid crashes when passing unknown dicts to the -u flag (by NiLuJe)
+    - Use off_t for stuff mainly assigned to a stat.st_size value
 Version 0.5.4
     - Use binary search for synonyms
     - Various improvments in work with synonyms
