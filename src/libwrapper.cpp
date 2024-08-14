@@ -415,10 +415,9 @@ search_result Library::process_phrase(const char *loc_str, IReadLine &io, bool f
                        colorize_output_ ? ESC_END : "");
             }
             int choise;
-            std::unique_ptr<IReadLine> choice_readline(create_readline_object());
             for (;;) {
                 std::string str_choise;
-                choice_readline->read(_("Your choice[-1 to abort]: "), str_choise);
+                io.read(_("Your choice[-1 to abort]: "), str_choise);
                 sscanf(str_choise.c_str(), "%d", &choise);
                 if (choise >= 0 && choise < int(res_list.size())) {
                     sdcv_pager pager;
