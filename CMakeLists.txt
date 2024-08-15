@@ -27,7 +27,7 @@ if (WITH_READLINE)
   find_path(READLINE_INCLUDE_DIR readline/readline.h)
   find_library(READLINE_LIBRARY NAMES readline)
   if (NOT (READLINE_INCLUDE_DIR AND READLINE_LIBRARY))
-    set(WITH_READLINE False CACHE FORCE)
+    set(WITH_READLINE False CACHE BOOL "No readline library found" FORCE)
   endif ()
 endif (WITH_READLINE)
 
@@ -78,15 +78,17 @@ check_include_file(locale.h HAVE_LOCALE_H)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
 	${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-
 include_directories(
 	${ZLIB_INCLUDE_DIR}
 	${GLIB2_INCLUDE_DIRS}
-	${READLINE_INCLUDE_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/src/lib
 	${CMAKE_CURRENT_BINARY_DIR}
 )
-
+if (WITH_READLINE)
+  include_directories(
+	${READLINE_INCLUDE_DIR}
+  )
+endif()
 #
 # Packing stuff
 #
@@ -103,12 +105,16 @@ set(sdcv_VERSION
 add_definitions(-DVERSION="${sdcv_VERSION}" -DHAVE_CONFIG_H)
 
 add_executable(sdcv ${sdcv_SRCS})
-
 target_link_libraries(sdcv
   ${GLIB2_LIBRARIES}
   ${ZLIB_LIBRARIES}
-  ${READLINE_LIBRARY}
 )
+if (WITH_READLINE)
+  target_link_libraries(sdcv
+    ${READLINE_LIBRARY}
+  )
+endif ()
+
 if (ENABLE_NLS)
   set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "locale")
 endif ()
