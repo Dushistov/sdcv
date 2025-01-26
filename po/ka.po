@@ -1,0 +1,147 @@
+# Georgian translation for sdcv.
+# Copyright (C) 2025 sdcv authors
+# This file is distributed under the same license as the sdcv project.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sdcv 0.5\n"
+"Report-Msgid-Bugs-To: dushistov@mail.ru\n"
+"POT-Creation-Date: 2020-08-14 12:58+0300\n"
+"PO-Revision-Date: 2025-01-26 03:17+0100\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+
+#: ../src/libwrapper.cpp:300
+msgid "popen failed"
+msgstr "popen ჩავარდა"
+
+#: ../src/libwrapper.cpp:341
+#, c-format
+msgid "Can not convert %s to utf8.\n"
+msgstr "%s-ის utf8-ში გადაყვანა შეუძლებელია.\n"
+
+#: ../src/libwrapper.cpp:399 ../src/libwrapper.cpp:433
+#, c-format
+msgid "Found %zu items, similar to %s.\n"
+msgstr "აღმოჩენილია %zu ელემენტი, რომელიც %s-ს ჰგავს.\n"
+
+#: ../src/libwrapper.cpp:417
+msgid "Your choice[-1 to abort]: "
+msgstr "თქვენი არჩევანი[-1 გასაუქმებლად]: "
+
+#: ../src/libwrapper.cpp:427
+#, c-format
+msgid ""
+"Invalid choice.\n"
+"It must be from 0 to %zu or -1.\n"
+msgstr ""
+"არასწორი არჩევანი.\n"
+"უნდა იყოს 0-დან %zu-მდე, ან -1.\n"
+
+#: ../src/libwrapper.cpp:446
+#, c-format
+msgid "Nothing similar to %s, sorry :(\n"
+msgstr "%s-ს არაფერი ჰგავს :(\n"
+
+#: ../src/sdcv.cpp:89
+msgid "display version information and exit"
+msgstr "ვერსიის ჩვენება და გასვლა"
+
+#: ../src/sdcv.cpp:91
+msgid "display list of available dictionaries and exit"
+msgstr "ხელმისაწვდომი ლექსიკონების ჩვენება და გასვლა"
+
+#: ../src/sdcv.cpp:93
+msgid "for search use only dictionary with this bookname"
+msgstr "ძებნისთვის, მხოლოდ, ამ სახელის მქონე ლექსიკონის გამოყენება"
+
+#: ../src/sdcv.cpp:94
+msgid "bookname"
+msgstr "ლექსიკონის_სახელი"
+
+#: ../src/sdcv.cpp:96
+msgid "for use in scripts"
+msgstr "სკრიპტებში გამოსაყენებლად"
+
+#: ../src/sdcv.cpp:98
+msgid "print the result formatted as JSON"
+msgstr "შედეგების JSON ფორმატში გამოტანა"
+
+#: ../src/sdcv.cpp:100
+msgid "do not fuzzy-search for similar words, only return exact matches"
+msgstr ""
+"მსგავსი სიტყვებისთვის არაზუსტი ძებნა გამოყენებული არ იქნება. "
+"დაბრუნდება, მხოლოდ, ზუსტი დამთხვევები"
+
+#: ../src/sdcv.cpp:102
+msgid "output must be in utf8"
+msgstr "გამოტანა utf8-ში უნდა იყოს"
+
+#: ../src/sdcv.cpp:104
+msgid "input of sdcv in utf8"
+msgstr "პროგრამაში შეყვანა utf8 -ში"
+
+#: ../src/sdcv.cpp:106
+msgid "use this directory as path to stardict data directory"
+msgstr ""
+"ამ საქაღალდის გამოყენება stardict-ის მონაცემების საქაღალდის ბილიკად"
+
+#: ../src/sdcv.cpp:107
+msgid "path/to/dir"
+msgstr "ბილიკი/სასურველ/საქაღალდემდე"
+
+#: ../src/sdcv.cpp:109
+msgid ""
+"only use the dictionaries in data-dir, do not search in user and system "
+"directories"
+msgstr ""
+"ლექსიკონების, მხოლოდ, data-dir-დან გამოყენება. მომხმარებლის და სისტემურ "
+"საქაღალდეებში ძებნა არ მოხდება"
+
+#: ../src/sdcv.cpp:111
+msgid "colorize the output"
+msgstr "ფერებში გამოტანა"
+
+#: ../src/sdcv.cpp:116
+msgid " words"
+msgstr " სიტყვა"
+
+#: ../src/sdcv.cpp:122
+#, c-format
+msgid "Invalid command line arguments: %s\n"
+msgstr "არასწორი ბრძანების სტრიქონის არგუმენტები: %s\n"
+
+#: ../src/sdcv.cpp:128
+#, c-format
+msgid "Console version of Stardict, version %s\n"
+msgstr "Startdict-ის კონსოლის ვერსია. ვერსია %s\n"
+
+#: ../src/sdcv.cpp:206
+#, c-format
+msgid "g_mkdir failed: %s\n"
+msgstr "g_mkdir ჩავარდა: %s\n"
+
+#: ../src/sdcv.cpp:222
+msgid "Enter word or phrase: "
+msgstr "შეიყვანეთ სიტყვა ან ფრაზა: "
+
+#: ../src/sdcv.cpp:230
+#, c-format
+msgid "There are no words/phrases to translate.\n"
+msgstr "სათარგმნი სიტყვების/ფრაზების გარეშე.\n"
+
+#: ../src/sdcv.cpp:242
+#, c-format
+msgid "Dictionary's name   Word count\n"
+msgstr "ლექსიკონის სახელი     სიტყვების რაოდენობა\n"
+
+#: ../src/utils.cpp:48
+#, c-format
+msgid "Can not convert %s to current locale.\n"
+msgstr "ვერ გადავიყვანე %s მიმდინარე ლოკალში.\n"
