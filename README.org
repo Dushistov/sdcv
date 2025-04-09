@@ -21,6 +21,17 @@ make install
 #+END_SRC
 you can use "DESTDIR" variable to change installation path
 
+* Integration with [[https://github.com/junegunn/fzf][fzf]]
+Useful when you have multiple dictionaries
+#+BEGIN_SRC sh
+fzf --prompt="Dict: " \
+    --phony \
+    --bind "enter:reload(sdcv {q} -n --json | jq '.[].dict' -r)" \
+    --preview "sdcv {q} -en --use-dict={}" \
+    --preview-window=wrap \
+   < <(echo)
+#+END_SRC
+
 * Documentation
 See sdcv man page for usage description.
 
