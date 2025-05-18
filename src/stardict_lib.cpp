@@ -989,7 +989,7 @@ bool Dict::LookupWithRule(GPatternSpec *pspec, glong *aIndex, int iBuffLen)
     int iIndexCount = 0;
 
     for (guint32 i = 0; i < narticles() && iIndexCount < (iBuffLen - 1); i++)
-        if (g_pattern_match_string(pspec, get_key(i)))
+        if (g_pattern_spec_match_string(pspec, get_key(i)))
             aIndex[iIndexCount++] = i;
 
     aIndex[iIndexCount] = -1; // -1 is the end.
@@ -1047,12 +1047,11 @@ bool Libs::LookupSimilarWord(const gchar *sWord, std::set<glong> &iWordIndices, 
         }
         // Upper the first character and lower others.
         if (!bFound) {
-            gchar *nextchar = g_utf8_next_char(sWord);
+            const gchar *nextchar = g_utf8_next_char(sWord);
             gchar *firstchar = g_utf8_strup(sWord, nextchar - sWord);
             nextchar = g_utf8_strdown(nextchar, -1);
             casestr = g_strdup_printf("%s%s", firstchar, nextchar);
             g_free(firstchar);
-            g_free(nextchar);
             if (strcmp(casestr, sWord)) {
                 if (oLib[iLib]->Lookup(casestr, iWordIndices))
                     bFound = true;
