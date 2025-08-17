@@ -37,6 +37,10 @@ jobs:
           gcc --version
           echo "end of versions checking"
         shell: bash
+      - uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: libglib2.0-dev
+          version: 1.0
       - name: Run tests
         run: |
           set -e
