@@ -23,6 +23,7 @@
 #endif
 
 #include <cstring>
+#include <cstdio> //for popen
 #include <map>
 #include <memory>
 
