@@ -27,6 +27,7 @@ if (WITH_READLINE)
   find_path(READLINE_INCLUDE_DIR readline/readline.h)
   find_library(READLINE_LIBRARY NAMES readline)
   if (NOT (READLINE_INCLUDE_DIR AND READLINE_LIBRARY))
+    message(STATUS "readline library not FOUND, disable it's usage")
     set(WITH_READLINE False CACHE BOOL "Use readline library" FORCE)
   endif ()
 endif (WITH_READLINE)
@@ -37,16 +38,16 @@ set(sdcv_SRCS
   src/sdcv.cpp
   src/readline.cpp
   src/readline.hpp
-  src/libwrapper.cpp 
+  src/libwrapper.cpp
   src/libwrapper.hpp
-  src/utils.cpp 
+  src/utils.cpp
   src/utils.hpp
 
   src/stardict_lib.cpp
   src/stardict_lib.hpp
   src/dictziplib.cpp
-  src/dictziplib.hpp  
-  src/distance.cpp 
+  src/dictziplib.hpp
+  src/distance.cpp
   src/distance.hpp
   src/mapfile.hpp
 )
@@ -82,10 +83,13 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
 include_directories(
 	${ZLIB_INCLUDE_DIR}
 	${GLIB2_INCLUDE_DIRS}
-	${READLINE_INCLUDE_DIR}
 	${CMAKE_CURRENT_SOURCE_DIR}/src/lib
 	${CMAKE_CURRENT_BINARY_DIR}
-)
+      )
+
+if (WITH_READLINE)
+  include_directories(${READLINE_INCLUDE_DIR})
+endif()
 
 #
 # Packing stuff
@@ -107,8 +111,10 @@ add_executable(sdcv ${sdcv_SRCS})
 target_link_libraries(sdcv
   ${GLIB2_LIBRARIES}
   ${ZLIB_LIBRARIES}
-  ${READLINE_LIBRARY}
 )
+if (WITH_READLINE)
+  target_link_libraries(sdcv ${READLINE_LIBRARY})
+endif()
 if (ENABLE_NLS)
   set_directory_properties(PROPERTIES ADDITIONAL_MAKE_CLEAN_FILES "locale")
 endif ()
