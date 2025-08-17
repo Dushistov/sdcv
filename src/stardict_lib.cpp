@@ -1050,7 +1050,7 @@ bool Libs::LookupSimilarWord(const gchar *sWord, std::set<glong> &iWordIndices, 
             const gchar *rest = g_utf8_next_char(sWord);
             gchar *firstchar = g_utf8_strup(sWord, rest - sWord);
             gchar *rest_lowercase = g_utf8_strdown(rest, -1);
-            casestr = g_strdup_printf("%s%s", firstchar, rest_lowercase);
+            casestr =  g_strconcat(firstchar, rest_lowercase, nullptr);
             g_free(rest_lowercase);
             g_free(firstchar);
             if (strcmp(casestr, sWord)) {
