@@ -27,7 +27,7 @@ if (WITH_READLINE)
   find_path(READLINE_INCLUDE_DIR readline/readline.h)
   find_library(READLINE_LIBRARY NAMES readline)
   if (NOT (READLINE_INCLUDE_DIR AND READLINE_LIBRARY))
-    set(WITH_READLINE False CACHE FORCE)
+    set(WITH_READLINE False CACHE BOOL "Use readline library" FORCE)
   endif ()
 endif (WITH_READLINE)
 
