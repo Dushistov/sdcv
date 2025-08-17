@@ -21,6 +21,14 @@ make install
 #+END_SRC
 you can use "DESTDIR" variable to change installation path
 
+* Documentation
+See sdcv man page for usage description.
+
+* Bugs
+To report bugs use https://github.com/Dushistov/sdcv/issues ,
+if it is not possible you can report it via email to dushistov at mail dot ru.
+Be sure to include the word "sdcv" somewhere in the "Subject:" field.
+
 * Integration with [[https://github.com/junegunn/fzf][fzf]]
 Useful when you have multiple dictionaries
 #+BEGIN_SRC sh
@@ -32,13 +40,14 @@ fzf --prompt="Dict: " \
    < <(echo)
 #+END_SRC
 
-* Documentation
-See sdcv man page for usage description.
-
-* Bugs
-To report bugs use https://github.com/Dushistov/sdcv/issues ,
-if it is not possible you can report it via email to dushistov at mail dot ru.
-Be sure to include the word "sdcv" somewhere in the "Subject:" field.
+* Integration with readline
+This lines can be added to inputrc file (~/.inputrc, /etc/inputrc),
+to abort multiply usage with ESC:
+#+begin_src
+$if sdcv
+    "\e\e": "-1\n"
+$endif
+#+end_src
 
 * Notes to developer
 ** make source code release
