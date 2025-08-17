@@ -25,11 +25,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-      - uses: jwlawson/actions-setup-cmake@v1.4
-        if: matrix.os != 'ubuntu-latest'
-        with:
-          cmake-version: '3.5.1'
-          github-api-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Check versions
         run: |
           set -e
@@ -39,7 +34,7 @@ jobs:
         shell: bash
       - uses: awalsh128/cache-apt-pkgs-action@v1
         with:
-          packages: libglib2.0-dev
+          packages: libglib2.0-dev cmake
           version: 1.0
       - name: Run tests
         run: |
