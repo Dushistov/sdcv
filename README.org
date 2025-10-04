@@ -36,7 +36,7 @@ fzf --prompt="Dict: " \
     --phony \
     --bind "enter:reload(sdcv {q} -n --json | jq '.[].dict' -r)" \
     --preview "sdcv {q} -en --use-dict={}" \
-    --preview-window=wrap \
+    --preview-window=right:70%:wrap \
    < <(echo)
 #+END_SRC
 
