@@ -440,7 +440,6 @@ public:
 
 private:
     static const gint ENTR_PER_PAGE = 32;
-    static const char *CACHE_MAGIC;
 
     std::vector<guint32> wordoffset;
     FILE *idxfile;
@@ -473,12 +472,9 @@ private:
     gulong load_page(glong page_idx);
     const gchar *read_first_on_page_key(glong page_idx);
     const gchar *get_first_on_page_key(glong page_idx);
-    bool load_cache(const std::string &url);
-    bool save_cache(const std::string &url, bool verbose);
-    static std::list<std::string> get_cache_variant(const std::string &url);
 };
 
-const char *OffsetIndex::CACHE_MAGIC = "StarDict's Cache, Version: 0.2";
+const char *CACHE_MAGIC = "StarDict's Cache, Version: 0.2";
 #define CACHE_MAGIC_BYTES 0x51a4d1c1
 
 class WordListIndex : public IIndexFile
@@ -546,7 +542,12 @@ inline const gchar *OffsetIndex::get_first_on_page_key(glong page_idx)
         return middle.keystr.c_str();
 }
 
-bool OffsetIndex::load_cache(const std::string &url)
+std::list<std::string> get_cache_variant(const std::string &url);
+
+// Load an offset table saved by save_offset_cache next to the index file
+// (or in the user cache dir). wordoffset must already have its final size:
+// the cache is only trusted if it is fresh and holds exactly that many offsets.
+bool load_offset_cache(const std::string &url, std::vector<guint32> &wordoffset)
 {
     const std::list<std::string> vars = get_cache_variant(url);
 
@@ -555,6 +556,9 @@ bool OffsetIndex::load_cache(const std::string &url)
         if (g_stat(url.c_str(), &idxstat) != 0 || g_stat(item.c_str(), &cachestat) != 0)
             continue;
         if (cachestat.st_mtime < idxstat.st_mtime)
+            continue;
+        if (static_cast<size_t>(cachestat.st_size)
+            != strlen(CACHE_MAGIC) + sizeof(guint32) + wordoffset.size() * sizeof(wordoffset[0]))
             continue;
         MapFile mf;
         if (!mf.open(item.c_str(), cachestat.st_size))
@@ -572,7 +576,7 @@ bool OffsetIndex::load_cache(const std::string &url)
     return false;
 }
 
-std::list<std::string> OffsetIndex::get_cache_variant(const std::string &url)
+std::list<std::string> get_cache_variant(const std::string &url)
 {
     std::list<std::string> res = { url + ".oft" };
     if (!g_file_test(g_get_user_cache_dir(), G_FILE_TEST_EXISTS) && g_mkdir(g_get_user_cache_dir(), 0700) == -1)
@@ -592,7 +596,7 @@ std::list<std::string> OffsetIndex::get_cache_variant(const std::string &url)
     return res;
 }
 
-bool OffsetIndex::save_cache(const std::string &url, bool verbose)
+bool save_offset_cache(const std::string &url, const std::vector<guint32> &wordoffset, bool verbose)
 {
     const std::list<std::string> vars = get_cache_variant(url);
     for (const std::string &item : vars) {
@@ -620,7 +624,7 @@ bool OffsetIndex::load(const std::string &url, gulong wc, off_t fsize, bool verb
     wordcount = wc;
     gulong npages = (wc - 1) / ENTR_PER_PAGE + 2;
     wordoffset.resize(npages);
-    if (!load_cache(url)) { // map file will close after finish of block
+    if (!load_offset_cache(url, wordoffset)) { // map file will close after finish of block
         MapFile map_file;
         if (!map_file.open(url.c_str(), fsize))
             return false;
@@ -638,7 +642,7 @@ bool OffsetIndex::load(const std::string &url, gulong wc, off_t fsize, bool verb
             p1 += index_size;
         }
         wordoffset[j] = p1 - idxdatabuffer;
-        if (!save_cache(url, verbose))
+        if (!save_offset_cache(url, wordoffset, verbose))
             fprintf(stderr, "cache update failed\n");
     }
 
@@ -836,7 +840,7 @@ bool WordListIndex::lookup(const char *str, std::set<glong> &idxs, glong &next_i
 }
 } // namespace
 
-bool SynFile::load(const std::string &url, gulong wc)
+bool SynFile::load(const std::string &url, gulong wc, bool verbose)
 {
     struct stat stat_buf;
     if (!stat(url.c_str(), &stat_buf)) {
@@ -844,18 +848,23 @@ bool SynFile::load(const std::string &url, gulong wc)
         if (!synfile.open(url.c_str(), stat_buf.st_size))
             return false;
 
-        synlist.resize(wc + 1);
-        gchar *p1 = synfile.begin();
+        wordoffset.resize(wc + 1);
+        if (!load_offset_cache(url, wordoffset)) {
+            const gchar *p1 = synfile.begin();
 
-        for (unsigned long i = 0; i < wc; i++) {
-            // each entry in a syn-file is:
-            // - 0-terminated string
-            // 4-byte index into .dict file in network byte order
+            for (unsigned long i = 0; i < wc; i++) {
+                // each entry in a syn-file is:
+                // - 0-terminated string
+                // 4-byte index into .dict file in network byte order
 
-            synlist[i] = p1;
-            p1 += strlen(p1) + 1 + 4;
+                wordoffset[i] = p1 - synfile.begin();
+                p1 += strlen(p1) + 1 + 4;
+            }
+            wordoffset[wc] = p1 - synfile.begin();
+
+            if (!save_offset_cache(url, wordoffset, verbose))
+                fprintf(stderr, "cache update failed\n");
         }
-        synlist[wc] = p1;
 
         return true;
     } else {
@@ -866,7 +875,7 @@ bool SynFile::load(const std::string &url, gulong wc)
 bool SynFile::lookup(const char *str, std::set<glong> &idxs, glong &next_idx)
 {
     bool bFound = false;
-    glong iLast = synlist.size() - 2;
+    glong iLast = wordoffset.size() - 2;
     if (iLast < 0)
         return false;
 
@@ -958,7 +967,7 @@ bool Dict::load(const std::string &ifofilename, bool verbose)
     fullfilename = ifofilename;
     fullfilename.replace(fullfilename.length() - sizeof("ifo") + 1, sizeof("ifo") - 1, "syn");
     syn_file.reset(new SynFile);
-    syn_file->load(fullfilename, syn_wordcount);
+    syn_file->load(fullfilename, syn_wordcount, verbose);
 
     // g_print("bookname: %s , wordcount %lu\n", bookname.c_str(), narticles());
     return true;

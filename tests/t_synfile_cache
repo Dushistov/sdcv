@@ -1,0 +1,62 @@
+#!/bin/sh
+
+set -e
+
+SDCV="$1"
+TEST_DIR="$2"
+
+unset SDCV_PAGER
+
+# Work on a copy of the dictionary in a temporary directory so the
+# source tree stays clean and cache files land in a known place.
+TMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TMP_DIR"' EXIT INT QUIT TERM
+DICT_DIR="$TMP_DIR/stardict-test_synonyms-2.4.2"
+mkdir -p "$DICT_DIR"
+for f in test.ifo test.idx test.dict.dz test.syn; do
+    cp "$TEST_DIR/stardict-test_synonyms-2.4.2/$f" "$DICT_DIR"
+done
+XDG_CACHE_HOME="$TMP_DIR/cache"
+export XDG_CACHE_HOME
+
+test_word() {
+    WORD=$1
+    RES=$($SDCV -n --data-dir "$TMP_DIR" -u "Test synonyms" $WORD | grep result)
+    if [ "result of test" != "$RES" ]; then
+	echo "synonym for $WORD should be 'result of test' but was '$RES'"
+	exit 1
+    fi
+}
+
+SYN_CACHE="$DICT_DIR/test.syn.oft"
+
+# First lookup scans the .syn file and saves an offset cache next to it
+# (or in the user cache dir), like the .idx.oft cache.
+test_word foo
+if [ ! -f "$SYN_CACHE" ] && [ ! -f "$XDG_CACHE_HOME/sdcv/test.syn.oft" ]; then
+    echo "no .syn.oft cache was created after a lookup"
+    exit 1
+fi
+[ -f "$SYN_CACHE" ] || SYN_CACHE="$XDG_CACHE_HOME/sdcv/test.syn.oft"
+
+# Later lookups load the cache instead of scanning; results must not change.
+test_word foo
+test_word bar
+test_word test
+
+# A cache with bogus content must be ignored (and rebuilt), not trusted.
+printf 'garbage' > "$SYN_CACHE"
+touch "$SYN_CACHE"
+test_word foo
+
+# A cache with a valid magic but truncated offset table must be ignored too.
+head -c 38 "$SYN_CACHE" > "$SYN_CACHE.tmp"
+mv "$SYN_CACHE.tmp" "$SYN_CACHE"
+touch "$SYN_CACHE"
+test_word bar
+
+# A cache older than the .syn file is stale and must be rebuilt.
+touch -t 200001010000 "$SYN_CACHE"
+test_word test
+
+exit 0

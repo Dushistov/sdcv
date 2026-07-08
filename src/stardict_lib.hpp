@@ -108,14 +108,14 @@ class SynFile
 public:
     SynFile() {}
     ~SynFile() {}
-    bool load(const std::string &url, gulong wc);
+    bool load(const std::string &url, gulong wc, bool verbose);
     bool lookup(const char *str, std::set<glong> &idxs, glong &next_idx);
     bool lookup(const char *str, std::set<glong> &idxs);
-    const gchar *get_key(glong idx) { return synlist[idx]; }
+    const gchar *get_key(glong idx) { return synfile.begin() + wordoffset[idx]; }
 
 private:
     MapFile synfile;
-    std::vector<gchar *> synlist;
+    std::vector<guint32> wordoffset;
 };
 
 class Dict : public DictBase
