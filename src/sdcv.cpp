@@ -257,7 +257,7 @@ static void list_dicts(const std::list<std::string> &dicts_dir_list, bool use_js
 {
     bool first_entry = true;
     if (!use_json)
-        printf(_("Dictionary's name   Word count\n"));
+        printf(_("Dictionary's name\tWord count\tLocation\n"));
     else
         fputc('[', stdout);
     std::list<std::string> order_list, disable_list;
@@ -272,9 +272,10 @@ static void list_dicts(const std::list<std::string> &dicts_dir_list, bool use_js
                               } else {
                                   fputc(',', stdout); // comma between entries
                               }
-                              printf("{\"name\": \"%s\", \"wordcount\": \"%d\"}", json_escape_string(bookname).c_str(), dict_info.wordcount);
+                              printf("{\"name\": \"%s\", \"wordcount\": \"%d\", \"location\": \"%s\"}",
+                                  json_escape_string(bookname).c_str(), dict_info.wordcount, dict_info.ifo_file_name.c_str());
                           } else {
-                              printf("%s    %d\n", bookname.c_str(), dict_info.wordcount);
+                              printf("%s\t\t%d\t\t%s\n", bookname.c_str(), dict_info.wordcount, dict_info.ifo_file_name.c_str());
                           }
                       }
                   });
