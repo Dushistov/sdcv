@@ -154,7 +154,10 @@ try {
     std::list<std::string> dicts_dir_list;
     if (!only_data_dir)
         dicts_dir_list.push_back(conf_dir + G_DIR_SEPARATOR + "dic");
-    dicts_dir_list.push_back(data_dir);
+
+    if (std::find(dicts_dir_list.begin(), dicts_dir_list.end(), data_dir) == dicts_dir_list.end())
+        dicts_dir_list.push_back(data_dir);
+
     if (show_list_dicts) {
         list_dicts(dicts_dir_list, json_output);
         return EXIT_SUCCESS;
