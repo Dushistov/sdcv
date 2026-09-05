@@ -441,7 +441,7 @@ public:
 private:
     static const gint ENTR_PER_PAGE = 32;
 
-    std::vector<guint32> wordoffset;
+    OffsetTable wordoffset;
     FILE *idxfile;
     gulong wordcount;
 
@@ -474,8 +474,21 @@ private:
     const gchar *get_first_on_page_key(glong page_idx);
 };
 
-const char *CACHE_MAGIC = "StarDict's Cache, Version: 0.2";
+// Version 0.3 differs from 0.2 only in its header layout: two padding bytes
+// are inserted after the 30-byte magic string so that both the magic word and
+// the offset table that follows start on a 4-byte boundary. That is what lets
+// the table be used straight out of the mapping instead of being copied into
+// a vector. A 0.2 cache is rejected by the magic check and simply rebuilt.
+const char CACHE_MAGIC[] = "StarDict's Cache, Version: 0.3";
 #define CACHE_MAGIC_BYTES 0x51a4d1c1
+// Header layout: the magic string, then padding, then the 4-byte magic word
+// ending exactly at CACHE_HEADER_SIZE.
+#define CACHE_MAGIC_LEN (sizeof(CACHE_MAGIC) - 1)
+#define CACHE_HEADER_SIZE 36
+static_assert(CACHE_HEADER_SIZE % sizeof(guint32) == 0,
+              "the offset table follows the header and must be 4-byte aligned");
+static_assert(CACHE_HEADER_SIZE >= CACHE_MAGIC_LEN + sizeof(guint32),
+              "header is too small to hold the magic string and the magic word");
 
 class WordListIndex : public IIndexFile
 {
@@ -542,12 +555,23 @@ inline const gchar *OffsetIndex::get_first_on_page_key(glong page_idx)
         return middle.keystr.c_str();
 }
 
-std::list<std::string> get_cache_variant(const std::string &url);
+} // namespace
 
-// Load an offset table saved by save_offset_cache next to the index file
-// (or in the user cache dir). wordoffset must already have its final size:
-// the cache is only trusted if it is fresh and holds exactly that many offsets.
-bool load_offset_cache(const std::string &url, std::vector<guint32> &wordoffset)
+// OffsetTable is declared at namespace scope, so its members are defined here
+// rather than inside the anonymous namespace above.
+
+static std::list<std::string> get_cache_variant(const std::string &url);
+
+// Map an offset table saved by OffsetTable::save next to the index file (or in
+// the user cache dir). nelem is the number of offsets the caller expects: the
+// cache is only trusted if it is fresh and holds exactly that many.
+//
+// The mapping is handed back to the caller and kept for the lifetime of the
+// dictionary, so the offsets can be read straight out of it. Copying them into
+// a vector instead - which is what this used to do - costs one anonymous page
+// per 1024 offsets on every single sdcv launch, whether the lookup reads them
+// or not, and a binary search reads about twenty of them.
+bool OffsetTable::load(const std::string &url, size_t nelem)
 {
     const std::list<std::string> vars = get_cache_variant(url);
 
@@ -558,7 +582,7 @@ bool load_offset_cache(const std::string &url, std::vector<guint32> &wordoffset)
         if (cachestat.st_mtime < idxstat.st_mtime)
             continue;
         if (static_cast<size_t>(cachestat.st_size)
-            != strlen(CACHE_MAGIC) + sizeof(guint32) + wordoffset.size() * sizeof(wordoffset[0]))
+            != CACHE_HEADER_SIZE + nelem * sizeof(guint32))
             continue;
         MapFile mf;
         if (!mf.open(item.c_str(), cachestat.st_size))
@@ -566,17 +590,38 @@ bool load_offset_cache(const std::string &url, std::vector<guint32> &wordoffset)
         if (strncmp(mf.begin(), CACHE_MAGIC, strlen(CACHE_MAGIC)) != 0)
             continue;
         guint32 tmp;
-        memcpy(&tmp, mf.begin() + strlen(CACHE_MAGIC), sizeof(tmp));
+        memcpy(&tmp, mf.begin() + CACHE_HEADER_SIZE - sizeof(guint32), sizeof(tmp));
         if (tmp != CACHE_MAGIC_BYTES)
             continue;
-        memcpy(&wordoffset[0], mf.begin() + strlen(CACHE_MAGIC) + sizeof(guint32), wordoffset.size() * sizeof(wordoffset[0]));
+        cache = std::move(mf);
+        cache.advise_random();
+        ptr = reinterpret_cast<const guint32 *>(cache.begin() + CACHE_HEADER_SIZE);
+        nelem_ = nelem;
+        owned.clear();
+        owned.shrink_to_fit();
         return true;
     }
 
     return false;
 }
 
-std::list<std::string> get_cache_variant(const std::string &url)
+// Take ownership of a table that had to be rebuilt by scanning the index.
+void OffsetTable::adopt(std::vector<guint32> &&built)
+{
+    owned = std::move(built);
+    ptr = owned.empty() ? nullptr : owned.data();
+    nelem_ = owned.size();
+}
+
+void OffsetTable::clear()
+{
+    owned.clear();
+    owned.shrink_to_fit();
+    ptr = nullptr;
+    nelem_ = 0;
+}
+
+static std::list<std::string> get_cache_variant(const std::string &url)
 {
     std::list<std::string> res = { url + ".oft" };
     if (!g_file_test(g_get_user_cache_dir(), G_FILE_TEST_EXISTS) && g_mkdir(g_get_user_cache_dir(), 0700) == -1)
@@ -596,20 +641,35 @@ std::list<std::string> get_cache_variant(const std::string &url)
     return res;
 }
 
-bool save_offset_cache(const std::string &url, const std::vector<guint32> &wordoffset, bool verbose)
+bool OffsetTable::save(const std::string &url, bool verbose) const
 {
     const std::list<std::string> vars = get_cache_variant(url);
+    // The padding keeps the offsets that follow on a 4-byte boundary, so a
+    // reader can point into the mapping rather than copy out of it.
+    if (!ptr || !nelem_)
+        return false;
+    const char pad[CACHE_HEADER_SIZE - CACHE_MAGIC_LEN - sizeof(guint32)] = { 0 };
     for (const std::string &item : vars) {
         FILE *out = fopen(item.c_str(), "wb");
         guint32 magic = CACHE_MAGIC_BYTES;
         if (!out)
             continue;
-        if (fwrite(CACHE_MAGIC, 1, strlen(CACHE_MAGIC), out) != strlen(CACHE_MAGIC))
+        if (fwrite(CACHE_MAGIC, 1, strlen(CACHE_MAGIC), out) != strlen(CACHE_MAGIC)) {
+            fclose(out);
             continue;
-        if (fwrite(&magic, 1, sizeof(magic), out) != sizeof(magic))
+        }
+        if (fwrite(pad, 1, sizeof(pad), out) != sizeof(pad)) {
+            fclose(out);
             continue;
-        if (fwrite(&wordoffset[0], sizeof(wordoffset[0]), wordoffset.size(), out) != wordoffset.size())
+        }
+        if (fwrite(&magic, 1, sizeof(magic), out) != sizeof(magic)) {
+            fclose(out);
             continue;
+        }
+        if (fwrite(ptr, sizeof(guint32), nelem_, out) != nelem_) {
+            fclose(out);
+            continue;
+        }
         fclose(out);
         if (verbose) {
             printf("save to cache %s\n", url.c_str());
@@ -619,35 +679,44 @@ bool save_offset_cache(const std::string &url, const std::vector<guint32> &wordo
     return false;
 }
 
+namespace
+{
+
 bool OffsetIndex::load(const std::string &url, gulong wc, off_t fsize, bool verbose)
 {
     wordcount = wc;
     gulong npages = (wc - 1) / ENTR_PER_PAGE + 2;
-    wordoffset.resize(npages);
-    if (!load_offset_cache(url, wordoffset)) { // map file will close after finish of block
-        MapFile map_file;
-        if (!map_file.open(url.c_str(), fsize))
-            return false;
-        const gchar *idxdatabuffer = map_file.begin();
+    if (!wordoffset.load(url, npages)) {
+        std::vector<guint32> built(npages);
+        { // map file will close after finish of block
+            MapFile map_file;
+            if (!map_file.open(url.c_str(), fsize))
+                return false;
+            const gchar *idxdatabuffer = map_file.begin();
 
-        const gchar *p1 = idxdatabuffer;
-        gulong index_size;
-        guint32 j = 0;
-        for (guint32 i = 0; i < wc; i++) {
-            index_size = strlen(p1) + 1 + 2 * sizeof(guint32);
-            if (i % ENTR_PER_PAGE == 0) {
-                wordoffset[j] = p1 - idxdatabuffer;
-                ++j;
+            const gchar *p1 = idxdatabuffer;
+            gulong index_size;
+            guint32 j = 0;
+            for (guint32 i = 0; i < wc; i++) {
+                index_size = strlen(p1) + 1 + 2 * sizeof(guint32);
+                if (i % ENTR_PER_PAGE == 0) {
+                    built[j] = p1 - idxdatabuffer;
+                    ++j;
+                }
+                p1 += index_size;
             }
-            p1 += index_size;
+            built[j] = p1 - idxdatabuffer;
         }
-        wordoffset[j] = p1 - idxdatabuffer;
-        if (!save_offset_cache(url, wordoffset, verbose))
+        wordoffset.adopt(std::move(built));
+        if (!wordoffset.save(url, verbose))
             fprintf(stderr, "cache update failed\n");
+        // Prefer the cache we just wrote: it drops the table we built out of
+        // anonymous memory and back onto shareable, reclaimable page cache.
+        wordoffset.load(url, npages);
     }
 
     if (!(idxfile = fopen(url.c_str(), "rb"))) {
-        wordoffset.resize(0);
+        wordoffset.clear();
         return false;
     }
 
@@ -848,8 +917,13 @@ bool SynFile::load(const std::string &url, gulong wc, bool verbose)
         if (!synfile.open(url.c_str(), stat_buf.st_size))
             return false;
 
-        wordoffset.resize(wc + 1);
-        if (!load_offset_cache(url, wordoffset)) {
+        if (wordoffset.load(url, wc + 1)) {
+            // Cached: the .syn is only ever probed by binary search from here
+            // on, so keep the kernel from reading ahead around each probe.
+            // (Not in the branch below, which has to scan the whole file.)
+            synfile.advise_random();
+        } else {
+            std::vector<guint32> built(wc + 1);
             const gchar *p1 = synfile.begin();
 
             for (unsigned long i = 0; i < wc; i++) {
@@ -857,13 +931,18 @@ bool SynFile::load(const std::string &url, gulong wc, bool verbose)
                 // - 0-terminated string
                 // 4-byte index into .dict file in network byte order
 
-                wordoffset[i] = p1 - synfile.begin();
+                built[i] = p1 - synfile.begin();
                 p1 += strlen(p1) + 1 + 4;
             }
-            wordoffset[wc] = p1 - synfile.begin();
+            built[wc] = p1 - synfile.begin();
 
-            if (!save_offset_cache(url, wordoffset, verbose))
+            wordoffset.adopt(std::move(built));
+            if (!wordoffset.save(url, verbose))
                 fprintf(stderr, "cache update failed\n");
+            // Prefer the cache we just wrote: it drops the table we built out
+            // of anonymous memory and back onto shareable, reclaimable page
+            // cache.
+            wordoffset.load(url, wc + 1);
         }
 
         return true;

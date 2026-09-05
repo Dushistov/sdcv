@@ -28,6 +28,25 @@ test_word() {
     fi
 }
 
+# The offset table is read straight out of the cache mapping, so the header
+# has to keep it 4-byte aligned: 30 bytes of magic string, 2 of padding, then
+# the 4-byte magic word, ending at byte 36.
+CACHE_HEADER_SIZE=36
+
+check_cache_layout() {
+    FILE=$1
+    GOT=$(head -c 30 "$FILE")
+    if [ "StarDict's Cache, Version: 0.3" != "$GOT" ]; then
+	echo "$FILE should start with the 0.3 cache magic but was '$GOT'"
+	exit 1
+    fi
+    SIZE=$(wc -c < "$FILE" | tr -d ' ')
+    if [ "$(( (SIZE - CACHE_HEADER_SIZE) % 4 ))" -ne 0 ]; then
+	echo "$FILE holds $SIZE bytes, so its offset table is not 4-byte aligned"
+	exit 1
+    fi
+}
+
 SYN_CACHE="$DICT_DIR/test.syn.oft"
 
 # First lookup scans the .syn file and saves an offset cache next to it
@@ -38,6 +57,13 @@ if [ ! -f "$SYN_CACHE" ] && [ ! -f "$XDG_CACHE_HOME/sdcv/test.syn.oft" ]; then
     exit 1
 fi
 [ -f "$SYN_CACHE" ] || SYN_CACHE="$XDG_CACHE_HOME/sdcv/test.syn.oft"
+
+IDX_CACHE="$DICT_DIR/test.idx.oft"
+[ -f "$IDX_CACHE" ] || IDX_CACHE="$XDG_CACHE_HOME/sdcv/test.idx.oft"
+
+# Both caches must be written in the aligned 0.3 layout.
+check_cache_layout "$SYN_CACHE"
+check_cache_layout "$IDX_CACHE"
 
 # Later lookups load the cache instead of scanning; results must not change.
 test_word foo
@@ -50,10 +76,28 @@ touch "$SYN_CACHE"
 test_word foo
 
 # A cache with a valid magic but truncated offset table must be ignored too.
-head -c 38 "$SYN_CACHE" > "$SYN_CACHE.tmp"
+head -c "$(( CACHE_HEADER_SIZE + 4 ))" "$SYN_CACHE" > "$SYN_CACHE.tmp"
 mv "$SYN_CACHE.tmp" "$SYN_CACHE"
 touch "$SYN_CACHE"
 test_word bar
+
+# So must one that holds more offsets than the .syn has entries.
+cat "$SYN_CACHE" > "$SYN_CACHE.tmp"
+printf '\0\0\0\0' >> "$SYN_CACHE.tmp"
+mv "$SYN_CACHE.tmp" "$SYN_CACHE"
+touch "$SYN_CACHE"
+test_word bar
+
+# A cache in the older 0.2 layout - same magic word and table, but without the
+# padding that aligns the table - must be rejected and rewritten as 0.3.
+test_word foo
+printf "StarDict's Cache, Version: 0.2" > "$SYN_CACHE.tmp"
+# everything from the magic word on, in whatever byte order this host wrote it
+tail -c "+$(( CACHE_HEADER_SIZE - 4 + 1 ))" "$SYN_CACHE" >> "$SYN_CACHE.tmp"
+mv "$SYN_CACHE.tmp" "$SYN_CACHE"
+touch "$SYN_CACHE"
+test_word bar
+check_cache_layout "$SYN_CACHE"
 
 # A cache older than the .syn file is stale and must be rebuilt.
 touch -t 200001010000 "$SYN_CACHE"

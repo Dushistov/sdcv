@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "dictziplib.hpp"
+#include "mapfile.hpp"
 
 const int MAX_MATCH_ITEM_PER_LIB = 100;
 const int MAX_FUZZY_DISTANCE = 3; // at most MAX_FUZZY_DISTANCE-1 differences allowed when find similar words
@@ -103,6 +104,37 @@ public:
     };
 };
 
+// The table of file offsets that lets a lookup binary-search an .idx or .syn
+// without scanning it. Building the table means walking every entry of the
+// index, so it is cached in a sibling .oft file.
+//
+// It is read straight out of that cache's mapping. A large inflection index
+// has millions of entries, and copying the table into a vector on every sdcv
+// launch - sdcv runs once per lookup - costs that many megabytes of anonymous
+// memory for the twenty-odd offsets a binary search actually touches. Mapped,
+// the same search faults in a handful of pages, they are shared between
+// processes, and the kernel can drop them under pressure.
+class OffsetTable
+{
+public:
+    // Map <url>.oft if it is fresh and holds exactly nelem offsets.
+    bool load(const std::string &url, size_t nelem);
+    // Take a table that had to be rebuilt by scanning the index.
+    void adopt(std::vector<guint32> &&built);
+    bool save(const std::string &url, bool verbose) const;
+    void clear();
+
+    guint32 operator[](size_t i) const { return ptr[i]; }
+    size_t size() const { return nelem_; }
+    bool empty() const { return nelem_ == 0; }
+
+private:
+    MapFile cache;             // holds the mapping ptr points into, when cached
+    std::vector<guint32> owned; // holds the table instead, when freshly built
+    const guint32 *ptr = nullptr;
+    size_t nelem_ = 0;
+};
+
 class SynFile
 {
 public:
@@ -115,7 +147,7 @@ public:
 
 private:
     MapFile synfile;
-    std::vector<guint32> wordoffset;
+    OffsetTable wordoffset;
 };
 
 class Dict : public DictBase
