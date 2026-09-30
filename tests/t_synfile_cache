@@ -99,8 +99,17 @@ touch "$SYN_CACHE"
 test_word bar
 check_cache_layout "$SYN_CACHE"
 
-# A cache older than the .syn file is stale and must be rebuilt.
+# A cache older than the .syn file is stale and must be rebuilt. Keep the old
+# file open to verify that rebuilding replaces it instead of truncating it.
+exec 3< "$SYN_CACHE"
+OLD_INODE=$(ls -i "$SYN_CACHE" | awk '{print $1}')
 touch -t 200001010000 "$SYN_CACHE"
 test_word test
+NEW_INODE=$(ls -i "$SYN_CACHE" | awk '{print $1}')
+exec 3<&-
+if [ "$OLD_INODE" = "$NEW_INODE" ]; then
+    echo "stale cache was overwritten in place instead of replaced"
+    exit 1
+fi
 
 exit 0
