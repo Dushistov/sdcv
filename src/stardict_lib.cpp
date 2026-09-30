@@ -650,31 +650,31 @@ bool OffsetTable::save(const std::string &url, bool verbose) const
         return false;
     const char pad[CACHE_HEADER_SIZE - CACHE_MAGIC_LEN - sizeof(guint32)] = { 0 };
     for (const std::string &item : vars) {
-        FILE *out = fopen(item.c_str(), "wb");
+        // Existing readers may have this cache mapped. Write a complete file
+        // beside it and replace the name only after closing the new file.
+        std::string temp_name = item + ".tmp.XXXXXX";
+        const int fd = g_mkstemp(&temp_name[0]);
+        if (fd == -1)
+            continue;
+        FILE *out = fdopen(fd, "wb");
+        if (!out) {
+            g_close(fd, nullptr);
+            g_unlink(temp_name.c_str());
+            continue;
+        }
         guint32 magic = CACHE_MAGIC_BYTES;
-        if (!out)
-            continue;
-        if (fwrite(CACHE_MAGIC, 1, strlen(CACHE_MAGIC), out) != strlen(CACHE_MAGIC)) {
-            fclose(out);
-            continue;
+        bool complete = fwrite(CACHE_MAGIC, 1, strlen(CACHE_MAGIC), out) == strlen(CACHE_MAGIC)
+            && fwrite(pad, 1, sizeof(pad), out) == sizeof(pad)
+            && fwrite(&magic, 1, sizeof(magic), out) == sizeof(magic)
+            && fwrite(ptr, sizeof(guint32), nelem_, out) == nelem_;
+        if (fclose(out) != 0)
+            complete = false;
+        if (complete && g_rename(temp_name.c_str(), item.c_str()) == 0) {
+            if (verbose)
+                printf("save to cache %s\n", url.c_str());
+            return true;
         }
-        if (fwrite(pad, 1, sizeof(pad), out) != sizeof(pad)) {
-            fclose(out);
-            continue;
-        }
-        if (fwrite(&magic, 1, sizeof(magic), out) != sizeof(magic)) {
-            fclose(out);
-            continue;
-        }
-        if (fwrite(ptr, sizeof(guint32), nelem_, out) != nelem_) {
-            fclose(out);
-            continue;
-        }
-        fclose(out);
-        if (verbose) {
-            printf("save to cache %s\n", url.c_str());
-        }
-        return true;
+        g_unlink(temp_name.c_str());
     }
     return false;
 }

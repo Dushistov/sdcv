@@ -9,6 +9,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
 #endif
 #ifdef _WIN32
 #include <windows.h>
@@ -49,39 +50,35 @@ private:
         std::swap(data, o.data);
 #ifdef HAVE_MMAP
         std::swap(size, o.size);
-        std::swap(mmap_fd, o.mmap_fd);
-#elif defined(_WIN32)
-        std::swap(hFile, o.hFile);
-        std::swap(hFileMap, o.hFileMap);
 #endif
     }
 
     char *data = nullptr;
 #ifdef HAVE_MMAP
     size_t size = 0u;
-    int mmap_fd = -1;
-#elif defined(_WIN32)
-    HANDLE hFile = 0;
-    HANDLE hFileMap = 0;
 #endif
 };
 
 inline bool MapFile::open(const char *file_name, off_t file_size)
 {
 #ifdef HAVE_MMAP
-    if ((mmap_fd = ::open(file_name, O_RDONLY)) < 0) {
+    const int fd = ::open(file_name, O_RDONLY);
+    if (fd < 0) {
         // g_print("Open file %s failed!\n",fullfilename);
         return false;
     }
     struct stat st;
-    if (fstat(mmap_fd, &st) == -1 || st.st_size < 0 || (st.st_size == 0 && S_ISREG(st.st_mode))
+    if (fstat(fd, &st) == -1 || st.st_size < 0 || (st.st_size == 0 && S_ISREG(st.st_mode))
         || st.st_size != file_size) {
-        close(mmap_fd);
+        close(fd);
         return false;
     }
 
     size = static_cast<size_t>(st.st_size);
-    data = (gchar *)mmap(nullptr, size, PROT_READ, MAP_SHARED, mmap_fd, 0);
+    data = (gchar *)mmap(nullptr, size, PROT_READ, MAP_SHARED, fd, 0);
+    // The mapping keeps its own reference to the file; retaining the descriptor
+    // would cost one open file per cached offset table and dictionary file.
+    close(fd);
     if ((void *)data == (void *)(-1)) {
         // g_print("mmap file %s failed!\n",idxfilename);
         size = 0u;
@@ -89,9 +86,18 @@ inline bool MapFile::open(const char *file_name, off_t file_size)
         return false;
     }
 #elif defined(_WIN32)
-    hFile = CreateFile(file_name, GENERIC_READ, 0, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
-    hFileMap = CreateFileMapping(hFile, nullptr, PAGE_READONLY, 0, file_size, nullptr);
-    data = (gchar *)MapViewOfFile(hFileMap, FILE_MAP_READ, 0, 0, file_size);
+    HANDLE file = CreateFile(file_name, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE,
+                             nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+    if (file == INVALID_HANDLE_VALUE)
+        return false;
+    HANDLE mapping = CreateFileMapping(file, nullptr, PAGE_READONLY, 0, file_size, nullptr);
+    CloseHandle(file);
+    if (!mapping)
+        return false;
+    data = (gchar *)MapViewOfFile(mapping, FILE_MAP_READ, 0, 0, file_size);
+    CloseHandle(mapping);
+    if (!data)
+        return false;
 #else
     gsize read_len;
     if (!g_file_get_contents(file_name, &data, &read_len, nullptr))
@@ -118,12 +124,9 @@ inline MapFile::~MapFile()
         return;
 #ifdef HAVE_MMAP
     munmap(data, size);
-    close(mmap_fd);
 #else
 #ifdef _WIN32
     UnmapViewOfFile(data);
-    CloseHandle(hFileMap);
-    CloseHandle(hFile);
 #else
     g_free(data);
 #endif
