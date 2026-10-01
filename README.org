@@ -60,5 +60,5 @@ cd po
 xgettext -k_ ../src/*.cpp -o new.pot
 msgmerge -U sdcv.pot new.pot
 rm new.pot
-for i in `ls *.po`; do msgmerge -U $i sdcv.pot; done
+for i in *.po; do msgmerge -U $i sdcv.pot; done
 #+END_SRC
