@@ -635,9 +635,17 @@ static std::list<std::string> get_cache_variant(const std::string &url)
     } else if (!g_file_test(cache_dir.c_str(), G_FILE_TEST_IS_DIR))
         return res;
 
-    gchar *base = g_path_get_basename(url.c_str());
-    res.push_back(cache_dir + G_DIR_SEPARATOR_S + base + ".oft");
-    g_free(base);
+    // A basename cache can belong to a different dictionary in another
+    // directory. Use the full path and ignore those ambiguous old caches.
+    std::string cache_key = url;
+    if (!g_path_is_absolute(url.c_str())) {
+        gchar *cwd = g_get_current_dir();
+        cache_key = std::string(cwd) + G_DIR_SEPARATOR_S + url;
+        g_free(cwd);
+    }
+    gchar *digest = g_compute_checksum_for_string(G_CHECKSUM_SHA256, cache_key.c_str(), -1);
+    res.push_back(cache_dir + G_DIR_SEPARATOR_S + "path-" + digest + ".oft");
+    g_free(digest);
     return res;
 }
 
