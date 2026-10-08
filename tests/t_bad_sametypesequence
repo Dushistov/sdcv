@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+SDCV="$1"
+TEST_DIR="$2"
+
+unset SDCV_PAGER
+unset STARDICT_DATA_DIR
+
+test_json() {
+    dict="$1"
+    word="$2"
+    jq_cmp="$3"
+    result="$("$SDCV" --data-dir "$TEST_DIR" -exjn -u "$dict" "$word" | sed 's|\\n|\\u000a|g')"
+    cmp_result="$(echo "$result" | jq "$jq_cmp")"
+    if [ "$cmp_result" != "true" ]; then
+        echo "expected '$jq_cmp' to return true, but $result didn't"
+        exit 1
+    fi
+}
+
+# "sametypesequence=m " (trailing space): the space must not be read as a
+# second field.
+test_json "Test ifo trailing space" kestrel \
+    '. == [{"dict":"Test ifo trailing space","word":"kestrel","definition":"\u000aA small falcon that hovers."}]'
+test_json "Test ifo trailing space" osprey \
+    '. == [{"dict":"Test ifo trailing space","word":"osprey","definition":"\u000aA fish-eating bird of prey."}]'
+test_json "Test ifo trailing space" '|falcon' \
+    '. == [{"dict":"Test ifo trailing space","word":"kestrel","definition":"\u000aA small falcon that hovers."}]'
+
+# "sametypesequence=tm", but the entries hold only the "m" field: the "t" field
+# has no terminating '\0' in the entry, so it must not be read past its end.
+test_json "Test bad sametypesequence" kestrel \
+    '. == [{"dict":"Test bad sametypesequence","word":"kestrel","definition":""}]'
+test_json "Test bad sametypesequence" '|falcon' '. == []'
+
+exit 0
