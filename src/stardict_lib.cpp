@@ -72,6 +72,31 @@ static void unicode_strdown(gunichar *str)
         ++str;
     }
 }
+
+// [begin, end) without trailing whitespace
+static std::string rstrip(const gchar *begin, const gchar *end)
+{
+    while (end != begin && g_ascii_isspace(end[-1]))
+        --end;
+    return std::string(begin, end);
+}
+
+// Size of a sametypesequence field of type `type` at `p`, including its
+// terminating '\0' or its size prefix, or 0 if it does not fit in the
+// `left` bytes remaining in the entry.
+static guint32 field_size(gchar type, const gchar *p, guint32 left)
+{
+    if (g_ascii_isupper(type)) {
+        if (left < sizeof(guint32))
+            return 0;
+        const guint32 size = get_uint32(p);
+        if (size > left - sizeof(guint32))
+            return 0;
+        return size + sizeof(guint32);
+    }
+    const void *nul = memchr(p, '\0', left);
+    return nul ? guint32(static_cast<const gchar *>(nul) - p) + 1 : 0;
+}
 } // namespace
 
 bool DictInfo::load_from_ifo_file(const std::string &ifofilename,
@@ -116,12 +141,12 @@ bool DictInfo::load_from_ifo_file(const std::string &ifofilename,
         }
         auto val_it = std::find_if(eq_it + 1, end, [](gchar ch) { return !g_ascii_isspace(ch); });
         if (val_it == end) {
-            key_value_map.insert(std::make_pair(std::string(key_it, eq_it), std::string()));
+            key_value_map.insert(std::make_pair(rstrip(key_it, eq_it), std::string()));
             break;
         }
 
         auto line_end_it = std::find_if(val_it, end, [](gchar ch) { return ch == '\r' || ch == '\n'; });
-        key_value_map.insert(std::make_pair(std::string(key_it, eq_it), std::string(val_it, line_end_it)));
+        key_value_map.insert(std::make_pair(rstrip(key_it, eq_it), rstrip(val_it, line_end_it)));
         if (line_end_it == end)
             break;
         p = line_end_it + 1;
@@ -222,41 +247,17 @@ gchar *DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
         guint32 sec_size;
         // copy the head items.
         for (int i = 0; i < sametypesequence_len - 1; i++) {
+            sec_size = field_size(sametypesequence[i], p2, idxitem_size - (p2 - get_impl(origin_data)));
+            if (sec_size == 0) {
+                // The entry does not match sametypesequence: broken dictionary.
+                g_free(data);
+                return nullptr;
+            }
             *p1 = sametypesequence[i];
             p1 += sizeof(gchar);
-            switch (sametypesequence[i]) {
-            case 'm':
-            case 't':
-            case 'y':
-            case 'l':
-            case 'g':
-            case 'x':
-            case 'k':
-                sec_size = strlen(p2) + 1;
-                memcpy(p1, p2, sec_size);
-                p1 += sec_size;
-                p2 += sec_size;
-                break;
-            case 'W':
-            case 'P':
-                sec_size = get_uint32(p2);
-                sec_size += sizeof(guint32);
-                memcpy(p1, p2, sec_size);
-                p1 += sec_size;
-                p2 += sec_size;
-                break;
-            default:
-                if (g_ascii_isupper(sametypesequence[i])) {
-                    sec_size = get_uint32(p2);
-                    sec_size += sizeof(guint32);
-                } else {
-                    sec_size = strlen(p2) + 1;
-                }
-                memcpy(p1, p2, sec_size);
-                p1 += sec_size;
-                p2 += sec_size;
-                break;
-            }
+            memcpy(p1, p2, sec_size);
+            p1 += sec_size;
+            p2 += sec_size;
         }
         // calculate the last item 's size.
         sec_size = idxitem_size - (p2 - get_impl(origin_data));
@@ -332,6 +333,9 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
     if (!sametypesequence.empty()) {
         gint sametypesequence_len = sametypesequence.length();
         for (int i = 0; i < sametypesequence_len - 1; i++) {
+            sec_size = field_size(sametypesequence[i], p, idxitem_size - (p - origin_data));
+            if (sec_size == 0)
+                return false; // The entry does not match sametypesequence: broken dictionary.
             switch (sametypesequence[i]) {
             case 'm':
             case 't':
@@ -348,18 +352,9 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 
                 if (nfound == nWord)
                     return true;
-                sec_size = strlen(p) + 1;
-                p += sec_size;
                 break;
-            default:
-                if (g_ascii_isupper(sametypesequence[i])) {
-                    sec_size = get_uint32(p);
-                    sec_size += sizeof(guint32);
-                } else {
-                    sec_size = strlen(p) + 1;
-                }
-                p += sec_size;
             }
+            p += sec_size;
         }
         switch (sametypesequence[sametypesequence_len - 1]) {
         case 'm':
