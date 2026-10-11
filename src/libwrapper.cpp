@@ -198,37 +198,34 @@ static std::string parse_data(const gchar *data, bool colorize_output)
     return res;
 }
 
-void Library::SimpleLookup(const std::string &str, TSearchResultList &res_list)
+void Library::SimpleLookup(const std::string &str, const TSearchResultSink &sink)
 {
     std::set<glong> wordIdxs;
-    res_list.reserve(ndicts());
     for (gint idict = 0; idict < ndicts(); ++idict) {
         wordIdxs.clear();
         if (SimpleLookupWord(str.c_str(), wordIdxs, idict))
             for (auto &wordIdx : wordIdxs)
-                res_list.push_back(
-                    TSearchResult(dict_name(idict),
-                                  poGetWord(wordIdx, idict),
-                                  parse_data(poGetWordData(wordIdx, idict),
-                                             colorize_output_)));
+                sink(TSearchResult(dict_name(idict),
+                                   poGetWord(wordIdx, idict),
+                                   parse_data(poGetWordData(wordIdx, idict),
+                                              colorize_output_)));
     }
 }
 
-void Library::LookupWithFuzzy(const std::string &str, TSearchResultList &res_list)
+void Library::LookupWithFuzzy(const std::string &str, const TSearchResultSink &sink)
 {
     static const int MAXFUZZY = 10;
-
     gchar *fuzzy_res[MAXFUZZY];
     if (!Libs::LookupWithFuzzy(str.c_str(), fuzzy_res, MAXFUZZY))
         return;
 
     for (gchar **p = fuzzy_res, **end = (fuzzy_res + MAXFUZZY); p != end && *p; ++p) {
-        SimpleLookup(*p, res_list);
+        SimpleLookup(*p, sink);
         g_free(*p);
     }
 }
 
-void Library::LookupWithRule(const std::string &str, TSearchResultList &res_list)
+void Library::LookupWithRule(const std::string &str, const TSearchResultSink &sink)
 {
     std::vector<gchar *> match_res((MAX_MATCH_ITEM_PER_LIB)*ndicts());
 
@@ -237,19 +234,19 @@ void Library::LookupWithRule(const std::string &str, TSearchResultList &res_list
         return;
 
     for (gint i = 0; i < nfound; ++i) {
-        SimpleLookup(match_res[i], res_list);
+        SimpleLookup(match_res[i], sink);
         g_free(match_res[i]);
     }
 }
 
-void Library::LookupData(const std::string &str, TSearchResultList &res_list)
+void Library::LookupData(const std::string &str, const TSearchResultSink &sink)
 {
     std::vector<std::vector<gchar *>> drl(ndicts());
     if (!Libs::LookupData(str.c_str(), &drl[0]))
         return;
     for (int idict = 0; idict < ndicts(); ++idict)
         for (gchar *res : drl[idict]) {
-            SimpleLookup(res, res_list);
+            SimpleLookup(res, sink);
             g_free(res);
         }
 }
@@ -351,31 +348,51 @@ search_result Library::process_phrase(const char *loc_str, IReadLine &io, bool f
     if (str[0] == '\0')
         return SEARCH_SUCCESS;
 
-    TSearchResultList res_list;
+    const query_t query_type = analyze_query(get_impl(str), query);
 
-    switch (analyze_query(get_impl(str), query)) {
+    // --json-output --non-interactive never post-processes the result list,
+    // so stream entries as found instead of accumulating them all first.
+    bool json_stream = json_ && force && query_type == qtSIMPLE;
+    TSearchResultList res_list;
+    size_t nfound = 0;
+    bool first_result = true;
+    if (json_) {
+        fputc('[', stdout);
+    }
+    const TSearchResultSink sink = [&](TSearchResult &&res) {
+        ++nfound;
+        if (json_stream)
+            print_search_result(stdout, std::move(res), first_result);
+        else
+            res_list.push_back(std::move(res));
+    };
+
+    switch (query_type) {
     case qtFUZZY:
-        LookupWithFuzzy(query, res_list);
+        LookupWithFuzzy(query, sink);
         break;
     case qtREGEXP:
-        LookupWithRule(query, res_list);
+        LookupWithRule(query, sink);
         break;
     case qtSIMPLE:
-        SimpleLookup(get_impl(str), res_list);
-        if (res_list.empty() && fuzzy_)
-            LookupWithFuzzy(get_impl(str), res_list);
+        SimpleLookup(get_impl(str), sink);
+        if (nfound == 0 && fuzzy_)
+            LookupWithFuzzy(get_impl(str), sink);
         break;
     case qtDATA:
-        LookupData(query, res_list);
+        LookupData(query, sink);
         break;
     default:
         /*nothing*/;
     }
 
-    bool first_result = true;
-    if (json_) {
-        fputc('[', stdout);
+    if (json_stream) {
+        if (nfound == 0)
+            rval = SEARCH_NO_RESULT;
+        fputs("]\n", stdout);
+        return rval;
     }
+
     if (!res_list.empty()) {
         /* try to be more clever, if there are
 		   one or zero results per dictionary show all
@@ -416,10 +433,14 @@ search_result Library::process_phrase(const char *loc_str, IReadLine &io, bool f
                        colorize_output_ ? ESC_END : "");
             }
             int choise;
+            bool have_choise = false;
             for (;;) {
                 std::string str_choise;
-                io.read(_("Your choice[-1 to abort]: "), str_choise);
-                sscanf(str_choise.c_str(), "%d", &choise);
+                if (!io.read(_("Your choice[-1 to abort]: "), str_choise))
+                    break; // EOF: no more input can arrive, stop prompting
+                have_choise = (sscanf(str_choise.c_str(), "%d", &choise) == 1);
+                if (!have_choise)
+                    continue; // non-numeric input, including empty line
                 if (choise >= 0 && choise < int(res_list.size())) {
                     sdcv_pager pager;
                     io.add_to_history(res_list[choise].def.c_str());

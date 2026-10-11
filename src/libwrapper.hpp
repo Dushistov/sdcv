@@ -1,6 +1,8 @@
 #pragma once
 
+#include <functional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "readline.hpp"
@@ -22,6 +24,9 @@ struct TSearchResult {
 };
 
 typedef std::vector<TSearchResult> TSearchResultList;
+
+// Sink for results as they are found, without accumulating them all.
+using TSearchResultSink = std::function<void(TSearchResult &&)>;
 
 //possible return values for Library.process_phase()
 enum search_result {
@@ -53,9 +58,11 @@ private:
     bool colorize_output_;
     bool json_;
 
-    void SimpleLookup(const std::string &str, TSearchResultList &res_list);
-    void LookupWithFuzzy(const std::string &str, TSearchResultList &res_list);
-    void LookupWithRule(const std::string &str, TSearchResultList &res_lsit);
-    void LookupData(const std::string &str, TSearchResultList &res_list);
+    // All lookups hand entries to the sink as found; the sink decides
+    // whether to print them right away or collect them into a list.
+    void SimpleLookup(const std::string &str, const TSearchResultSink &sink);
+    void LookupWithFuzzy(const std::string &str, const TSearchResultSink &sink);
+    void LookupWithRule(const std::string &str, const TSearchResultSink &sink);
+    void LookupData(const std::string &str, const TSearchResultSink &sink);
     void print_search_result(FILE *out, const TSearchResult &res, bool &first_result);
 };
