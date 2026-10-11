@@ -433,10 +433,14 @@ search_result Library::process_phrase(const char *loc_str, IReadLine &io, bool f
                        colorize_output_ ? ESC_END : "");
             }
             int choise;
+            bool have_choise = false;
             for (;;) {
                 std::string str_choise;
-                io.read(_("Your choice[-1 to abort]: "), str_choise);
-                sscanf(str_choise.c_str(), "%d", &choise);
+                if (!io.read(_("Your choice[-1 to abort]: "), str_choise))
+                    break; // EOF: no more input can arrive, stop prompting
+                have_choise = (sscanf(str_choise.c_str(), "%d", &choise) == 1);
+                if (!have_choise)
+                    continue; // non-numeric input, including empty line
                 if (choise >= 0 && choise < int(res_list.size())) {
                     sdcv_pager pager;
                     io.add_to_history(res_list[choise].def.c_str());
