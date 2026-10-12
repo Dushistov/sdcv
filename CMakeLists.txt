@@ -105,6 +105,9 @@ set(sdcv_VERSION
 	"${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
 
 add_definitions(-DVERSION="${sdcv_VERSION}" -DHAVE_CONFIG_H)
+# 64-bit inode numbers and directory offsets: without this, readdir() fails
+# with EOVERFLOW in a 32-bit build on a 64-bit kernel.
+add_definitions(-D_FILE_OFFSET_BITS=64)
 
 add_executable(sdcv ${sdcv_SRCS})
 
@@ -157,5 +160,6 @@ if (BUILD_TESTS)
   add_sdcv_shell_test(t_return_code)
   add_sdcv_shell_test(t_multiple_results)
   add_sdcv_shell_test(t_newlines_in_ifo)
+  add_sdcv_shell_test(t_res_dir)
 
 endif (BUILD_TESTS)

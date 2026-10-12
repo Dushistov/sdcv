@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+SDCV="$1"
+TEST_DIR="$2"
+TMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TMP_DIR"' EXIT INT QUIT TERM
+
+unset SDCV_PAGER
+unset STARDICT_DATA_DIR
+XDG_CACHE_HOME="$TMP_DIR/cache"
+export XDG_CACHE_HOME
+
+copy_dict() {
+    mkdir -p "$2"
+    for f in "$TEST_DIR/$1"/*; do
+        case "$f" in
+            *.oft) ;;
+            *) cp "$f" "$2/" ;;
+        esac
+    done
+}
+
+# res/ next to an .ifo holds that dictionary's resources and is not scanned,
+# so a dictionary placed in it is not found.
+copy_dict stardict-test_dict-2.4.2 "$TMP_DIR/dicts/with_res"
+copy_dict stardict-test_synonyms-2.4.2 "$TMP_DIR/dicts/with_res/res"
+# A folder that is merely called res is scanned as usual.
+copy_dict stardict-test_multiple_results-2.4.2 "$TMP_DIR/dicts/plain/res"
+
+have=$("$SDCV" -x -n --data-dir "$TMP_DIR/dicts" -l | tail -n +2 | sed 's/    [0-9]*$//' | sort | tr '\n' '|')
+want="Test multiple results|test_dict|"
+if [ "$have" != "$want" ]; then
+    echo "test failed: sdcv lists '$have', expected '$want'" >&2
+    exit 1
+fi
+
+exit 0

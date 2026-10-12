@@ -25,6 +25,10 @@
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
+#ifndef _WIN32
+#include <dirent.h>
+#endif
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <iomanip>
@@ -59,15 +63,17 @@ static void __for_each_file(const std::string &dirname, const std::string &suff,
                             const std::list<std::string> &order_list, const std::list<std::string> &disable_list,
                             const std::function<void(const std::string &, bool)> &f)
 {
-    GDir *dir = g_dir_open(dirname.c_str(), 0, nullptr);
-    if (dir) {
-        const gchar *filename;
-
-        while ((filename = g_dir_read_name(dir)) != nullptr) {
-            const std::string fullfilename(dirname + G_DIR_SEPARATOR_S + filename);
-            if (g_file_test(fullfilename.c_str(), G_FILE_TEST_IS_DIR))
+    bool has_dict = false;
+    std::string res_dir;
+    const auto visit = [&](const gchar *filename, const std::string &fullfilename, bool is_dir) {
+        if (is_dir) {
+            if (strcmp(filename, "res") == 0)
+                res_dir = fullfilename; // decided below, once we know if this is a dictionary
+            else
                 __for_each_file(fullfilename, suff, order_list, disable_list, f);
-            else if (g_str_has_suffix(filename, suff.c_str()) && std::find(order_list.begin(), order_list.end(), fullfilename) == order_list.end()) {
+        } else if (g_str_has_suffix(filename, suff.c_str())) {
+            has_dict = true;
+            if (std::find(order_list.begin(), order_list.end(), fullfilename) == order_list.end()) {
                 const bool disable = std::find(disable_list.begin(),
                                                disable_list.end(),
                                                fullfilename)
@@ -75,8 +81,53 @@ static void __for_each_file(const std::string &dirname, const std::string &suff,
                 f(fullfilename, disable);
             }
         }
-        g_dir_close(dir);
+    };
+
+#ifndef _WIN32
+    // readdir() rather than g_dir_read_name(): d_type tells directories from
+    // files without a stat() per entry. With a cold cache every stat() is a
+    // disk read; on FAT it is also a linear scan of the parent directory, and
+    // a stat() of a directory reads all of it. A dictionary's res/ folder can
+    // hold thousands of files, so this made the scan take seconds.
+    DIR *dir = opendir(dirname.c_str());
+    if (!dir)
+        return;
+    const struct dirent *entry;
+    while ((entry = readdir(dir)) != nullptr) {
+        const gchar *filename = entry->d_name;
+        if (strcmp(filename, ".") == 0 || strcmp(filename, "..") == 0)
+            continue;
+        const std::string fullfilename(dirname + G_DIR_SEPARATOR_S + filename);
+#ifdef DT_DIR
+        bool is_dir;
+        if (entry->d_type == DT_DIR)
+            is_dir = true;
+        else if (entry->d_type == DT_REG)
+            is_dir = false;
+        else // DT_UNKNOWN, or a symlink that may point to a directory
+            is_dir = g_file_test(fullfilename.c_str(), G_FILE_TEST_IS_DIR);
+#else
+        const bool is_dir = g_file_test(fullfilename.c_str(), G_FILE_TEST_IS_DIR);
+#endif
+        visit(filename, fullfilename, is_dir);
     }
+    closedir(dir);
+#else
+    GDir *dir = g_dir_open(dirname.c_str(), 0, nullptr);
+    if (!dir)
+        return;
+    const gchar *filename;
+    while ((filename = g_dir_read_name(dir)) != nullptr) {
+        const std::string fullfilename(dirname + G_DIR_SEPARATOR_S + filename);
+        visit(filename, fullfilename, g_file_test(fullfilename.c_str(), G_FILE_TEST_IS_DIR));
+    }
+    g_dir_close(dir);
+#endif
+
+    // The res/ folder next to a dictionary holds its resources (images,
+    // sounds), never dictionaries, and can contain thousands of files.
+    if (!res_dir.empty() && !has_dict)
+        __for_each_file(res_dir, suff, order_list, disable_list, f);
 }
 
 void for_each_file(const std::list<std::string> &dirs_list, const std::string &suff,
