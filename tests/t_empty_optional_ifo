@@ -1,0 +1,51 @@
+#!/bin/sh
+
+set -eu
+
+SDCV="$1"
+fixture=$(mktemp -d "${TMPDIR:-/tmp}/sdcv-empty-ifo.XXXXXX")
+trap 'rm -rf "$fixture"' EXIT HUP INT TERM
+
+unset SDCV_PAGER STARDICT_DATA_DIR
+
+printf 'alpha\000\000\000\000\000\000\000\000\005' > "$fixture/tiny.idx"
+printf 'first' > "$fixture/tiny.dict"
+
+check_dictionary() {
+    result=$("$SDCV" -x -n -j --utf8-input --utf8-output --data-dir "$fixture" -l)
+    printf '%s\n' "$result" | jq -e \
+        '. == [{"name":"Empty metadata","wordcount":"1"}]' > /dev/null
+}
+
+write_dictionary() {
+    printf "StarDict's dict ifo file${newline}version=2.4.2${newline}%s=${value}${newline}bookname=Empty metadata${newline}wordcount=1${newline}idxfilesize=14${newline}sametypesequence=m${newline}" "$field" > "$fixture/tiny.ifo"
+}
+
+for newline in '\n' '\r\n' '\r'; do
+    for field in author email website date description; do
+        for value in '' ' \t'; do
+            write_dictionary
+            check_dictionary
+        done
+    done
+    field=author
+    value='Test author'
+    write_dictionary
+    check_dictionary
+done
+
+# A BOM must not change how empty optional values are parsed.
+newline='\n'
+field=author
+value=''
+write_dictionary
+printf '\357\273\277' > "$fixture/bom.ifo"
+cat "$fixture/tiny.ifo" >> "$fixture/bom.ifo"
+mv "$fixture/bom.ifo" "$fixture/tiny.ifo"
+check_dictionary
+
+# Preserve an empty final value, including a file without a final newline.
+for terminal in '\n' ''; do
+    printf "StarDict's dict ifo file\nversion=2.4.2\nbookname=Empty metadata\nwordcount=1\nidxfilesize=14\nsametypesequence=m\nauthor=${terminal}" > "$fixture/tiny.ifo"
+    check_dictionary
+done
