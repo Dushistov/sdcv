@@ -114,7 +114,9 @@ bool DictInfo::load_from_ifo_file(const std::string &ifofilename,
             fprintf(stderr, "Invalid part of ifo (no '=') here: %s\n", key_it);
             return false;
         }
-        auto val_it = std::find_if(eq_it + 1, end, [](gchar ch) { return !g_ascii_isspace(ch); });
+        auto val_it = std::find_if(eq_it + 1, end, [](gchar ch) {
+            return ch == '\r' || ch == '\n' || !g_ascii_isspace(ch);
+        });
         if (val_it == end) {
             key_value_map.insert(std::make_pair(std::string(key_it, eq_it), std::string()));
             break;
