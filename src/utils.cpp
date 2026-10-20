@@ -29,6 +29,7 @@
 #include <glib/gi18n.h>
 #include <iomanip>
 #include <sstream>
+#include <vector>
 
 #include "utils.hpp"
 
@@ -63,11 +64,17 @@ static void __for_each_file(const std::string &dirname, const std::string &suff,
     if (dir) {
         const gchar *filename;
 
-        while ((filename = g_dir_read_name(dir)) != nullptr) {
-            const std::string fullfilename(dirname + G_DIR_SEPARATOR_S + filename);
+        // Loading an entry can create cache files in this directory.
+        std::vector<std::string> filenames;
+        while ((filename = g_dir_read_name(dir)) != nullptr)
+            filenames.emplace_back(filename);
+        g_dir_close(dir);
+
+        for (const std::string &entry : filenames) {
+            const std::string fullfilename(dirname + G_DIR_SEPARATOR_S + entry);
             if (g_file_test(fullfilename.c_str(), G_FILE_TEST_IS_DIR))
                 __for_each_file(fullfilename, suff, order_list, disable_list, f);
-            else if (g_str_has_suffix(filename, suff.c_str()) && std::find(order_list.begin(), order_list.end(), fullfilename) == order_list.end()) {
+            else if (g_str_has_suffix(entry.c_str(), suff.c_str()) && std::find(order_list.begin(), order_list.end(), fullfilename) == order_list.end()) {
                 const bool disable = std::find(disable_list.begin(),
                                                disable_list.end(),
                                                fullfilename)
@@ -75,7 +82,6 @@ static void __for_each_file(const std::string &dirname, const std::string &suff,
                 f(fullfilename, disable);
             }
         }
-        g_dir_close(dir);
     }
 }
 

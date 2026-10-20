@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -eu
+
+SDCV="$1"
+fixture=$(mktemp -d "${TMPDIR:-/tmp}/sdcv-first-lookup.XXXXXX")
+trap 'rm -rf "$fixture"' EXIT HUP INT TERM
+
+unset SDCV_PAGER STARDICT_DATA_DIR
+
+cat > "$fixture/tiny.ifo" <<'EOF'
+StarDict's dict ifo file
+version=2.4.2
+bookname=First lookup
+wordcount=1
+idxfilesize=14
+sametypesequence=m
+EOF
+printf 'alpha\000\000\000\000\000\000\000\000\005' > "$fixture/tiny.idx"
+printf 'first' > "$fixture/tiny.dict"
+
+# Creating the index-offset cache must not load the dictionary twice.
+for run in first second; do
+    result=$("$SDCV" -x -n -j --utf8-input --utf8-output --data-dir "$fixture" -e alpha)
+    printf '%s\n' "$result" | jq -e \
+        '. == [{"dict":"First lookup","word":"alpha","definition":"\nfirst"}]' > /dev/null
+    test -f "$fixture/tiny.idx.oft"
+done
