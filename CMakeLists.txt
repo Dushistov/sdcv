@@ -157,5 +157,6 @@ if (BUILD_TESTS)
   add_sdcv_shell_test(t_return_code)
   add_sdcv_shell_test(t_multiple_results)
   add_sdcv_shell_test(t_newlines_in_ifo)
+  add_sdcv_shell_test(t_first_lookup_cache)
 
 endif (BUILD_TESTS)
